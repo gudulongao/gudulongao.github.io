@@ -5,15 +5,19 @@
   
 
   
-  <title>Archives: 2018 | Hexo</title>
+  <title>git操作笔记 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/archives/2018/index.html">
+  <meta name="description" content="#Git笔记当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。 ssh-gaent bashssh-agent -sssh-add ~/.ss/id**     如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：export GIT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git操作笔记">
+<meta property="og:url" content="http://yoursite.com/2018/08/23/git操作笔记/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="#Git笔记当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。 ssh-gaent bashssh-agent -sssh-add ~/.ss/id**     如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：export GIT">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-08-23T03:21:34.893Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="git操作笔记">
+<meta name="twitter:description" content="#Git笔记当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。 ssh-gaent bashssh-agent -sssh-add ~/.ss/id**     如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：export GIT">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -60,40 +64,44 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2018/08/23/git操作笔记/" class="archive-article-date">
-  <time datetime="2018-08-23T02:56:55.000Z" itemprop="datePublished">Aug 23</time>
+        <section id="main"><article id="post-git操作笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/23/git操作笔记/" class="article-date">
+  <time datetime="2018-08-23T02:56:55.000Z" itemprop="datePublished">2018-08-23</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/08/23/git操作笔记/">git操作笔记</a>
+    <h1 class="article-title" itemprop="name">
+      git操作笔记
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#Git笔记<br>当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。</p>
+<p>ssh-gaent bash<br>ssh-agent -s<br>ssh-add ~/.ss/id**    </p>
+<p>如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：<br>export GIT_SSH_COMMAND=’ssh -o KexAlgorithms=+diffie-hellman-group1-sha1’</p>
 
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/08/23/git操作笔记/" data-id="cjl603uxg0000o5s6xwqvfsqb" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+  
+</article>
 
 </section>
         

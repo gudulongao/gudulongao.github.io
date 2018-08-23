@@ -62,10 +62,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-git操作笔记" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/08/22/hello-world/" class="article-date">
-  <time datetime="2018-08-21T23:03:19.701Z" itemprop="datePublished">2018-08-22</time>
+    <a href="/2018/08/23/git操作笔记/" class="article-date">
+  <time datetime="2018-08-23T02:56:55.000Z" itemprop="datePublished">2018-08-23</time>
 </a>
     
   </div>
@@ -76,7 +76,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/08/22/hello-world/">Hello World</a>
+      <a class="article-title" href="/2018/08/23/git操作笔记/">git操作笔记</a>
     </h1>
   
 
@@ -84,20 +84,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+        <p>#Git笔记<br>当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。</p>
+<p>ssh-gaent bash<br>ssh-agent -s<br>ssh-add ~/.ss/id**    </p>
+<p>如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：<br>export GIT_SSH_COMMAND=’ssh -o KexAlgorithms=+diffie-hellman-group1-sha1’</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/08/22/hello-world/" data-id="cjl4vrjfd00006rs62xhh4j43" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/08/23/git操作笔记/" data-id="cjl603uxg0000o5s6xwqvfsqb" class="article-share-link">Share</a>
       
       
     </footer>
@@ -138,7 +132,7 @@
       <ul>
         
           <li>
-            <a href="/2018/08/22/hello-world/">Hello World</a>
+            <a href="/2018/08/23/git操作笔记/">git操作笔记</a>
           </li>
         
       </ul>
