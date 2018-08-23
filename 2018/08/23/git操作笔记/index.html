@@ -7,17 +7,18 @@
   
   <title>git操作笔记 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="#Git笔记当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。 123ssh-gaent bash	ssh-agent -s	ssh-add ~/.ss/id** 如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：     1exp">
+  <meta name="description" content="当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。 123ssh-gaent bash	ssh-agent -s	ssh-add ~/.ss/id* 使用指定的sshkey公钥 如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：">
+<meta name="keywords" content="git">
 <meta property="og:type" content="article">
 <meta property="og:title" content="git操作笔记">
 <meta property="og:url" content="http://yoursite.com/2018/08/23/git操作笔记/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="#Git笔记当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。 123ssh-gaent bash	ssh-agent -s	ssh-add ~/.ss/id** 如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：     1exp">
+<meta property="og:description" content="当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。 123ssh-gaent bash	ssh-agent -s	ssh-add ~/.ss/id* 使用指定的sshkey公钥 如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-08-23T03:29:11.375Z">
+<meta property="og:updated_time" content="2018-08-23T05:36:29.230Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git操作笔记">
-<meta name="twitter:description" content="#Git笔记当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。 123ssh-gaent bash	ssh-agent -s	ssh-add ~/.ss/id** 如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：     1exp">
+<meta name="twitter:description" content="当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。 123ssh-gaent bash	ssh-agent -s	ssh-add ~/.ss/id* 使用指定的sshkey公钥 如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -86,8 +87,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>#Git笔记<br>当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh-gaent bash	</span><br><span class="line">ssh-agent -s	</span><br><span class="line">ssh-add ~/.ss/id**</span><br></pre></td></tr></table></figure>
+        <p>当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh-gaent bash	</span><br><span class="line">ssh-agent -s	</span><br><span class="line">ssh-add ~/.ss/id* 使用指定的sshkey公钥</span><br></pre></td></tr></table></figure>
 <p>如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：    </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export GIT_SSH_COMMAND=&apos;ssh -o KexAlgorithms=+diffie-hellman-group1-sha1&apos;</span><br></pre></td></tr></table></figure>
       
@@ -96,6 +97,8 @@
       <a data-url="http://yoursite.com/2018/08/23/git操作笔记/" data-id="cjl603uxg0000o5s6xwqvfsqb" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li></ul>
+
     </footer>
   </div>
   
@@ -111,9 +114,23 @@
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li></ul>
+    </div>
+  </div>
+
 
   
     
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/git/" style="font-size: 10px;">git</a>
+    </div>
+  </div>
+
   
     
   <div class="widget-wrap">
