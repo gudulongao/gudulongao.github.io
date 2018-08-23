@@ -300,7 +300,86 @@
       
         
           
-            
+            <h1 id="基础配置"><a href="#基础配置" class="headerlink" title="基础配置"></a>基础配置</h1><h2 id="bean的生命周期（Scope）"><a href="#bean的生命周期（Scope）" class="headerlink" title="bean的生命周期（Scope）"></a>bean的生命周期（Scope）</h2><p>Spring中bean的生命周期可以通过注解@Scope来声明配置，其中注解Scope支持的生命周期如下表所示。  </p>
+<table>
+<thead>
+<tr>
+<th>Scope</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Singleton</td>
+<td>单例，默认配置</td>
+</tr>
+<tr>
+<td>Peororype</td>
+<td>每次调用都会构建</td>
+</tr>
+<tr>
+<td>Request</td>
+<td>Web项目中每一次http request新建</td>
+</tr>
+<tr>
+<td>Session</td>
+<td>Web项目中每一个http session新建</td>
+</tr>
+</tbody>
+</table>
+<h2 id="bean的创建和销毁"><a href="#bean的创建和销毁" class="headerlink" title="bean的创建和销毁"></a>bean的创建和销毁</h2><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@Bean注解的initMethod属性</td>
+<td>通过在配置类中声明bean的时候显示的指定该bean的初始化逻辑</td>
+</tr>
+<tr>
+<td>@Bean注解的destoryMethod属性</td>
+<td>通过在配置类中声明bean的时候显示的指定该bean的销毁逻辑</td>
+</tr>
+<tr>
+<td>@PostConstruct</td>
+<td>JSR-250提供，用于声明于方法体，表明该方法将在构造函数之后调用</td>
+</tr>
+<tr>
+<td>@PreDestory</td>
+<td>JSR-250提供，用于声明于方法体，表明该方法将在对象回收之前调用</td>
+</tr>
+</tbody>
+</table>
+<h2 id="加载配置文件"><a href="#加载配置文件" class="headerlink" title="加载配置文件"></a>加载配置文件</h2><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@PropertySource</td>
+<td>指定待加载配置文件的路径，通常用于配置类</td>
+</tr>
+<tr>
+<td>@Value</td>
+<td>通过注入的属性来匹配配置文件中的配置，常用于字段,即将配置文件中对应配置的值注入到当前字段</td>
+</tr>
+</tbody>
+</table>
+<p>对于@Value注解，如果当前配置类中有使用注解@ProppertySource,则表明该注解匹配的配置文件是注解中指定的配置文件，否则就是加载的PeopertySourcesPlaceholderConfigurer中配置的配置文件。<br>目前对于加载配置文件还有些许的疑问。  </p>
+<blockquote>
+<p>对于支持加载的配置文件类型，只能是键值对，properties类型的配置文件吗？是否支持yml?</p>
+</blockquote>
+<h2 id="Profile"><a href="#Profile" class="headerlink" title="Profile"></a>Profile</h2><p>Spring支持对于不同的环境能够使得不同的配置生效。例如开发环境与生产环境的配置不一样，需要按照不同的环境来使得对应的配置生效。<br>当前环境的状态标志可以通过已下方式：</p>
+<blockquote>
+<p>1.启动项目的时候通过配置jvm参数：spring.profile.active来指定当前环境的状态。<br>2.Servlet的context parameter中指定spring.profile.active参数。  </p>
+</blockquote>
+
           
         
       
@@ -419,11 +498,10 @@
       
         
           
-            <p>生成ssh密钥。  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &apos;XXX@XXX&apos;</span><br></pre></td></tr></table></figure>
-<p>当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。</p>
+            <h3 id="生成ssh密钥。"><a href="#生成ssh密钥。" class="headerlink" title="生成ssh密钥。"></a>生成ssh密钥。</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &apos;XXX@XXX&apos;</span><br></pre></td></tr></table></figure>
+<h3 id="指定ssh公钥"><a href="#指定ssh公钥" class="headerlink" title="指定ssh公钥"></a>指定ssh公钥</h3><p>当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh-gaent bash	</span><br><span class="line">ssh-agent -s	</span><br><span class="line">ssh-add ~/.ss/id* 使用指定的sshkey公钥</span><br></pre></td></tr></table></figure>
-<p>如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：    </p>
+<h3 id="解决gerrit仓库pull报错"><a href="#解决gerrit仓库pull报错" class="headerlink" title="解决gerrit仓库pull报错"></a>解决gerrit仓库pull报错</h3><p>如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：    </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export GIT_SSH_COMMAND=&apos;ssh -o KexAlgorithms=+diffie-hellman-group1-sha1&apos;</span><br></pre></td></tr></table></figure>
           
         
@@ -518,7 +596,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
