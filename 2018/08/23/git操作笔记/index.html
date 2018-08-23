@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。 123ssh-gaent bash	ssh-agent -s	ssh-add ~/.ss/id* 使用指定的sshkey公钥 如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：">
+<meta name="description" content="生成ssh密钥         1234ssh-keygen -t rsa -C &amp;apos;XXX@XX&amp;apos;```		当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。 ssh-gaent bashssh-agent -sssh-add ~/.ss/id* 使用指定的sshkey公钥12如果">
 <meta name="keywords" content="git">
 <meta property="og:type" content="article">
 <meta property="og:title" content="git操作笔记">
 <meta property="og:url" content="http://yoursite.com/2018/08/23/git操作笔记/index.html">
 <meta property="og:site_name" content="小磊砸的布劳格">
-<meta property="og:description" content="当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。 123ssh-gaent bash	ssh-agent -s	ssh-add ~/.ss/id* 使用指定的sshkey公钥 如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：">
+<meta property="og:description" content="生成ssh密钥         1234ssh-keygen -t rsa -C &amp;apos;XXX@XX&amp;apos;```		当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。 ssh-gaent bashssh-agent -sssh-add ~/.ss/id* 使用指定的sshkey公钥12如果">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-23T05:36:29.230Z">
+<meta property="og:updated_time" content="2018-08-23T14:37:55.217Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git操作笔记">
-<meta name="twitter:description" content="当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。 123ssh-gaent bash	ssh-agent -s	ssh-add ~/.ss/id* 使用指定的sshkey公钥 如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：">
+<meta name="twitter:description" content="生成ssh密钥         1234ssh-keygen -t rsa -C &amp;apos;XXX@XX&amp;apos;```		当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。 ssh-gaent bashssh-agent -sssh-add ~/.ss/id* 使用指定的sshkey公钥12如果">
 
 
 
@@ -300,10 +300,11 @@
       
 
       
-        <p>当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh-gaent bash	</span><br><span class="line">ssh-agent -s	</span><br><span class="line">ssh-add ~/.ss/id* 使用指定的sshkey公钥</span><br></pre></td></tr></table></figure>
-<p>如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：    </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export GIT_SSH_COMMAND=&apos;ssh -o KexAlgorithms=+diffie-hellman-group1-sha1&apos;</span><br></pre></td></tr></table></figure>
+        <p>生成ssh密钥        </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &apos;XXX@XX&apos;</span><br><span class="line">```		</span><br><span class="line"></span><br><span class="line">当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。</span><br></pre></td></tr></table></figure>
+<p>ssh-gaent bash<br>ssh-agent -s<br>ssh-add ~/.ss/id* 使用指定的sshkey公钥<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：</span><br></pre></td></tr></table></figure></p>
+<p>export GIT_SSH_COMMAND=’ssh -o KexAlgorithms=+diffie-hellman-group1-sha1’<br><code>`</code></p>
+
       
     </div>
     
