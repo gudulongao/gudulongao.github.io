@@ -300,11 +300,12 @@
       
         
           
-            <p>生成ssh密钥        </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &apos;XXX@XX&apos;</span><br><span class="line">```		</span><br><span class="line"></span><br><span class="line">当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。</span><br></pre></td></tr></table></figure>
-<p>ssh-gaent bash<br>ssh-agent -s<br>ssh-add ~/.ss/id* 使用指定的sshkey公钥<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：</span><br></pre></td></tr></table></figure></p>
-<p>export GIT_SSH_COMMAND=’ssh -o KexAlgorithms=+diffie-hellman-group1-sha1’<br><code>`</code></p>
-
+            <p>生成ssh密钥。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &apos;XXX@XXX&apos;</span><br></pre></td></tr></table></figure>
+<p>当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh-gaent bash	</span><br><span class="line">ssh-agent -s	</span><br><span class="line">ssh-add ~/.ss/id* 使用指定的sshkey公钥</span><br></pre></td></tr></table></figure>
+<p>如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：    </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export GIT_SSH_COMMAND=&apos;ssh -o KexAlgorithms=+diffie-hellman-group1-sha1&apos;</span><br></pre></td></tr></table></figure>
           
         
       
