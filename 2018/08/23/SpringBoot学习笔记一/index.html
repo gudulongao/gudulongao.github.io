@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="小磊砸的布劳格">
 <meta property="og:description" content="基础配置bean的生命周期（Scope）Spring中bean的生命周期可以通过注解@Scope来声明配置，其中注解Scope支持的生命周期如下表所示。      Scope 说明     Singleton 单例，默认配置   Peororype 每次调用都会构建   Request Web项目中每一次http request新建   Session Web项目中每一个http session新">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-28T15:12:23.361Z">
+<meta property="og:updated_time" content="2018-08-28T15:15:04.945Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot学习笔记一">
 <meta name="twitter:description" content="基础配置bean的生命周期（Scope）Spring中bean的生命周期可以通过注解@Scope来声明配置，其中注解Scope支持的生命周期如下表所示。      Scope 说明     Singleton 单例，默认配置   Peororype 每次调用都会构建   Request Web项目中每一次http request新建   Session Web项目中每一个http session新">
@@ -418,8 +418,10 @@
 <blockquote>
 <p>对于支持加载的配置文件类型，只能是键值对，properties类型的配置文件吗？是否支持yml?</p>
 </blockquote>
-<h3 id="Value注解使用样例"><a href="#Value注解使用样例" class="headerlink" title="Value注解使用样例"></a>Value注解使用样例</h3><p>@Value注解只能用于实体属性，用于给当前实体属性注入值，值取决于注解的用法，可以匹配配置文件中的配置属性值，也可以是系统环境变量，字符串等。  </p>
-<p><strong>未完待续。。。</strong></p>
+<h3 id="Value注解使用样例"><a href="#Value注解使用样例" class="headerlink" title="Value注解使用样例"></a>Value注解使用样例</h3><ul>
+<li>1.对于@Value注解只能用于实体属性，用于给当前实体属性注入值，值取决于注解的用法，可以匹配配置文件中的配置属性值，也可以是系统环境变量，字符串等。  </li>
+<li>2.在使用@Value注解来匹配配置文件中的属性值的时候，必须在当前的配置类中构建或者声明一个PropertySourcesPlaceholderConfigurer的bean。<br><strong>未完待续。。。</strong></li>
+</ul>
 <h2 id="Profile"><a href="#Profile" class="headerlink" title="Profile"></a>Profile</h2><p>Spring支持对于不同的环境能够使得不同的配置生效。例如开发环境与生产环境的配置不一样，需要按照不同的环境来使得对应的配置生效。<br>当前环境的状态标志可以通过已下方式：</p>
 <blockquote>
 <p>1.启动项目的时候通过配置jvm参数：spring.profile.active来指定当前环境的状态。<br>2.Servlet的context parameter中指定spring.profile.active参数。  </p>
