@@ -626,7 +626,7 @@
       
         
           
-            <h1 id="基础配置"><a href="#基础配置" class="headerlink" title="基础配置"></a>基础配置</h1><h2 id="bean的生命周期（Scope）"><a href="#bean的生命周期（Scope）" class="headerlink" title="bean的生命周期（Scope）"></a>bean的生命周期（Scope）</h2><p>Spring中bean的生命周期可以通过注解@Scope来声明配置，其中注解Scope支持的生命周期如下表所示。  </p>
+            <h1 id="基础篇"><a href="#基础篇" class="headerlink" title="基础篇"></a>基础篇</h1><h2 id="bean的生命周期（Scope）"><a href="#bean的生命周期（Scope）" class="headerlink" title="bean的生命周期（Scope）"></a>bean的生命周期（Scope）</h2><p>Spring中bean的生命周期可以通过注解@Scope来声明配置，其中注解Scope支持的生命周期如下表所示。  </p>
 <table>
 <thead>
 <tr>
@@ -697,23 +697,21 @@
 </tr>
 </tbody>
 </table>
-<p>对于@Value注解，如果当前配置类中有使用注解@ProppertySource,则表明该注解匹配的配置文件是注解中指定的配置文件，否则就是加载的PeopertySourcesPlaceholderConfigurer中配置的配置文件。<br>目前对于加载配置文件还有些许的疑问。  </p>
+<p>对于@Value注解，如果当前配置类中有使用注解@ProppertySource,则表明该注解匹配的配置文件是注解中指定的配置文件，否则就是加载的PeopertySourcesPlaceholderConfigurer中配置的配置文件。  </p>
+<h3 id="疑问"><a href="#疑问" class="headerlink" title="疑问"></a>疑问</h3><p>注解@PropertySource是否支持加载yml配置？</p>
 <blockquote>
-<p>对于支持加载的配置文件类型，只能是键值对，properties类型的配置文件吗？是否支持yml?</p>
+<p>正如注解的的名称，PropertySource只能加载properties配置文件，对于yml的配置，可以通过注解@ConfigurationProperties来加载。</p>
 </blockquote>
 <h3 id="Value注解使用样例"><a href="#Value注解使用样例" class="headerlink" title="Value注解使用样例"></a>Value注解使用样例</h3><ul>
 <li>1.对于@Value注解只能用于实体属性，用于给当前实体属性注入值，值取决于注解的用法，可以匹配配置文件中的配置属性值，也可以是系统环境变量，字符串等。  </li>
 <li>2.在使用@Value注解来匹配配置文件中的属性值的时候，必须在当前的配置类中构建或者声明一个PropertySourcesPlaceholderConfigurer的bean。<br><strong>未完待续。。。</strong></li>
 </ul>
 <h2 id="Profile"><a href="#Profile" class="headerlink" title="Profile"></a>Profile</h2><p>Spring支持对于不同的环境能够使得不同的配置生效。例如开发环境与生产环境的配置不一样，需要按照不同的环境来使得对应的配置生效。<br>当前环境的状态标志可以通过已下方式：</p>
-<blockquote>
-<p>1.启动项目的时候通过配置jvm参数：spring.profile.active来指定当前环境的状态。<br>2.Servlet的context parameter中指定spring.profile.active参数。  </p>
-</blockquote>
-<h2 id="疑问"><a href="#疑问" class="headerlink" title="疑问"></a>疑问</h2><p>注解@PropertySource是否支持加载yml配置？</p>
-<blockquote>
-<p>正如注解的的名称，PropertySource只能加载properties配置文件，对于yml的配置，可以通过注解@ConfigurationProperties来加载。</p>
-</blockquote>
-
+<ul>
+<li>1.启动项目的时候通过配置jvm参数：spring.profile.active来指定当前环境的状态。  </li>
+<li>2.Servlet的context parameter中指定spring.profile.active参数。<br><strong>未完待续。。。</strong></li>
+</ul>
+<h2 id="事件机制"><a href="#事件机制" class="headerlink" title="事件机制"></a>事件机制</h2>
           
         
       
@@ -979,7 +977,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>

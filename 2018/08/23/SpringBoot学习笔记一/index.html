@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="SpringBoot,学习笔记,问题," />
+  <meta name="keywords" content="SpringBoot,学习笔记,问题,未完待续," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="基础配置bean的生命周期（Scope）Spring中bean的生命周期可以通过注解@Scope来声明配置，其中注解Scope支持的生命周期如下表所示。      Scope 说明     Singleton 单例，默认配置   Peororype 每次调用都会构建   Request Web项目中每一次http request新建   Session Web项目中每一个http session新">
-<meta name="keywords" content="SpringBoot,学习笔记,问题">
+<meta name="description" content="基础篇bean的生命周期（Scope）Spring中bean的生命周期可以通过注解@Scope来声明配置，其中注解Scope支持的生命周期如下表所示。      Scope 说明     Singleton 单例，默认配置   Peororype 每次调用都会构建   Request Web项目中每一次http request新建   Session Web项目中每一个http session新建">
+<meta name="keywords" content="SpringBoot,学习笔记,问题,未完待续">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SpringBoot学习笔记一">
 <meta property="og:url" content="http://yoursite.com/2018/08/23/SpringBoot学习笔记一/index.html">
 <meta property="og:site_name" content="小磊砸的布劳格">
-<meta property="og:description" content="基础配置bean的生命周期（Scope）Spring中bean的生命周期可以通过注解@Scope来声明配置，其中注解Scope支持的生命周期如下表所示。      Scope 说明     Singleton 单例，默认配置   Peororype 每次调用都会构建   Request Web项目中每一次http request新建   Session Web项目中每一个http session新">
+<meta property="og:description" content="基础篇bean的生命周期（Scope）Spring中bean的生命周期可以通过注解@Scope来声明配置，其中注解Scope支持的生命周期如下表所示。      Scope 说明     Singleton 单例，默认配置   Peororype 每次调用都会构建   Request Web项目中每一次http request新建   Session Web项目中每一个http session新建">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-28T15:15:04.945Z">
+<meta property="og:updated_time" content="2018-08-28T15:21:27.672Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot学习笔记一">
-<meta name="twitter:description" content="基础配置bean的生命周期（Scope）Spring中bean的生命周期可以通过注解@Scope来声明配置，其中注解Scope支持的生命周期如下表所示。      Scope 说明     Singleton 单例，默认配置   Peororype 每次调用都会构建   Request Web项目中每一次http request新建   Session Web项目中每一个http session新">
+<meta name="twitter:description" content="基础篇bean的生命周期（Scope）Spring中bean的生命周期可以通过注解@Scope来声明配置，其中注解Scope支持的生命周期如下表所示。      Scope 说明     Singleton 单例，默认配置   Peororype 每次调用都会构建   Request Web项目中每一次http request新建   Session Web项目中每一个http session新建">
 
 
 
@@ -343,7 +343,7 @@
       
 
       
-        <h1 id="基础配置"><a href="#基础配置" class="headerlink" title="基础配置"></a>基础配置</h1><h2 id="bean的生命周期（Scope）"><a href="#bean的生命周期（Scope）" class="headerlink" title="bean的生命周期（Scope）"></a>bean的生命周期（Scope）</h2><p>Spring中bean的生命周期可以通过注解@Scope来声明配置，其中注解Scope支持的生命周期如下表所示。  </p>
+        <h1 id="基础篇"><a href="#基础篇" class="headerlink" title="基础篇"></a>基础篇</h1><h2 id="bean的生命周期（Scope）"><a href="#bean的生命周期（Scope）" class="headerlink" title="bean的生命周期（Scope）"></a>bean的生命周期（Scope）</h2><p>Spring中bean的生命周期可以通过注解@Scope来声明配置，其中注解Scope支持的生命周期如下表所示。  </p>
 <table>
 <thead>
 <tr>
@@ -414,23 +414,21 @@
 </tr>
 </tbody>
 </table>
-<p>对于@Value注解，如果当前配置类中有使用注解@ProppertySource,则表明该注解匹配的配置文件是注解中指定的配置文件，否则就是加载的PeopertySourcesPlaceholderConfigurer中配置的配置文件。<br>目前对于加载配置文件还有些许的疑问。  </p>
+<p>对于@Value注解，如果当前配置类中有使用注解@ProppertySource,则表明该注解匹配的配置文件是注解中指定的配置文件，否则就是加载的PeopertySourcesPlaceholderConfigurer中配置的配置文件。  </p>
+<h3 id="疑问"><a href="#疑问" class="headerlink" title="疑问"></a>疑问</h3><p>注解@PropertySource是否支持加载yml配置？</p>
 <blockquote>
-<p>对于支持加载的配置文件类型，只能是键值对，properties类型的配置文件吗？是否支持yml?</p>
+<p>正如注解的的名称，PropertySource只能加载properties配置文件，对于yml的配置，可以通过注解@ConfigurationProperties来加载。</p>
 </blockquote>
 <h3 id="Value注解使用样例"><a href="#Value注解使用样例" class="headerlink" title="Value注解使用样例"></a>Value注解使用样例</h3><ul>
 <li>1.对于@Value注解只能用于实体属性，用于给当前实体属性注入值，值取决于注解的用法，可以匹配配置文件中的配置属性值，也可以是系统环境变量，字符串等。  </li>
 <li>2.在使用@Value注解来匹配配置文件中的属性值的时候，必须在当前的配置类中构建或者声明一个PropertySourcesPlaceholderConfigurer的bean。<br><strong>未完待续。。。</strong></li>
 </ul>
 <h2 id="Profile"><a href="#Profile" class="headerlink" title="Profile"></a>Profile</h2><p>Spring支持对于不同的环境能够使得不同的配置生效。例如开发环境与生产环境的配置不一样，需要按照不同的环境来使得对应的配置生效。<br>当前环境的状态标志可以通过已下方式：</p>
-<blockquote>
-<p>1.启动项目的时候通过配置jvm参数：spring.profile.active来指定当前环境的状态。<br>2.Servlet的context parameter中指定spring.profile.active参数。  </p>
-</blockquote>
-<h2 id="疑问"><a href="#疑问" class="headerlink" title="疑问"></a>疑问</h2><p>注解@PropertySource是否支持加载yml配置？</p>
-<blockquote>
-<p>正如注解的的名称，PropertySource只能加载properties配置文件，对于yml的配置，可以通过注解@ConfigurationProperties来加载。</p>
-</blockquote>
-
+<ul>
+<li>1.启动项目的时候通过配置jvm参数：spring.profile.active来指定当前环境的状态。  </li>
+<li>2.Servlet的context parameter中指定spring.profile.active参数。<br><strong>未完待续。。。</strong></li>
+</ul>
+<h2 id="事件机制"><a href="#事件机制" class="headerlink" title="事件机制"></a>事件机制</h2>
       
     </div>
     
@@ -447,7 +445,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/SpringBoot-学习笔记-问题/" rel="tag"># SpringBoot,学习笔记,问题</a>
+            <a href="/tags/SpringBoot-学习笔记-问题-未完待续/" rel="tag"># SpringBoot,学习笔记,问题,未完待续</a>
           
         </div>
       
@@ -591,7 +589,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
@@ -624,7 +622,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基础配置"><span class="nav-number">1.</span> <span class="nav-text">基础配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bean的生命周期（Scope）"><span class="nav-number">1.1.</span> <span class="nav-text">bean的生命周期（Scope）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bean的创建和销毁"><span class="nav-number">1.2.</span> <span class="nav-text">bean的创建和销毁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加载配置文件"><span class="nav-number">1.3.</span> <span class="nav-text">加载配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Value注解使用样例"><span class="nav-number">1.3.1.</span> <span class="nav-text">Value注解使用样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Profile"><span class="nav-number">1.4.</span> <span class="nav-text">Profile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#疑问"><span class="nav-number">1.5.</span> <span class="nav-text">疑问</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基础篇"><span class="nav-number">1.</span> <span class="nav-text">基础篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bean的生命周期（Scope）"><span class="nav-number">1.1.</span> <span class="nav-text">bean的生命周期（Scope）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bean的创建和销毁"><span class="nav-number">1.2.</span> <span class="nav-text">bean的创建和销毁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加载配置文件"><span class="nav-number">1.3.</span> <span class="nav-text">加载配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#疑问"><span class="nav-number">1.3.1.</span> <span class="nav-text">疑问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Value注解使用样例"><span class="nav-number">1.3.2.</span> <span class="nav-text">Value注解使用样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Profile"><span class="nav-number">1.4.</span> <span class="nav-text">Profile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件机制"><span class="nav-number">1.5.</span> <span class="nav-text">事件机制</span></a></li></ol></li></ol></div>
             
 
           </div>
