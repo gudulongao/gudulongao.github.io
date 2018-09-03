@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="小磊砸的布劳格">
 <meta property="og:description" content="订阅/发布模式 一般来说，发布于订阅的特点是订阅者(listener)负责订阅频道(channel)，发送者(publisher)负责向频道发送而今这字符串消息(binary string message)。每当有消息被发送至给定的频道时，频道的所有订阅者都会受到消息。by 《Redis 实战》  12345subscribe channel [channel1 ...] 订阅频道  unsubs">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-03T14:15:25.573Z">
+<meta property="og:updated_time" content="2018-09-03T14:25:53.790Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis笔记二">
 <meta name="twitter:description" content="订阅/发布模式 一般来说，发布于订阅的特点是订阅者(listener)负责订阅频道(channel)，发送者(publisher)负责向频道发送而今这字符串消息(binary string message)。每当有消息被发送至给定的频道时，频道的所有订阅者都会受到消息。by 《Redis 实战》  12345subscribe channel [channel1 ...] 订阅频道  unsubs">
@@ -351,18 +351,12 @@
 <li>系统的缺陷。旧版本的Redis。当订阅的频道消息量很大而自身的读取速度不够时会导致Redis缓冲区体积很大，这样会使得效率很低甚至崩溃。还会被操作系统强杀。新版本的Redis不会有这种问题，需要配置client-output-buffer-limit pubsub来自动断开。  </li>
 <li>数据传输的可靠性。在客户端订阅过程中断线，客户端会丢失在断线期间频道的所有消息。</li>
 </ul>
-<h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sort src-key [by pattern] [limit offset count] [get pattern [get pattern...]] [asc|desc] [alpha] [store dest-key] 排序  </span><br><span class="line">sort 指令可以对字符串，数字，集合以及有序集合进行排序  </span><br><span class="line">sort 指令对字符串进行排序时需要指定alpha参数  </span><br><span class="line">sort 指令by pattern 中pattern都是包含一些占位符的参数如level_* *是来自于src-key中的值。这样参数level_* 对应的值则作为实际排序的权值。  </span><br><span class="line">sort 指令get pattern 中pattern都是包含一些展位费的参数如value_* *是来自于sort最终的结果。这样最终展现的结果则是pattern所对应的值。</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>可以参考<a href="http://redisdoc.com/key/sort.html" target="_blank" rel="noopener">http://redisdoc.com/key/sort.html</a></p>
-</blockquote>
 <h2 id="事务基本用法"><a href="#事务基本用法" class="headerlink" title="事务基本用法"></a>事务基本用法</h2><blockquote>
 <p>Redis有5个命令可以让用户再不被打断的情况下对多个键执行操作，分别是watch、multi、exec、unwatch和discard。<br>Redis基本的事务用法置灰用到multi和exec命令。<br>Redis里执行事务，首先需要执行Multi命令，然后输入那些想要在事务里执行的命令，最后再执行exec命令。当</p>
 </blockquote>
 <p>Redis从一个客户端那里接收到multi命令时，Redis会将这个客户端之后发送的所有命令都放入到一个队列里，直到这个客户端发送exec命令为止，然后Redis就会在不被打断的情况下，一个接一个地执行存储在队列里地命令。这种事务的执行方式是通过延迟执行事务极大降低了客户端与服务端的通信连接次数来提高性能。是一种<strong>流水线事务。</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">multi 申明后面地指令操作都在同一个事务中。    </span><br><span class="line">exec 申明事务截至，以上地所有操作都在同一个事务中。  </span><br><span class="line">watch 对键进行监控。直到exec命令之间如果有别的连接对受监控的键进行了修改，删除等更新操作，exec命令执行失败并返回错误。  </span><br><span class="line">unwatch 取消对键的监控。在执行multi之前都有效。  </span><br><span class="line">discard	取消对键的监控。在执行exec之前都有效。</span><br></pre></td></tr></table></figure>
 <h3 id="Redis没有加锁"><a href="#Redis没有加锁" class="headerlink" title="Redis没有加锁"></a>Redis没有加锁</h3><p>传统数据库会在对数据库进行写操作时对访问的数据进行加锁。直到事务被提交或者回滚。其它客户端对数据进行写入时由于无法拿到数据的锁而阻塞。只有当持有锁的事务执行完毕后释放锁才可以重新执行。这种锁的缺陷是当锁的持有事务执行的时间越久，则其它事务阻塞的时间就越久<strong>（悲观锁）</strong>。<br>Redis为了尽可能的减少客户端阻塞的时间，只有当数据已经抢先被修改更新了，如果有客户段对该数据进行监控(watch)的会进行通知<strong>（乐观锁）</strong>。</p>
-<h2 id="键的生存周期"><a href="#键的生存周期" class="headerlink" title="键的生存周期"></a>键的生存周期</h2><p>Redis支持为键设置一个生存周期，一旦到达生存周期，Redis会自动删除该键。  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">persist key 移除键的生存周期  </span><br><span class="line">ttl key 查看键还有多少秒的生存周期  </span><br><span class="line">expire key seconds 给键设置seconds秒的生存周期  </span><br><span class="line">expireat key time 给键设置指定的unix时间戳作为生存截至时间  </span><br><span class="line">pttl key 查看键还有多少毫秒的生存周期  </span><br><span class="line">pexpire key mil-seconds 给键设置毫秒级的生存周期  </span><br><span class="line">pexpireat key time 给键设置毫秒级的unix时间戳作为生存截至时间</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -557,7 +551,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#订阅-发布模式"><span class="nav-number">1.</span> <span class="nav-text">订阅/发布模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#订阅-发布模式的缺陷"><span class="nav-number">1.1.</span> <span class="nav-text">订阅/发布模式的缺陷</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排序"><span class="nav-number">2.</span> <span class="nav-text">排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务基本用法"><span class="nav-number">3.</span> <span class="nav-text">事务基本用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis没有加锁"><span class="nav-number">3.1.</span> <span class="nav-text">Redis没有加锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#键的生存周期"><span class="nav-number">4.</span> <span class="nav-text">键的生存周期</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#订阅-发布模式"><span class="nav-number">1.</span> <span class="nav-text">订阅/发布模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#订阅-发布模式的缺陷"><span class="nav-number">1.1.</span> <span class="nav-text">订阅/发布模式的缺陷</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务基本用法"><span class="nav-number">2.</span> <span class="nav-text">事务基本用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis没有加锁"><span class="nav-number">2.1.</span> <span class="nav-text">Redis没有加锁</span></a></li></ol></li></ol></div>
             
 
           </div>
