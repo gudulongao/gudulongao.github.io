@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="redis，学习笔记," />
 
 
 
@@ -79,16 +79,18 @@
 
 
 
+<meta name="description" content="Redis持久化方式快照将某个时刻的数据持久化到硬盘中。用户可以对快照进行备份。支持复制到其他服务器。 创建快照 bgsave 创建一个快照。Redis会创建一个子进程来负责将快照写入硬盘。父进程继续接受请求。 save Redis在快照创建完毕前不会接受任何请求。 shutdown命令用于停止redis服务的时候会执行一次save命令。停止所有请求。 sync命令进行Redis服务器之间的数据同">
+<meta name="keywords" content="redis，学习笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="picture test">
-<meta property="og:url" content="http://yoursite.com/2018/08/24/picture-test/index.html">
+<meta property="og:title" content="redis持久化">
+<meta property="og:url" content="http://yoursite.com/2018/09/03/redis-3/index.html">
 <meta property="og:site_name" content="小磊砸的布劳格">
+<meta property="og:description" content="Redis持久化方式快照将某个时刻的数据持久化到硬盘中。用户可以对快照进行备份。支持复制到其他服务器。 创建快照 bgsave 创建一个快照。Redis会创建一个子进程来负责将快照写入硬盘。父进程继续接受请求。 save Redis在快照创建完毕前不会接受任何请求。 shutdown命令用于停止redis服务的时候会执行一次save命令。停止所有请求。 sync命令进行Redis服务器之间的数据同">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2018/08/24/picture-test/test.png">
-<meta property="og:updated_time" content="2018-08-24T08:27:22.234Z">
+<meta property="og:updated_time" content="2018-09-03T14:18:37.678Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="picture test">
-<meta name="twitter:image" content="http://yoursite.com/2018/08/24/picture-test/test.png">
+<meta name="twitter:title" content="redis持久化">
+<meta name="twitter:description" content="Redis持久化方式快照将某个时刻的数据持久化到硬盘中。用户可以对快照进行备份。支持复制到其他服务器。 创建快照 bgsave 创建一个快照。Redis会创建一个子进程来负责将快照写入硬盘。父进程继续接受请求。 save Redis在快照创建完毕前不会接受任何请求。 shutdown命令用于停止redis服务的时候会执行一次save命令。停止所有请求。 sync命令进行Redis服务器之间的数据同">
 
 
 
@@ -118,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/08/24/picture-test/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/09/03/redis-3/"/>
 
 
 
 
 
-  <title>picture test | 小磊砸的布劳格</title>
+  <title>redis持久化 | 小磊砸的布劳格</title>
   
 
 
@@ -241,7 +243,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/24/picture-test/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/03/redis-3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小磊砸">
@@ -258,7 +260,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">picture test</h1>
+          <h1 class="post-title" itemprop="name headline">redis持久化</h1>
         
 
         <div class="post-meta">
@@ -270,8 +272,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-24T15:55:34+08:00">
-                2018-08-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T22:16:00+08:00">
+                2018-09-03
               </time>
             
 
@@ -281,6 +283,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -289,9 +313,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/08/24/picture-test/#comments" itemprop="discussionUrl">
+                <a href="/2018/09/03/redis-3/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/08/24/picture-test/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2018/09/03/redis-3/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -319,7 +343,39 @@
       
 
       
-        <p><img src="/2018/08/24/picture-test/test.png" alt="abc"></p>
+        <h2 id="Redis持久化方式"><a href="#Redis持久化方式" class="headerlink" title="Redis持久化方式"></a>Redis持久化方式</h2><h3 id="快照"><a href="#快照" class="headerlink" title="快照"></a>快照</h3><p>将某个时刻的数据持久化到硬盘中。用户可以对快照进行备份。支持复制到其他服务器。</p>
+<h4 id="创建快照"><a href="#创建快照" class="headerlink" title="创建快照"></a>创建快照</h4><ul>
+<li><strong>bgsave</strong> 创建一个快照。<strong>Redis会创建一个子进程来负责将快照写入硬盘。父进程继续接受请求。</strong></li>
+<li><strong>save</strong> Redis在快照创建完毕前不会接受任何请求。</li>
+<li><strong>shutdown</strong>命令用于停止redis服务的时候会执行一次<strong>save</strong>命令。停止所有请求。</li>
+<li><strong>sync</strong>命令进行Redis服务器之间的数据同步的时候。如果主服务器并没有正在进行bgsave或者不是刚刚结束bgsave命令时会执行bgsave命令。</li>
+</ul>
+<h4 id="快照配置"><a href="#快照配置" class="headerlink" title="快照配置"></a>快照配置</h4><blockquote>
+<p>save 60 1000    60秒内有1000次写操作则自动触发bgsave<br>stop-writes-on-bgsave-error-no  当创建快照失败时是否停止写操作<br>rdbcompression yes  是否对快照进行压缩<br>dbfilename dump.rdb 快照名称<br>dr ./   快照文件存储的路径</p>
+</blockquote>
+<h4 id="快照缺陷"><a href="#快照缺陷" class="headerlink" title="快照缺陷"></a>快照缺陷</h4><ul>
+<li>快照是某一个时间点的内存数据备份。如果在服务器崩溃则会丢失上一次快照到崩溃时的所有变更数据。   </li>
+<li>快照适合即使丢失一部分少量的数据也不会对整个应用造成问题的场景。   </li>
+</ul>
+<blockquote>
+<p>《Redis实战》中提到的对日志进行聚合计算。没有看懂到底是什么意思。   </p>
+</blockquote>
+<ul>
+<li>当大数据处理时，Redis占用的内存会很大，bgsave创建子进程会耗费一定的时间，这个创建的过程则会导致redis停顿。停顿的时间随着Redis占用内存越大而越久。相比较于创建子进程带来的停顿，save并不会因为要创建子进程而去争抢资源导致停顿。故save会较bgsave的速度更快。</li>
+</ul>
+<h3 id="AOF-append-only-file"><a href="#AOF-append-only-file" class="headerlink" title="AOF(append-only file)"></a>AOF(append-only file)</h3><p>将写操作的命令追加到备份文件中。等到需要恢复时（重启）从头到尾执行一遍备份文件中的写命令即可。</p>
+<h4 id="AOF文件重写"><a href="#AOF文件重写" class="headerlink" title="AOF文件重写"></a>AOF文件重写</h4><p>随着Redis不断的运行。aof文件会变得越来越大。占用硬盘同时在重启时根据aof重新执行写命令时耗时长。<br><strong>bgrewriteaof</strong> 等同bgsave，会启动子进程来重写aof文件。父进程继续接受请求。</p>
+<h4 id="AOF配置"><a href="#AOF配置" class="headerlink" title="AOF配置"></a>AOF配置</h4><blockquote>
+<p>appendonly yes  是否启用AOF模式<br>appendfsync everrysec 追加的频率。always每次写操作都同步。everysec每秒执行一次同步，可以同步多条写操作。no 由操作系统来决定何时进行同步。<br>no-appendfsync-on-rewrite no<br>auto-aof-rewrite-percentage 100 当aof文件比上一次重写时大了一倍则进行aof文件重写<br>auto-aof-rewrite-min-size 64mb  当aof文件的大小大于64mb时进行aof文件重写<br>dr ./   aof文件存储路径     </p>
+</blockquote>
+<h4 id="AOF缺陷"><a href="#AOF缺陷" class="headerlink" title="AOF缺陷"></a>AOF缺陷</h4><ul>
+<li><strong>bgrewriteaof</strong>命令创建子进程也会由于redis占用的内存越大而创建子进程的时间越长从而导致redis停顿。</li>
+<li>对aof文件进行重写时会涉及对旧的aof文件进行删除，如果文件很大很有可能导致操作系统的挂起。</li>
+</ul>
+<h2 id="持久化的意义"><a href="#持久化的意义" class="headerlink" title="持久化的意义"></a>持久化的意义</h2><ul>
+<li>数据重用。redis中很多的数据都是一些经过长时间计算得到的。这样持久化到硬盘中就不必再次计算可以方便下次使用。</li>
+<li>安全。将数据备份到硬盘防止因系统崩溃而丢失数据。Redis运行时数据都是存储在内存中，而一旦系统奔溃内存中的数据时很大程度会丢失。  </li>
+</ul>
 
       
     </div>
@@ -335,6 +391,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/redis，学习笔记/" rel="tag"># redis，学习笔记</a>
+          
+        </div>
+      
 
       
       
@@ -344,8 +406,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/23/SpringBoot-1/" rel="next" title="SpringBoot学习笔记一">
-                <i class="fa fa-chevron-left"></i> SpringBoot学习笔记一
+              <a href="/2018/09/03/redis-2/" rel="next" title="redis笔记二">
+                <i class="fa fa-chevron-left"></i> redis笔记二
               </a>
             
           </div>
@@ -353,10 +415,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/09/03/redis-1/" rel="prev" title="redis笔记一">
-                redis笔记一 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -424,8 +482,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -489,6 +556,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis持久化方式"><span class="nav-number">1.</span> <span class="nav-text">Redis持久化方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#快照"><span class="nav-number">1.1.</span> <span class="nav-text">快照</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建快照"><span class="nav-number">1.1.1.</span> <span class="nav-text">创建快照</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#快照配置"><span class="nav-number">1.1.2.</span> <span class="nav-text">快照配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#快照缺陷"><span class="nav-number">1.1.3.</span> <span class="nav-text">快照缺陷</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOF-append-only-file"><span class="nav-number">1.2.</span> <span class="nav-text">AOF(append-only file)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AOF文件重写"><span class="nav-number">1.2.1.</span> <span class="nav-text">AOF文件重写</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AOF配置"><span class="nav-number">1.2.2.</span> <span class="nav-text">AOF配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AOF缺陷"><span class="nav-number">1.2.3.</span> <span class="nav-text">AOF缺陷</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#持久化的意义"><span class="nav-number">2.</span> <span class="nav-text">持久化的意义</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -646,9 +729,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2018/08/24/picture-test/';
-          this.page.identifier = '2018/08/24/picture-test/';
-          this.page.title = 'picture test';
+          this.page.url = 'http://yoursite.com/2018/09/03/redis-3/';
+          this.page.identifier = '2018/09/03/redis-3/';
+          this.page.title = 'redis持久化';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://xiaoleiza.disqus.com/embed.js';
