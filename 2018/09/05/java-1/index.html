@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="PO/VO/BO/DAO   类型 说明 用途 特殊     PO persistant object,持久化对象，数据库中表结构与对象属性一一对应 对应数据库中的一条记录 支持序列化   VO value object，仅仅包含数据的对象，存储业务数据 在业务流转中存储数据，可以与PO一致也可以不一致，按照业务需求定义   DAO data access object,数据库访问对象 结合PO，">
+<meta name="description" content="PO/VO/BO/DAO 简介PO（Presistant Object）持久化对象，数据库中数据的抽象，即对应表中的一条记录。 BO(Business Object)业务对象，可以包含多个其他对象。  一份简历，包含教育经历，工作经历等，教育经历对应一个PO，工作经历对应一个PO，这样简历BO就由这些PO组成。  DTO(Data Transfer Object)数据传输对象，用于前端与后端进行数">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java-PO&#x2F;BO&#x2F;VO&#x2F;POJO&#x2F;DAO">
 <meta property="og:url" content="http://yoursite.com/2018/09/05/java-1/index.html">
 <meta property="og:site_name" content="小磊砸的布劳格">
-<meta property="og:description" content="PO/VO/BO/DAO   类型 说明 用途 特殊     PO persistant object,持久化对象，数据库中表结构与对象属性一一对应 对应数据库中的一条记录 支持序列化   VO value object，仅仅包含数据的对象，存储业务数据 在业务流转中存储数据，可以与PO一致也可以不一致，按照业务需求定义   DAO data access object,数据库访问对象 结合PO，">
+<meta property="og:description" content="PO/VO/BO/DAO 简介PO（Presistant Object）持久化对象，数据库中数据的抽象，即对应表中的一条记录。 BO(Business Object)业务对象，可以包含多个其他对象。  一份简历，包含教育经历，工作经历等，教育经历对应一个PO，工作经历对应一个PO，这样简历BO就由这些PO组成。  DTO(Data Transfer Object)数据传输对象，用于前端与后端进行数">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-05T11:06:56.084Z">
+<meta property="og:updated_time" content="2018-09-05T12:38:49.736Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java-PO&#x2F;BO&#x2F;VO&#x2F;POJO&#x2F;DAO">
-<meta name="twitter:description" content="PO/VO/BO/DAO   类型 说明 用途 特殊     PO persistant object,持久化对象，数据库中表结构与对象属性一一对应 对应数据库中的一条记录 支持序列化   VO value object，仅仅包含数据的对象，存储业务数据 在业务流转中存储数据，可以与PO一致也可以不一致，按照业务需求定义   DAO data access object,数据库访问对象 结合PO，">
+<meta name="twitter:description" content="PO/VO/BO/DAO 简介PO（Presistant Object）持久化对象，数据库中数据的抽象，即对应表中的一条记录。 BO(Business Object)业务对象，可以包含多个其他对象。  一份简历，包含教育经历，工作经历等，教育经历对应一个PO，工作经历对应一个PO，这样简历BO就由这些PO组成。  DTO(Data Transfer Object)数据传输对象，用于前端与后端进行数">
 
 
 
@@ -343,40 +343,7 @@
       
 
       
-        <h1 id="PO-VO-BO-DAO"><a href="#PO-VO-BO-DAO" class="headerlink" title="PO/VO/BO/DAO"></a>PO/VO/BO/DAO</h1><table>
-<thead>
-<tr>
-<th>类型</th>
-<th>说明</th>
-<th>用途</th>
-<th>特殊</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PO</td>
-<td>persistant object,持久化对象，数据库中表结构与对象属性一一对应</td>
-<td>对应数据库中的一条记录</td>
-<td>支持序列化</td>
-</tr>
-<tr>
-<td>VO</td>
-<td>value object，仅仅包含数据的对象，存储业务数据</td>
-<td>在业务流转中存储数据，可以与PO一致也可以不一致，按照业务需求定义</td>
-</tr>
-<tr>
-<td>DAO</td>
-<td>data access object,数据库访问对象</td>
-<td>结合PO，封装了对数据库操作的api来完成对数据库的操作</td>
-</tr>
-<tr>
-<td>BO</td>
-<td>business object,业务对象，包含业务逻辑处理的对象</td>
-<td>通过调用DAO，结合PO,VO来完成业务处理</td>
-</tr>
-</tbody>
-</table>
-<h2 id="PO（Presistant-Object）"><a href="#PO（Presistant-Object）" class="headerlink" title="PO（Presistant Object）"></a>PO（Presistant Object）</h2><p>持久化对象，数据库中数据的抽象，即对应表中的一条记录。</p>
+        <h1 id="PO-VO-BO-DAO-简介"><a href="#PO-VO-BO-DAO-简介" class="headerlink" title="PO/VO/BO/DAO 简介"></a>PO/VO/BO/DAO 简介</h1><h2 id="PO（Presistant-Object）"><a href="#PO（Presistant-Object）" class="headerlink" title="PO（Presistant Object）"></a>PO（Presistant Object）</h2><p>持久化对象，数据库中数据的抽象，即对应表中的一条记录。</p>
 <h2 id="BO-Business-Object"><a href="#BO-Business-Object" class="headerlink" title="BO(Business Object)"></a>BO(Business Object)</h2><p>业务对象，可以包含多个其他对象。</p>
 <blockquote>
 <p>一份简历，包含教育经历，工作经历等，教育经历对应一个PO，工作经历对应一个PO，这样简历BO就由这些PO组成。</p>
@@ -387,6 +354,10 @@
 </blockquote>
 <h2 id="VO-Value-Object"><a href="#VO-Value-Object" class="headerlink" title="VO(Value Object)"></a>VO(Value Object)</h2><p>值对象，常用于前端组件进行数据展现的时候所使用的数据结构。其来自于DTO。</p>
 <h2 id="POJO-plain-ordinary-java-object"><a href="#POJO-plain-ordinary-java-object" class="headerlink" title="POJO(plain ordinary java object)"></a>POJO(plain ordinary java object)</h2><p>简单的java对象。普通的javabean。</p>
+<h1 id="区别与应用"><a href="#区别与应用" class="headerlink" title="区别与应用"></a>区别与应用</h1><h2 id="VO与DTO"><a href="#VO与DTO" class="headerlink" title="VO与DTO"></a>VO与DTO</h2><p>当展现层的需求只有一种的时候，可以使用DTO来替代VO，在设计层面，DTO只是用来明确服务端接收的请求的数据或者响应请求的数据，而界面展现的时候，特别是当展现的需求多种多样的时候，会基于同一种DTO而衍生出不同的VO。</p>
+<blockquote>
+<p>比方说性别，DTO中sex是男女，如果普通的展现需求，可以直接利用DTO中的sex属性来展现。但如果有个性化定制的时候，比方说需要展现成帅哥/美女，这种时候基于同样的DTO就需要根据展现的需求来衍生出性别为帅哥/美女的VO。</p>
+</blockquote>
 
       
     </div>
@@ -577,7 +548,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PO-VO-BO-DAO"><span class="nav-number">1.</span> <span class="nav-text">PO/VO/BO/DAO</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PO（Presistant-Object）"><span class="nav-number">1.1.</span> <span class="nav-text">PO（Presistant Object）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BO-Business-Object"><span class="nav-number">1.2.</span> <span class="nav-text">BO(Business Object)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DTO-Data-Transfer-Object"><span class="nav-number">1.3.</span> <span class="nav-text">DTO(Data Transfer Object)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VO-Value-Object"><span class="nav-number">1.4.</span> <span class="nav-text">VO(Value Object)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#POJO-plain-ordinary-java-object"><span class="nav-number">1.5.</span> <span class="nav-text">POJO(plain ordinary java object)</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PO-VO-BO-DAO-简介"><span class="nav-number">1.</span> <span class="nav-text">PO/VO/BO/DAO 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PO（Presistant-Object）"><span class="nav-number">1.1.</span> <span class="nav-text">PO（Presistant Object）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BO-Business-Object"><span class="nav-number">1.2.</span> <span class="nav-text">BO(Business Object)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DTO-Data-Transfer-Object"><span class="nav-number">1.3.</span> <span class="nav-text">DTO(Data Transfer Object)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VO-Value-Object"><span class="nav-number">1.4.</span> <span class="nav-text">VO(Value Object)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#POJO-plain-ordinary-java-object"><span class="nav-number">1.5.</span> <span class="nav-text">POJO(plain ordinary java object)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#区别与应用"><span class="nav-number">2.</span> <span class="nav-text">区别与应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#VO与DTO"><span class="nav-number">2.1.</span> <span class="nav-text">VO与DTO</span></a></li></ol></li></ol></div>
             
 
           </div>
