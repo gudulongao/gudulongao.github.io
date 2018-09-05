@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="面试的时候被问到了有关状态码的内容，现整理如下表所示：    code des 说明     100 Continue 正在执行   200 OK 成功返回   201 Created 资源已依据请求创建   202 Accepted 已接收请求但并未处理，异步执行，可能执行了可能没执行   203 Non-Authoritative Information 已处理请求，但返回数据的来源非原始服务">
+<meta name="description" content="面试的时候被问到了有关状态码的内容，现整理如下表所示： 正在执行   code des 说明     100 Continue 正在执行    成功处理请求   code des 说明     200 OK 成功返回   201 Created 资源已依据请求创建   202 Accepted 已接收请求但并未处理，异步执行，可能执行了可能没执行   203 Non-Authoritative I">
 <meta name="keywords" content="http，状态码，学习笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="http-状态码笔记">
 <meta property="og:url" content="http://yoursite.com/2018/09/04/http-state-code/index.html">
 <meta property="og:site_name" content="小磊砸的布劳格">
-<meta property="og:description" content="面试的时候被问到了有关状态码的内容，现整理如下表所示：    code des 说明     100 Continue 正在执行   200 OK 成功返回   201 Created 资源已依据请求创建   202 Accepted 已接收请求但并未处理，异步执行，可能执行了可能没执行   203 Non-Authoritative Information 已处理请求，但返回数据的来源非原始服务">
+<meta property="og:description" content="面试的时候被问到了有关状态码的内容，现整理如下表所示： 正在执行   code des 说明     100 Continue 正在执行    成功处理请求   code des 说明     200 OK 成功返回   201 Created 资源已依据请求创建   202 Accepted 已接收请求但并未处理，异步执行，可能执行了可能没执行   203 Non-Authoritative I">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-04T16:40:03.343Z">
+<meta property="og:updated_time" content="2018-09-05T05:41:32.473Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="http-状态码笔记">
-<meta name="twitter:description" content="面试的时候被问到了有关状态码的内容，现整理如下表所示：    code des 说明     100 Continue 正在执行   200 OK 成功返回   201 Created 资源已依据请求创建   202 Accepted 已接收请求但并未处理，异步执行，可能执行了可能没执行   203 Non-Authoritative Information 已处理请求，但返回数据的来源非原始服务">
+<meta name="twitter:description" content="面试的时候被问到了有关状态码的内容，现整理如下表所示： 正在执行   code des 说明     100 Continue 正在执行    成功处理请求   code des 说明     200 OK 成功返回   201 Created 资源已依据请求创建   202 Accepted 已接收请求但并未处理，异步执行，可能执行了可能没执行   203 Non-Authoritative I">
 
 
 
@@ -344,7 +344,7 @@
 
       
         <p>面试的时候被问到了有关状态码的内容，现整理如下表所示：</p>
-<table>
+<h1 id="正在执行"><a href="#正在执行" class="headerlink" title="正在执行"></a>正在执行</h1><table>
 <thead>
 <tr>
 <th>code</th>
@@ -358,6 +358,17 @@
 <td>Continue</td>
 <td>正在执行</td>
 </tr>
+</tbody>
+</table>
+<h1 id="成功处理请求"><a href="#成功处理请求" class="headerlink" title="成功处理请求"></a>成功处理请求</h1><table>
+<thead>
+<tr>
+<th>code</th>
+<th>des</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
 <tr>
 <td>200</td>
 <td>OK</td>
@@ -388,6 +399,17 @@
 <td>Reset Content</td>
 <td>处理请求后无返回，但需要请求方需要重置文档视图（浏览器需要重置表单）</td>
 </tr>
+</tbody>
+</table>
+<h1 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h1><table>
+<thead>
+<tr>
+<th>code</th>
+<th>des</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
 <tr>
 <td>300</td>
 <td>Multiple Choices</td>
@@ -402,6 +424,188 @@
 <td>302</td>
 <td>Move temporarily</td>
 <td>被请求的资源临时从别的地址来响应，请求者还是通过原有地址来请求</td>
+</tr>
+<tr>
+<td>303</td>
+<td>See Other</td>
+<td>请求的资源可以在另一个URI中获取，请求者应该通过一个专门的get请求来获取响应</td>
+</tr>
+<tr>
+<td>304</td>
+<td>Not Modified</td>
+<td>本次请求与上一次的请求，请求的网页没有变化，返回此状态码而不会返回网页数据</td>
+</tr>
+<tr>
+<td>305</td>
+<td>Use Proxy</td>
+<td>请求的资源必须通过指定的代理才可以被访问</td>
+</tr>
+<tr>
+<td>306</td>
+<td>Temporary Redirect</td>
+<td>服务器临时从别的地址来响应请求，请求者还是通过原有地址来请求</td>
+</tr>
+</tbody>
+</table>
+<h1 id="请求错误"><a href="#请求错误" class="headerlink" title="请求错误"></a>请求错误</h1><table>
+<thead>
+<tr>
+<th>code</th>
+<th>des</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>Bad Request</td>
+<td><strong>请求参数错误/语义错误</strong></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td>需要认证</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td>拒绝该请求</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found</td>
+<td>未找到指定的资源</td>
+</tr>
+<tr>
+<td>405</td>
+<td>Method Not Allowed</td>
+<td>拒绝请求的方法</td>
+</tr>
+<tr>
+<td>406</td>
+<td>Not Acceptable</td>
+<td>无法使用请求的内容特性响应请求的网页</td>
+</tr>
+<tr>
+<td>407</td>
+<td>Proxy Authentication Required</td>
+<td>与401类似，但是需要在代理服务器进行身份认证</td>
+</tr>
+<tr>
+<td>408</td>
+<td>Request Timeout</td>
+<td>请求超时</td>
+</tr>
+<tr>
+<td>409</td>
+<td>Conflict</td>
+<td>服务器在处理请求时发生冲突，需要返回详细的信息告知请求方冲突的来源</td>
+</tr>
+<tr>
+<td>410</td>
+<td>Gone</td>
+<td>请求的资源已永久的不可用（已删除）</td>
+</tr>
+<tr>
+<td>411</td>
+<td>Length Required</td>
+<td>需要定义content length，即服务器拒绝没有定义有效长度的请求</td>
+</tr>
+<tr>
+<td>412</td>
+<td>Precondition Failed</td>
+<td>未满足先决条件</td>
+</tr>
+<tr>
+<td>413</td>
+<td>Request Entity Too Large</td>
+<td>请求的实体数据太大</td>
+</tr>
+<tr>
+<td>414</td>
+<td>Request-URI Too Long</td>
+<td>请求的URI超长</td>
+</tr>
+<tr>
+<td>415</td>
+<td>Unsupported Media Type</td>
+<td>服务器不支持请求的数据格式</td>
+</tr>
+<tr>
+<td>416</td>
+<td>Requested Range Not Satisfiable</td>
+<td>请求中包含Range,但返回的数据中不符合在范围内</td>
+</tr>
+<tr>
+<td>417</td>
+<td>Expectation Failed</td>
+<td>请求中包含Except，但服务器无法满足预期</td>
+</tr>
+<tr>
+<td>421</td>
+<td>too many connections</td>
+<td>服务器的连接数超限</td>
+</tr>
+<tr>
+<td>422</td>
+<td>Unprocessable Entity</td>
+<td>请求格式正确但含有语义错误</td>
+</tr>
+<tr>
+<td>423</td>
+<td>Locked</td>
+<td>请求资源被锁定</td>
+</tr>
+<tr>
+<td>424</td>
+<td>Failed Dependency</td>
+<td>由于之前的请求导致本次请求失败</td>
+</tr>
+<tr>
+<td>451</td>
+<td>Unavailable For Legal Reasons</td>
+<td>请求因法律原因而不可用</td>
+</tr>
+</tbody>
+</table>
+<h1 id="服务器错误"><a href="#服务器错误" class="headerlink" title="服务器错误"></a>服务器错误</h1><table>
+<thead>
+<tr>
+<th>code</th>
+<th>des</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>500</td>
+<td>Internal Server Error</td>
+<td><strong>服务器端发生异常</strong></td>
+</tr>
+<tr>
+<td>501</td>
+<td>Not Implemented</td>
+<td>服务器不支持该功能，无法识别该请求或者不能支持该请求的资源</td>
+</tr>
+<tr>
+<td>502</td>
+<td>Bad Gateway</td>
+<td><strong>网关或者代理服务器在处理请求时，无法从上游服务器获取响应</strong></td>
+</tr>
+<tr>
+<td>503</td>
+<td>Service Unavailable</td>
+<td><strong>服务器维护或者过载导致无法处理请求</strong></td>
+</tr>
+<tr>
+<td>504</td>
+<td>Gateway Timeout</td>
+<td><strong>网关或代理服务器处理请求时，获取上游服务器响应超时</strong></td>
+</tr>
+<tr>
+<td>505</td>
+<td>HTTP Version Not Supported</td>
+<td>服务器不支持请求指定的http版本</td>
 </tr>
 </tbody>
 </table>
@@ -511,8 +715,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -576,6 +789,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#正在执行"><span class="nav-number">1.</span> <span class="nav-text">正在执行</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#成功处理请求"><span class="nav-number">2.</span> <span class="nav-text">成功处理请求</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重定向"><span class="nav-number">3.</span> <span class="nav-text">重定向</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#请求错误"><span class="nav-number">4.</span> <span class="nav-text">请求错误</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#服务器错误"><span class="nav-number">5.</span> <span class="nav-text">服务器错误</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
