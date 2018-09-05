@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="HasMap HashMap是基于哈希表实现的。每一个元素都是key-value的键值对。并通过链表来解决冲突问题。   HashMap是非线程安全的。可以利用concurrentHashMap来获取经过线程安全包装的HashMap。   HashMap实现了Serializable接口，支持克隆。 HashMap默认大小是16（必须是2的整次幂），加载因子默认是0.75，即当已使用当前容量的0.">
+<meta name="description" content="HasMap HashMap是基于哈希表实现的。每一个元素都是key-value的键值对。并通过链表来解决冲突问题。   HashMap是非线程安全的。可以利用Collections.synchronizedMap来获取经过线程安全包装的HashMap。   HashMap实现了Serializable接口，支持克隆。 HashMap默认大小是16（必须是2的整次幂），加载因子默认是0.75，即当">
 <meta name="keywords" content="HashMap,HashTable,集合">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HashMap与HashTable">
 <meta property="og:url" content="http://yoursite.com/2018/09/05/collect-hashmap-hashtable/index.html">
 <meta property="og:site_name" content="小磊砸的布劳格">
-<meta property="og:description" content="HasMap HashMap是基于哈希表实现的。每一个元素都是key-value的键值对。并通过链表来解决冲突问题。   HashMap是非线程安全的。可以利用concurrentHashMap来获取经过线程安全包装的HashMap。   HashMap实现了Serializable接口，支持克隆。 HashMap默认大小是16（必须是2的整次幂），加载因子默认是0.75，即当已使用当前容量的0.">
+<meta property="og:description" content="HasMap HashMap是基于哈希表实现的。每一个元素都是key-value的键值对。并通过链表来解决冲突问题。   HashMap是非线程安全的。可以利用Collections.synchronizedMap来获取经过线程安全包装的HashMap。   HashMap实现了Serializable接口，支持克隆。 HashMap默认大小是16（必须是2的整次幂），加载因子默认是0.75，即当">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2018/09/05/collect-hashmap-hashtable/hashmap-struct.png">
 <meta property="og:image" content="http://yoursite.com/2018/09/05/collect-hashmap-hashtable/hashtablecode.png">
-<meta property="og:updated_time" content="2018-09-05T15:37:06.085Z">
+<meta property="og:updated_time" content="2018-09-05T15:51:54.320Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HashMap与HashTable">
-<meta name="twitter:description" content="HasMap HashMap是基于哈希表实现的。每一个元素都是key-value的键值对。并通过链表来解决冲突问题。   HashMap是非线程安全的。可以利用concurrentHashMap来获取经过线程安全包装的HashMap。   HashMap实现了Serializable接口，支持克隆。 HashMap默认大小是16（必须是2的整次幂），加载因子默认是0.75，即当已使用当前容量的0.">
+<meta name="twitter:description" content="HasMap HashMap是基于哈希表实现的。每一个元素都是key-value的键值对。并通过链表来解决冲突问题。   HashMap是非线程安全的。可以利用Collections.synchronizedMap来获取经过线程安全包装的HashMap。   HashMap实现了Serializable接口，支持克隆。 HashMap默认大小是16（必须是2的整次幂），加载因子默认是0.75，即当">
 <meta name="twitter:image" content="http://yoursite.com/2018/09/05/collect-hashmap-hashtable/hashmap-struct.png">
 
 
@@ -348,7 +348,7 @@
       
         <h1 id="HasMap"><a href="#HasMap" class="headerlink" title="HasMap"></a>HasMap</h1><ul>
 <li>HashMap是基于哈希表实现的。每一个元素都是key-value的键值对。并通过链表来解决冲突问题。  </li>
-<li>HashMap是非线程安全的。可以利用concurrentHashMap来获取经过线程安全包装的HashMap。  </li>
+<li>HashMap是非线程安全的。可以利用<strong>Collections.synchronizedMap</strong>来获取经过线程安全包装的HashMap。  </li>
 <li>HashMap实现了Serializable接口，支持克隆。</li>
 <li>HashMap默认大小是16（<strong>必须是2的整次幂</strong>），加载因子默认是0.75，即当已使用当前容量的0.75后，HashMap会自动扩容（2倍）。容量大小和加载因子都可以在构造的时候指定。</li>
 <li>HashMap允许添加的元素key，value为空。</li>
@@ -537,7 +537,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
