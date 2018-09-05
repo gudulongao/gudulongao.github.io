@@ -669,7 +669,7 @@
 <li>HashMap默认大小是16（<strong>必须是2的整次幂</strong>），加载因子默认是0.75，即当已使用当前容量的0.75后，HashMap会自动扩容（2倍）。容量大小和加载因子都可以在构造的时候指定。</li>
 <li>HashMap允许添加的元素key，value为空。</li>
 </ul>
-<h2 id="存储逻辑"><a href="#存储逻辑" class="headerlink" title="存储逻辑"></a>存储逻辑</h2><p>HashMap底层是一个Entry的数组。并利用链表来解决冲突，即没有个Entry是链表的头部节点。每一次添加一个key-value元素时，基于key的哈希值和HashMap的大小来计算出元素所位于Entry数组的位置索引（key的哈希值&amp;&amp;0x7FFFFFFF，<strong>为了去除哈希值的符号</strong>，再与size取模），如果两个元素计算出的位置索引一致，则会将元素添加到同一个entry下的链表中。<br><img src="/2018/09/05/collect-hashmap-hashtable/collect-1/hashmap-struct.png" alt="HashMap存储结构"><br>如图，紫色部分是Enty数组，绿色部分时用来解决冲突的链表。</p>
+<h2 id="存储逻辑"><a href="#存储逻辑" class="headerlink" title="存储逻辑"></a>存储逻辑</h2><p>HashMap底层是一个Entry的数组。并利用链表来解决冲突，即没有个Entry是链表的头部节点。每一次添加一个key-value元素时，基于key的哈希值和HashMap的大小来计算出元素所位于Entry数组的位置索引（key的哈希值&amp;&amp;0x7FFFFFFF，<strong>为了去除哈希值的符号</strong>，再与size取模），如果两个元素计算出的位置索引一致，则会将元素添加到同一个entry下的链表中。<br><img src="/2018/09/05/collect-hashmap-hashtable/hashmap-struct.png" alt="HashMap存储结构"><br>如图，紫色部分是Enty数组，绿色部分时用来解决冲突的链表。</p>
 <h2 id="扩容逻辑"><a href="#扩容逻辑" class="headerlink" title="扩容逻辑"></a>扩容逻辑</h2><p>当HashMap的使用空间=当前容量*加载因子后，HashMap会自动扩容，<br>扩容会新建一个Entry数组，将已有的所有元素都重新计算位置索引并转移到新的Entry数组中。所以扩容会相当的费时。  </p>
 <ul>
 <li>当加载因子越小，容易进行扩容操作，能使用的空间小，也会造成大量的空间浪费。  </li>
@@ -680,7 +680,7 @@
 <li>HashTable是线程安全的。所有操作的方法都有Synchronized关键词修饰。</li>
 <li>HashTable也实现了Serizlizable接口，支持克隆。</li>
 <li>HashTable默认大小11，加载因子默认也是0.75，自动扩容为（2倍+1）。容量和加载因子可以在构造时指定。</li>
-<li>HashTable不允许添加的元素key为空，源码中可以看到，当key为空时，会抛出空指针异常。<br><img src="/2018/09/05/collect-hashmap-hashtable/collect-1/hashtablecode.png" alt="HashTable源码"></li>
+<li>HashTable不允许添加的元素key为空，源码中可以看到，当key为空时，会抛出空指针异常。<br><img src="/2018/09/05/collect-hashmap-hashtable/hashtablecode.png" alt="HashTable源码"></li>
 </ul>
 <h1 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h1><h2 id="继承父类不同"><a href="#继承父类不同" class="headerlink" title="继承父类不同"></a>继承父类不同</h2><p>HashMap继承自AbstractMap，HashTable继承自Dictionary。但都实现了Map接口。</p>
 <h2 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h2><p>HashMap不是线程安全的，而HashTable是线程安全的。</p>
