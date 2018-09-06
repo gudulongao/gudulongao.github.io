@@ -91,7 +91,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/09/05/collect-线程安全的hashmap/包装.png">
 <meta property="og:image" content="http://yoursite.com/2018/09/05/collect-线程安全的hashmap/synchronizedmap.png">
 <meta property="og:image" content="http://yoursite.com/2018/09/05/collect-线程安全的hashmap/concurrenthashmap.png">
-<meta property="og:updated_time" content="2018-09-06T15:53:37.264Z">
+<meta property="og:updated_time" content="2018-09-06T15:55:00.546Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线程安全的HashMap">
 <meta name="twitter:description" content="HashTableHashTable是线程安全的map，其对所有的get/put方法都通过synchronized关键词来保证线程安全。由于关键词synchronized修饰的是方法，所以线程在执行get/put操作时都会需要获取到这个map对象锁。效率低 Collections.synchronizedMap如图所示，通过Collections.synchronizedMap可以将hashmap">
@@ -356,7 +356,7 @@
 <h3 id="table"><a href="#table" class="headerlink" title="table"></a>table</h3><p>每一个Segment对应着一个table，被<strong>volatile</strong>修饰。这样每当有线程造成对table的结构性修改都会立即可见。</p>
 <h3 id="HashEntry"><a href="#HashEntry" class="headerlink" title="HashEntry"></a>HashEntry</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">static final class HashEntry&lt;K,V&gt; &#123;</span><br><span class="line">        final int hash;</span><br><span class="line">        final K key;</span><br><span class="line">        volatile V value;</span><br><span class="line">        final  volatile HashEntry&lt;K,V&gt; next;</span><br></pre></td></tr></table></figure>
 <p>HashEntry是Segment中的所有元素的抽象。其value和next都是由volatile修饰的，<strong>由于value和next都被volatile修饰，故每次线程都能读取到最新的数据，所以concurrenthashmap的读操作并没有加锁</strong>。<br>由于next被final修饰，故当有冲突时，节点都从链表的头插入，</p>
-<h3 id="concurrencyLevel"><a href="#concurrencyLevel" class="headerlink" title="concurrencyLevel"></a>concurrencyLevel</h3><p>并发度就是concurrenthashmap理想可以支持并发线程数，即Segment的个数。</p>
+<h3 id="concurrencyLevel"><a href="#concurrencyLevel" class="headerlink" title="concurrencyLevel"></a>concurrencyLevel</h3><p>并发度就是concurrenthashmap理想可以支持并发线程数，即Segment的个数。<strong>concurrencyLevel默认是16，concurrentHashMap理想支持16个线程并发操作</strong>。</p>
 <h3 id="计算key所在的Segment位置"><a href="#计算key所在的Segment位置" class="headerlink" title="计算key所在的Segment位置"></a>计算key所在的Segment位置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">  * Returns the segment that should be used for key with given hash</span><br><span class="line">  * @param hash the hash code for the key</span><br><span class="line">  * @return the segment</span><br><span class="line">  */</span><br><span class="line"> final Segment&lt;K,V&gt; segmentFor(int hash) &#123;</span><br><span class="line">     return segments[(hash &gt;&gt;&gt; segmentShift) &amp; segmentMask];</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 <p>方法segmentFor就是根据key的hash值来计算key所处的Segment位置，其中SegmentShift=log(size)以2为底。segmentMask=concurrencyLevel-1。</p>
 <h2 id="1-8"><a href="#1-8" class="headerlink" title="1.8"></a>1.8</h2><blockquote>
