@@ -281,6 +281,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/锁/" itemprop="url" rel="index">
+                    <span itemprop="name">锁</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -321,7 +343,17 @@
       
         
           
-            
+            <p>通常为了保护临界区资源的安全访问，都会通过synchronized或者ReetranLock来对资源先进行加锁。这种悲观锁会导致没有获得锁的线程阻塞。将并行改为串行，大大降低了系统的吞吐量。<br>CAS(Compare and Swap)即比较交换。是无锁安全访问临界资源的一种策略。其假设访问临界资源不会有冲突，多线程对临界资源的访问无需加锁也无需等待阻塞。通过CAS策略来甄别是否有冲突，如果没有，则提交修改，如果有则重复当前操作直到没有冲突为止。</p>
+<h1 id="CAS算法"><a href="#CAS算法" class="headerlink" title="CAS算法"></a>CAS算法</h1><p>CAS参数：  </p>
+<ul>
+<li>V要更新的变量值</li>
+<li>E该变量的期待值  </li>
+<li>N该变量的新值<br>只有当 V = E 的时候，才会将V更新到N，如果V != E，则表明该变量已被修改。本次修改无法提交。</li>
+</ul>
+<blockquote>
+<p>参考资料：<a href="https://blog.csdn.net/liubenlong007/article/details/53761730" target="_blank" rel="noopener">https://blog.csdn.net/liubenlong007/article/details/53761730</a></p>
+</blockquote>
+
           
         
       
@@ -2310,7 +2342,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2321,7 +2353,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
