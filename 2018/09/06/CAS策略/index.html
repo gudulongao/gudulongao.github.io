@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/09/06/CAS策略/atomicinteger.png">
 <meta property="og:image" content="http://yoursite.com/2018/09/06/CAS策略/atomicstampedreference.png">
 <meta property="og:image" content="http://yoursite.com/2018/09/06/CAS策略/other.png">
-<meta property="og:updated_time" content="2018-09-07T15:38:35.706Z">
+<meta property="og:updated_time" content="2018-09-07T15:43:20.644Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CAS策略">
 <meta name="twitter:description" content="通常为了保护临界区资源的安全访问，都会通过synchronized或者ReetranLock来对资源先进行加锁。这种悲观锁会导致没有获得锁的线程阻塞。将并行改为串行，大大降低了系统的吞吐量。CAS(Compare and Swap)即比较交换。是无锁安全访问临界资源的一种策略。其假设访问临界资源不会有冲突，多线程对临界资源的访问无需加锁也无需等待阻塞。每个线程都可以访问临界区资源，也都可以对临界区">
@@ -427,8 +427,8 @@
 <p><img src="/2018/09/06/CAS策略/atomicstampedreference.png" alt="包装生成线程安全的hashmap"></p>
 <p>如图中源码的compareAndSet方法，除了expectValue，还有expectStamped。</p>
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p><img src="/2018/09/06/CAS策略/other.png" alt="包装生成线程安全的hashmap"></p>
-<blockquote>
-<p>参考资料：<a href="https://blog.csdn.net/liubenlong007/article/details/53761730" target="_blank" rel="noopener">https://blog.csdn.net/liubenlong007/article/details/53761730</a></p>
+<h1 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h1><blockquote>
+<p> 网络博客：<a href="https://blog.csdn.net/liubenlong007/article/details/53761730" target="_blank" rel="noopener">https://blog.csdn.net/liubenlong007/article/details/53761730</a><br>《实战java 高并发程序设计》葛一鸣 郭超 编著</p>
 </blockquote>
 
       
@@ -620,7 +620,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CAS算法"><span class="nav-number">1.</span> <span class="nav-text">CAS算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#atomic包"><span class="nav-number">2.</span> <span class="nav-text">atomic包</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Unsafe"><span class="nav-number">2.1.</span> <span class="nav-text">Unsafe</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AtomicInteger"><span class="nav-number">2.2.</span> <span class="nav-text">AtomicInteger</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AtomicStampedReference（解决AAB问题）"><span class="nav-number">2.3.</span> <span class="nav-text">AtomicStampedReference（解决AAB问题）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">2.4.</span> <span class="nav-text">其他</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CAS算法"><span class="nav-number">1.</span> <span class="nav-text">CAS算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#atomic包"><span class="nav-number">2.</span> <span class="nav-text">atomic包</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Unsafe"><span class="nav-number">2.1.</span> <span class="nav-text">Unsafe</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AtomicInteger"><span class="nav-number">2.2.</span> <span class="nav-text">AtomicInteger</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AtomicStampedReference（解决AAB问题）"><span class="nav-number">2.3.</span> <span class="nav-text">AtomicStampedReference（解决AAB问题）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">2.4.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料："><span class="nav-number">3.</span> <span class="nav-text">参考资料：</span></a></li></ol></div>
             
 
           </div>
