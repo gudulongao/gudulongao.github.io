@@ -361,8 +361,7 @@
 <li>Condition是从重入锁而来。  </li>
 <li>与Object的wait和notify一样，使用condition的await/signal的时候，也必须先获取重入锁。  </li>
 </ul>
-<p>##与synchronized的区别</p>
-<ul>
+<h2 id="与synchronized的区别"><a href="#与synchronized的区别" class="headerlink" title="与synchronized的区别"></a>与synchronized的区别</h2><ul>
 <li>synchronized不支持中断，即使用synchronzied处理并发的时候，线程只有两种状态：要么拿到锁成功执行，要么等待阻塞直到获取到锁。而对于重入锁，可以通过lockwithinterruptibly来支持中断响应，也可以通过trylock来限时等待锁。  </li>
 <li>synchronized容易产生死锁，即获取不到锁线程会一直阻塞也不释放资源。而重入锁在lockwithinterruptibly方法支持中断响应，即在获取不到锁阻塞的时间，会抛出InterruptException异常，我们可以在异常中释放资源，这样避免死锁的发生，甚至可以通过trylock的方式来获取锁，限时等待锁的时长甚至根本不等待。    </li>
 <li>synchronized结合Object对象的实例方法wait/notify来让线程等待/恢复执行。重入锁结合Condition的await/signal来让线程等待/恢复执行。  </li>

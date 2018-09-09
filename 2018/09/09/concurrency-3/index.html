@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2018/09/09/concurrency-3/reentrantlock.png">
 <meta property="og:image" content="http://yoursite.com/2018/09/09/concurrency-3/trylock.png">
-<meta property="og:updated_time" content="2018-09-09T17:10:50.098Z">
+<meta property="og:updated_time" content="2018-09-09T17:12:17.005Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="concurrent包">
 <meta name="twitter:description" content="重入锁(ReentrantLock)实现接口Lock。显示进行加锁，释放锁的操作使得并发处理时更加的灵活。 同步代码块（lock/unlock） 如图是使用重入锁来进行并发操作的样例，可以看到两个线程都共享了重入锁lock，在同步代码块的开始需要手工显示的进行加锁。在同步代码块的最后，需要手工显示的释放锁。重入锁名称的缘由是指在同一个线程内，可以多次进行加锁，同时，最终也要对等的多次进行释放锁。">
@@ -364,8 +364,7 @@
 <li>Condition是从重入锁而来。  </li>
 <li>与Object的wait和notify一样，使用condition的await/signal的时候，也必须先获取重入锁。  </li>
 </ul>
-<p>##与synchronized的区别</p>
-<ul>
+<h2 id="与synchronized的区别"><a href="#与synchronized的区别" class="headerlink" title="与synchronized的区别"></a>与synchronized的区别</h2><ul>
 <li>synchronized不支持中断，即使用synchronzied处理并发的时候，线程只有两种状态：要么拿到锁成功执行，要么等待阻塞直到获取到锁。而对于重入锁，可以通过lockwithinterruptibly来支持中断响应，也可以通过trylock来限时等待锁。  </li>
 <li>synchronized容易产生死锁，即获取不到锁线程会一直阻塞也不释放资源。而重入锁在lockwithinterruptibly方法支持中断响应，即在获取不到锁阻塞的时间，会抛出InterruptException异常，我们可以在异常中释放资源，这样避免死锁的发生，甚至可以通过trylock的方式来获取锁，限时等待锁的时长甚至根本不等待。    </li>
 <li>synchronized结合Object对象的实例方法wait/notify来让线程等待/恢复执行。重入锁结合Condition的await/signal来让线程等待/恢复执行。  </li>
@@ -564,7 +563,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#重入锁-ReentrantLock"><span class="nav-number">1.</span> <span class="nav-text">重入锁(ReentrantLock)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#同步代码块（lock-unlock）"><span class="nav-number">1.1.</span> <span class="nav-text">同步代码块（lock/unlock）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#响应中断-lockwithinterruptibly"><span class="nav-number">1.2.</span> <span class="nav-text">响应中断(lockwithinterruptibly)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#限时等待-trylock，解决死锁"><span class="nav-number">1.3.</span> <span class="nav-text">限时等待(trylock，解决死锁)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#公平锁（解决饥饿）"><span class="nav-number">1.4.</span> <span class="nav-text">公平锁（解决饥饿）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#缺陷"><span class="nav-number">1.4.1.</span> <span class="nav-text">缺陷</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#等待和继续（Condition）"><span class="nav-number">1.5.</span> <span class="nav-text">等待和继续（Condition）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#重入锁-ReentrantLock"><span class="nav-number">1.</span> <span class="nav-text">重入锁(ReentrantLock)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#同步代码块（lock-unlock）"><span class="nav-number">1.1.</span> <span class="nav-text">同步代码块（lock/unlock）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#响应中断-lockwithinterruptibly"><span class="nav-number">1.2.</span> <span class="nav-text">响应中断(lockwithinterruptibly)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#限时等待-trylock，解决死锁"><span class="nav-number">1.3.</span> <span class="nav-text">限时等待(trylock，解决死锁)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#公平锁（解决饥饿）"><span class="nav-number">1.4.</span> <span class="nav-text">公平锁（解决饥饿）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#缺陷"><span class="nav-number">1.4.1.</span> <span class="nav-text">缺陷</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#等待和继续（Condition）"><span class="nav-number">1.5.</span> <span class="nav-text">等待和继续（Condition）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#与synchronized的区别"><span class="nav-number">1.6.</span> <span class="nav-text">与synchronized的区别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
