@@ -89,7 +89,8 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2018/09/09/concurrency-3/reentrantlock.png">
 <meta property="og:image" content="http://yoursite.com/2018/09/09/concurrency-3/trylock.png">
-<meta property="og:updated_time" content="2018-09-09T17:12:17.005Z">
+<meta property="og:image" content="http://yoursite.com/2018/09/09/concurrency-3/semaphore-output.png">
+<meta property="og:updated_time" content="2018-09-09T17:31:48.217Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="concurrent包">
 <meta name="twitter:description" content="重入锁(ReentrantLock)实现接口Lock。显示进行加锁，释放锁的操作使得并发处理时更加的灵活。 同步代码块（lock/unlock） 如图是使用重入锁来进行并发操作的样例，可以看到两个线程都共享了重入锁lock，在同步代码块的开始需要手工显示的进行加锁。在同步代码块的最后，需要手工显示的释放锁。重入锁名称的缘由是指在同一个线程内，可以多次进行加锁，同时，最终也要对等的多次进行释放锁。">
@@ -370,6 +371,50 @@
 <li>synchronized结合Object对象的实例方法wait/notify来让线程等待/恢复执行。重入锁结合Condition的await/signal来让线程等待/恢复执行。  </li>
 <li>synchronzied是非公平锁，重入锁默认是非公平锁，支持公平锁。</li>
 </ul>
+<h1 id="信号量（Semaphore）"><a href="#信号量（Semaphore）" class="headerlink" title="信号量（Semaphore）"></a>信号量（Semaphore）</h1><p>synchronzied和ReentrantLock都限制在同步代码块中只能有一个线程。而信号量的作用是允许同步代码块中的线程可以有多个。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">package demo.concurrency.semaphore;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.ExecutorService;</span><br><span class="line">import java.util.concurrent.Executors;</span><br><span class="line">import java.util.concurrent.Semaphore;</span><br><span class="line">import java.util.concurrent.locks.ReentrantLock;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @descripte 信号量Semaphore和重入锁ReetranLock的混合使用</span><br><span class="line"> */</span><br><span class="line">public class SemaphoreReetranLockDemo &#123;</span><br><span class="line">    //构建信号量，临界区同时可以允许3个线程访问</span><br><span class="line">    private static Semaphore semaphore = new Semaphore(3);</span><br><span class="line">    private static ReentrantLock lock = new ReentrantLock();</span><br><span class="line">    private static int num = 0;</span><br><span class="line"></span><br><span class="line">    static class TestRunable implements Runnable &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                //先申请信号量</span><br><span class="line">                semaphore.acquire();</span><br><span class="line">                count();</span><br><span class="line">                Thread.sleep(2000);</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                semaphore.release();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        /**</span><br><span class="line">         * 计数</span><br><span class="line">         */</span><br><span class="line">        private void count() &#123;</span><br><span class="line">            /**</span><br><span class="line">             * @see 利用重入锁保证计数功能的线程安全</span><br><span class="line">             */</span><br><span class="line">            lock.lock();</span><br><span class="line">            //计数</span><br><span class="line">            num++;</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; &quot; + num);</span><br><span class="line">            //释放锁</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void test() &#123;</span><br><span class="line">        //构造线程池</span><br><span class="line">        ExecutorService executorService = Executors.newFixedThreadPool(20);</span><br><span class="line">        //待处理任务</span><br><span class="line">        TestRunable testRunable = new TestRunable();</span><br><span class="line">        /**</span><br><span class="line">         * 循环12次执行任务</span><br><span class="line">         */</span><br><span class="line">        for (int i = 0; i &lt; 12; i++) &#123;</span><br><span class="line">            executorService.submit(testRunable);</span><br><span class="line">        &#125;</span><br><span class="line">        //关闭线程池</span><br><span class="line">        executorService.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        test();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果如图：</p>
+<p><img src="/2018/09/09/concurrency-3/semaphore-output.png" alt="包装生成线程安全的hashmap"></p>
+<p>线程的运行逻辑中运用到了信号量，信号量的令牌总共有3个，而实际线程池中的线程有20个，但是提交任务提交了12个，即其实整个线程池是可以满足12个任务由12个线程一次并发执行的，但是由于我们的信号量机制，总共只有三个令牌，所以通过输出的结果可以看出，同一时间，只有三个线程在完成工作，所以信号量保证了同步代码块中的线程数量可以多于一个线程。</p>
+<h2 id="方法列表"><a href="#方法列表" class="headerlink" title="方法列表"></a>方法列表</h2><table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Semaphore(int permits)</td>
+<td>构造，构造一个拥有permits个令牌的信号量</td>
+</tr>
+<tr>
+<td>Semphore(int permits,boolean fair)</td>
+<td>同上，支持公平锁</td>
+</tr>
+<tr>
+<td>acquire()</td>
+<td>申请令牌，如果有空余令牌，则继续执行，否则会阻塞等待</td>
+</tr>
+<tr>
+<td>acquireUninterruptibly()</td>
+<td>同上，不处理中断响应</td>
+</tr>
+<tr>
+<td>boolean tryAcquire()</td>
+<td>尝试获取令牌，没有空余令牌返回false，获取成功返回true</td>
+</tr>
+<tr>
+<td>boolean tryAcquire(long timeout,TmitUnit unit)</td>
+<td>尝试获取令牌，没有空余则等待timout时长，还没有则返回false，否则返回true</td>
+</tr>
+<tr>
+<td>release()</td>
+<td>返回令牌</td>
+</tr>
+</tbody>
+</table>
+<p><strong>对于信号量来处理并发的时候，在获取令牌之后一定要记得relase，否则令牌会越来越少。</strong></p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
 <p>《实战java 高并发程序设计》葛一鸣 郭超 编著<br><a href="https://blog.csdn.net/wbwjx/article/details/57856045" target="_blank" rel="noopener">https://blog.csdn.net/wbwjx/article/details/57856045</a></p>
 </blockquote>
@@ -563,7 +608,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#重入锁-ReentrantLock"><span class="nav-number">1.</span> <span class="nav-text">重入锁(ReentrantLock)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#同步代码块（lock-unlock）"><span class="nav-number">1.1.</span> <span class="nav-text">同步代码块（lock/unlock）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#响应中断-lockwithinterruptibly"><span class="nav-number">1.2.</span> <span class="nav-text">响应中断(lockwithinterruptibly)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#限时等待-trylock，解决死锁"><span class="nav-number">1.3.</span> <span class="nav-text">限时等待(trylock，解决死锁)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#公平锁（解决饥饿）"><span class="nav-number">1.4.</span> <span class="nav-text">公平锁（解决饥饿）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#缺陷"><span class="nav-number">1.4.1.</span> <span class="nav-text">缺陷</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#等待和继续（Condition）"><span class="nav-number">1.5.</span> <span class="nav-text">等待和继续（Condition）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#与synchronized的区别"><span class="nav-number">1.6.</span> <span class="nav-text">与synchronized的区别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#重入锁-ReentrantLock"><span class="nav-number">1.</span> <span class="nav-text">重入锁(ReentrantLock)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#同步代码块（lock-unlock）"><span class="nav-number">1.1.</span> <span class="nav-text">同步代码块（lock/unlock）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#响应中断-lockwithinterruptibly"><span class="nav-number">1.2.</span> <span class="nav-text">响应中断(lockwithinterruptibly)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#限时等待-trylock，解决死锁"><span class="nav-number">1.3.</span> <span class="nav-text">限时等待(trylock，解决死锁)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#公平锁（解决饥饿）"><span class="nav-number">1.4.</span> <span class="nav-text">公平锁（解决饥饿）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#缺陷"><span class="nav-number">1.4.1.</span> <span class="nav-text">缺陷</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#等待和继续（Condition）"><span class="nav-number">1.5.</span> <span class="nav-text">等待和继续（Condition）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#与synchronized的区别"><span class="nav-number">1.6.</span> <span class="nav-text">与synchronized的区别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#信号量（Semaphore）"><span class="nav-number">2.</span> <span class="nav-text">信号量（Semaphore）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法列表"><span class="nav-number">2.1.</span> <span class="nav-text">方法列表</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
