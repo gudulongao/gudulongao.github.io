@@ -352,6 +352,13 @@
 <p><a href="https://blog.csdn.net/u013207877/article/details/52572975" target="_blank" rel="noopener">https://blog.csdn.net/u013207877/article/details/52572975</a></p>
 </blockquote>
 <h1 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h1><p>多线程会共享JVM的堆空间，对于共享资源都在JVM的主堆空间中，而多线程之间的共享资源，都会在线程自己的工作空间中有一份拷贝副本。volatile关键词的作用是对于多线程不再工作空间拷贝主堆空间的共享资源，而是直接使用主堆中的共享资源，这样解决了多线程并发时共享资源的可见性。</p>
+<blockquote>
+<p>根据编译器优化原则，如果不使用volatile申明变量，那么这个变量被修改后，其他线程可能并不会被通知到，甚至在别的线程中，看到变量的顺序都会是反的。但一旦使用volatile，虚拟机就会特别小心地处理这种情况。</p>
+</blockquote>
+<p>感觉volatile关键词主要保证了共享资源在多线程中的可见性，对有序性也有所帮助。</p>
+<h2 id="参考资料-1"><a href="#参考资料-1" class="headerlink" title="参考资料"></a>参考资料</h2><blockquote>
+<p>《实战java 高并发程序设计》葛一鸣 郭超 编著</p>
+</blockquote>
 
           
         
