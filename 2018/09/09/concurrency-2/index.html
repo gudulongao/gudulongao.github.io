@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="java，高并发，学习笔记," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="进程/线程 程序：指令和数据的描述（指令+数据）   进程：操作系统进行系统资源分配的基本单位。进程是程序的实体（程序运行起来就是一个进程）。   线程：程序最小的执行单位，即进程中可以包含多个线程，进程是线程的容器。线程的切换以及调度的成本比多进程小。  线程的状态   在Thread的源码中有定义线程状态的枚举。可以看到线程有以下几个状态：    NEW：刚刚创建线程。等待调用strat方法开">
+<meta name="keywords" content="java，高并发，学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高并发并行基础概念">
+<meta property="og:url" content="http://yoursite.com/2018/09/09/concurrency-2/index.html">
+<meta property="og:site_name" content="小磊砸的布劳格">
+<meta property="og:description" content="进程/线程 程序：指令和数据的描述（指令+数据）   进程：操作系统进行系统资源分配的基本单位。进程是程序的实体（程序运行起来就是一个进程）。   线程：程序最小的执行单位，即进程中可以包含多个线程，进程是线程的容器。线程的切换以及调度的成本比多进程小。  线程的状态   在Thread的源码中有定义线程状态的枚举。可以看到线程有以下几个状态：    NEW：刚刚创建线程。等待调用strat方法开">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/09/09/concurrency-2/thread-state.png">
+<meta property="og:image" content="http://yoursite.com/2018/09/09/concurrency-2/object.png">
+<meta property="og:updated_time" content="2018-09-09T10:13:47.683Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="高并发并行基础概念">
+<meta name="twitter:description" content="进程/线程 程序：指令和数据的描述（指令+数据）   进程：操作系统进行系统资源分配的基本单位。进程是程序的实体（程序运行起来就是一个进程）。   线程：程序最小的执行单位，即进程中可以包含多个线程，进程是线程的容器。线程的切换以及调度的成本比多进程小。  线程的状态   在Thread的源码中有定义线程状态的枚举。可以看到线程有以下几个状态：    NEW：刚刚创建线程。等待调用strat方法开">
+<meta name="twitter:image" content="http://yoursite.com/2018/09/09/concurrency-2/thread-state.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/09/concurrency-2/"/>
+
+
+
+
+
+  <title>高并发并行基础概念 | 小磊砸的布劳格</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小磊砸的布劳格</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/09/concurrency-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">高并发并行基础概念</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-09T17:02:19+08:00">
+                2018-09-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/高并发/" itemprop="url" rel="index">
+                    <span itemprop="name">高并发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/09/concurrency-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/09/concurrency-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="进程-线程"><a href="#进程-线程" class="headerlink" title="进程/线程"></a>进程/线程</h1><ul>
+<li>程序：指令和数据的描述（指令+数据）  </li>
+<li>进程：操作系统进行系统资源分配的基本单位。进程是程序的实体（程序运行起来就是一个进程）。  </li>
+<li>线程：程序最小的执行单位，即进程中可以包含多个线程，进程是线程的容器。<br><strong>线程的切换以及调度的成本比多进程小。</strong></li>
+</ul>
+<h1 id="线程的状态"><a href="#线程的状态" class="headerlink" title="线程的状态"></a>线程的状态</h1><p><img src="/2018/09/09/concurrency-2/thread-state.png" alt="hashtable">  </p>
+<p>在Thread的源码中有定义线程状态的枚举。可以看到线程有以下几个状态：  </p>
+<ul>
+<li>NEW：刚刚创建线程。<strong>等待调用strat方法开始运行。</strong></li>
+<li>RUNNABLE：线程正在运行。  </li>
+<li>BLOCKED：当遇到同步代码块会阻塞，线程会暂停执行，直到获取锁。  </li>
+<li>WAITING：无时间限制的等待。（<strong>wait等待notify，join等待目标线程执行结束</strong>）  </li>
+<li>TIMED_WAITING：有时常的等待。  </li>
+<li>TREMINATED：终止。  </li>
+</ul>
+<h1 id="终止"><a href="#终止" class="headerlink" title="终止"></a>终止</h1><p>终止线程的时候可以使用stop方法，但不建议使用，因为stop停止线程会让线程暴力结束，这样如果线程没有完成当前工作，比如写文件，还没有写完就被终止，这时候文件是个半成品，会造成后续的数据错误。所以对于线程如果需要终止，可以在线程中增加一个标记，通过标记来判断是否还需要继续运行。外部通过修改这个标记的值来手工达到终止线程运行的效果。</p>
+<h1 id="wait-notify-notifyall"><a href="#wait-notify-notifyall" class="headerlink" title="wait/notify/notifyall"></a>wait/notify/notifyall</h1><p><img src="/2018/09/09/concurrency-2/object.png" alt="hashtable">  </p>
+<p>Object对象中都包含wait和notify的方法。<strong>注意这一对方法是在Object对象中的。</strong><br>使得当前线程进入该对象的等待队列中，直到该对象调用notify方法才会从等待队列中出来。<strong>但线程是否能够继续从等待的位置继续运行，还要看线程是否能重新获取到锁。只有重新获取到锁以后才能继续执行</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">package demo.basic.waitnotify;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * wait &amp; notify 样例</span><br><span class="line"> */</span><br><span class="line">public class WaitNotifyDemo &#123;</span><br><span class="line">    public static Object lock = new Object();</span><br><span class="line"></span><br><span class="line">    static class Thread1 extends Thread &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot;:&quot; + Thread.currentThread().getName() + &quot; start !&quot;);</span><br><span class="line">            //线程竞争锁</span><br><span class="line">            synchronized (lock) &#123;</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot;:&quot; + Thread.currentThread().getName() + &quot; get lock !&quot;);</span><br><span class="line">                try &#123;</span><br><span class="line">                    System.out.println(System.currentTimeMillis() + &quot;:&quot; + Thread.currentThread().getName() + &quot; wait !&quot;);</span><br><span class="line">                    /**</span><br><span class="line">                     * @see 通过锁lock的wait方法，是的当前 线程进入了一个竞争锁lock的队列。只有当锁再次调用notify方法时会队列中随机一个线程唤醒</span><br><span class="line">                     */</span><br><span class="line">                    lock.wait();</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                //唤醒的线程如果还能拿到锁，则还会继续执行</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot;:&quot; + Thread.currentThread().getName() + &quot; be  notify !&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    static class Thread2 extends Thread &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot;:&quot; + Thread.currentThread().getName() + &quot; start !&quot;);</span><br><span class="line">            //线程竞争锁</span><br><span class="line">            synchronized (lock) &#123;</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot;:&quot; + Thread.currentThread().getName() + &quot; notify !&quot;);</span><br><span class="line">                //从等待锁lock的队列中随机唤醒一个线程</span><br><span class="line">                lock.notify();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void testWaitNotify() &#123;</span><br><span class="line">        Thread1 thread1 = new Thread1();</span><br><span class="line">        Thread2 thread2 = new Thread2();</span><br><span class="line">        thread1.start();</span><br><span class="line">//        thread2.start();</span><br><span class="line">        //主线程sleep一秒后再启动线程2保证线程1先执行避免线程1执行后wait就再没有线程来唤醒</span><br><span class="line">        try &#123;</span><br><span class="line">            Thread.sleep(1000);</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        thread2.start();</span><br><span class="line">//        thread1.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        testWaitNotify();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从样例代码中可以看到，两个线程共享了对象lock，每次在wait操作和notify操作的时候都首先需要获取到lock的锁，<strong>wait/notify的操作都必须保证在同步代码块中</strong>。同时也可以想到当线程1中lock执行wait之后，线程1就进入了lock对象的等待线程队列中了，这个时候线程1也就释放了lock的锁。这样线程2才有机会获取到lock的锁，从而通过lock调用notify来让暂停的线程1从lock的等待线程队列中出来。这个时候线程1还需要再次竞争lock的锁才能从等待的位置继续执行。</p>
+<h2 id="与Sleep的区别"><a href="#与Sleep的区别" class="headerlink" title="与Sleep的区别"></a>与Sleep的区别</h2><ul>
+<li>wait操作必须在同步代码块中，同时会释放锁，而且wait方法是Object的实例方法。</li>
+<li>sleep只是让线程暂停一定时长，是Thread的静态方法，并不会释放资源（<strong>躺下睡赖着不走</strong>）。</li>
+</ul>
+<h1 id="join"><a href="#join" class="headerlink" title="join"></a>join</h1><p>Thread的实例方法，会阻塞当前线程，直到目标线程运行完毕。<strong>其实质等同于当前线程进入目前线程的等待线程队列（wait操作），直到目前线程执行完毕后当前线程再继续</strong>。</p>
+<h1 id="yeild"><a href="#yeild" class="headerlink" title="yeild"></a>yeild</h1><p>Thread的静态方法，当前线程主动让出CPU，这样多线程会重新开始竞争CPU，所以当线程调用yeild之后，还是有可能又是其获取到CPU继续执行。</p>
+<blockquote>
+<p><strong>对于某些线程的工作并不重要，优先级不高，害怕其占用太多CPU资源，可以时常通过yeild方法，给予其他线程更多的工作机会</strong></p>
+</blockquote>
+<h1 id="守护线程"><a href="#守护线程" class="headerlink" title="守护线程"></a>守护线程</h1><p>在start方法之前通过setDaemon(true)来设置线程为守护线程。<strong>当所有的用户线程都结束，守护线程才会结束，jvm才会停止</strong></p>
+<h1 id="线程优先级"><a href="#线程优先级" class="headerlink" title="线程优先级"></a>线程优先级</h1>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java，高并发，学习笔记/" rel="tag"># java，高并发，学习笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/08/java-2/" rel="next" title="关键词笔记">
+                <i class="fa fa-chevron-left"></i> 关键词笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpeg"
+                alt="小磊砸" />
+            
+              <p class="site-author-name" itemprop="name">小磊砸</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#进程-线程"><span class="nav-number">1.</span> <span class="nav-text">进程/线程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程的状态"><span class="nav-number">2.</span> <span class="nav-text">线程的状态</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#终止"><span class="nav-number">3.</span> <span class="nav-text">终止</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#wait-notify-notifyall"><span class="nav-number">4.</span> <span class="nav-text">wait/notify/notifyall</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#与Sleep的区别"><span class="nav-number">4.1.</span> <span class="nav-text">与Sleep的区别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#join"><span class="nav-number">5.</span> <span class="nav-text">join</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#yeild"><span class="nav-number">6.</span> <span class="nav-text">yeild</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#守护线程"><span class="nav-number">7.</span> <span class="nav-text">守护线程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程优先级"><span class="nav-number">8.</span> <span class="nav-text">线程优先级</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小磊砸</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://xiaoleiza.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/09/09/concurrency-2/';
+          this.page.identifier = '2018/09/09/concurrency-2/';
+          this.page.title = '高并发并行基础概念';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://xiaoleiza.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

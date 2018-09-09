@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="小磊砸的布劳格">
 <meta property="og:description" content="transient主要用于修饰已支持序列化的类的属性，表明该属性不支持序列化。不想在网络传输中涉及的敏感信息或者一些信息不想被持久化，这些信息只想存在于使用法的内存中。  transient修饰实例变量。   静态变量，不用transient修饰也是无法支持序列化的。    参考资料 https://blog.csdn.net/u013207877/article/details/52572975">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-09T08:59:43.367Z">
+<meta property="og:updated_time" content="2018-09-09T15:14:35.540Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关键词笔记">
 <meta name="twitter:description" content="transient主要用于修饰已支持序列化的类的属性，表明该属性不支持序列化。不想在网络传输中涉及的敏感信息或者一些信息不想被持久化，这些信息只想存在于使用法的内存中。  transient修饰实例变量。   静态变量，不用transient修饰也是无法支持序列化的。    参考资料 https://blog.csdn.net/u013207877/article/details/52572975">
@@ -359,6 +359,13 @@
 <h2 id="参考资料-1"><a href="#参考资料-1" class="headerlink" title="参考资料"></a>参考资料</h2><blockquote>
 <p>《实战java 高并发程序设计》葛一鸣 郭超 编著</p>
 </blockquote>
+<h1 id="synchronzied"><a href="#synchronzied" class="headerlink" title="synchronzied"></a>synchronzied</h1><blockquote>
+<p>指定对象加锁：进入同步代码块钱要活的给定对象的锁。<br>直接作用于实例方法：相当于对当前实例加锁，进入同步代码块前要获得当前实例的锁。<br>直接作用于静态方法：相当于对当前类加锁，进入同步代码块钱要获得当前类的锁。</p>
+</blockquote>
+<p>前两点都好理解，对于修饰静态方法的场景，这种就符合在多线程并发的时候，多线程共享的如果不是同一个对象但是同一种类型的时候，可以直接修饰在静态方法上，这样也能让线程有序执行。</p>
+<h2 id="参考资料-2"><a href="#参考资料-2" class="headerlink" title="参考资料"></a>参考资料</h2><blockquote>
+<p>《实战java 高并发程序设计》葛一鸣 郭超 编著</p>
+</blockquote>
 
       
     </div>
@@ -398,6 +405,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/09/concurrency-2/" rel="prev" title="高并发并行基础概念">
+                高并发并行基础概念 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -494,7 +505,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -516,7 +527,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
@@ -549,7 +560,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#transient"><span class="nav-number">1.</span> <span class="nav-text">transient</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">1.1.</span> <span class="nav-text">参考资料</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#volatile"><span class="nav-number">2.</span> <span class="nav-text">volatile</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料-1"><span class="nav-number">2.1.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#transient"><span class="nav-number">1.</span> <span class="nav-text">transient</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">1.1.</span> <span class="nav-text">参考资料</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#volatile"><span class="nav-number">2.</span> <span class="nav-text">volatile</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料-1"><span class="nav-number">2.1.</span> <span class="nav-text">参考资料</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#synchronzied"><span class="nav-number">3.</span> <span class="nav-text">synchronzied</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料-2"><span class="nav-number">3.1.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
             
 
           </div>
