@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="java，高并发，concurrent包," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="重入锁(ReentrantLock)实现接口Lock。显示进行加锁，释放锁的操作使得并发处理时更加的灵活。 同步代码块（lock/unlock） 如图是使用重入锁来进行并发操作的样例，可以看到两个线程都共享了重入锁lock，在同步代码块的开始需要手工显示的进行加锁。在同步代码块的最后，需要手工显示的释放锁。重入锁名称的缘由是指在同一个线程内，可以多次进行加锁，同时，最终也要对等的多次进行释放锁。">
+<meta name="keywords" content="java，高并发，concurrent包">
+<meta property="og:type" content="article">
+<meta property="og:title" content="concurrent包">
+<meta property="og:url" content="http://yoursite.com/2018/09/09/concurrency-3/index.html">
+<meta property="og:site_name" content="小磊砸的布劳格">
+<meta property="og:description" content="重入锁(ReentrantLock)实现接口Lock。显示进行加锁，释放锁的操作使得并发处理时更加的灵活。 同步代码块（lock/unlock） 如图是使用重入锁来进行并发操作的样例，可以看到两个线程都共享了重入锁lock，在同步代码块的开始需要手工显示的进行加锁。在同步代码块的最后，需要手工显示的释放锁。重入锁名称的缘由是指在同一个线程内，可以多次进行加锁，同时，最终也要对等的多次进行释放锁。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2018/09/09/concurrency-3/reentrantlock.png">
+<meta property="og:image" content="http://yoursite.com/2018/09/09/concurrency-3/trylock.png">
+<meta property="og:updated_time" content="2018-09-09T17:10:50.098Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="concurrent包">
+<meta name="twitter:description" content="重入锁(ReentrantLock)实现接口Lock。显示进行加锁，释放锁的操作使得并发处理时更加的灵活。 同步代码块（lock/unlock） 如图是使用重入锁来进行并发操作的样例，可以看到两个线程都共享了重入锁lock，在同步代码块的开始需要手工显示的进行加锁。在同步代码块的最后，需要手工显示的释放锁。重入锁名称的缘由是指在同一个线程内，可以多次进行加锁，同时，最终也要对等的多次进行释放锁。">
+<meta name="twitter:image" content="http://yoursite.com/2018/09/09/concurrency-3/reentrantlock.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/09/concurrency-3/"/>
+
+
+
+
+
+  <title>concurrent包 | 小磊砸的布劳格</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小磊砸的布劳格</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/09/concurrency-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">concurrent包</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-09T23:21:44+08:00">
+                2018-09-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/高并发/" itemprop="url" rel="index">
+                    <span itemprop="name">高并发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/09/concurrency-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/09/concurrency-3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="重入锁-ReentrantLock"><a href="#重入锁-ReentrantLock" class="headerlink" title="重入锁(ReentrantLock)"></a>重入锁(ReentrantLock)</h1><p>实现接口Lock。显示进行加锁，释放锁的操作使得并发处理时更加的灵活。</p>
+<h2 id="同步代码块（lock-unlock）"><a href="#同步代码块（lock-unlock）" class="headerlink" title="同步代码块（lock/unlock）"></a>同步代码块（lock/unlock）</h2><p><img src="/2018/09/09/concurrency-3/reentrantlock.png" alt="包装生成线程安全的hashmap"></p>
+<p>如图是使用重入锁来进行并发操作的样例，可以看到两个线程都共享了重入锁lock，在同步代码块的开始需要手工显示的进行加锁。在同步代码块的最后，需要手工显示的释放锁。<br><strong>重入锁名称的缘由是指在同一个线程内，可以多次进行加锁，同时，最终也要对等的多次进行释放锁。</strong>  </p>
+<h2 id="响应中断-lockwithinterruptibly"><a href="#响应中断-lockwithinterruptibly" class="headerlink" title="响应中断(lockwithinterruptibly)"></a>响应中断(lockwithinterruptibly)</h2><p>重入锁相比synchronized，在线程处理临界资源的时候，除了获取锁继续执行和阻塞之外，使用重入锁还有个优势就是可以支持中断。即在未获取到临界资源导致线程阻塞的时候，可以通过响应中断来停止阻塞的状态。<strong>这种响应中断的方式对于解决死锁有很大的帮助。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line">package demo.concurrency.reentranlock;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.locks.ReentrantLock;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @descripte 通过重入锁lockInterruptibly方法加锁来解决死锁问题</span><br><span class="line"> */</span><br><span class="line">public class SolveDeadLockByLockInterruptlyDemo &#123;</span><br><span class="line">    private static LockObject readLock = new LockObject(&quot;readlock&quot;);</span><br><span class="line">    private static LockObject writeLock = new LockObject(&quot;writeLock&quot;);</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 先执行的线程</span><br><span class="line">     */</span><br><span class="line">    static class FirstThread extends Thread &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                //首先获取readLock</span><br><span class="line">                readLock.lockWithInterrupt();</span><br><span class="line"></span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; sleep 5 s&quot;);</span><br><span class="line">                //线程sleep5秒，给另一个线程获取writelock留时间</span><br><span class="line">                Thread.sleep(5000);</span><br><span class="line"></span><br><span class="line">                //再获取writeLock的锁</span><br><span class="line">                writeLock.lockWithInterrupt();</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                //处理中断响应</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; interrupt &quot;);</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                //释放锁</span><br><span class="line">                readLock.unLock();</span><br><span class="line">                writeLock.unLock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 后执行的线程</span><br><span class="line">     */</span><br><span class="line">    static class AfterThread extends Thread &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                //先获取writeLock的锁</span><br><span class="line">                writeLock.lockWithInterrupt();</span><br><span class="line"></span><br><span class="line">                //再获取readLock的锁</span><br><span class="line">                readLock.lockWithInterrupt();</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                //处理中断</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; interrupt &quot;);</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                //释放锁</span><br><span class="line">                readLock.unLock();</span><br><span class="line">                writeLock.unLock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 封装锁对象</span><br><span class="line">     */</span><br><span class="line">    static class LockObject &#123;</span><br><span class="line">        //重入锁</span><br><span class="line">        private ReentrantLock lock = new ReentrantLock();</span><br><span class="line">        //锁的名称</span><br><span class="line">        private String name = null;</span><br><span class="line"></span><br><span class="line">        /**</span><br><span class="line">         * 释放锁</span><br><span class="line">         */</span><br><span class="line">        public void unLock() &#123;</span><br><span class="line">            //通过isHeldByCurrentThread方法来判断当前线程是否拥有该锁，拥有再释放</span><br><span class="line">            if (lock.isHeldByCurrentThread()) &#123;</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; unlock &quot; + name);</span><br><span class="line">                lock.unlock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        /**</span><br><span class="line">         * 可以处理中断事件的加锁，即当有线程在持有该锁的过程中遇到了中断事件，会抛出InterruptedException来进行中断响应</span><br><span class="line">         *</span><br><span class="line">         * @throws InterruptedException</span><br><span class="line">         */</span><br><span class="line">        public void lockWithInterrupt() throws InterruptedException &#123;</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; wait &quot; + name);</span><br><span class="line">            lock.lockInterruptibly();</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; locked &quot; + name);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public String getName() &#123;</span><br><span class="line">            return name;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public LockObject() &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public LockObject(String name) &#123;</span><br><span class="line">            this.name = name;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void testSolveDeadLock() &#123;</span><br><span class="line">        FirstThread firstThread = new FirstThread();</span><br><span class="line">        AfterThread afterThread = new AfterThread();</span><br><span class="line">        //先启动线程FirstThread</span><br><span class="line">        firstThread.start();</span><br><span class="line">        try &#123;</span><br><span class="line">            //主线程等待2秒方便线程FirstThread获取readLock</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; sleep 2 s&quot;);</span><br><span class="line">            Thread.sleep(2000);</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        //线程AfterThread启动</span><br><span class="line">        afterThread.start();</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            //主线程等待死锁情况发生，FirstThread先拿到了readLock，等待writeLock。AfterThread先拿到了writeLock，等待redLock。两个线程构成死锁</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; sleep 8 s&quot;);</span><br><span class="line">            Thread.sleep(8000);</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //主线程将线程AfterThread中断。当线程AfterThread中断后会最终再finally里释放自己锁持有的锁，即被中断线程无法完成任务，但可以成全别的线程。</span><br><span class="line">        System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; interrupted &quot;);</span><br><span class="line">        afterThread.interrupt();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        testSolveDeadLock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的样例就是营造一个死锁的场景，FirstThread运行后会获取readlock，成功后又想获取writelock。而AfterThread运行后会先获取writelock，成功后想获取readlock。这个时候两个线程就发生了死锁。两个线程都无法完成自己的工作。这个时候对FirstThread进行了中断，在FirstThread处理中断异常的时候，释放了所拥有的所有资源，而AfterThread便成功获取了readlock而完成工作。<br><strong>重入锁的lockWithInterruptibly方法会有可能抛出InterruptedException异常，所以可以在catch里能够专门处理中断时的场景。</strong></p>
+<h2 id="限时等待-trylock，解决死锁"><a href="#限时等待-trylock，解决死锁" class="headerlink" title="限时等待(trylock，解决死锁)"></a>限时等待(trylock，解决死锁)</h2><p>为了避免死锁，除了支持中断的方式之外，重入锁还提供了这种限时等待的方式来避免发生死锁。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line">package demo.concurrency.reentranlock;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.locks.ReentrantLock;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @escripte 通过重入锁的tryLock方法来加锁解决死锁问题</span><br><span class="line"> */</span><br><span class="line">public class SolveDeadLockByTryLockDemo &#123;</span><br><span class="line">    private static LockObject lock1 = new LockObject(&quot;A&quot;);</span><br><span class="line">    private static LockObject lock2 = new LockObject(&quot;B&quot;);</span><br><span class="line"></span><br><span class="line">    static class FirstThread extends Thread &#123;</span><br><span class="line">        private boolean finishedFlag = false;</span><br><span class="line"></span><br><span class="line">        public FirstThread(String name) &#123;</span><br><span class="line">            super(name);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            while (!finishedFlag) &#123;</span><br><span class="line">                if (lock1.tryLock()) &#123;</span><br><span class="line">                    try &#123;</span><br><span class="line">                        Thread.sleep(5000);</span><br><span class="line">                        if (lock2.tryLock()) &#123;</span><br><span class="line">                            finishedFlag = true;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125; finally &#123;</span><br><span class="line">                        lock1.unLock();</span><br><span class="line">                        lock2.unLock();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                try &#123;</span><br><span class="line">                    Thread.sleep(5000);</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; finished job!&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    static class AfterThread extends Thread &#123;</span><br><span class="line">        private boolean finishedFlag = false;</span><br><span class="line"></span><br><span class="line">        public AfterThread(String name) &#123;</span><br><span class="line">            super(name);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            while (!finishedFlag) &#123;</span><br><span class="line">                if (lock2.tryLock()) &#123;</span><br><span class="line">                    try &#123;</span><br><span class="line">                        Thread.sleep(3000);</span><br><span class="line">                        if (lock1.tryLock()) &#123;</span><br><span class="line">                            finishedFlag = true;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125; finally &#123;</span><br><span class="line">                        lock1.unLock();</span><br><span class="line">                        lock2.unLock();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; finished job!&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 封装的锁对象</span><br><span class="line">     */</span><br><span class="line">    static class LockObject &#123;</span><br><span class="line">        private ReentrantLock lock = new ReentrantLock();</span><br><span class="line">        private String name;</span><br><span class="line"></span><br><span class="line">        public LockObject(String name) &#123;</span><br><span class="line">            this.name = name;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public void unLock() &#123;</span><br><span class="line">            if (lock.isHeldByCurrentThread()) &#123;</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; unlock &quot; + name);</span><br><span class="line">                lock.unlock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public boolean tryLock() &#123;</span><br><span class="line">            /**</span><br><span class="line">             * @see tryLock无参调用的时候，线程会立即获取锁，如果拿到则返回true，否之则反，tryLock可以有参调用，意义为当无法立即拿到锁会等待长时间</span><br><span class="line">             */</span><br><span class="line">            boolean flag = lock.tryLock();</span><br><span class="line">            if (flag) &#123;</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; lock &quot; + name + &quot; success &quot;);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; lock &quot; + name + &quot; failed &quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            return flag;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void testTryLockSolveDeadLock() &#123;</span><br><span class="line">        FirstThread firstThread = new FirstThread(&quot;1&quot;);</span><br><span class="line">        AfterThread afterThread = new AfterThread(&quot;2&quot;);</span><br><span class="line">        firstThread.start();</span><br><span class="line">        afterThread.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        testTryLockSolveDeadLock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>根之前的样例类似，每个线程都是在不断的循环直到完成工作，FirstThread会先获取lock1的锁，再获取lock2的锁。如果没有能成功，则在finally里释放锁。AfterThread的内容一致只是获取锁的顺序不一样，先获取lock2的锁再获取lock1的锁。如果都不成功则释放所有的锁。因为两个线程获取到锁以后的等待时长是不一致的，所以总会有一个线程释放所有资源之后另个线程能够拿到所有所需的资源继续执行。这样就不会导致死锁发生。<br><strong>重入锁提供trylock方法来解决死锁问题，无参的trylock表示立即获取锁，如果成功则返回true，否则返回false，不会阻塞等待，有参的trylock有有两个参数，第一个是时长，第二个是时长的单位，指如果没有获取到锁会阻塞等待的时长，不会像synchronized那样一直阻塞到获取到锁。</strong></p>
+<p><img src="/2018/09/09/concurrency-3/trylock.png" alt="包装生成线程安全的hashmap"></p>
+<h2 id="公平锁（解决饥饿）"><a href="#公平锁（解决饥饿）" class="headerlink" title="公平锁（解决饥饿）"></a>公平锁（解决饥饿）</h2><p>线程运行的时候因为线程的优先级会导致优先级高的线程总会有更高的概率获取临界资源。就会导致优先级的线程总示无法获取临界区资源从而产生饥饿现象。<br>重入锁的构造可以注入是否采用公平锁，如果true则表明所有的线程在获取锁的时候按照申请的时间来排序，即先申请获取锁的线程先获取。  </p>
+<h3 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h3><p>公平锁需要额外的维护一个有序队列来保证线程申请锁的顺序。实现成本高，性能不如默认的非公平锁。</p>
+<h2 id="等待和继续（Condition）"><a href="#等待和继续（Condition）" class="headerlink" title="等待和继续（Condition）"></a>等待和继续（Condition）</h2><p>Object对象的实例方法wait/notify与synchronized结合，可以控制线程等待和继续执行。重入锁可以结合Condition的await/signal达到一样的效果。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">package demo.concurrency.reentranlock;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.locks.Condition;</span><br><span class="line">import java.util.concurrent.locks.ReentrantLock;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @descripte condition 样例 conditon的await和siginal与wait与notify类似</span><br><span class="line"> */</span><br><span class="line">public class ConditionDemo &#123;</span><br><span class="line">    private static ReentrantLock lock = new ReentrantLock();</span><br><span class="line">    private static Condition condition = lock.newCondition();</span><br><span class="line"></span><br><span class="line">    static class ThreadDemo extends Thread &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; get lock &quot;);</span><br><span class="line">                lock.lock();</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; await &quot;);</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; release lock &quot;);</span><br><span class="line">                condition.await();</span><br><span class="line"></span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; go on &quot;);</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                if (lock.isHeldByCurrentThread()) &#123;</span><br><span class="line">                    lock.unlock();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws InterruptedException &#123;</span><br><span class="line">        ThreadDemo threadDemo = new ThreadDemo();</span><br><span class="line">        threadDemo.start();</span><br><span class="line"></span><br><span class="line">        Thread.sleep(5000);</span><br><span class="line"></span><br><span class="line">        /**</span><br><span class="line">         * @see 通过condition进行signal的时候也必须实现拿到锁</span><br><span class="line">         */</span><br><span class="line">        lock.lock();</span><br><span class="line">        System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; get lock &quot;);</span><br><span class="line">        condition.signal();</span><br><span class="line">        System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; singnal &quot;);</span><br><span class="line">        lock.unlock();</span><br><span class="line">        System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; release lock &quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Condition是从重入锁而来。  </li>
+<li>与Object的wait和notify一样，使用condition的await/signal的时候，也必须先获取重入锁。  </li>
+</ul>
+<p>##与synchronized的区别</p>
+<ul>
+<li>synchronized不支持中断，即使用synchronzied处理并发的时候，线程只有两种状态：要么拿到锁成功执行，要么等待阻塞直到获取到锁。而对于重入锁，可以通过lockwithinterruptibly来支持中断响应，也可以通过trylock来限时等待锁。  </li>
+<li>synchronized容易产生死锁，即获取不到锁线程会一直阻塞也不释放资源。而重入锁在lockwithinterruptibly方法支持中断响应，即在获取不到锁阻塞的时间，会抛出InterruptException异常，我们可以在异常中释放资源，这样避免死锁的发生，甚至可以通过trylock的方式来获取锁，限时等待锁的时长甚至根本不等待。    </li>
+<li>synchronized结合Object对象的实例方法wait/notify来让线程等待/恢复执行。重入锁结合Condition的await/signal来让线程等待/恢复执行。  </li>
+<li>synchronzied是非公平锁，重入锁默认是非公平锁，支持公平锁。</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>《实战java 高并发程序设计》葛一鸣 郭超 编著<br><a href="https://blog.csdn.net/wbwjx/article/details/57856045" target="_blank" rel="noopener">https://blog.csdn.net/wbwjx/article/details/57856045</a></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java，高并发，concurrent包/" rel="tag"># java，高并发，concurrent包</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/09/concurrency-2/" rel="next" title="高并发并行基础概念">
+                <i class="fa fa-chevron-left"></i> 高并发并行基础概念
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpeg"
+                alt="小磊砸" />
+            
+              <p class="site-author-name" itemprop="name">小磊砸</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#重入锁-ReentrantLock"><span class="nav-number">1.</span> <span class="nav-text">重入锁(ReentrantLock)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#同步代码块（lock-unlock）"><span class="nav-number">1.1.</span> <span class="nav-text">同步代码块（lock/unlock）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#响应中断-lockwithinterruptibly"><span class="nav-number">1.2.</span> <span class="nav-text">响应中断(lockwithinterruptibly)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#限时等待-trylock，解决死锁"><span class="nav-number">1.3.</span> <span class="nav-text">限时等待(trylock，解决死锁)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#公平锁（解决饥饿）"><span class="nav-number">1.4.</span> <span class="nav-text">公平锁（解决饥饿）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#缺陷"><span class="nav-number">1.4.1.</span> <span class="nav-text">缺陷</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#等待和继续（Condition）"><span class="nav-number">1.5.</span> <span class="nav-text">等待和继续（Condition）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小磊砸</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://xiaoleiza.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/09/09/concurrency-3/';
+          this.page.identifier = '2018/09/09/concurrency-3/';
+          this.page.title = 'concurrent包';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://xiaoleiza.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
