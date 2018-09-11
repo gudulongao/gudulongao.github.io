@@ -400,7 +400,7 @@
 <h2 id="String-intern方法"><a href="#String-intern方法" class="headerlink" title="String.intern方法"></a>String.intern方法</h2><p>jvm为了使得同样的字符串能够复用而不再分配内存，减少内存的消耗。</p>
 <h3 id="1-6版本"><a href="#1-6版本" class="headerlink" title="1.6版本"></a>1.6版本</h3><p><img src="/2018/09/10/jvm-1/intern-2.png" alt="包装生成线程安全的hashmap"></p>
 <p>在1.6版本中，定义字符串（String str1 = “abc”）时，会先查询运行时常量池，如果有一致内容，则直接返回运行时常量池的引用，即str1直接指向运行常量池中字符串”abc”。如果没有，则直接在运行时常量池中自动添加一个字符串”abc”，然后返回字符串”abc”的引用。<strong>在1.6版本中运行时常量池中还是会存储字符串数据的</strong>。</p>
-<h3 id="1-7版本"><a href="#1-7版本" class="headerlink" title="1.7版本"></a>1.7版本</h3><p><img src="/2018/09/10/jvm-1/intern-3.png" alt="包装生成线程安全的hashmap"></p>
+<h3 id="1-7版本"><a href="#1-7版本" class="headerlink" title="1.7版本"></a>1.7版本</h3><p><img src="/2018/09/10/jvm-1/intern-3.png" alt="包装生成线程安全的hashmap"><br><img src="/2018/09/10/jvm-1/intern-3-1.png" alt="包装生成线程安全的hashmap"></p>
 <p>在1.7版本中，定义字符串变量的时候，一样会先在运行时常量池中查找是否有内容一致的字符串，有则返回运行时常量池的引用。如果没有，则会在堆中创建字符串对象，再在运行时常量池中引用堆中的字符串对象。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
 <li>不论1.6还是1.7，字符串变量都是指向运行时常量区。只不过1.6中运行时常量池直接存储字符串内容。而1.7版运行时常量池存储的事堆中字符串对象的引用。</li>
