@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="mysql，索引，实现原理，学习笔记," />
 
 
 
@@ -79,13 +79,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="小磊砸的布劳格">
-<meta property="og:url" content="http://yoursite.com/tags/java，关键词/index.html">
+<meta name="description" content="参考资料 索引实现原理 https://blog.csdn.net/tongdanping/article/details/79878302mysql索引指令 https://blog.csdn.net/lzupb/article/details/78413712csdn索引相关 https://www.csdn.net/gather_2e/MtTaIg5sMTg4OC1ibG9n.htmlmys">
+<meta name="keywords" content="mysql，索引，实现原理，学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql索引">
+<meta property="og:url" content="http://yoursite.com/2018/09/19/mysql-index/index.html">
 <meta property="og:site_name" content="小磊砸的布劳格">
+<meta property="og:description" content="参考资料 索引实现原理 https://blog.csdn.net/tongdanping/article/details/79878302mysql索引指令 https://blog.csdn.net/lzupb/article/details/78413712csdn索引相关 https://www.csdn.net/gather_2e/MtTaIg5sMTg4OC1ibG9n.htmlmys">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-19T02:36:07.058Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="小磊砸的布劳格">
+<meta name="twitter:title" content="mysql索引">
+<meta name="twitter:description" content="参考资料 索引实现原理 https://blog.csdn.net/tongdanping/article/details/79878302mysql索引指令 https://blog.csdn.net/lzupb/article/details/78413712csdn索引相关 https://www.csdn.net/gather_2e/MtTaIg5sMTg4OC1ibG9n.htmlmys">
 
 
 
@@ -115,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/java，关键词/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/09/19/mysql-index/"/>
 
 
 
 
 
-  <title>标签: java，关键词 | 小磊砸的布劳格</title>
+  <title>mysql索引 | 小磊砸的布劳格</title>
   
 
 
@@ -140,7 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -224,54 +229,192 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>java，关键词<small>标签</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/19/mysql-index/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/09/08/java-2/" itemprop="url">
-              
-                <span itemprop="name">关键词笔记</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">mysql索引</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-09-08T23:33:28+08:00"
-              content="2018-09-08" >
-          09-08
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-19T00:13:17+08:00">
+                2018-09-19
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySql数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">MySql数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/19/mysql-index/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/19/mysql-index/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>索引实现原理 <a href="https://blog.csdn.net/tongdanping/article/details/79878302" target="_blank" rel="noopener">https://blog.csdn.net/tongdanping/article/details/79878302</a><br>mysql索引指令 <a href="https://blog.csdn.net/lzupb/article/details/78413712" target="_blank" rel="noopener">https://blog.csdn.net/lzupb/article/details/78413712</a><br>csdn索引相关 <a href="https://www.csdn.net/gather_2e/MtTaIg5sMTg4OC1ibG9n.html" target="_blank" rel="noopener">https://www.csdn.net/gather_2e/MtTaIg5sMTg4OC1ibG9n.html</a><br>mysql存储引擎 <a href="https://www.cnblogs.com/shijiaqi1066/p/3857808.html" target="_blank" rel="noopener">https://www.cnblogs.com/shijiaqi1066/p/3857808.html</a>  </p>
+</blockquote>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mysql，索引，实现原理，学习笔记/" rel="tag"># mysql，索引，实现原理，学习笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/18/jvm-3/" rel="next" title="JVM配置参数">
+                <i class="fa fa-chevron-left"></i> JVM配置参数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/19/mysql-engine/" rel="prev" title="MySql存储引擎">
+                MySql存储引擎 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
 
 
           </div>
@@ -279,6 +422,20 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -299,8 +456,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -364,6 +530,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">1.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -497,6 +679,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -514,6 +700,18 @@
       <script id="dsq-count-scr" src="https://xiaoleiza.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/09/19/mysql-index/';
+          this.page.identifier = '2018/09/19/mysql-index/';
+          this.page.title = 'mysql索引';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://xiaoleiza.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   
