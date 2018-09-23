@@ -239,6 +239,182 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/20/mysql-command/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/20/mysql-command/" itemprop="url">MySql常用操作命令</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-20T15:19:42+08:00">
+                2018-09-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySql数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">MySql数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/20/mysql-command/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/20/mysql-command/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="查看mysql服务"><a href="#查看mysql服务" class="headerlink" title="查看mysql服务"></a>查看mysql服务</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo /usr/locl/mysql/support-files/mysql.server start 启动服务</span><br><span class="line">sudo /usr/locl/mysql/support-files/mysql.server stop 停止服务</span><br><span class="line">mysql -V 输出mysql版本</span><br></pre></td></tr></table></figure>
+<h1 id="登陆-退出"><a href="#登陆-退出" class="headerlink" title="登陆/退出"></a>登陆/退出</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p 以root用户进行密码登陆</span><br><span class="line">mysql [-h ip]  [-P port] -u user -p 指定ip和端口进行用户登陆，ip和端口条件非必须</span><br><span class="line">exit/quit 退出登陆</span><br></pre></td></tr></table></figure>
+<h1 id="查看数据库"><a href="#查看数据库" class="headerlink" title="查看数据库"></a>查看数据库</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">show databases 查看已有的数据库</span><br><span class="line">use databases dbname 选择采用的数据库</span><br></pre></td></tr></table></figure>
+<h1 id="查看表结构"><a href="#查看表结构" class="headerlink" title="查看表结构"></a>查看表结构</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">desc tablename 查看表结构  </span><br><span class="line">show create table tablename 查看建表语句</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/09/20/mysql-command/showtable.png" alt="包装生成线程安全的hashmap"></p>
+<h1 id="修改表结构"><a href="#修改表结构" class="headerlink" title="修改表结构"></a>修改表结构</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">alter table tablename drop columnname;删除列</span><br><span class="line">alter table tablename change oldcolumnname newcolumnname 数据类型 [primary key/default/not null];修改列名</span><br><span class="line">alter table tablename modify columnname 数据类型 [primary key/default/not null];修改列</span><br><span class="line">alter table tablename rename to newtablename;修改表名</span><br></pre></td></tr></table></figure>
+<p><strong>经过测试发现，modify 命令如果后续没有约束，则会清空列已有的约束（不包含主键约束）。如果modify中包含列的约束，则会对列增加约束（包含主键约束）。</strong></p>
+<p><img src="/2018/09/20/mysql-command/modifycolumn-1.png" alt="包装生成线程安全的hashmap"><br><img src="/2018/09/20/mysql-command/modifycolumn-2.png" alt="包装生成线程安全的hashmap"></p>
+<h1 id="修改约束"><a href="#修改约束" class="headerlink" title="修改约束"></a>修改约束</h1><p>Mysql支持的约束有：  </p>
+<ul>
+<li>主键约束：primary key。  </li>
+<li>外键约束：foreign key。  </li>
+<li>唯一：unique.  </li>
+<li>非空：not null。</li>
+</ul>
+<p><strong>可以看到,mysql并不支持check表达式的约束条件，但是在mysql中使用check指令不会报错，但是并没有作用。</strong></p>
+<h2 id="主键约束"><a href="#主键约束" class="headerlink" title="主键约束"></a>主键约束</h2><p><img src="/2018/09/20/mysql-command/primary-key.png" alt="包装生成线程安全的hashmap"></p>
+<h2 id="唯一约束"><a href="#唯一约束" class="headerlink" title="唯一约束"></a>唯一约束</h2><p><img src="/2018/09/20/mysql-command/unique.png" alt="包装生成线程安全的hashmap"></p>
+<p>如图所示，先对列name增加了unique约束，如果想要去除该约束，需要查看约束的名字，一般在定义约束的时候，我们最好还是顺便指定约束的名称，但是在创建的时候没有制定，我们也可以通过查看DDL语句来查看约束的名称，这样我慢看到name字段的unique约束的名称为name，在删除约束的时候还需要注意的是，drop 后面一定要加index，否则会被认为是要删除列。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alter table tablename add [check_name] (primary key/foreign key/unique/not null) 添加约束，注意最好制定约束名</span><br><span class="line">alter table tablename drop index check_name 通过约束名来去除字段的约束，如果不记得约束名，可以通过show create table tablename来查看DDL语句。</span><br></pre></td></tr></table></figure>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><h2 id="清屏"><a href="#清屏" class="headerlink" title="清屏"></a>清屏</h2><p>Ctrl+L 快捷键清屏</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>查看表结构：<a href="https://www.cnblogs.com/zhangyuhang3/p/6873895.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhangyuhang3/p/6873895.html</a><br>修改表结构：<a href="https://blog.csdn.net/airjordon/article/details/72676607" target="_blank" rel="noopener">https://blog.csdn.net/airjordon/article/details/72676607</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/19/mysql-engine/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -354,7 +530,12 @@
 <li>可以通过修改表结构来设置存储引擎</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALERT TABLE 表名 ENGINE = INNODB;</span><br></pre></td></tr></table></figure>
-<h1 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h1><p><strong>MySql5.5.8版本以后的默认的存储引擎</strong>。</p>
+<h1 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h1><ul>
+<li><strong>MySql5.5.8版本以后的默认的存储引擎</strong>。</li>
+<li>支持事务，支持行锁。支持外键。</li>
+<li>支持自增（AUTO_INCREMENT）。自增列必须是非空，值唯一。插入操作未给自增列注入数据，则该列的数据为0或者null，插入的值为自增后的数据。</li>
+<li></li>
+</ul>
 <h1 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h1><h1 id="MEMORY"><a href="#MEMORY" class="headerlink" title="MEMORY"></a>MEMORY</h1>
           
         
@@ -2051,198 +2232,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/09/concurrency-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/09/concurrency-2/" itemprop="url">高并发并行基础概念</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-09T17:02:19+08:00">
-                2018-09-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/高并发/" itemprop="url" rel="index">
-                    <span itemprop="name">高并发</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/09/concurrency-2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/09/09/concurrency-2/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="进程-线程"><a href="#进程-线程" class="headerlink" title="进程/线程"></a>进程/线程</h1><ul>
-<li>程序：指令和数据的描述（指令+数据）  </li>
-<li>进程：操作系统进行系统资源分配的基本单位。进程是程序的实体（程序运行起来就是一个进程）。  </li>
-<li>线程：程序最小的执行单位，即进程中可以包含多个线程，进程是线程的容器。<br><strong>线程的切换以及调度的成本比多进程小。</strong></li>
-</ul>
-<h1 id="线程的状态"><a href="#线程的状态" class="headerlink" title="线程的状态"></a>线程的状态</h1><p><img src="/2018/09/09/concurrency-2/thread-state.png" alt="hashtable">  </p>
-<p>在Thread的源码中有定义线程状态的枚举。可以看到线程有以下几个状态：  </p>
-<ul>
-<li>NEW：刚刚创建线程。<strong>等待调用strat方法开始运行。</strong></li>
-<li>RUNNABLE：线程正在运行。  </li>
-<li>BLOCKED：当遇到同步代码块会阻塞，线程会暂停执行，直到获取锁。  </li>
-<li>WAITING：无时间限制的等待。（<strong>wait等待notify，join等待目标线程执行结束</strong>）  </li>
-<li>TIMED_WAITING：有时常的等待。  </li>
-<li>TREMINATED：终止。  </li>
-</ul>
-<h1 id="终止"><a href="#终止" class="headerlink" title="终止"></a>终止</h1><p>终止线程的时候可以使用stop方法，但不建议使用，因为stop停止线程会让线程暴力结束，这样如果线程没有完成当前工作，比如写文件，还没有写完就被终止，这时候文件是个半成品，会造成后续的数据错误。所以对于线程如果需要终止，可以在线程中增加一个标记，通过标记来判断是否还需要继续运行。外部通过修改这个标记的值来手工达到终止线程运行的效果。</p>
-<h1 id="wait-notify-notifyall"><a href="#wait-notify-notifyall" class="headerlink" title="wait/notify/notifyall"></a>wait/notify/notifyall</h1><p><img src="/2018/09/09/concurrency-2/object.png" alt="hashtable">  </p>
-<p>Object对象中都包含wait和notify的方法。<strong>注意这一对方法是在Object对象中的。</strong><br>使得当前线程进入该对象的等待队列中，直到该对象调用notify方法才会从等待队列中出来。<strong>但线程是否能够继续从等待的位置继续运行，还要看线程是否能重新获取到锁。只有重新获取到锁以后才能继续执行</strong>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">package demo.basic.waitnotify;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * wait &amp; notify 样例</span><br><span class="line"> */</span><br><span class="line">public class WaitNotifyDemo &#123;</span><br><span class="line">    public static Object lock = new Object();</span><br><span class="line"></span><br><span class="line">    static class Thread1 extends Thread &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot;:&quot; + Thread.currentThread().getName() + &quot; start !&quot;);</span><br><span class="line">            //线程竞争锁</span><br><span class="line">            synchronized (lock) &#123;</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot;:&quot; + Thread.currentThread().getName() + &quot; get lock !&quot;);</span><br><span class="line">                try &#123;</span><br><span class="line">                    System.out.println(System.currentTimeMillis() + &quot;:&quot; + Thread.currentThread().getName() + &quot; wait !&quot;);</span><br><span class="line">                    /**</span><br><span class="line">                     * @see 通过锁lock的wait方法，是的当前 线程进入了一个竞争锁lock的队列。只有当锁再次调用notify方法时会队列中随机一个线程唤醒</span><br><span class="line">                     */</span><br><span class="line">                    lock.wait();</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                //唤醒的线程如果还能拿到锁，则还会继续执行</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot;:&quot; + Thread.currentThread().getName() + &quot; be  notify !&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    static class Thread2 extends Thread &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot;:&quot; + Thread.currentThread().getName() + &quot; start !&quot;);</span><br><span class="line">            //线程竞争锁</span><br><span class="line">            synchronized (lock) &#123;</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot;:&quot; + Thread.currentThread().getName() + &quot; notify !&quot;);</span><br><span class="line">                //从等待锁lock的队列中随机唤醒一个线程</span><br><span class="line">                lock.notify();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void testWaitNotify() &#123;</span><br><span class="line">        Thread1 thread1 = new Thread1();</span><br><span class="line">        Thread2 thread2 = new Thread2();</span><br><span class="line">        thread1.start();</span><br><span class="line">//        thread2.start();</span><br><span class="line">        //主线程sleep一秒后再启动线程2保证线程1先执行避免线程1执行后wait就再没有线程来唤醒</span><br><span class="line">        try &#123;</span><br><span class="line">            Thread.sleep(1000);</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        thread2.start();</span><br><span class="line">//        thread1.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        testWaitNotify();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>从样例代码中可以看到，两个线程共享了对象lock，每次在wait操作和notify操作的时候都首先需要获取到lock的锁，<strong>wait/notify的操作都必须保证在同步代码块中</strong>。同时也可以想到当线程1中lock执行wait之后，线程1就进入了lock对象的等待线程队列中了，这个时候线程1也就释放了lock的锁。这样线程2才有机会获取到lock的锁，从而通过lock调用notify来让暂停的线程1从lock的等待线程队列中出来。这个时候线程1还需要再次竞争lock的锁才能从等待的位置继续执行。</p>
-<h2 id="suspend-resume"><a href="#suspend-resume" class="headerlink" title="suspend/resume"></a>suspend/resume</h2><p>Thread提供实例方法suspend来暂停当前线程，并不会释放锁，知道当前线程调用resume才会重新激活继续执行。<br><strong>这一对方法目前已经废弃</strong></p>
-<h3 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h3><ul>
-<li>suspend之后，不会释放锁</li>
-<li>一旦resume先于suspend执行，即suspend之后再也没有resume操作，当前线程会一直挂起。并且不会释放其占有的资源，从而影响别的线程。  </li>
-</ul>
-<h2 id="与Sleep的区别"><a href="#与Sleep的区别" class="headerlink" title="与Sleep的区别"></a>与Sleep的区别</h2><ul>
-<li>wait操作必须在同步代码块中，同时会释放锁，而且wait方法是Object的实例方法。</li>
-<li>sleep只是让线程暂停一定时长，是Thread的静态方法，并不会释放资源（<strong>躺下睡赖着不走</strong>）。</li>
-</ul>
-<h1 id="join"><a href="#join" class="headerlink" title="join"></a>join</h1><p>Thread的实例方法，会阻塞当前线程，直到目标线程运行完毕。<strong>其实质等同于当前线程进入目前线程的等待线程队列（wait操作），直到目前线程执行完毕后当前线程再继续</strong>。</p>
-<h1 id="yeild"><a href="#yeild" class="headerlink" title="yeild"></a>yeild</h1><p>Thread的静态方法，当前线程主动让出CPU，这样多线程会重新开始竞争CPU，所以当线程调用yeild之后，还是有可能又是其获取到CPU继续执行。</p>
-<blockquote>
-<p><strong>对于某些线程的工作并不重要，优先级不高，害怕其占用太多CPU资源，可以时常通过yeild方法，给予其他线程更多的工作机会</strong></p>
-</blockquote>
-<h1 id="守护线程"><a href="#守护线程" class="headerlink" title="守护线程"></a>守护线程</h1><p>在start方法之前通过setDaemon(true)来设置线程为守护线程。<strong>当所有的用户线程都结束，守护线程才会结束，jvm才会停止</strong></p>
-<h1 id="线程优先级"><a href="#线程优先级" class="headerlink" title="线程优先级"></a>线程优先级</h1><p><img src="/2018/09/09/concurrency-2/优先级.png" alt="hashtable">  </p>
-<p>通过实例方法setPriority来设置优先级。java中通过1到10来表示线程的优先级，数值越大的优先级越高。优先级越高越容易赢得资源的竞争。</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>《实战java 高并发程序设计》葛一鸣 郭超 编著</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2297,7 +2286,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2319,7 +2308,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>

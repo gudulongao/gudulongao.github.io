@@ -88,7 +88,7 @@
 <meta property="og:description" content="相关指令查看存储引擎1show engines 查看当前数据库支持的存储引擎  从结果中可以看到，mysql数据库默认采用的存储引擎是InnoDB。 设置存储引擎 可以在创建表的时候通过ENGINE来指定存储引擎。  123456CREATE TABLE country(    country_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,    cou">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2018/09/19/mysql-engine/showengines.png">
-<meta property="og:updated_time" content="2018-09-19T07:54:59.923Z">
+<meta property="og:updated_time" content="2018-09-20T08:05:11.376Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySql存储引擎">
 <meta name="twitter:description" content="相关指令查看存储引擎1show engines 查看当前数据库支持的存储引擎  从结果中可以看到，mysql数据库默认采用的存储引擎是InnoDB。 设置存储引擎 可以在创建表的时候通过ENGINE来指定存储引擎。  123456CREATE TABLE country(    country_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,    cou">
@@ -356,7 +356,12 @@
 <li>可以通过修改表结构来设置存储引擎</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALERT TABLE 表名 ENGINE = INNODB;</span><br></pre></td></tr></table></figure>
-<h1 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h1><p><strong>MySql5.5.8版本以后的默认的存储引擎</strong>。</p>
+<h1 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h1><ul>
+<li><strong>MySql5.5.8版本以后的默认的存储引擎</strong>。</li>
+<li>支持事务，支持行锁。支持外键。</li>
+<li>支持自增（AUTO_INCREMENT）。自增列必须是非空，值唯一。插入操作未给自增列注入数据，则该列的数据为0或者null，插入的值为自增后的数据。</li>
+<li></li>
+</ul>
 <h1 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h1><h1 id="MEMORY"><a href="#MEMORY" class="headerlink" title="MEMORY"></a>MEMORY</h1>
       
     </div>
@@ -396,6 +401,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/20/mysql-command/" rel="prev" title="MySql常用操作命令">
+                MySql常用操作命令 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -492,7 +501,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -514,7 +523,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
