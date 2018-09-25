@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="小磊砸的布劳格">
 <meta property="og:description" content="事务是数据库并发控制的基本单元。 事务的属性 原子性(Atomicity)：事务中的操作要么全部执行成功要么全部执行失败。 一致性(consistency)：事务执行前后，数据库中的数据都满足数据的完整性，符合业务需求(比如转账操作，一个账户的钱减少另一个账户的钱相应的减少。这种业务操作需要在一个事务中，这样在转账操作才会符合我们的业务需求)。   隔离型(isolation)：事务之间是隔离的，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-25T15:25:01.619Z">
+<meta property="og:updated_time" content="2018-09-25T15:54:14.346Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mysql事务">
 <meta name="twitter:description" content="事务是数据库并发控制的基本单元。 事务的属性 原子性(Atomicity)：事务中的操作要么全部执行成功要么全部执行失败。 一致性(consistency)：事务执行前后，数据库中的数据都满足数据的完整性，符合业务需求(比如转账操作，一个账户的钱减少另一个账户的钱相应的减少。这种业务操作需要在一个事务中，这样在转账操作才会符合我们的业务需求)。   隔离型(isolation)：事务之间是隔离的，">
@@ -345,10 +345,10 @@
       
         <p>事务是数据库并发控制的基本单元。</p>
 <h1 id="事务的属性"><a href="#事务的属性" class="headerlink" title="事务的属性"></a>事务的属性</h1><ul>
-<li>原子性(Atomicity)：事务中的操作要么全部执行成功要么全部执行失败。</li>
-<li>一致性(consistency)：事务执行前后，数据库中的数据都满足数据的完整性，符合业务需求(比如转账操作，一个账户的钱减少另一个账户的钱相应的减少。这种业务操作需要在一个事务中，这样在转账操作才会符合我们的业务需求)。  </li>
-<li>隔离型(isolation)：事务之间是隔离的，互相不影响的。</li>
-<li>持久性(durability)：事务提交后，对于数据库的修改是永久性的。</li>
+<li><strong>原子性(Atomicity)</strong>：事务中的操作要么全部执行成功要么全部执行失败。</li>
+<li><strong>一致性(consistency)</strong>：事务执行前后，数据库中的数据都满足数据的完整性，符合业务需求(比如转账操作，一个账户的钱减少另一个账户的钱相应的减少。这种业务操作需要在一个事务中，这样在转账操作才会符合我们的业务需求)。  </li>
+<li><strong>隔离型(isolation)</strong>：事务之间是隔离的，互相不影响的。</li>
+<li><strong>持久性(durability)</strong>：事务提交后，对于数据库的修改是永久性的。</li>
 </ul>
 <h1 id="事务并发问题"><a href="#事务并发问题" class="headerlink" title="事务并发问题"></a>事务并发问题</h1><ul>
 <li>脏读：事务A读取了事务B未提交修改的数据，后续事务B回滚，则A读取的数据为脏数据。</li>
