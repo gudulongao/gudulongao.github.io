@@ -88,7 +88,8 @@
 <meta property="og:description" content="相关指令查看存储引擎1show engines 查看当前数据库支持的存储引擎  从结果中可以看到，mysql数据库默认采用的存储引擎是InnoDB。 设置存储引擎 可以在创建表的时候通过ENGINE来指定存储引擎。  123456CREATE TABLE country(    country_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,    cou">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2018/09/19/mysql-engine/showengines.png">
-<meta property="og:updated_time" content="2018-09-20T08:05:11.376Z">
+<meta property="og:image" content="http://yoursite.com/2018/09/19/mysql-engine/increment.png">
+<meta property="og:updated_time" content="2018-09-25T06:16:05.428Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySql存储引擎">
 <meta name="twitter:description" content="相关指令查看存储引擎1show engines 查看当前数据库支持的存储引擎  从结果中可以看到，mysql数据库默认采用的存储引擎是InnoDB。 设置存储引擎 可以在创建表的时候通过ENGINE来指定存储引擎。  123456CREATE TABLE country(    country_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,    cou">
@@ -359,10 +360,16 @@
 <h1 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h1><ul>
 <li><strong>MySql5.5.8版本以后的默认的存储引擎</strong>。</li>
 <li>支持事务，支持行锁。支持外键。</li>
-<li>支持自增（AUTO_INCREMENT）。自增列必须是非空，值唯一。插入操作未给自增列注入数据，则该列的数据为0或者null，插入的值为自增后的数据。</li>
-<li></li>
+<li>支持自增（AUTO_INCREMENT）。支持自增的列必须是数值型的主键。</li>
+<li>表结构存储在.frm文件中，数据和索引存储在innodb_data_home和innodb_data_path表空间中。</li>
+<li>数据存储采用聚集的方式按照主键的顺序存储。如果在创建表的时候没有指定主键，存储引擎会为每一行数据默认的生成一个6字节长度rowID，并以此作为主键。</li>
+<li>InnoDB采用多版本并发控制(MVCC)来控制并发。支持数据库的4种隔离机制。</li>
 </ul>
-<h1 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h1><h1 id="MEMORY"><a href="#MEMORY" class="headerlink" title="MEMORY"></a>MEMORY</h1>
+<p><img src="/2018/09/19/mysql-engine/increment.png" alt="包装生成线程安全的hashmap"></p>
+<h1 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h1><h1 id="MEMORY"><a href="#MEMORY" class="headerlink" title="MEMORY"></a>MEMORY</h1><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>存储引擎：<a href="https://www.cnblogs.com/shijiaqi1066/p/3857808.html" target="_blank" rel="noopener">https://www.cnblogs.com/shijiaqi1066/p/3857808.html</a></p>
+</blockquote>
+
       
     </div>
     
@@ -501,7 +508,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -512,7 +519,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -523,7 +530,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
@@ -556,7 +563,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#相关指令"><span class="nav-number">1.</span> <span class="nav-text">相关指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#查看存储引擎"><span class="nav-number">1.1.</span> <span class="nav-text">查看存储引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置存储引擎"><span class="nav-number">1.2.</span> <span class="nav-text">设置存储引擎</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#InnoDB"><span class="nav-number">2.</span> <span class="nav-text">InnoDB</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MyISAM"><span class="nav-number">3.</span> <span class="nav-text">MyISAM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MEMORY"><span class="nav-number">4.</span> <span class="nav-text">MEMORY</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#相关指令"><span class="nav-number">1.</span> <span class="nav-text">相关指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#查看存储引擎"><span class="nav-number">1.1.</span> <span class="nav-text">查看存储引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置存储引擎"><span class="nav-number">1.2.</span> <span class="nav-text">设置存储引擎</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#InnoDB"><span class="nav-number">2.</span> <span class="nav-text">InnoDB</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MyISAM"><span class="nav-number">3.</span> <span class="nav-text">MyISAM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MEMORY"><span class="nav-number">4.</span> <span class="nav-text">MEMORY</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>

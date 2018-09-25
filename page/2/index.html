@@ -239,6 +239,565 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/10/concurrency-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/10/concurrency-4/" itemprop="url">线程池</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-10T23:27:13+08:00">
+                2018-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/高并发/" itemprop="url" rel="index">
+                    <span itemprop="name">高并发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/10/concurrency-4/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/10/concurrency-4/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="为什么要使用线程池"><a href="#为什么要使用线程池" class="headerlink" title="为什么要使用线程池"></a>为什么要使用线程池</h1><ul>
+<li>线程的创建和销毁都需要耗费时间</li>
+<li>线程也是需要瓜分内存空间，不加节制的增加线程会造成内存不足（oom异常）  </li>
+<li>大量的线程造成的内存耗费，导致垃圾回收的时间加长（gc停顿）  </li>
+</ul>
+<h1 id="JDK提供的线程池"><a href="#JDK提供的线程池" class="headerlink" title="JDK提供的线程池"></a>JDK提供的线程池</h1><p>Executor框架提供了几种线程池，可以通过Executors工厂类来获取。</p>
+<h2 id="固定线程数线程池（newFiexdThreadPool）"><a href="#固定线程数线程池（newFiexdThreadPool）" class="headerlink" title="固定线程数线程池（newFiexdThreadPool）"></a>固定线程数线程池（newFiexdThreadPool）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecutorService executorService = Executors.newFixedThreadPool(20);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/09/10/concurrency-4/executors-1.png" alt="包装生成线程安全的hashmap"></p>
+<p>固定线程数线程池，其线程数量在初始化时已固定，不会发生变化，提交任务时，如果有空闲线程时，则立即执行。如果没有，任务会进入一个任务队列，从源码中可以看到其任务队列为<strong>LinkedBlockingQueue</strong>。</p>
+<h2 id="单个线程线程池-newSingleThreadExecutor"><a href="#单个线程线程池-newSingleThreadExecutor" class="headerlink" title="单个线程线程池(newSingleThreadExecutor)"></a>单个线程线程池(newSingleThreadExecutor)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecutorService executorService = Executors.newSingleThreadExecutor();</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/09/10/concurrency-4/executors-2.png" alt="包装生成线程安全的hashmap"></p>
+<p>单一线程池，其线程数只有一个，当提交任务多于1个时，任务会进入任务队列，待线程空闲时按照任务队列中先进先出的顺序来执行。通过源码可以看到，单个线程池与固定线程数线程池的实现逻辑类似，都是使用<strong>LinkedBlockingQueue</strong>来作为任务队列的。</p>
+<h2 id="不定线程数线程池-newCachedThreadPool"><a href="#不定线程数线程池-newCachedThreadPool" class="headerlink" title="不定线程数线程池(newCachedThreadPool)"></a>不定线程数线程池(newCachedThreadPool)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecutorService executorService = Executors.newCachedThreadPool();</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/09/10/concurrency-4/executors-3.png" alt="包装生成线程安全的hashmap"></p>
+<p>不定线程数线程池，其线程数量是动态变化的，提交任务时，如果有空闲线程，则立即执行，如果没有，则会创建新的线程处理任务。当所有执行完毕任务后，会返回到线程池中等待复用。从源码冲可以看到，其使用<strong>SynchronsQueue</strong>作为任务队列。</p>
+<h2 id="单个定时任务线程池（newSingleThreadScheduledExecutor）"><a href="#单个定时任务线程池（newSingleThreadScheduledExecutor）" class="headerlink" title="单个定时任务线程池（newSingleThreadScheduledExecutor）"></a>单个定时任务线程池（newSingleThreadScheduledExecutor）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecutorService executorService = Executors.newSingleThreadScheduledExecutor();</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/09/10/concurrency-4/executors-4.png" alt="包装生成线程安全的hashmap"></p>
+<p>线程数为1的可定时执行任务的线程池。</p>
+<h2 id="定时任务线程池（newScheduledThreadPool）"><a href="#定时任务线程池（newScheduledThreadPool）" class="headerlink" title="定时任务线程池（newScheduledThreadPool）"></a>定时任务线程池（newScheduledThreadPool）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecutorService executorService = Executors.newScheduledThreadPool(20);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/09/10/concurrency-4/executors-5.png" alt="包装生成线程安全的hashmap"></p>
+<p>可以指定线程数的可执行定时任务的线程池。</p>
+<h2 id="执行定时任务"><a href="#执行定时任务" class="headerlink" title="执行定时任务"></a>执行定时任务</h2><p>对于定时任务的线程池，其包含两个方法，用来运行定时任务。</p>
+<p><img src="/2018/09/10/concurrency-4/executors-6.png" alt="包装生成线程安全的hashmap"></p>
+<ul>
+<li>scheduleAtFixedRate 以上一个任务的开始时间为起点，等待period时长之后再调用下一个任务。即period的时长是包括上一个任务的运行时间的，<strong>如果上一个任务运行时长&gt;period时长，那么上一个任务执行完毕后会立即执行下一个任务</strong>。  </li>
+<li>scheduleWithFixedDelay 以上一个任务的结束时间为起点，等待delay时长以后再调用下一个任务。<strong>即下一个任务等待的时长=上一个任务运行的时长+delay时长</strong>。</li>
+</ul>
+<h1 id="线程池的内部实现"><a href="#线程池的内部实现" class="headerlink" title="线程池的内部实现"></a>线程池的内部实现</h1><p>从jdk中提供的几种线程池的源码中可以看到，其内部都是用了<strong>ThreadPoolExecutor</strong>。</p>
+<p><img src="/2018/09/10/concurrency-4/threadpoolexecutor.png" alt="包装生成线程安全的hashmap"></p>
+<h2 id="任务队列"><a href="#任务队列" class="headerlink" title="任务队列"></a>任务队列</h2><p>创建线程池的时候，需要指定线程池中的人物队列，从ThreadPoolExecutor的构造函数中可以看到，任务队列都是实现了接口BlockingQueue的队列对象。常用的人物队列有有<strong>SynchronousQueue，ArrayBlockingQueue，LinkedBlockingQueue，PriorityBlockQueue</strong>。</p>
+<h3 id="零界队列（SynchronousQueue）"><a href="#零界队列（SynchronousQueue）" class="headerlink" title="零界队列（SynchronousQueue）"></a>零界队列（SynchronousQueue）</h3><p>SynchronousQueue 是一个没有容量的队列。每一次插入操作都必须等待一个删除操作。反之，每一个删除操作都等待对应的插入操作。<strong>即一旦有元素进入队列（生产者插入）会被立即删除（消费者删除），更像是生产者利用该队列快速的将元素传递给消费者</strong>。<br><strong>newCachedThreadPool的线程池就使用了SynchronousQueue来作为任务队列</strong>，当有空闲线程时立即执行任务，当没有空闲线程的时候，任务会插入到SynchronousQueue中，由于SynchronousQueue的特性，当插入的时候就必须要有对应的删除，即需要立即创建新的线程从任务队列中获取任务。如果当前线程数已到达最大线程数。会触发拒绝策略，<strong>故使用SynchronousQueue的线程池其核心线程数要很大，否则很容易触发拒绝策略</strong>。</p>
+<h3 id="有界队列（ArrayBlockingQueue）"><a href="#有界队列（ArrayBlockingQueue）" class="headerlink" title="有界队列（ArrayBlockingQueue）"></a>有界队列（ArrayBlockingQueue）</h3><p>ArrayBlockingQueue 是一个有界队列。构造时需要指定初始容量。<br>当有任务时，线程池处理线程的逻辑如下：  </p>
+<ul>
+<li>线程数&lt;coreSize，创建线程，立即执行任务。  </li>
+<li>线程数&gt;coreSize，将任务添加到任务队列，等有空闲线程时再从线程中获取任务执行。  </li>
+<li>任务队列已满，线程数&lt;maxSize，创建新线程执行任务。</li>
+<li>任务队列已满，线程数=maxSize，触发拒绝策略。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">package demo.concurrency.threadpool;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.ArrayBlockingQueue;</span><br><span class="line">import java.util.concurrent.ThreadPoolExecutor;</span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">public class ThreadPoolDemo &#123;</span><br><span class="line">    public static void testArrayBlockingQueueThreadPool() &#123;</span><br><span class="line">        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(0, 2, 50000, TimeUnit.HOURS,new ArrayBlockingQueue&lt;Runnable&gt;(1));</span><br><span class="line">        Runnable longTimeTask = new Runnable() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    System.out.println(&quot;long time &quot;+Thread.currentThread().getName() + &quot; start ...&quot;);</span><br><span class="line">                    Thread.sleep(6000);</span><br><span class="line">                    System.out.println(&quot;long time &quot;+Thread.currentThread().getName() + &quot; done!&quot;);</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        Runnable quickTask = new Runnable() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    System.out.println(&quot;short time &quot;+Thread.currentThread().getName() + &quot; start ...&quot;);</span><br><span class="line">                    Thread.sleep(3000);</span><br><span class="line">                    System.out.println(&quot;short time &quot;+Thread.currentThread().getName() + &quot; done!&quot;);</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        threadPoolExecutor.submit(longTimeTask);</span><br><span class="line">        threadPoolExecutor.submit(longTimeTask);</span><br><span class="line">        System.out.println(&quot;thread pool size :&quot; + threadPoolExecutor.getPoolSize() + &quot; active :&quot; + threadPoolExecutor.getActiveCount());</span><br><span class="line">        threadPoolExecutor.submit(quickTask);</span><br><span class="line">        System.out.println(&quot;thread pool size :&quot; + threadPoolExecutor.getPoolSize() + &quot; active :&quot; + threadPoolExecutor.getActiveCount());</span><br><span class="line">        try &#123;</span><br><span class="line">            System.out.println(&quot;thread pool sleep...&quot;);</span><br><span class="line">            Thread.sleep(10000);</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;thread pool size :&quot; + threadPoolExecutor.getPoolSize() + &quot; active :&quot; + threadPoolExecutor.getActiveCount());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        testArrayBlockingQueueThreadPool();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输入如下：</p>
+<p><img src="/2018/09/10/concurrency-4/arrayblockqueue.png" alt="包装生成线程安全的hashmap"></p>
+<p>当时看到线程池基于有界队列任务的线程维护策略中对紧急状态时有些疑惑。故写了样例。样例中通过有界队列ArrayBlockingQueue来作为线程池的任务队列，线程池中提交了两种任务，一种长时间运行一种段时间运行。主要是为了测试当任务来临时，任务队列已满，线程数&lt;maxSize时会创建新的线程来执行任务，当最终任务执行完毕后，线程池中还保留的线程数是coreSize还是&gt;coreSize，通过查看输出可以看到，当紧急任务来临时，线程池会拓展线程数到maxSize,当任务执行完毕后，线程池并不会将&gt;coreSize的线程给销毁，会保留。</p>
+<h3 id="无界队列（LinkedBlockingQueue）"><a href="#无界队列（LinkedBlockingQueue）" class="headerlink" title="无界队列（LinkedBlockingQueue）"></a>无界队列（LinkedBlockingQueue）</h3><ul>
+<li>线程数&lt;coreSize，新建线程，立即执行任务。  </li>
+<li>线程数&gt;coreSize，将任务添加到对了，等待有空闲线程时执行任务。由于任务队列是无界队列，可以不断的增加队列长度，故<strong>直到系统资源耗尽，任务会一直添加到任务队列，也不会触发拒绝策略</strong>。  </li>
+</ul>
+<h3 id="优先级队列（PriorityBlockQueue）"><a href="#优先级队列（PriorityBlockQueue）" class="headerlink" title="优先级队列（PriorityBlockQueue）"></a>优先级队列（PriorityBlockQueue）</h3><p>线程池会根据任务的优先级来优先选择优先级高的任务优先执行。</p>
+<h2 id="拒绝策略"><a href="#拒绝策略" class="headerlink" title="拒绝策略"></a>拒绝策略</h2><p>对于有界队列或者零界队列时，当没有空闲线程，线程数到达maxSize则会触发拒绝策略。jdk提供的4种拒绝策略：  </p>
+<ul>
+<li>AbortPolicy 直接抛出异常。  </li>
+<li>CallerRunsPolicy 如果线程池没有停止，则直接在调用该任务的线程中执行。  </li>
+<li>DiscardOledestPolicy 丢弃最老的任务，由于除了优先级队列，有界和无界队列都是按照FIFO先进先出策略来处理任务，故最老的任务就是即将要被执行的任务。</li>
+<li>DiscardPolicy 直接丢弃当前任务。</li>
+</ul>
+<p>其他三个策略都好理解，对于CallerRunsPolicy，我的感觉就是当线程数到达maxSize的时候，对于新提交的任务，会直接在调用线程池提交任务的线程中来执行该任务，从而使得提交任务的线程被迫暂停原由的工作转而执行任务。</p>
+<blockquote>
+<p>参考样例：<a href="https://www.cnblogs.com/lic309/p/4564507.html" target="_blank" rel="noopener">https://www.cnblogs.com/lic309/p/4564507.html</a></p>
+</blockquote>
+<h3 id="自定义拒绝策略-RejectedExecutionHandler"><a href="#自定义拒绝策略-RejectedExecutionHandler" class="headerlink" title="自定义拒绝策略(RejectedExecutionHandler)"></a>自定义拒绝策略(RejectedExecutionHandler)</h3><p>实现接口RejectedExecutionHandler来自定义拒绝策略。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">package demo.concurrency.threadpool;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.*;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @descripte 线程池策略样例</span><br><span class="line"> */</span><br><span class="line">public class RejectedDemo &#123;</span><br><span class="line">    /**</span><br><span class="line">     * 自定义任务</span><br><span class="line">     */</span><br><span class="line">    class DemoRunnable implements Runnable &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; run &quot;);</span><br><span class="line">            try &#123;</span><br><span class="line">                Thread.sleep(1000);</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 自定义拒绝策略</span><br><span class="line">     */</span><br><span class="line">    class RejectedHandler implements RejectedExecutionHandler &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) &#123;</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; rejected !&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void test() &#123;</span><br><span class="line">        /**</span><br><span class="line">         * 自定义线程池</span><br><span class="line">         */</span><br><span class="line">        ExecutorService executorService = new ThreadPoolExecutor(5, 5, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingDeque&lt;Runnable&gt;(10), Executors.defaultThreadFactory(), new RejectedHandler());</span><br><span class="line">        DemoRunnable demoRunnable = new DemoRunnable();</span><br><span class="line">        for (int i = 0; i &lt; Integer.MAX_VALUE; i++) &#123;</span><br><span class="line">            executorService.submit(demoRunnable);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        RejectedDemo demo = new RejectedDemo();</span><br><span class="line">        demo.test();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="线程池拓展"><a href="#线程池拓展" class="headerlink" title="线程池拓展"></a>线程池拓展</h1><h2 id="自定义ThreadFactory"><a href="#自定义ThreadFactory" class="headerlink" title="自定义ThreadFactory"></a>自定义ThreadFactory</h2><p>在线程池中创建线程时，会通过线程工厂来创建线程，通过工厂来创建线程可以个性化的指定线程名称，线程组，优先级等，便于后续的维护。<br>继承ThreadFactory，重写newThread方法，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class DemoFactory implements ThreadFactory &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public Thread newThread(Runnable r) &#123;</span><br><span class="line">            Thread t = new Thread(r);</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; create new thread !&quot;);</span><br><span class="line">            return t;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="拓展ThreadExecutor-beforeExecute-AfterExecute和terminated"><a href="#拓展ThreadExecutor-beforeExecute-AfterExecute和terminated" class="headerlink" title="拓展ThreadExecutor(beforeExecute,AfterExecute和terminated)"></a>拓展ThreadExecutor(beforeExecute,AfterExecute和terminated)</h2><p>ThreadPoolExecutor支持个性化拓展。</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>beforeExecute</td>
+<td>在执行任务前调用</td>
+</tr>
+<tr>
+<td>afterExecute</td>
+<td>在执行任务后处理</td>
+</tr>
+<tr>
+<td>terminated</td>
+<td>线程池关闭时处理</td>
+</tr>
+</tbody>
+</table>
+<h2 id="查看异常堆栈"><a href="#查看异常堆栈" class="headerlink" title="查看异常堆栈"></a>查看异常堆栈</h2><ul>
+<li>最好使用execute方法来提交任务，而不是使用submit。submit会吃掉异常。</li>
+<li>可以重写submit方法，在submit进行提交任务时，包装一个新的任务，在新任务中执行原有任务，在执行的外层捕获异常并处理，这样我们可以通过submit来输出整个异常堆栈。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">        public Future&lt;?&gt; submit(Runnable task) &#123;</span><br><span class="line">            return super.submit(warp(task, Thread.currentThread().getId()));</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        private Runnable warp(final Runnable runnable, final long threadID)&#123;</span><br><span class="line">            return new Runnable() &#123;</span><br><span class="line">                @Override</span><br><span class="line">                public void run() &#123;</span><br><span class="line">                    try &#123;</span><br><span class="line">                        runnable.run();</span><br><span class="line">                    &#125; catch (Exception e) &#123;</span><br><span class="line">                        new Exception(&quot;MyThreadPool occured a exception at &quot; + threadID).printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>《实战java 高并发程序设计》葛一鸣 郭超 编著  </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/09/concurrency-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/09/concurrency-3/" itemprop="url">锁</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-09T23:21:44+08:00">
+                2018-09-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/高并发/" itemprop="url" rel="index">
+                    <span itemprop="name">高并发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/09/concurrency-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/09/concurrency-3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="重入锁-ReentrantLock"><a href="#重入锁-ReentrantLock" class="headerlink" title="重入锁(ReentrantLock)"></a>重入锁(ReentrantLock)</h1><p>实现接口Lock。显示进行加锁，释放锁的操作使得并发处理时更加的灵活。</p>
+<h2 id="同步代码块（lock-unlock）"><a href="#同步代码块（lock-unlock）" class="headerlink" title="同步代码块（lock/unlock）"></a>同步代码块（lock/unlock）</h2><p><img src="/2018/09/09/concurrency-3/reentrantlock.png" alt="包装生成线程安全的hashmap"></p>
+<p>如图是使用重入锁来进行并发操作的样例，可以看到两个线程都共享了重入锁lock，在同步代码块的开始需要手工显示的进行加锁。在同步代码块的最后，需要手工显示的释放锁。<br><strong>重入锁名称的缘由是指在同一个线程内，可以多次进行加锁，同时，最终也要对等的多次进行释放锁。</strong>  </p>
+<h2 id="响应中断-lockwithinterruptibly"><a href="#响应中断-lockwithinterruptibly" class="headerlink" title="响应中断(lockwithinterruptibly)"></a>响应中断(lockwithinterruptibly)</h2><p>重入锁相比synchronized，在线程处理临界资源的时候，除了获取锁继续执行和阻塞之外，使用重入锁还有个优势就是可以支持中断。即在未获取到临界资源导致线程阻塞的时候，可以通过响应中断来停止阻塞的状态。<strong>这种响应中断的方式对于解决死锁有很大的帮助。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line">package demo.concurrency.reentranlock;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.locks.ReentrantLock;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @descripte 通过重入锁lockInterruptibly方法加锁来解决死锁问题</span><br><span class="line"> */</span><br><span class="line">public class SolveDeadLockByLockInterruptlyDemo &#123;</span><br><span class="line">    private static LockObject readLock = new LockObject(&quot;readlock&quot;);</span><br><span class="line">    private static LockObject writeLock = new LockObject(&quot;writeLock&quot;);</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 先执行的线程</span><br><span class="line">     */</span><br><span class="line">    static class FirstThread extends Thread &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                //首先获取readLock</span><br><span class="line">                readLock.lockWithInterrupt();</span><br><span class="line"></span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; sleep 5 s&quot;);</span><br><span class="line">                //线程sleep5秒，给另一个线程获取writelock留时间</span><br><span class="line">                Thread.sleep(5000);</span><br><span class="line"></span><br><span class="line">                //再获取writeLock的锁</span><br><span class="line">                writeLock.lockWithInterrupt();</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                //处理中断响应</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; interrupt &quot;);</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                //释放锁</span><br><span class="line">                readLock.unLock();</span><br><span class="line">                writeLock.unLock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 后执行的线程</span><br><span class="line">     */</span><br><span class="line">    static class AfterThread extends Thread &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                //先获取writeLock的锁</span><br><span class="line">                writeLock.lockWithInterrupt();</span><br><span class="line"></span><br><span class="line">                //再获取readLock的锁</span><br><span class="line">                readLock.lockWithInterrupt();</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                //处理中断</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; interrupt &quot;);</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                //释放锁</span><br><span class="line">                readLock.unLock();</span><br><span class="line">                writeLock.unLock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 封装锁对象</span><br><span class="line">     */</span><br><span class="line">    static class LockObject &#123;</span><br><span class="line">        //重入锁</span><br><span class="line">        private ReentrantLock lock = new ReentrantLock();</span><br><span class="line">        //锁的名称</span><br><span class="line">        private String name = null;</span><br><span class="line"></span><br><span class="line">        /**</span><br><span class="line">         * 释放锁</span><br><span class="line">         */</span><br><span class="line">        public void unLock() &#123;</span><br><span class="line">            //通过isHeldByCurrentThread方法来判断当前线程是否拥有该锁，拥有再释放</span><br><span class="line">            if (lock.isHeldByCurrentThread()) &#123;</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; unlock &quot; + name);</span><br><span class="line">                lock.unlock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        /**</span><br><span class="line">         * 可以处理中断事件的加锁，即当有线程在持有该锁的过程中遇到了中断事件，会抛出InterruptedException来进行中断响应</span><br><span class="line">         *</span><br><span class="line">         * @throws InterruptedException</span><br><span class="line">         */</span><br><span class="line">        public void lockWithInterrupt() throws InterruptedException &#123;</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; wait &quot; + name);</span><br><span class="line">            lock.lockInterruptibly();</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; locked &quot; + name);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public String getName() &#123;</span><br><span class="line">            return name;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public LockObject() &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public LockObject(String name) &#123;</span><br><span class="line">            this.name = name;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void testSolveDeadLock() &#123;</span><br><span class="line">        FirstThread firstThread = new FirstThread();</span><br><span class="line">        AfterThread afterThread = new AfterThread();</span><br><span class="line">        //先启动线程FirstThread</span><br><span class="line">        firstThread.start();</span><br><span class="line">        try &#123;</span><br><span class="line">            //主线程等待2秒方便线程FirstThread获取readLock</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; sleep 2 s&quot;);</span><br><span class="line">            Thread.sleep(2000);</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        //线程AfterThread启动</span><br><span class="line">        afterThread.start();</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            //主线程等待死锁情况发生，FirstThread先拿到了readLock，等待writeLock。AfterThread先拿到了writeLock，等待redLock。两个线程构成死锁</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; sleep 8 s&quot;);</span><br><span class="line">            Thread.sleep(8000);</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //主线程将线程AfterThread中断。当线程AfterThread中断后会最终再finally里释放自己锁持有的锁，即被中断线程无法完成任务，但可以成全别的线程。</span><br><span class="line">        System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; interrupted &quot;);</span><br><span class="line">        afterThread.interrupt();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        testSolveDeadLock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的样例就是营造一个死锁的场景，FirstThread运行后会获取readlock，成功后又想获取writelock。而AfterThread运行后会先获取writelock，成功后想获取readlock。这个时候两个线程就发生了死锁。两个线程都无法完成自己的工作。这个时候对FirstThread进行了中断，在FirstThread处理中断异常的时候，释放了所拥有的所有资源，而AfterThread便成功获取了readlock而完成工作。<br><strong>重入锁的lockWithInterruptibly方法会有可能抛出InterruptedException异常，所以可以在catch里能够专门处理中断时的场景。</strong></p>
+<h2 id="限时等待-trylock，解决死锁"><a href="#限时等待-trylock，解决死锁" class="headerlink" title="限时等待(trylock，解决死锁)"></a>限时等待(trylock，解决死锁)</h2><p>为了避免死锁，除了支持中断的方式之外，重入锁还提供了这种限时等待的方式来避免发生死锁。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line">package demo.concurrency.reentranlock;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.locks.ReentrantLock;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @escripte 通过重入锁的tryLock方法来加锁解决死锁问题</span><br><span class="line"> */</span><br><span class="line">public class SolveDeadLockByTryLockDemo &#123;</span><br><span class="line">    private static LockObject lock1 = new LockObject(&quot;A&quot;);</span><br><span class="line">    private static LockObject lock2 = new LockObject(&quot;B&quot;);</span><br><span class="line"></span><br><span class="line">    static class FirstThread extends Thread &#123;</span><br><span class="line">        private boolean finishedFlag = false;</span><br><span class="line"></span><br><span class="line">        public FirstThread(String name) &#123;</span><br><span class="line">            super(name);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            while (!finishedFlag) &#123;</span><br><span class="line">                if (lock1.tryLock()) &#123;</span><br><span class="line">                    try &#123;</span><br><span class="line">                        Thread.sleep(5000);</span><br><span class="line">                        if (lock2.tryLock()) &#123;</span><br><span class="line">                            finishedFlag = true;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125; finally &#123;</span><br><span class="line">                        lock1.unLock();</span><br><span class="line">                        lock2.unLock();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                try &#123;</span><br><span class="line">                    Thread.sleep(5000);</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; finished job!&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    static class AfterThread extends Thread &#123;</span><br><span class="line">        private boolean finishedFlag = false;</span><br><span class="line"></span><br><span class="line">        public AfterThread(String name) &#123;</span><br><span class="line">            super(name);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            while (!finishedFlag) &#123;</span><br><span class="line">                if (lock2.tryLock()) &#123;</span><br><span class="line">                    try &#123;</span><br><span class="line">                        Thread.sleep(3000);</span><br><span class="line">                        if (lock1.tryLock()) &#123;</span><br><span class="line">                            finishedFlag = true;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125; finally &#123;</span><br><span class="line">                        lock1.unLock();</span><br><span class="line">                        lock2.unLock();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; finished job!&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 封装的锁对象</span><br><span class="line">     */</span><br><span class="line">    static class LockObject &#123;</span><br><span class="line">        private ReentrantLock lock = new ReentrantLock();</span><br><span class="line">        private String name;</span><br><span class="line"></span><br><span class="line">        public LockObject(String name) &#123;</span><br><span class="line">            this.name = name;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public void unLock() &#123;</span><br><span class="line">            if (lock.isHeldByCurrentThread()) &#123;</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; unlock &quot; + name);</span><br><span class="line">                lock.unlock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public boolean tryLock() &#123;</span><br><span class="line">            /**</span><br><span class="line">             * @see tryLock无参调用的时候，线程会立即获取锁，如果拿到则返回true，否之则反，tryLock可以有参调用，意义为当无法立即拿到锁会等待长时间</span><br><span class="line">             */</span><br><span class="line">            boolean flag = lock.tryLock();</span><br><span class="line">            if (flag) &#123;</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; lock &quot; + name + &quot; success &quot;);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; lock &quot; + name + &quot; failed &quot;);</span><br><span class="line">            &#125;</span><br><span class="line">            return flag;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void testTryLockSolveDeadLock() &#123;</span><br><span class="line">        FirstThread firstThread = new FirstThread(&quot;1&quot;);</span><br><span class="line">        AfterThread afterThread = new AfterThread(&quot;2&quot;);</span><br><span class="line">        firstThread.start();</span><br><span class="line">        afterThread.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        testTryLockSolveDeadLock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>根之前的样例类似，每个线程都是在不断的循环直到完成工作，FirstThread会先获取lock1的锁，再获取lock2的锁。如果没有能成功，则在finally里释放锁。AfterThread的内容一致只是获取锁的顺序不一样，先获取lock2的锁再获取lock1的锁。如果都不成功则释放所有的锁。因为两个线程获取到锁以后的等待时长是不一致的，所以总会有一个线程释放所有资源之后另个线程能够拿到所有所需的资源继续执行。这样就不会导致死锁发生。<br><strong>重入锁提供trylock方法来解决死锁问题，无参的trylock表示立即获取锁，如果成功则返回true，否则返回false，不会阻塞等待，有参的trylock有有两个参数，第一个是时长，第二个是时长的单位，指如果没有获取到锁会阻塞等待的时长，不会像synchronized那样一直阻塞到获取到锁。</strong></p>
+<p><img src="/2018/09/09/concurrency-3/trylock.png" alt="包装生成线程安全的hashmap"></p>
+<h2 id="公平锁（解决饥饿）"><a href="#公平锁（解决饥饿）" class="headerlink" title="公平锁（解决饥饿）"></a>公平锁（解决饥饿）</h2><p>线程运行的时候因为线程的优先级会导致优先级高的线程总会有更高的概率获取临界资源。就会导致优先级的线程总示无法获取临界区资源从而产生饥饿现象。<br>重入锁的构造可以注入是否采用公平锁，如果true则表明所有的线程在获取锁的时候按照申请的时间来排序，即先申请获取锁的线程先获取。  </p>
+<h3 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h3><p>公平锁需要额外的维护一个有序队列来保证线程申请锁的顺序。实现成本高，性能不如默认的非公平锁。</p>
+<h2 id="等待和继续（Condition）"><a href="#等待和继续（Condition）" class="headerlink" title="等待和继续（Condition）"></a>等待和继续（Condition）</h2><p>Object对象的实例方法wait/notify与synchronized结合，可以控制线程等待和继续执行。重入锁可以结合Condition的await/signal达到一样的效果。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">package demo.concurrency.reentranlock;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.locks.Condition;</span><br><span class="line">import java.util.concurrent.locks.ReentrantLock;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @descripte condition 样例 conditon的await和siginal与wait与notify类似</span><br><span class="line"> */</span><br><span class="line">public class ConditionDemo &#123;</span><br><span class="line">    private static ReentrantLock lock = new ReentrantLock();</span><br><span class="line">    private static Condition condition = lock.newCondition();</span><br><span class="line"></span><br><span class="line">    static class ThreadDemo extends Thread &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; get lock &quot;);</span><br><span class="line">                lock.lock();</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; await &quot;);</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; release lock &quot;);</span><br><span class="line">                condition.await();</span><br><span class="line"></span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; go on &quot;);</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                if (lock.isHeldByCurrentThread()) &#123;</span><br><span class="line">                    lock.unlock();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws InterruptedException &#123;</span><br><span class="line">        ThreadDemo threadDemo = new ThreadDemo();</span><br><span class="line">        threadDemo.start();</span><br><span class="line"></span><br><span class="line">        Thread.sleep(5000);</span><br><span class="line"></span><br><span class="line">        /**</span><br><span class="line">         * @see 通过condition进行signal的时候也必须实现拿到锁</span><br><span class="line">         */</span><br><span class="line">        lock.lock();</span><br><span class="line">        System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; get lock &quot;);</span><br><span class="line">        condition.signal();</span><br><span class="line">        System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; singnal &quot;);</span><br><span class="line">        lock.unlock();</span><br><span class="line">        System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; release lock &quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Condition是从重入锁而来。  </li>
+<li>与Object的wait和notify一样，使用condition的await/signal的时候，也必须先获取重入锁。  <h3 id="方法列表"><a href="#方法列表" class="headerlink" title="方法列表"></a>方法列表</h3></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>await()</td>
+<td>等待，将当前线程加入到condition的等待线程队列</td>
+</tr>
+<tr>
+<td>awaitUninterruptibly()</td>
+<td>等待，但无法响应中断</td>
+</tr>
+<tr>
+<td>boolean await(long timeout,TimeUnit unit)</td>
+<td>有限时长的等待</td>
+</tr>
+<tr>
+<td>signal()</td>
+<td>从condition的等待线程队列中随机去除一个线程</td>
+</tr>
+<tr>
+<td>singalAll()</td>
+<td>清空condition中等待线程队列的所有线程</td>
+</tr>
+</tbody>
+</table>
+<h2 id="与synchronized的区别"><a href="#与synchronized的区别" class="headerlink" title="与synchronized的区别"></a>与synchronized的区别</h2><ul>
+<li>synchronized不支持中断，即使用synchronzied处理并发的时候，线程只有两种状态：要么拿到锁成功执行，要么等待阻塞直到获取到锁。而对于重入锁，可以通过lockwithinterruptibly来支持中断响应，也可以通过trylock来限时等待锁。  </li>
+<li>synchronized容易产生死锁，即获取不到锁线程会一直阻塞也不释放资源。而重入锁在lockwithinterruptibly方法支持中断响应，即在获取不到锁阻塞的时间，会抛出InterruptException异常，我们可以在异常中释放资源，这样避免死锁的发生，甚至可以通过trylock的方式来获取锁，限时等待锁的时长甚至根本不等待。    </li>
+<li>synchronized结合Object对象的实例方法wait/notify来让线程等待/恢复执行。重入锁结合Condition的await/signal来让线程等待/恢复执行。  </li>
+<li>synchronzied是非公平锁，重入锁默认是非公平锁，支持公平锁。</li>
+</ul>
+<h1 id="信号量（Semaphore）"><a href="#信号量（Semaphore）" class="headerlink" title="信号量（Semaphore）"></a>信号量（Semaphore）</h1><p>synchronzied和ReentrantLock都限制在同步代码块中只能有一个线程。而信号量的作用是允许同步代码块中的线程可以有多个。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">package demo.concurrency.semaphore;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.ExecutorService;</span><br><span class="line">import java.util.concurrent.Executors;</span><br><span class="line">import java.util.concurrent.Semaphore;</span><br><span class="line">import java.util.concurrent.locks.ReentrantLock;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @descripte 信号量Semaphore和重入锁ReetranLock的混合使用</span><br><span class="line"> */</span><br><span class="line">public class SemaphoreReetranLockDemo &#123;</span><br><span class="line">    //构建信号量，临界区同时可以允许3个线程访问</span><br><span class="line">    private static Semaphore semaphore = new Semaphore(3);</span><br><span class="line">    private static ReentrantLock lock = new ReentrantLock();</span><br><span class="line">    private static int num = 0;</span><br><span class="line"></span><br><span class="line">    static class TestRunable implements Runnable &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                //先申请信号量</span><br><span class="line">                semaphore.acquire();</span><br><span class="line">                count();</span><br><span class="line">                Thread.sleep(2000);</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                semaphore.release();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        /**</span><br><span class="line">         * 计数</span><br><span class="line">         */</span><br><span class="line">        private void count() &#123;</span><br><span class="line">            /**</span><br><span class="line">             * @see 利用重入锁保证计数功能的线程安全</span><br><span class="line">             */</span><br><span class="line">            lock.lock();</span><br><span class="line">            //计数</span><br><span class="line">            num++;</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; &quot; + num);</span><br><span class="line">            //释放锁</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void test() &#123;</span><br><span class="line">        //构造线程池</span><br><span class="line">        ExecutorService executorService = Executors.newFixedThreadPool(20);</span><br><span class="line">        //待处理任务</span><br><span class="line">        TestRunable testRunable = new TestRunable();</span><br><span class="line">        /**</span><br><span class="line">         * 循环12次执行任务</span><br><span class="line">         */</span><br><span class="line">        for (int i = 0; i &lt; 12; i++) &#123;</span><br><span class="line">            executorService.submit(testRunable);</span><br><span class="line">        &#125;</span><br><span class="line">        //关闭线程池</span><br><span class="line">        executorService.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        test();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果如图：</p>
+<p><img src="/2018/09/09/concurrency-3/semaphore-output.png" alt="包装生成线程安全的hashmap"></p>
+<p>线程的运行逻辑中运用到了信号量，信号量的令牌总共有3个，而实际线程池中的线程有20个，但是提交任务提交了12个，即其实整个线程池是可以满足12个任务由12个线程一次并发执行的，但是由于我们的信号量机制，总共只有三个令牌，所以通过输出的结果可以看出，同一时间，只有三个线程在完成工作，所以信号量保证了同步代码块中的线程数量可以多于一个线程。</p>
+<h2 id="方法列表-1"><a href="#方法列表-1" class="headerlink" title="方法列表"></a>方法列表</h2><table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Semaphore(int permits)</td>
+<td>构造，构造一个拥有permits个令牌的信号量</td>
+</tr>
+<tr>
+<td>Semphore(int permits,boolean fair)</td>
+<td>同上，支持公平锁</td>
+</tr>
+<tr>
+<td>acquire()</td>
+<td>申请令牌，如果有空余令牌，则继续执行，否则会阻塞等待</td>
+</tr>
+<tr>
+<td>acquireUninterruptibly()</td>
+<td>同上，不处理中断响应</td>
+</tr>
+<tr>
+<td>boolean tryAcquire()</td>
+<td>尝试获取令牌，没有空余令牌返回false，获取成功返回true</td>
+</tr>
+<tr>
+<td>boolean tryAcquire(long timeout,TmitUnit unit)</td>
+<td>尝试获取令牌，没有空余则等待timout时长，还没有则返回false，否则返回true</td>
+</tr>
+<tr>
+<td>release()</td>
+<td>返回令牌</td>
+</tr>
+</tbody>
+</table>
+<p><strong>对于信号量来处理并发的时候，在获取令牌之后一定要记得relase，否则令牌会越来越少。</strong></p>
+<h1 id="读写锁-ReadWriteLock"><a href="#读写锁-ReadWriteLock" class="headerlink" title="读写锁(ReadWriteLock)"></a>读写锁(ReadWriteLock)</h1><p>基于并发级别中的RCU(Read Copy Update)可以看到如果可以将读写分离，对于系统的吞吐量会有很大的提升。<br>concurrent包中提供<strong>ReentrantReadWriteLock（实现接口ReadWriteLock）</strong>来将读写分离，通过ReentrantReadWriteLock可以分别获取读锁和写锁，这样将读写分离。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">package demo.concurrency.readwirtelock;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.locks.Lock;</span><br><span class="line">import java.util.concurrent.locks.ReentrantLock;</span><br><span class="line">import java.util.concurrent.locks.ReentrantReadWriteLock;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @descripte 读写锁样例</span><br><span class="line"> */</span><br><span class="line">public class ReadWriteLockDemo &#123;</span><br><span class="line">    //读写锁</span><br><span class="line">    private ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();</span><br><span class="line">    //获取读操作的锁</span><br><span class="line">    private Lock readLock = rwLock.readLock();</span><br><span class="line">    //获取写操作的锁</span><br><span class="line">    private Lock writeLock = rwLock.writeLock();</span><br><span class="line"></span><br><span class="line">    class ReadRunnable implements Runnable &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                readLock.lock();</span><br><span class="line">                Thread.sleep(1000);</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; read done &quot;);</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                readLock.unlock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    class WriteRunnable implements Runnable &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line"></span><br><span class="line">            try &#123;</span><br><span class="line">                writeLock.lock();</span><br><span class="line">                Thread.sleep(1000);</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; write done &quot;);</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                writeLock.unlock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void test() &#123;</span><br><span class="line">        ReadRunnable readRunnable = new ReadRunnable();</span><br><span class="line">        WriteRunnable writeRunnable = new WriteRunnable();</span><br><span class="line"></span><br><span class="line">        for (int i = 0; i &lt; 18; i++) &#123;</span><br><span class="line">            new Thread(writeRunnable).start();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        for (int i = 0; i &lt; 18; i++) &#123;</span><br><span class="line">            new Thread(readRunnable).start();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        ReadWriteLockDemo demo = new ReadWriteLockDemo();</span><br><span class="line">        demo.test();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>样例中，各有18个读线程和写线程，写线程共享writelock，读线程共享readlock。每个线程运行时都会输出系统时间。我们可以看下输出。</p>
+<p><img src="/2018/09/09/concurrency-3/readwritelock-output.png" alt="包装生成线程安全的hashmap"></p>
+<ul>
+<li>读线程来自于ReentrantReadWriteLock的实例方法getReadLock，写锁来自于实例方法getWriteLock。  </li>
+<li>18个写线程每个线程执行的时候时间都是不一样的，即每个写操作共享写锁的时候，都是互斥的，会阻塞。</li>
+<li>18个读线程每个线程的时间都一样，即每个读线程共享读锁的时候，并不互斥。  </li>
+</ul>
+<h2 id="访问约束"><a href="#访问约束" class="headerlink" title="访问约束"></a>访问约束</h2><table>
+<thead>
+<tr>
+<th></th>
+<th>读</th>
+<th>写</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>读</td>
+<td>非阻塞</td>
+<td>阻塞</td>
+</tr>
+<tr>
+<td>写</td>
+<td>阻塞</td>
+<td>阻塞</td>
+</tr>
+</tbody>
+</table>
+<h1 id="计数器（CountDownLatch）"><a href="#计数器（CountDownLatch）" class="headerlink" title="计数器（CountDownLatch）"></a>计数器（CountDownLatch）</h1><p>对于多线程并发执行任务时，需要当所有任务都执行完毕后再继续执行工作，这种时候就需要使用到CountDownLatch。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">package demo.concurrency.countdownlatch;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.CountDownLatch;</span><br><span class="line">import java.util.concurrent.Executor;</span><br><span class="line">import java.util.concurrent.ExecutorService;</span><br><span class="line">import java.util.concurrent.Executors;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @descripte 计数器样例</span><br><span class="line"> */</span><br><span class="line">public class CountDownLatchDemo &#123;</span><br><span class="line">    class DemoRunnable implements Runnable &#123;</span><br><span class="line">        private CountDownLatch count;</span><br><span class="line"></span><br><span class="line">        public DemoRunnable(CountDownLatch count) &#123;</span><br><span class="line">            this.count = count;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                Thread.sleep(1000);</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; done &quot;);</span><br><span class="line">                //coutDown表示计数器中的一个线程已结束任务，计数减一</span><br><span class="line">                count.countDown();</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void test() throws InterruptedException &#123;</span><br><span class="line">        CountDownLatch count = new CountDownLatch(10);</span><br><span class="line">        DemoRunnable demoRunnable = new DemoRunnable(count);</span><br><span class="line"></span><br><span class="line">        ExecutorService executorService = Executors.newFixedThreadPool(20);</span><br><span class="line">        for (int i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">            //构建10个任务</span><br><span class="line">            executorService.submit(demoRunnable);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //计数器await将主线程阻塞，等待所有计数器中的计数减为0</span><br><span class="line">        count.await();</span><br><span class="line">        System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; finished! &quot;);</span><br><span class="line">        executorService.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws InterruptedException &#123;</span><br><span class="line">        CountDownLatchDemo demo = new CountDownLatchDemo();</span><br><span class="line">        demo.test();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>样例中有10个并发执行的多线程任务。CountDownLatch构造的时候初始化值也是10</li>
+<li>每个多线程任务都共享CountDownLatch对象。并且每个线程完成任务之后调用方法countDown，来告知计数器已有一个线程完成任务。计数器会减一。</li>
+<li>主线程会通过CountDownLatch的awati方法阻塞，直到计数器倒数到0即所有多线程任务都完成的时候，主线程才会继续执行。</li>
+</ul>
+<h1 id="循环栅栏（CyclicBarrier）"><a href="#循环栅栏（CyclicBarrier）" class="headerlink" title="循环栅栏（CyclicBarrier）"></a>循环栅栏（CyclicBarrier）</h1><p>先上样例代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line">package demo.concurrency.cyclicbarrier;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.BrokenBarrierException;</span><br><span class="line">import java.util.concurrent.CyclicBarrier;</span><br><span class="line">import java.util.concurrent.ExecutorService;</span><br><span class="line">import java.util.concurrent.Executors;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @descripte 循环栅栏样例</span><br><span class="line"> * &lt;p&gt;</span><br><span class="line"> *     循环栅栏，包含对多线程并发任务计数，暂停所有线程运行，执行特别栅栏任务，再恢复多线程任务执行的功能</span><br><span class="line"> * &lt;/p&gt;</span><br><span class="line"> */</span><br><span class="line">public class CyclicBarrierDemo &#123;</span><br><span class="line">    /**</span><br><span class="line">     * 多线程任务</span><br><span class="line">     */</span><br><span class="line">    class MultiThreadTask implements Runnable &#123;</span><br><span class="line">        /**</span><br><span class="line">         * 多线程任务共享一个循环栅栏</span><br><span class="line">         */</span><br><span class="line">        private CyclicBarrier cyclic = null;</span><br><span class="line"></span><br><span class="line">        public MultiThreadTask(CyclicBarrier cyclic) &#123;</span><br><span class="line">            this.cyclic = cyclic;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                /**</span><br><span class="line">                 * 由于所有多线程任务都共享一个栅栏，即每个线程运行到此，</span><br><span class="line">                 * 都会将当前线程添加到同一个栅栏的等待线程队列中。同时栅栏还有一个计数器功能。</span><br><span class="line">                 * 每当一个线程进入栅栏的线程等待队列之后，计数器减1，等阻挡的线程数足够之后，会执行栅栏任务。</span><br><span class="line">                 * 即多线程运行到了栅栏处被阻挡被迫停止运行了。等到阻挡的足够多了之后，执行栅栏任务。</span><br><span class="line">                 */</span><br><span class="line">                cyclic.await();</span><br><span class="line">                //当栅栏任务执行完毕之后，所有暂停的线程恢复执行。</span><br><span class="line">                Thread.sleep(1000);</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; done &quot;);</span><br><span class="line">                //循环栅栏再次调用await，会继续阻塞所有线程，再次执行栅栏中的代码</span><br><span class="line">                cyclic.await();</span><br><span class="line">                cyclic.await();</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; catch (BrokenBarrierException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 栅栏任务</span><br><span class="line">     */</span><br><span class="line">    class BarriderRunnable implements Runnable &#123;</span><br><span class="line">        private boolean flag;</span><br><span class="line">        private int num;</span><br><span class="line"></span><br><span class="line">        public BarriderRunnable(boolean flag, int num) &#123;</span><br><span class="line">            this.flag = flag;</span><br><span class="line">            this.num = num;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        /**</span><br><span class="line">         * 当阻挡的线程达到计数的预期数，之后会执行到此的栅栏任务。栅栏任务执行完毕会恢复所有栅栏等待线程队列中的所有线程</span><br><span class="line">         */</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            if (flag) &#123;</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; [&quot; + num + &quot;] start &quot;);</span><br><span class="line">                flag = false;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; [&quot; + num + &quot;]  finished &quot;);</span><br><span class="line">                flag = true;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void test() &#123;</span><br><span class="line">        /**</span><br><span class="line">         * 构造栅栏，10代码栅栏可以拦截的线程数，后一个是当达到拦截线程数之后执行的栅栏任务</span><br><span class="line">         */</span><br><span class="line">        CyclicBarrier cyclicBarrier = new CyclicBarrier(10, new BarriderRunnable(true, 10));</span><br><span class="line">        MultiThreadTask soldierRunnable = new MultiThreadTask(cyclicBarrier);</span><br><span class="line">        ExecutorService executorService = Executors.newFixedThreadPool(20);</span><br><span class="line">        for (int i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">            new Thread(soldierRunnable).start();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        executorService.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        CyclicBarrierDemo demo = new CyclicBarrierDemo();</span><br><span class="line">        demo.test();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>循环栅栏的构造函数有两个参数，一个是指定需要栅栏拦截停止的线程数，另一个是当拦截停止的线程数足够的时候，执行的栅栏任务。  </li>
+<li>多线程任务需要共享同一个栅栏对象，每当多线程执行到栅栏的await方法时，就会进入栅栏的等待线程队列中，同时栅栏的计数器会减1。这样多线程任务会暂停，直到暂停的多线程数量符合预期之后，栅栏会执行栅栏任务。  </li>
+<li>当栅栏任务执行完毕之后，栅栏会将其等待线程队列中的所有线程都恢复运行，同时计数器的计数也会重置到初始值，方便下次多线程任务进行await的时候时候。</li>
+</ul>
+<blockquote>
+<p>书中的例子很生动，多线程任务就等同于点兵，栅栏任务即点兵符合点兵的数目之后执行的任务。比方说某项任务，需要集齐10个士兵上车，人员整齐之后开往目的地，10个士兵再下车，都下车之后，布置任务。10个士兵就是多线程任务，10个士兵都并发的上车，上车之后执行栅栏的await方法，暂停休息等待10个士兵都上车，即线程都await之后，人齐了，等待栅栏任务即开往目的地，等到达目的地之后10个任务重新被激活，开始并发的下车，下车之后再次调用栅栏的await方法，暂停休息等待所有士兵都下车即10个线程都await之后，等待栅栏任务即分配任务。</p>
+</blockquote>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>栅栏的计数器会导致只有当拦截的线程数达到预定的数目之后才会执行栅栏任务，也只有执行栅栏任务之后暂停的多线程任务才会被重新激活继续运行，如果多线程任务数量小于栅栏预定的拦截线程数目，那么整个流程都会卡在这里。如果多线程任务的数量大于栅栏预定拦截的线程数，则栅栏计数器的功能就整个失效了，整个流程拦截暂停多线程任务的效果就呈现一种混乱的状态。<strong>栅栏预定拦截的多线程任务数量一定要与多线程任务数量一致</strong>。</p>
+<h1 id="阻塞工具-LockSupport"><a href="#阻塞工具-LockSupport" class="headerlink" title="阻塞工具(LockSupport)"></a>阻塞工具(LockSupport)</h1><p>线程阻塞的工具类，其提供静态的方法park来阻塞线程，提供静态的方法unpark来唤醒线程。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">package demo.concurrency.locksupport;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.locks.LockSupport;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @descripte LockSupport样例 与suspend和resume不同，不会将线程卡死</span><br><span class="line"> */</span><br><span class="line">public class LockSupportDemo &#123;</span><br><span class="line">    private Object lock = new Object();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    class DemoThread extends Thread &#123;</span><br><span class="line">        public DemoThread(String name) &#123;</span><br><span class="line">            super(name);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; wait lock &quot;);</span><br><span class="line">            synchronized (lock) &#123;</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; get lock &quot;);</span><br><span class="line">                try &#123;</span><br><span class="line">                    Thread.sleep(1000);</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; park &quot;);</span><br><span class="line">                /**</span><br><span class="line">                 * @see park方法等同于有一个信号量为1的机制，如果这个许可本身可用，则park会立即返回，不会阻塞，如果许可不可用，则会阻塞直到LockSupport.unPork方法。</span><br><span class="line">                 * 当第一次调用park方法时会阻塞，直到调用unpark方法，如果先执行了unpark方法，则后面的park方法会立即返回，即unpark方法后面一次的park方法会立即返回不会阻塞</span><br><span class="line">                 */</span><br><span class="line">                LockSupport.park();</span><br><span class="line"></span><br><span class="line">                try &#123;</span><br><span class="line">                    Thread.sleep(1000);</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; go on &quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void test() throws InterruptedException &#123;</span><br><span class="line">        DemoThread t1 = new DemoThread(&quot;A&quot;);</span><br><span class="line">        DemoThread t2 = new DemoThread(&quot;B&quot;);</span><br><span class="line">        System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; start A&quot;);</span><br><span class="line"></span><br><span class="line">        t1.start();</span><br><span class="line">        Thread.sleep(2000);</span><br><span class="line">        t2.start();</span><br><span class="line">        System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; start B&quot;);</span><br><span class="line"></span><br><span class="line">        System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; unpark A &quot;);</span><br><span class="line">        /**</span><br><span class="line">         * @see 将许可由不可用变为可用，后面一次的park方法会立即返回不阻塞</span><br><span class="line">         */</span><br><span class="line">        LockSupport.unpark(t1);</span><br><span class="line">        System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; unpark B 4&quot;);</span><br><span class="line">        LockSupport.unpark(t2);</span><br><span class="line">        t1.join();</span><br><span class="line">        t2.join();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws InterruptedException &#123;</span><br><span class="line">        LockSupportDemo demo = new LockSupportDemo();</span><br><span class="line">        demo.test();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>LockSupport有以下几个优点：  </p>
+<ul>
+<li>LockSupport基于信号量为1的机制，其为每一个线程都准备了一个令牌。执行park方法的时候，如果有令牌可用，则不会阻塞，如果令牌不可用才会阻塞，只有unpark方法会使得令牌可用。即如果先执行了unpark方法，也不会使得线程永久的挂起，因为只要执行过unpark方法，就会有令牌可用，这个时候再执行park方法并不会阻塞。</li>
+<li>不会抛出InterrupteException异常，但是LocSupport的park方法是支持中断响应的，即可以在调用park方法后，通过线程的中断标志来判断是否有中断，如果有则处理中断场景。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">* @see park方法没有中断异常InterruptException。直接 通过Thread.isInterrupted方法来判断是否中断进行中断处理即可</span><br><span class="line">                */</span><br><span class="line">               LockSupport.park();</span><br><span class="line">               if (Thread.interrupted()) &#123;</span><br><span class="line">                   System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; interrupt &quot;);</span><br><span class="line">               &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="与Suspend-resume的区别"><a href="#与Suspend-resume的区别" class="headerlink" title="与Suspend/resume的区别"></a>与Suspend/resume的区别</h2><ul>
+<li>suspend/resume方法是Thread的实例方法，现已被标示为废弃方法。park和unpark方法为LockSupport的静态方法。  </li>
+<li>suspend无法处理中断。而park方法可以通过线程的中断标志来处理中断。  </li>
+<li>一旦resume执行在suspend之前，suspend后面没有resume的话，线程会被永久挂起。而LockSupport则不会，基于信号量机制，哪怕unpark优先于park执行，park遍不会阻塞挂起，会立即返回。</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>《实战java 高并发程序设计》葛一鸣 郭超 编著<br><a href="https://blog.csdn.net/wbwjx/article/details/57856045" target="_blank" rel="noopener">https://blog.csdn.net/wbwjx/article/details/57856045</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/09/concurrency-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1999,357 +2558,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/03/redis-3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/03/redis-3/" itemprop="url">redis持久化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T22:16:00+08:00">
-                2018-09-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/redis/" itemprop="url" rel="index">
-                    <span itemprop="name">redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/03/redis-3/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/09/03/redis-3/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Redis持久化方式"><a href="#Redis持久化方式" class="headerlink" title="Redis持久化方式"></a>Redis持久化方式</h2><h3 id="快照"><a href="#快照" class="headerlink" title="快照"></a>快照</h3><p>将某个时刻的数据持久化到硬盘中。用户可以对快照进行备份。支持复制到其他服务器。</p>
-<h4 id="创建快照"><a href="#创建快照" class="headerlink" title="创建快照"></a>创建快照</h4><ul>
-<li><strong>bgsave</strong> 创建一个快照。<strong>Redis会创建一个子进程来负责将快照写入硬盘。父进程继续接受请求。</strong></li>
-<li><strong>save</strong> Redis在快照创建完毕前不会接受任何请求。</li>
-<li><strong>shutdown</strong>命令用于停止redis服务的时候会执行一次<strong>save</strong>命令。停止所有请求。</li>
-<li><strong>sync</strong>命令进行Redis服务器之间的数据同步的时候。如果主服务器并没有正在进行bgsave或者不是刚刚结束bgsave命令时会执行bgsave命令。</li>
-</ul>
-<h4 id="快照配置"><a href="#快照配置" class="headerlink" title="快照配置"></a>快照配置</h4><blockquote>
-<p>save 60 1000    60秒内有1000次写操作则自动触发bgsave<br>stop-writes-on-bgsave-error-no  当创建快照失败时是否停止写操作<br>rdbcompression yes  是否对快照进行压缩<br>dbfilename dump.rdb 快照名称<br>dr ./   快照文件存储的路径</p>
-</blockquote>
-<h4 id="快照缺陷"><a href="#快照缺陷" class="headerlink" title="快照缺陷"></a>快照缺陷</h4><ul>
-<li>快照是某一个时间点的内存数据备份。如果在服务器崩溃则会丢失上一次快照到崩溃时的所有变更数据。   </li>
-<li>快照适合即使丢失一部分少量的数据也不会对整个应用造成问题的场景。   </li>
-</ul>
-<blockquote>
-<p>《Redis实战》中提到的对日志进行聚合计算。没有看懂到底是什么意思。   </p>
-</blockquote>
-<ul>
-<li>当大数据处理时，Redis占用的内存会很大，bgsave创建子进程会耗费一定的时间，这个创建的过程则会导致redis停顿。停顿的时间随着Redis占用内存越大而越久。相比较于创建子进程带来的停顿，save并不会因为要创建子进程而去争抢资源导致停顿。故save会较bgsave的速度更快。</li>
-</ul>
-<h3 id="AOF-append-only-file"><a href="#AOF-append-only-file" class="headerlink" title="AOF(append-only file)"></a>AOF(append-only file)</h3><p>将写操作的命令追加到备份文件中。等到需要恢复时（重启）从头到尾执行一遍备份文件中的写命令即可。</p>
-<h4 id="AOF文件重写"><a href="#AOF文件重写" class="headerlink" title="AOF文件重写"></a>AOF文件重写</h4><p>随着Redis不断的运行。aof文件会变得越来越大。占用硬盘同时在重启时根据aof重新执行写命令时耗时长。<br><strong>bgrewriteaof</strong> 等同bgsave，会启动子进程来重写aof文件。父进程继续接受请求。</p>
-<h4 id="AOF配置"><a href="#AOF配置" class="headerlink" title="AOF配置"></a>AOF配置</h4><blockquote>
-<p>appendonly yes  是否启用AOF模式<br>appendfsync everrysec 追加的频率。always每次写操作都同步。everysec每秒执行一次同步，可以同步多条写操作。no 由操作系统来决定何时进行同步。<br>no-appendfsync-on-rewrite no<br>auto-aof-rewrite-percentage 100 当aof文件比上一次重写时大了一倍则进行aof文件重写<br>auto-aof-rewrite-min-size 64mb  当aof文件的大小大于64mb时进行aof文件重写<br>dr ./   aof文件存储路径     </p>
-</blockquote>
-<h4 id="AOF缺陷"><a href="#AOF缺陷" class="headerlink" title="AOF缺陷"></a>AOF缺陷</h4><ul>
-<li><strong>bgrewriteaof</strong>命令创建子进程也会由于redis占用的内存越大而创建子进程的时间越长从而导致redis停顿。</li>
-<li>对aof文件进行重写时会涉及对旧的aof文件进行删除，如果文件很大很有可能导致操作系统的挂起。</li>
-</ul>
-<h2 id="持久化的意义"><a href="#持久化的意义" class="headerlink" title="持久化的意义"></a>持久化的意义</h2><ul>
-<li>数据重用。redis中很多的数据都是一些经过长时间计算得到的。这样持久化到硬盘中就不必再次计算可以方便下次使用。</li>
-<li>安全。将数据备份到硬盘防止因系统崩溃而丢失数据。Redis运行时数据都是存储在内存中，而一旦系统奔溃内存中的数据时很大程度会丢失。  </li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/03/redis-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/03/redis-2/" itemprop="url">redis笔记二</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T22:11:37+08:00">
-                2018-09-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/redis/" itemprop="url" rel="index">
-                    <span itemprop="name">redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/03/redis-2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/09/03/redis-2/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="订阅-发布模式"><a href="#订阅-发布模式" class="headerlink" title="订阅/发布模式"></a>订阅/发布模式</h2><blockquote>
-<p>一般来说，发布于订阅的特点是订阅者(listener)负责订阅频道(channel)，发送者(publisher)负责向频道发送而今这字符串消息(binary string message)。每当有消息被发送至给定的频道时，频道的所有订阅者都会受到消息。<br>by 《Redis 实战》</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">subscribe channel [channel1 ...] 订阅频道  </span><br><span class="line">unsubscribe [channel [channel1 ...]] 退订频道，**如果未指定channel则默认退订所有频道。**  </span><br><span class="line">publish channel message 向频道channel发送消息  </span><br><span class="line">psubscribe pattern [pattern...] 订阅符合条件的频道  </span><br><span class="line">punsubscribe [pattern [pattern...]] 退订符合条件的频道，**如果没有指定pattern则默认退订所有频道。**</span><br></pre></td></tr></table></figure>
-<h3 id="订阅-发布模式的缺陷"><a href="#订阅-发布模式的缺陷" class="headerlink" title="订阅/发布模式的缺陷"></a>订阅/发布模式的缺陷</h3><ul>
-<li>系统的缺陷。旧版本的Redis。当订阅的频道消息量很大而自身的读取速度不够时会导致Redis缓冲区体积很大，这样会使得效率很低甚至崩溃。还会被操作系统强杀。新版本的Redis不会有这种问题，需要配置client-output-buffer-limit pubsub来自动断开。  </li>
-<li>数据传输的可靠性。在客户端订阅过程中断线，客户端会丢失在断线期间频道的所有消息。</li>
-</ul>
-<h2 id="事务基本用法"><a href="#事务基本用法" class="headerlink" title="事务基本用法"></a>事务基本用法</h2><blockquote>
-<p>Redis有5个命令可以让用户再不被打断的情况下对多个键执行操作，分别是watch、multi、exec、unwatch和discard。<br>Redis基本的事务用法置灰用到multi和exec命令。<br>Redis里执行事务，首先需要执行Multi命令，然后输入那些想要在事务里执行的命令，最后再执行exec命令。当</p>
-</blockquote>
-<p>Redis从一个客户端那里接收到multi命令时，Redis会将这个客户端之后发送的所有命令都放入到一个队列里，直到这个客户端发送exec命令为止，然后Redis就会在不被打断的情况下，一个接一个地执行存储在队列里地命令。这种事务的执行方式是通过延迟执行事务极大降低了客户端与服务端的通信连接次数来提高性能。是一种<strong>流水线事务。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">multi 申明后面地指令操作都在同一个事务中。    </span><br><span class="line">exec 申明事务截至，以上地所有操作都在同一个事务中。  </span><br><span class="line">watch 对键进行监控。直到exec命令之间如果有别的连接对受监控的键进行了修改，删除等更新操作，exec命令执行失败并返回错误。  </span><br><span class="line">unwatch 取消对键的监控。在执行multi之前都有效。  </span><br><span class="line">discard	取消对键的监控。在执行exec之前都有效。</span><br></pre></td></tr></table></figure>
-<h3 id="Redis没有加锁"><a href="#Redis没有加锁" class="headerlink" title="Redis没有加锁"></a>Redis没有加锁</h3><p>传统数据库会在对数据库进行写操作时对访问的数据进行加锁。直到事务被提交或者回滚。其它客户端对数据进行写入时由于无法拿到数据的锁而阻塞。只有当持有锁的事务执行完毕后释放锁才可以重新执行。这种锁的缺陷是当锁的持有事务执行的时间越久，则其它事务阻塞的时间就越久<strong>（悲观锁）</strong>。<br>Redis为了尽可能的减少客户端阻塞的时间，只有当数据已经抢先被修改更新了，如果有客户段对该数据进行监控(watch)的会进行通知<strong>（乐观锁）</strong>。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2404,7 +2612,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2415,7 +2623,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2426,7 +2634,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>

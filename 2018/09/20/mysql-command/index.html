@@ -92,11 +92,13 @@
 <meta property="og:image" content="http://yoursite.com/2018/09/20/mysql-command/modifycolumn-2.png">
 <meta property="og:image" content="http://yoursite.com/2018/09/20/mysql-command/primary-key.png">
 <meta property="og:image" content="http://yoursite.com/2018/09/20/mysql-command/unique.png">
+<meta property="og:image" content="http://yoursite.com/2018/09/20/mysql-command/showtranscationisolation.png">
+<meta property="og:image" content="http://yoursite.com/2018/09/20/mysql-command/updatetranscation.png">
 <meta property="og:image" content="http://yoursite.com/2018/09/20/mysql-command/showprofiles.png">
 <meta property="og:image" content="http://yoursite.com/2018/09/20/mysql-command/explain.png">
 <meta property="og:image" content="http://yoursite.com/2018/09/20/mysql-command/explain-table.png">
 <meta property="og:image" content="http://yoursite.com/2018/09/20/mysql-command/explain-type.png">
-<meta property="og:updated_time" content="2018-09-23T09:10:04.427Z">
+<meta property="og:updated_time" content="2018-09-25T15:42:37.339Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySql常用操作命令">
 <meta name="twitter:description" content="查看mysql服务123sudo /usr/locl/mysql/support-files/mysql.server start 启动服务sudo /usr/locl/mysql/support-files/mysql.server stop 停止服务mysql -V 输出mysql版本 登陆/退出123mysql -u root -p 以root用户进行密码登陆mysql [-h ip]  [">
@@ -374,6 +376,10 @@
 <p>如图所示，先对列name增加了unique约束，如果想要去除该约束，需要查看约束的名字，一般在定义约束的时候，我们最好还是顺便指定约束的名称，但是在创建的时候没有制定，我们也可以通过查看DDL语句来查看约束的名称，这样我慢看到name字段的unique约束的名称为name，在删除约束的时候还需要注意的是，drop 后面一定要加index，否则会被认为是要删除列。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alter table tablename add [check_name] (primary key/foreign key/unique/not null) 添加约束，注意最好制定约束名</span><br><span class="line">alter table tablename drop index check_name 通过约束名来去除字段的约束，如果不记得约束名，可以通过show create table tablename来查看DDL语句。</span><br></pre></td></tr></table></figure>
 <h1 id="修改索引"><a href="#修改索引" class="headerlink" title="修改索引"></a>修改索引</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alter table tablename add index indexname (columname,[columnname2...])；新增索引</span><br><span class="line">alter table tablename drop index indexname；删除索引</span><br></pre></td></tr></table></figure>
+<h1 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h1><h2 id="查看隔离级别"><a href="#查看隔离级别" class="headerlink" title="查看隔离级别"></a>查看隔离级别</h2><p><img src="/2018/09/20/mysql-command/showtranscationisolation.png" alt="包装生成线程安全的hashmap"></p>
+<p>如图所示，通过查看环境变量’isolation’来查看mysql默认的事务隔离级别，可以看到mysql事务的默认隔离级别为<strong>可重复读(REPEATABLE-READ)</strong>。</p>
+<h2 id="修改隔离级别"><a href="#修改隔离级别" class="headerlink" title="修改隔离级别"></a>修改隔离级别</h2><p><img src="/2018/09/20/mysql-command/updatetranscation.png" alt="包装生成线程安全的hashmap"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set global|session transaction isolation level (read committed|read uncommited|repeatable read|serializable) 设置全局|会话的事务隔离级别。</span><br></pre></td></tr></table></figure>
 <h1 id="SQL效率"><a href="#SQL效率" class="headerlink" title="SQL效率"></a>SQL效率</h1><h2 id="查看执行时间"><a href="#查看执行时间" class="headerlink" title="查看执行时间"></a>查看执行时间</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">show variables； 查看mysql配置参数，主要查找profiling参数是否开启</span><br><span class="line">set profiling = 1； 开启profile配置</span><br><span class="line">show profiles；查看sql指令的耗时</span><br></pre></td></tr></table></figure>
 <p><img src="/2018/09/20/mysql-command/showprofiles.png" alt="包装生成线程安全的hashmap"></p>
 <h2 id="查看SQL执行效率"><a href="#查看SQL执行效率" class="headerlink" title="查看SQL执行效率"></a>查看SQL执行效率</h2><p>在每次执行sql语句的前面添加explain关键词，就能够输出mysql执行该sql语句的执行效率。</p>
@@ -566,6 +572,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/09/25/transection-isolation/" rel="prev" title="Mysql事务">
+                Mysql事务 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -661,7 +671,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -672,7 +682,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -683,7 +693,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
@@ -716,7 +726,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#查看mysql服务"><span class="nav-number">1.</span> <span class="nav-text">查看mysql服务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#登陆-退出"><span class="nav-number">2.</span> <span class="nav-text">登陆/退出</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看数据库"><span class="nav-number">3.</span> <span class="nav-text">查看数据库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看表结构"><span class="nav-number">4.</span> <span class="nav-text">查看表结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改表结构"><span class="nav-number">5.</span> <span class="nav-text">修改表结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改约束"><span class="nav-number">6.</span> <span class="nav-text">修改约束</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#主键约束"><span class="nav-number">6.1.</span> <span class="nav-text">主键约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#唯一约束"><span class="nav-number">6.2.</span> <span class="nav-text">唯一约束</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改索引"><span class="nav-number">7.</span> <span class="nav-text">修改索引</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SQL效率"><span class="nav-number">8.</span> <span class="nav-text">SQL效率</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#查看执行时间"><span class="nav-number">8.1.</span> <span class="nav-text">查看执行时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看SQL执行效率"><span class="nav-number">8.2.</span> <span class="nav-text">查看SQL执行效率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#id"><span class="nav-number">8.2.1.</span> <span class="nav-text">id</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#select-type"><span class="nav-number">8.2.2.</span> <span class="nav-text">select_type</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#table"><span class="nav-number">8.2.3.</span> <span class="nav-text">table</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#partitions"><span class="nav-number">8.2.4.</span> <span class="nav-text">partitions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#type"><span class="nav-number">8.2.5.</span> <span class="nav-text">type</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#possible-keys"><span class="nav-number">8.2.6.</span> <span class="nav-text">possible_keys</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#key"><span class="nav-number">8.2.7.</span> <span class="nav-text">key</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#key-len"><span class="nav-number">8.2.8.</span> <span class="nav-text">key_len</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rows"><span class="nav-number">8.2.9.</span> <span class="nav-text">rows</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Extra"><span class="nav-number">8.2.10.</span> <span class="nav-text">Extra</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缺陷"><span class="nav-number">8.2.11.</span> <span class="nav-text">缺陷</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他"><span class="nav-number">9.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#清屏"><span class="nav-number">9.1.</span> <span class="nav-text">清屏</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">10.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#查看mysql服务"><span class="nav-number">1.</span> <span class="nav-text">查看mysql服务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#登陆-退出"><span class="nav-number">2.</span> <span class="nav-text">登陆/退出</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看数据库"><span class="nav-number">3.</span> <span class="nav-text">查看数据库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看表结构"><span class="nav-number">4.</span> <span class="nav-text">查看表结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改表结构"><span class="nav-number">5.</span> <span class="nav-text">修改表结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改约束"><span class="nav-number">6.</span> <span class="nav-text">修改约束</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#主键约束"><span class="nav-number">6.1.</span> <span class="nav-text">主键约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#唯一约束"><span class="nav-number">6.2.</span> <span class="nav-text">唯一约束</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改索引"><span class="nav-number">7.</span> <span class="nav-text">修改索引</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#事务"><span class="nav-number">8.</span> <span class="nav-text">事务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#查看隔离级别"><span class="nav-number">8.1.</span> <span class="nav-text">查看隔离级别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改隔离级别"><span class="nav-number">8.2.</span> <span class="nav-text">修改隔离级别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SQL效率"><span class="nav-number">9.</span> <span class="nav-text">SQL效率</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#查看执行时间"><span class="nav-number">9.1.</span> <span class="nav-text">查看执行时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看SQL执行效率"><span class="nav-number">9.2.</span> <span class="nav-text">查看SQL执行效率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#id"><span class="nav-number">9.2.1.</span> <span class="nav-text">id</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#select-type"><span class="nav-number">9.2.2.</span> <span class="nav-text">select_type</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#table"><span class="nav-number">9.2.3.</span> <span class="nav-text">table</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#partitions"><span class="nav-number">9.2.4.</span> <span class="nav-text">partitions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#type"><span class="nav-number">9.2.5.</span> <span class="nav-text">type</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#possible-keys"><span class="nav-number">9.2.6.</span> <span class="nav-text">possible_keys</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#key"><span class="nav-number">9.2.7.</span> <span class="nav-text">key</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#key-len"><span class="nav-number">9.2.8.</span> <span class="nav-text">key_len</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rows"><span class="nav-number">9.2.9.</span> <span class="nav-text">rows</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Extra"><span class="nav-number">9.2.10.</span> <span class="nav-text">Extra</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缺陷"><span class="nav-number">9.2.11.</span> <span class="nav-text">缺陷</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他"><span class="nav-number">10.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#清屏"><span class="nav-number">10.1.</span> <span class="nav-text">清屏</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">11.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
