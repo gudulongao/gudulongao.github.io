@@ -552,13 +552,14 @@
 </tbody>
 </table>
 <p>其中读未提交和读已提交都好理解。对于可重复读，根据实践操作可以验证，事务A读取的数据，不会收到事务B的修改操作而影响。哪怕事务B已将数据清空或者插入新的数据，在事务A中都不会读取到这些修改。故对于可重复读的事务隔离，是会有幻读的问题。</p>
-<h1 id="并发控制"><a href="#并发控制" class="headerlink" title="并发控制"></a>并发控制</h1><h2 id="行锁"><a href="#行锁" class="headerlink" title="行锁"></a>行锁</h2><h2 id="间隙锁"><a href="#间隙锁" class="headerlink" title="间隙锁"></a>间隙锁</h2><h2 id="next-key锁"><a href="#next-key锁" class="headerlink" title="next-key锁"></a>next-key锁</h2><h2 id="MVCC并发控制"><a href="#MVCC并发控制" class="headerlink" title="MVCC并发控制"></a>MVCC并发控制</h2><p>多版本并发控制（Multi-Version-Concurrency-Control）。<br>InnoDB存储引擎，对于每一行数据都增加了两列，一列是存储创建该行数据的系统版本号，另一列是删除该行的系统版本号。</p>
+<h1 id="并发控制"><a href="#并发控制" class="headerlink" title="并发控制"></a>并发控制</h1><h2 id="行锁"><a href="#行锁" class="headerlink" title="行锁"></a>行锁</h2><h2 id="间隙锁"><a href="#间隙锁" class="headerlink" title="间隙锁"></a>间隙锁</h2><h2 id="next-key锁"><a href="#next-key锁" class="headerlink" title="next-key锁"></a>next-key锁</h2><h2 id="MVCC并发控制"><a href="#MVCC并发控制" class="headerlink" title="MVCC并发控制"></a>MVCC并发控制</h2><p>多版本并发控制（Multi-Version-Concurrency-Control）。<br>InnoDB存储引擎，当事务的隔离级别为可重复读(REPEATABLE-READ)时。对于每一行数据都增加了两个隐藏列，一列是存储创建该行数据的系统版本号，另一列是删除该行的系统版本号。</p>
 <ul>
 <li>新增时，行数据的创建版本号为当前事务对应的系统版本号，删除版本号为空。</li>
 <li>查询时，只会查询到创建版本号小于等于当前事务的系统版本号，删除版本号未定义或者大于等于当前事务的版本号，即在当前事务开始时存在并且未删除的数据。</li>
 <li>删除时，行数据的删除版本号为当前事务对应的系统版本号。</li>
 <li>修改时，会新增一条数据，这条新数据的新增版本号为当前事务对应的系统版本号，删除版本号未定义。老数据的删除版本号为当前事务对应的系统版本号。</li>
 </ul>
+<p>这样保证了客重复读即在同一个事物中对于表的数据不会受到别的事务修改提交的影响。只会读取到当前事务创建时的数据状态。</p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
 <p>事务隔离：<a href="https://blog.csdn.net/jiyiqinlovexx/article/details/50967965" target="_blank" rel="noopener">https://blog.csdn.net/jiyiqinlovexx/article/details/50967965</a><br>事务：<a href="https://www.cnblogs.com/huanongying/p/7021555.html" target="_blank" rel="noopener">https://www.cnblogs.com/huanongying/p/7021555.html</a><br>事务命令操作：<a href="https://blog.csdn.net/zhu4674548/article/details/75195253" target="_blank" rel="noopener">https://blog.csdn.net/zhu4674548/article/details/75195253</a></p>
 </blockquote>
