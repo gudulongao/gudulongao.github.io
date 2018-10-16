@@ -1224,8 +1224,16 @@
 <li><strong>Mysql5.5.8版本之前的默认存储引擎</strong>。</li>
 <li>MyISAM不支持事务，外键。</li>
 <li>MyISAM支持全文检索。</li>
+<li>MyISAM存储引擎由frm(存储表结构),MYD(存储数据),MYI（存储索引）三个文件组成。</li>
+<li>5.0版本以前默认支持4GB大小存储。通过指定MAX_ROWS和AVG_ROW_LENGTH参数可以支持大于4GB容量。</li>
+<li>缓冲池只存储索引文件，数据的缓存交由操作系统负责。</li>
 </ul>
-<h1 id="MEMORY"><a href="#MEMORY" class="headerlink" title="MEMORY"></a>MEMORY</h1><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<h1 id="MEMORY"><a href="#MEMORY" class="headerlink" title="MEMORY"></a>MEMORY</h1><p>将数据加载在内存中，表结构存储在位于磁盘并与表名同名的frm文件中。<br>存储引擎默认使用哈希索引，在4.1版本前只支持哈希索引，故需要整个键来索引，效率不及MyISAM。4.1版本后支持哈希索引和B树索引。<br>MEMORY表的大小由max_rows和max_heap_table_size决定。max_rows可以在建表时制定。max_heap_table_size默认16M。可以拓展。<strong>如果表的数据量超过设置，mysql会将超出的部分自动按照MyISAM存储引擎来进行存储。</strong>  </p>
+<ul>
+<li>临时数据。当数据是临时使用同时在其生命周期内存在即可，可以考虑使用MEMORY存储引擎来进行数据存储。</li>
+<li>相对无关的数据。数据库宕机数据丢失不会影响业务系统的正常运作。</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
 <p>存储引擎：<a href="https://www.cnblogs.com/shijiaqi1066/p/3857808.html" target="_blank" rel="noopener">https://www.cnblogs.com/shijiaqi1066/p/3857808.html</a></p>
 </blockquote>
 
