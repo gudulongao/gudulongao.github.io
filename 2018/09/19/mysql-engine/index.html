@@ -89,7 +89,8 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2018/09/19/mysql-engine/showengines.png">
 <meta property="og:image" content="http://yoursite.com/2018/09/19/mysql-engine/increment.png">
-<meta property="og:updated_time" content="2018-10-16T14:36:14.010Z">
+<meta property="og:image" content="http://yoursite.com/2018/09/19/mysql-engine/desctable.png">
+<meta property="og:updated_time" content="2018-10-16T14:52:26.519Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySql存储引擎">
 <meta name="twitter:description" content="相关指令查看存储引擎1show engines 查看当前数据库支持的存储引擎  从结果中可以看到，mysql数据库默认采用的存储引擎是InnoDB。 设置存储引擎 可以在创建表的时候通过ENGINE来指定存储引擎。  123456CREATE TABLE country(    country_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,    cou">
@@ -360,12 +361,13 @@
 <h1 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h1><ul>
 <li><strong>MySql5.5.8版本以后的默认的存储引擎</strong>。</li>
 <li><strong>支持事务，支持行锁。支持外键</strong>。</li>
-<li>支持自增（AUTO_INCREMENT）。支持自增的列必须是数值型的主键。</li>
+<li>支持自增（AUTO_INCREMENT）。<strong>支持自增的列必须是数值型的主键。</strong></li>
 <li>表结构存储在.frm文件中，数据和索引存储在innodb_data_home和innodb_data_path表空间中。</li>
 <li>数据存储采用聚集的方式按照主键的顺序存储。如果在创建表的时候没有指定主键，存储引擎会为每一行数据默认的生成一个6字节长度rowID，并以此作为主键。</li>
 <li>InnoDB采用多版本并发控制(MVCC)来控制并发。支持数据库的4种隔离机制。</li>
 </ul>
 <p><img src="/2018/09/19/mysql-engine/increment.png" alt="包装生成线程安全的hashmap"></p>
+<p><img src="/2018/09/19/mysql-engine/desctable.png" alt="包装生成线程安全的hashmap"></p>
 <h1 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h1><ul>
 <li><strong>Mysql5.5.8版本之前的默认存储引擎</strong>。</li>
 <li>MyISAM不支持事务，外键。</li>
@@ -378,6 +380,9 @@
 <ul>
 <li>临时数据。当数据是临时使用同时在其生命周期内存在即可，可以考虑使用MEMORY存储引擎来进行数据存储。</li>
 <li>相对无关的数据。数据库宕机数据丢失不会影响业务系统的正常运作。</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li>mysql貌似各种存储引擎的表结构都是用frm文件进行存储的。</li>
 </ul>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
 <p>存储引擎：<a href="https://www.cnblogs.com/shijiaqi1066/p/3857808.html" target="_blank" rel="noopener">https://www.cnblogs.com/shijiaqi1066/p/3857808.html</a></p>
@@ -576,7 +581,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#相关指令"><span class="nav-number">1.</span> <span class="nav-text">相关指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#查看存储引擎"><span class="nav-number">1.1.</span> <span class="nav-text">查看存储引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置存储引擎"><span class="nav-number">1.2.</span> <span class="nav-text">设置存储引擎</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#InnoDB"><span class="nav-number">2.</span> <span class="nav-text">InnoDB</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MyISAM"><span class="nav-number">3.</span> <span class="nav-text">MyISAM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MEMORY"><span class="nav-number">4.</span> <span class="nav-text">MEMORY</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#相关指令"><span class="nav-number">1.</span> <span class="nav-text">相关指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#查看存储引擎"><span class="nav-number">1.1.</span> <span class="nav-text">查看存储引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置存储引擎"><span class="nav-number">1.2.</span> <span class="nav-text">设置存储引擎</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#InnoDB"><span class="nav-number">2.</span> <span class="nav-text">InnoDB</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MyISAM"><span class="nav-number">3.</span> <span class="nav-text">MyISAM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MEMORY"><span class="nav-number">4.</span> <span class="nav-text">MEMORY</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
