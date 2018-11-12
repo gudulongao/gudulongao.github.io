@@ -103,7 +103,9 @@
 <meta property="og:image" content="http://yoursite.com/2018/11/07/binarytree/delete-6.png">
 <meta property="og:image" content="http://yoursite.com/2018/11/07/binarytree/delete-8.png">
 <meta property="og:image" content="http://yoursite.com/2018/11/07/binarytree/delete-9.png">
-<meta property="og:updated_time" content="2018-11-12T15:08:38.917Z">
+<meta property="og:image" content="http://yoursite.com/2018/11/07/binarytree/width.png">
+<meta property="og:image" content="http://yoursite.com/2018/11/07/binarytree/deep.png">
+<meta property="og:updated_time" content="2018-11-12T15:19:35.456Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="二叉树">
 <meta name="twitter:description" content="基本概念 路径：从一个节点到另一个节点所经过的节点顺序集合。 根：最顶端的节点。从根节点到其他节点都有一条唯一确定的路径。或者说到其他节点都需要从根节点出发。 层：从根节点开始定义，根节点位于第一层。根的子节点为第二层。以此类推。 深度：从根节点到某节点的路径长度。根节点的深度为0。 高度：某节点到叶子节点的最大路径长度。叶子节点的高度为0。 宽度：各层的最大节点数。如图1所示，第3层节点数做多，">
@@ -397,7 +399,11 @@
 <h3 id="后继节点是目标节点右子树中的左子节点"><a href="#后继节点是目标节点右子树中的左子节点" class="headerlink" title="后继节点是目标节点右子树中的左子节点"></a>后继节点是目标节点右子树中的左子节点</h3><p><img src="/2018/11/07/binarytree/delete-8.png" alt="二叉树-15"></p>
 <p><img src="/2018/11/07/binarytree/delete-9.png" alt="二叉树-16"></p>
 <p>当目标节点的右子节点右左子树时，则后继节点为右子树的最左节点，所以需要首先遍历目标节点的右子树的左子树。找到最左节点。</p>
-<h1 id="宽度"><a href="#宽度" class="headerlink" title="宽度"></a>宽度</h1><h1 id="深度"><a href="#深度" class="headerlink" title="深度"></a>深度</h1><h1 id="高度"><a href="#高度" class="headerlink" title="高度"></a>高度</h1><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<h1 id="宽度"><a href="#宽度" class="headerlink" title="宽度"></a>宽度</h1><p><img src="/2018/11/07/binarytree/width.png" alt="二叉树-17"></p>
+<p>主要还是通过层序遍历的方式来统计每一层节点的子节点个数。没遍历一层，都会构建新的子节点队列。通过比较每一层的子节点个数之和来获取最大值，从而获取宽度。</p>
+<h1 id="深度"><a href="#深度" class="headerlink" title="深度"></a>深度</h1><p><img src="/2018/11/07/binarytree/deep.png" alt="二叉树-18"></p>
+<p>利用二叉搜索树的性质，直接进行深度遍历查找目标节点，没向下遍历一次则累加，这样获取深度。</p>
+<h1 id="高度"><a href="#高度" class="headerlink" title="高度"></a>高度</h1><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
 <p>参考网址：<a href="https://www.cnblogs.com/ysocean/p/8032642.html" target="_blank" rel="noopener">https://www.cnblogs.com/ysocean/p/8032642.html</a></p>
 </blockquote>
 
