@@ -357,7 +357,21 @@
 <p>如图所示，右旋会将当亲节点的左子节点为后继节点，当前节点作为后继节点的右子树。</p>
 <p><img src="/2018/11/14/redblacktree/redblacktree-2.png" alt="红黑树-2"></p>
 <h1 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h1><p>插入节点逻辑比较复杂。因为要保证插入新节点后整个红黑树还能够保持红黑树的定义。<br>我们默认新插入的节点都是红色的，因为新节点是红色的代价最小。当节点是黑色是一定会使得黑色高度发生变化。而当新节点是红色，当父节点是黑色，则不违背定义，但如果父节点是红色，我们可以通过很小的代价来修正。</p>
-<h2 id="修正"><a href="#修正" class="headerlink" title="修正"></a>修正</h2><h3 id="父节点为黑色"><a href="#父节点为黑色" class="headerlink" title="父节点为黑色"></a>父节点为黑色</h3><h3 id="父节点为红色，叔叔节点为黑色"><a href="#父节点为红色，叔叔节点为黑色" class="headerlink" title="父节点为红色，叔叔节点为黑色"></a>父节点为红色，叔叔节点为黑色</h3><h4 id="父节点是左子节点，新节点为左子节点"><a href="#父节点是左子节点，新节点为左子节点" class="headerlink" title="父节点是左子节点，新节点为左子节点"></a>父节点是左子节点，新节点为左子节点</h4><h4 id="父节点是左子节点，新节点是右子节点"><a href="#父节点是左子节点，新节点是右子节点" class="headerlink" title="父节点是左子节点，新节点是右子节点"></a>父节点是左子节点，新节点是右子节点</h4><h4 id="父节点是右子节点，新节点是左子节点"><a href="#父节点是右子节点，新节点是左子节点" class="headerlink" title="父节点是右子节点，新节点是左子节点"></a>父节点是右子节点，新节点是左子节点</h4><h4 id="父节点是右子节点，新节点是右子节点"><a href="#父节点是右子节点，新节点是右子节点" class="headerlink" title="父节点是右子节点，新节点是右子节点"></a>父节点是右子节点，新节点是右子节点</h4><p>#参考资料</p>
+<h2 id="修正"><a href="#修正" class="headerlink" title="修正"></a>修正</h2><p>当插入的新节点（红色）后，可能会违背红黑树的定义，这个时候需要进行修正。</p>
+<h3 id="父节点为黑色"><a href="#父节点为黑色" class="headerlink" title="父节点为黑色"></a>父节点为黑色</h3><p><img src="/2018/11/14/redblacktree/insert-1.png" alt="插入-1"></p>
+<p>这种场景不需要做修正。并不违反红黑树的定义。</p>
+<h3 id="父节点为红色，叔叔节点为红色"><a href="#父节点为红色，叔叔节点为红色" class="headerlink" title="父节点为红色，叔叔节点为红色"></a>父节点为红色，叔叔节点为红色</h3><p><img src="/2018/11/14/redblacktree/insert-2.png" alt="插入-2"></p>
+<p>这种场景只需要将父节点，叔叔节点都变成黑色，将祖父节点变为红色，再以祖父节点为基准开始修正（递归）。</p>
+<h3 id="父节点为红色，叔叔节点为黑色"><a href="#父节点为红色，叔叔节点为黑色" class="headerlink" title="父节点为红色，叔叔节点为黑色"></a>父节点为红色，叔叔节点为黑色</h3><p>当父节点为红色，叔叔节点为黑色时，需要按如下四种场景来进行修正。</p>
+<h4 id="父节点是左子节点，新节点为左子节点"><a href="#父节点是左子节点，新节点为左子节点" class="headerlink" title="父节点是左子节点，新节点为左子节点"></a>父节点是左子节点，新节点为左子节点</h4><p><img src="/2018/11/14/redblacktree/insert-3.png" alt="插入-3"></p>
+<p>这种场景，需要先将父节点变为黑色，将祖父节点变为红色。再以祖父节点为基准进行右旋。</p>
+<h4 id="父节点是右子节点，新节点是右子节点"><a href="#父节点是右子节点，新节点是右子节点" class="headerlink" title="父节点是右子节点，新节点是右子节点"></a>父节点是右子节点，新节点是右子节点</h4><p><img src="/2018/11/14/redblacktree/insert-4.png" alt="插入-4"></p>
+<p>这种场景，需要先将父节点变为黑色，将祖父节点变为红色，再以祖父节点为基准进行左旋。</p>
+<h4 id="父节点是左子节点，新节点是右子节点"><a href="#父节点是左子节点，新节点是右子节点" class="headerlink" title="父节点是左子节点，新节点是右子节点"></a>父节点是左子节点，新节点是右子节点</h4><p><img src="/2018/11/14/redblacktree/insert-5.png" alt="插入-5"></p>
+<p>这种场景，需要先以父节点为基准进行左旋。这个时候整个树会变成父节点时左子节点，新节点也是左子节点的场景，只是新节点是父节点的父节点。<br>这个时候同理，将新节点变为黑色，将祖父节点变为红色，再以祖父节点为基准节点进行右旋。</p>
+<h4 id="父节点是右子节点，新节点是左子节点"><a href="#父节点是右子节点，新节点是左子节点" class="headerlink" title="父节点是右子节点，新节点是左子节点"></a>父节点是右子节点，新节点是左子节点</h4><p><img src="/2018/11/14/redblacktree/insert-6.png" alt="插入-6"></p>
+<p>这种场景，需要先以父节点为基准进行右旋。这个时候整个树就会变成父节点是右子节点，新节点也是右子节点的场景。只是新节点是父节点的父节点。<br>这个时候同理，将新节点变为黑色，将祖父节点变为红色，再以祖父节点为基准节点进行左旋。</p>
+<p>#参考资料</p>
 <blockquote>
 <p>红黑树图片：<a href="https://blog.csdn.net/qq_34173549/article/details/79636764" target="_blank" rel="noopener">https://blog.csdn.net/qq_34173549/article/details/79636764</a><br>红黑树代码：<a href="https://www.cnblogs.com/skywang12345/p/3624343.html" target="_blank" rel="noopener">https://www.cnblogs.com/skywang12345/p/3624343.html</a><br>红黑树代码：<a href="https://www.cnblogs.com/ysocean/p/8004211.html" target="_blank" rel="noopener">https://www.cnblogs.com/ysocean/p/8004211.html</a><br>红黑树的删除：<a href="https://blog.csdn.net/qq_37169817/article/details/78880110" target="_blank" rel="noopener">https://blog.csdn.net/qq_37169817/article/details/78880110</a></p>
 </blockquote>
