@@ -91,7 +91,7 @@
 <meta property="og:image" content="http://yoursite.com/2018/09/09/concurrency-3/trylock.png">
 <meta property="og:image" content="http://yoursite.com/2018/09/09/concurrency-3/semaphore-output.png">
 <meta property="og:image" content="http://yoursite.com/2018/09/09/concurrency-3/readwritelock-output.png">
-<meta property="og:updated_time" content="2018-09-10T15:26:24.547Z">
+<meta property="og:updated_time" content="2018-12-25T03:24:38.982Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="锁">
 <meta name="twitter:description" content="重入锁(ReentrantLock)实现接口Lock。显示进行加锁，释放锁的操作使得并发处理时更加的灵活。 同步代码块（lock/unlock） 如图是使用重入锁来进行并发操作的样例，可以看到两个线程都共享了重入锁lock，在同步代码块的开始需要手工显示的进行加锁。在同步代码块的最后，需要手工显示的释放锁。重入锁名称的缘由是指在同一个线程内，可以多次进行加锁，同时，最终也要对等的多次进行释放锁。">
@@ -508,7 +508,7 @@
 <li>一旦resume执行在suspend之前，suspend后面没有resume的话，线程会被永久挂起。而LockSupport则不会，基于信号量机制，哪怕unpark优先于park执行，park遍不会阻塞挂起，会立即返回。</li>
 </ul>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>《实战java 高并发程序设计》葛一鸣 郭超 编著<br><a href="https://blog.csdn.net/wbwjx/article/details/57856045" target="_blank" rel="noopener">https://blog.csdn.net/wbwjx/article/details/57856045</a></p>
+<p>《实战java 高并发程序设计》葛一鸣 郭超 编著<br>concurrent包：<a href="https://blog.csdn.net/wbwjx/article/details/57856045" target="_blank" rel="noopener">https://blog.csdn.net/wbwjx/article/details/57856045</a><br>java 锁：<a href="https://blog.csdn.net/zqz_zqz/article/details/70233767" target="_blank" rel="noopener">https://blog.csdn.net/zqz_zqz/article/details/70233767</a><br>重入锁：<a href="https://blog.csdn.net/cds86333774/article/details/51025245" target="_blank" rel="noopener">https://blog.csdn.net/cds86333774/article/details/51025245</a></p>
 </blockquote>
 
       
