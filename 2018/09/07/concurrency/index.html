@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2018/09/07/concurrency/concurrency-parallelism.png">
 <meta property="og:image" content="http://yoursite.com/2018/09/07/concurrency/memory.png">
-<meta property="og:updated_time" content="2018-12-24T08:02:52.884Z">
+<meta property="og:updated_time" content="2019-01-10T07:25:54.555Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="高并发基础概念">
 <meta name="twitter:description" content="同步/异步 同步：调用方必须阻塞等待方法的返回后方可继续执行后续操作。 异步：调用方调用后无需等待方法的返回，方法会在另一个线程去执行，整个异步执行的过程是不会影响调用法的继续工作。    并发（Concurrency)/并行（Parallelism） 如图所示：    并发：多个任务交替执行。逻辑上的同时执行。   并行：多个任务同时执行。物理上的同时执行。  临界区可被多个线程共享的资源。但是">
@@ -399,10 +399,10 @@
 <li><strong>可以通过volatile来修饰共享数据，这样保证多线程之前数据的可见性</strong>。</li>
 </ul>
 <h2 id="有序性"><a href="#有序性" class="headerlink" title="有序性"></a>有序性</h2><p>jvm因为效率的问题，会发生指令重排，即实际执行的指令顺序与编写的代码顺序可能会不一致。而为了能够让多线程并发时的顺序符合我们的预期，则需要多线程能够有序执行，需要满足<strong>happen-before原则</strong>。</p>
-<h3 id="happen-before原则（不指令重排）"><a href="#happen-before原则（不指令重排）" class="headerlink" title="happen-before原则（不指令重排）"></a>happen-before原则（不指令重排）</h3><ul>
+<h3 id="happen-before原则（保证有序性）"><a href="#happen-before原则（保证有序性）" class="headerlink" title="happen-before原则（保证有序性）"></a>happen-before原则（保证有序性）</h3><ul>
 <li>程序顺序原则：一个线程内保证语义的串行性。</li>
 <li>volatile规则：volatile的写优先于读，这保证了volatile变量在多线程中的可见性。</li>
-<li>锁规则：解锁必然发生在随后的加锁前（不会将加锁治疗重排到解锁之前）。</li>
+<li>锁规则：解锁必然发生在随后的加锁前（不会将加锁指令重排到解锁之前）。</li>
 <li>传递性：A先于B，B先于C，则A先于C。</li>
 <li>线程的start()优先于它的每一个动作。</li>
 <li>线程的所有操作优先于线程的终结。</li>
@@ -410,7 +410,7 @@
 <li>对象的构造优先于finalize。</li>
 </ul>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>《实战java 高并发程序设计》葛一鸣 郭超 编著<br>死锁：<a href="https://blog.csdn.net/changfengxia/article/details/80313822" target="_blank" rel="noopener">https://blog.csdn.net/changfengxia/article/details/80313822</a><br>活锁：<a href="https://blog.csdn.net/yysct2005/article/details/38581395" target="_blank" rel="noopener">https://blog.csdn.net/yysct2005/article/details/38581395</a>  </p>
+<p>《实战java 高并发程序设计》葛一鸣 郭超 编著<br>死锁：<a href="https://blog.csdn.net/changfengxia/article/details/80313822" target="_blank" rel="noopener">https://blog.csdn.net/changfengxia/article/details/80313822</a><br>活锁：<a href="https://blog.csdn.net/yysct2005/article/details/38581395" target="_blank" rel="noopener">https://blog.csdn.net/yysct2005/article/details/38581395</a>    </p>
 </blockquote>
 
       
@@ -551,7 +551,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -562,7 +562,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -573,7 +573,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
@@ -606,7 +606,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#同步-异步"><span class="nav-number">1.</span> <span class="nav-text">同步/异步</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#并发（Concurrency-并行（Parallelism）"><span class="nav-number">2.</span> <span class="nav-text">并发（Concurrency)/并行（Parallelism）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#临界区"><span class="nav-number">3.</span> <span class="nav-text">临界区</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#阻塞-非阻塞"><span class="nav-number">4.</span> <span class="nav-text">阻塞/非阻塞</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#死锁-饥饿-活锁"><span class="nav-number">5.</span> <span class="nav-text">死锁/饥饿/活锁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#并发级别"><span class="nav-number">6.</span> <span class="nav-text">并发级别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#阻塞"><span class="nav-number">6.1.</span> <span class="nav-text">阻塞</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无饥饿"><span class="nav-number">6.2.</span> <span class="nav-text">无饥饿</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无障碍"><span class="nav-number">6.3.</span> <span class="nav-text">无障碍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无锁"><span class="nav-number">6.4.</span> <span class="nav-text">无锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无等待"><span class="nav-number">6.5.</span> <span class="nav-text">无等待</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#高并发操作的线程要求"><span class="nav-number">7.</span> <span class="nav-text">高并发操作的线程要求</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原子性"><span class="nav-number">7.1.</span> <span class="nav-text">原子性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可见性"><span class="nav-number">7.2.</span> <span class="nav-text">可见性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有序性"><span class="nav-number">7.3.</span> <span class="nav-text">有序性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#happen-before原则（不指令重排）"><span class="nav-number">7.3.1.</span> <span class="nav-text">happen-before原则（不指令重排）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">8.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#同步-异步"><span class="nav-number">1.</span> <span class="nav-text">同步/异步</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#并发（Concurrency-并行（Parallelism）"><span class="nav-number">2.</span> <span class="nav-text">并发（Concurrency)/并行（Parallelism）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#临界区"><span class="nav-number">3.</span> <span class="nav-text">临界区</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#阻塞-非阻塞"><span class="nav-number">4.</span> <span class="nav-text">阻塞/非阻塞</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#死锁-饥饿-活锁"><span class="nav-number">5.</span> <span class="nav-text">死锁/饥饿/活锁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#并发级别"><span class="nav-number">6.</span> <span class="nav-text">并发级别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#阻塞"><span class="nav-number">6.1.</span> <span class="nav-text">阻塞</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无饥饿"><span class="nav-number">6.2.</span> <span class="nav-text">无饥饿</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无障碍"><span class="nav-number">6.3.</span> <span class="nav-text">无障碍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无锁"><span class="nav-number">6.4.</span> <span class="nav-text">无锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无等待"><span class="nav-number">6.5.</span> <span class="nav-text">无等待</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#高并发操作的线程要求"><span class="nav-number">7.</span> <span class="nav-text">高并发操作的线程要求</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原子性"><span class="nav-number">7.1.</span> <span class="nav-text">原子性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可见性"><span class="nav-number">7.2.</span> <span class="nav-text">可见性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有序性"><span class="nav-number">7.3.</span> <span class="nav-text">有序性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#happen-before原则（保证有序性）"><span class="nav-number">7.3.1.</span> <span class="nav-text">happen-before原则（保证有序性）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">8.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
