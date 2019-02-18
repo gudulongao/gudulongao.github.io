@@ -88,10 +88,9 @@
 <meta property="og:description" content="同步锁   修饰区域 说明 类型     修饰对象 对对象加锁 对象锁   修饰实例方法 对当前实例加锁 this锁   修饰静态方法 对当前类加锁 类锁   修饰类 对当前类加锁 类锁    实现原理前言为了了解synchronized的实现原理，需要事先对jvm对象的结构，moniter对象的结构有所了解。 对象结构 jvm 中的对象主要由对象头、实例变量和对齐填充三个部分组成。    部分">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/2019/02/16/block/object.png">
-<meta property="og:image" content="http://yoursite.com/2019/02/16/block/markword.png">
 <meta property="og:image" content="http://yoursite.com/2019/02/16/block/monitor-struct.png">
 <meta property="og:image" content="http://yoursite.com/2019/02/16/block/monitor.png">
-<meta property="og:updated_time" content="2019-02-16T08:29:21.038Z">
+<meta property="og:updated_time" content="2019-02-18T07:52:02.553Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="同步锁">
 <meta name="twitter:description" content="同步锁   修饰区域 说明 类型     修饰对象 对对象加锁 对象锁   修饰实例方法 对当前实例加锁 this锁   修饰静态方法 对当前类加锁 类锁   修饰类 对当前类加锁 类锁    实现原理前言为了了解synchronized的实现原理，需要事先对jvm对象的结构，moniter对象的结构有所了解。 对象结构 jvm 中的对象主要由对象头、实例变量和对齐填充三个部分组成。    部分">
@@ -423,8 +422,38 @@
 </tr>
 </tbody>
 </table>
-<p>MarkWord 的结构如下图所示。</p>
-<p><img src="/2019/02/16/block/markword.png" alt="block"></p>
+<p>MarkWord最后2位表明了当前对象的状态。不同的状态存储了不同的内容，如下表所示。</p>
+<table>
+<thead>
+<tr>
+<th>标识位</th>
+<th>状态</th>
+<th>存储内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01</td>
+<td>未锁定，可偏向</td>
+<td>对象哈希值、对象分代年龄，偏向线程id，偏向时间戳</td>
+</tr>
+<tr>
+<td>00</td>
+<td>轻量级锁</td>
+<td>指向LockRecord</td>
+</tr>
+<tr>
+<td>10</td>
+<td>重量锁</td>
+<td>指向重量级锁</td>
+</tr>
+<tr>
+<td>11</td>
+<td>gc标志</td>
+<td>空</td>
+</tr>
+</tbody>
+</table>
 <p><strong>MarkWorkd中记录了monitor对象的地址。即每一个对象都拥有一个与之对应的monitor对象。</strong></p>
 <h3 id="monitor对象"><a href="#monitor对象" class="headerlink" title="monitor对象"></a>monitor对象</h3><p>monitor对象的结构如下图所示。</p>
 <p><img src="/2019/02/16/block/monitor-struct.png" alt="block"></p>
@@ -470,10 +499,19 @@
 </tr>
 </tbody>
 </table>
+<p><strong>contentionlist、entrylist、waitset队列中的线程都是阻塞状态</strong>。</p>
 <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p><img src="/2019/02/16/block/monitor.png" alt="block"></p>
 <p>1、所有想要竞争锁的线程都会先进入到contentionlist队列中。<br>2、从contentionlist中将部分线程作为候选线程转移到entrylist队列中。<br>3、从entrylist队列中随机选择一个线程作为候选线程，OnDeck指向候选线程。如果锁没有被占用，count=0，则候选线程成功获取锁。这个时候owner指向拥有锁的线程，count+1。如果锁已被占用候选线程会等到锁被释放后才会拥有锁。<br>4、当拥有锁的线程再次请求加锁时（<strong>可重入</strong>），monitor对象会判断owner是否时指向当前线程，如果是，则属于重入的场景，只需要count+1即可。<br>5、如果拥有锁的线程释放锁，则count-1。（<strong>重入的线程重入几次就需要释放几次，count也会依次-1</strong>）</p>
-<h1 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h1><h2 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h2><h2 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h2><h2 id="轻量锁"><a href="#轻量锁" class="headerlink" title="轻量锁"></a>轻量锁</h2><h2 id="重量锁"><a href="#重量锁" class="headerlink" title="重量锁"></a>重量锁</h2><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>锁：<a href="http://www.cnblogs.com/charlesblc/p/5994162.html" target="_blank" rel="noopener">http://www.cnblogs.com/charlesblc/p/5994162.html</a><br>对象头：<a href="https://blog.csdn.net/zhoufanyang_china/article/details/54601311" target="_blank" rel="noopener">https://blog.csdn.net/zhoufanyang_china/article/details/54601311</a><br>同步锁：<a href="https://www.cnblogs.com/mingyao123/p/7424911.html" target="_blank" rel="noopener">https://www.cnblogs.com/mingyao123/p/7424911.html</a>  </p>
+<h2 id="加锁过程"><a href="#加锁过程" class="headerlink" title="加锁过程"></a>加锁过程</h2><p>当线程想要竞争对象锁时。<br>1、锁标志=01（未锁定，可偏向）时。jvm会在当前线程的栈帧中创建LockRecord，用于存储当前对象锁的MarkWord（官方称为DisplacedMarkWord）。同时jvm会基于cas将对象锁的markword内容修改为指向LockRecord。同时锁标志=00。如果成功，则对象锁变成偏向锁。<br>2、如果cas操作失败，jvm会先检查对象的markword中存储的地址是否是当前线程栈帧的LockRecord地址。如果一致，则表明线程已拥有锁，可直接进入同步代码块。如果不一致，表明已有别的线程拥有了此对象锁。这个时候属于有多个线程在竞争锁。<br>3、偏向锁对于可重入的优化原理是，当线程再次请求加锁时，如果对象锁的锁标志=00（偏向锁），并且MarkWord指向的是当前线程栈帧中的LockRecord。则表明当前线程已拥有此对象锁，无需再次进行申请。</p>
+<h2 id="释放锁过程"><a href="#释放锁过程" class="headerlink" title="释放锁过程"></a>释放锁过程</h2><h1 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h1><h2 id="阻塞的代价"><a href="#阻塞的代价" class="headerlink" title="阻塞的代价"></a>阻塞的代价</h2><p>java的线程是映射到操作系统原生线程之上的，如果要阻塞或唤醒一个线程就需要操作系统介入，需要在用户态与核心态之间切换，这种切换会消耗大量的系统资源，因为用户态与内核态都有各自专用的内存空间，专用的寄存器等，用户态切换至内核态需要传递给许多变量、参数给内核，内核也需要保护好用户态在切换时的一些寄存器值、变量等，以便内核态调用结束后切换回用户态继续工作。  </p>
+<blockquote>
+<p>1、如果线程状态切换是一个高频操作时，这将会消耗很多CPU处理时间。<br>2、如果对于那些需要同步的简单的代码块，获取锁挂起操作消耗的时间比用户代码执行的时间还要长，这种同步策略显然非常糟糕的。  </p>
+</blockquote>
+<h2 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h2><p>如果持有锁的线程能够在很短的时候释放锁，竞争锁的线程可以先自旋（执行一定周期的空循环）。锁一旦释放则会立即获取。<br>从moniter对象的结构来看。线程自旋发生在进入contentionlist队列之前。即线程在竞争锁，如果没能成功，会先自旋，如果自旋后，锁释放，则会立即获取，这个时候会抢占readytrhead。如果还是没能获取到锁，就会进入contentionlist队列。</p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>尽可能的降低锁进入阻塞状态的可能性。减少了内核态和用户态的切换，降低了线程切换造成的系统资源消耗。</p>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p><strong>非公平</strong> 自旋锁在自旋后，如果锁被释放，会立即获取锁资源，相当于抢占了OnDeck(ReadThread)的资源。<br><strong>降低吞吐量</strong> 当占有锁执行的任务时间很长，或者锁的竞争很激烈的场景。锁短时间不会释放，而线程又因为自旋要白白消耗CPU时间片，别的线程又不能立即获得时间片。这无疑会降低系统的吞吐量。<strong>高并发并且线程任务耗时的这种场景建议都关闭自选锁</strong>   </p>
+<h2 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h2><h2 id="轻量锁"><a href="#轻量锁" class="headerlink" title="轻量锁"></a>轻量锁</h2><h2 id="重量锁"><a href="#重量锁" class="headerlink" title="重量锁"></a>重量锁</h2><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>锁：<a href="http://www.cnblogs.com/charlesblc/p/5994162.html" target="_blank" rel="noopener">http://www.cnblogs.com/charlesblc/p/5994162.html</a><br>对象头：<a href="https://blog.csdn.net/zhoufanyang_china/article/details/54601311" target="_blank" rel="noopener">https://blog.csdn.net/zhoufanyang_china/article/details/54601311</a><br>同步锁：<a href="https://www.cnblogs.com/mingyao123/p/7424911.html" target="_blank" rel="noopener">https://www.cnblogs.com/mingyao123/p/7424911.html</a><br>偏向锁/轻量级锁/重量锁：<a href="https://blog.csdn.net/zqz_zqz/article/details/70233767" target="_blank" rel="noopener">https://blog.csdn.net/zqz_zqz/article/details/70233767</a><br>加锁/释放锁的过程：<a href="https://blog.csdn.net/luo532046043/article/details/82883598" target="_blank" rel="noopener">https://blog.csdn.net/luo532046043/article/details/82883598</a>  </p>
 </blockquote>
 
       
@@ -665,7 +703,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#同步锁"><span class="nav-number">1.</span> <span class="nav-text">同步锁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现原理"><span class="nav-number">2.</span> <span class="nav-text">实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">2.1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#对象结构"><span class="nav-number">2.1.1.</span> <span class="nav-text">对象结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#对象头"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">对象头</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#monitor对象"><span class="nav-number">2.1.2.</span> <span class="nav-text">monitor对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">2.2.</span> <span class="nav-text">原理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#优化"><span class="nav-number">3.</span> <span class="nav-text">优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#自旋锁"><span class="nav-number">3.1.</span> <span class="nav-text">自旋锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#偏向锁"><span class="nav-number">3.2.</span> <span class="nav-text">偏向锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#轻量锁"><span class="nav-number">3.3.</span> <span class="nav-text">轻量锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重量锁"><span class="nav-number">3.4.</span> <span class="nav-text">重量锁</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#同步锁"><span class="nav-number">1.</span> <span class="nav-text">同步锁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现原理"><span class="nav-number">2.</span> <span class="nav-text">实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">2.1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#对象结构"><span class="nav-number">2.1.1.</span> <span class="nav-text">对象结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#对象头"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">对象头</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#monitor对象"><span class="nav-number">2.1.2.</span> <span class="nav-text">monitor对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">2.2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加锁过程"><span class="nav-number">2.3.</span> <span class="nav-text">加锁过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#释放锁过程"><span class="nav-number">2.4.</span> <span class="nav-text">释放锁过程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#优化"><span class="nav-number">3.</span> <span class="nav-text">优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#阻塞的代价"><span class="nav-number">3.1.</span> <span class="nav-text">阻塞的代价</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自旋锁"><span class="nav-number">3.2.</span> <span class="nav-text">自旋锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优点"><span class="nav-number">3.2.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缺点"><span class="nav-number">3.2.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#偏向锁"><span class="nav-number">3.3.</span> <span class="nav-text">偏向锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#轻量锁"><span class="nav-number">3.4.</span> <span class="nav-text">轻量锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重量锁"><span class="nav-number">3.5.</span> <span class="nav-text">重量锁</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
