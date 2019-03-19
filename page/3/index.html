@@ -239,6 +239,251 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/10/concurrency-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/10/concurrency-4/" itemprop="url">线程池</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-10T23:27:13+08:00">
+                2018-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/高并发/" itemprop="url" rel="index">
+                    <span itemprop="name">高并发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/10/concurrency-4/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/10/concurrency-4/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="为什么要使用线程池"><a href="#为什么要使用线程池" class="headerlink" title="为什么要使用线程池"></a>为什么要使用线程池</h1><ul>
+<li>线程的创建和销毁都需要耗费时间</li>
+<li>线程也是需要瓜分内存空间，不加节制的增加线程会造成内存不足（oom异常）  </li>
+<li>大量的线程造成的内存耗费，导致垃圾回收的时间加长（gc停顿）  </li>
+</ul>
+<h1 id="JDK提供的线程池"><a href="#JDK提供的线程池" class="headerlink" title="JDK提供的线程池"></a>JDK提供的线程池</h1><p>Executor框架提供了几种线程池，可以通过Executors工厂类来获取。</p>
+<h2 id="固定线程数线程池（newFiexdThreadPool）"><a href="#固定线程数线程池（newFiexdThreadPool）" class="headerlink" title="固定线程数线程池（newFiexdThreadPool）"></a>固定线程数线程池（newFiexdThreadPool）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecutorService executorService = Executors.newFixedThreadPool(20);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/09/10/concurrency-4/executors-1.png" alt="包装生成线程安全的hashmap"></p>
+<p>固定线程数线程池，其线程数量在初始化时已固定，不会发生变化，提交任务时，如果有空闲线程时，则立即执行。如果没有，任务会进入一个任务队列，从源码中可以看到其任务队列为<strong>LinkedBlockingQueue</strong>。</p>
+<h2 id="单个线程线程池-newSingleThreadExecutor"><a href="#单个线程线程池-newSingleThreadExecutor" class="headerlink" title="单个线程线程池(newSingleThreadExecutor)"></a>单个线程线程池(newSingleThreadExecutor)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecutorService executorService = Executors.newSingleThreadExecutor();</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/09/10/concurrency-4/executors-2.png" alt="包装生成线程安全的hashmap"></p>
+<p>单一线程池，其线程数只有一个，当提交任务多于1个时，任务会进入任务队列，待线程空闲时按照任务队列中先进先出的顺序来执行。通过源码可以看到，单个线程池与固定线程数线程池的实现逻辑类似，都是使用<strong>LinkedBlockingQueue</strong>来作为任务队列的。</p>
+<h2 id="不定线程数线程池-newCachedThreadPool"><a href="#不定线程数线程池-newCachedThreadPool" class="headerlink" title="不定线程数线程池(newCachedThreadPool)"></a>不定线程数线程池(newCachedThreadPool)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecutorService executorService = Executors.newCachedThreadPool();</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/09/10/concurrency-4/executors-3.png" alt="包装生成线程安全的hashmap"></p>
+<p>不定线程数线程池，其线程数量是动态变化的，提交任务时，如果有空闲线程，则立即执行，如果没有，则会创建新的线程处理任务。当所有执行完毕任务后，会返回到线程池中等待复用。从源码冲可以看到，其使用<strong>SynchronsQueue</strong>作为任务队列。</p>
+<h2 id="单个定时任务线程池（newSingleThreadScheduledExecutor）"><a href="#单个定时任务线程池（newSingleThreadScheduledExecutor）" class="headerlink" title="单个定时任务线程池（newSingleThreadScheduledExecutor）"></a>单个定时任务线程池（newSingleThreadScheduledExecutor）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecutorService executorService = Executors.newSingleThreadScheduledExecutor();</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/09/10/concurrency-4/executors-4.png" alt="包装生成线程安全的hashmap"></p>
+<p>线程数为1的可定时执行任务的线程池。</p>
+<h2 id="定时任务线程池（newScheduledThreadPool）"><a href="#定时任务线程池（newScheduledThreadPool）" class="headerlink" title="定时任务线程池（newScheduledThreadPool）"></a>定时任务线程池（newScheduledThreadPool）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecutorService executorService = Executors.newScheduledThreadPool(20);</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/09/10/concurrency-4/executors-5.png" alt="包装生成线程安全的hashmap"></p>
+<p>可以指定线程数的可执行定时任务的线程池。</p>
+<h2 id="执行定时任务"><a href="#执行定时任务" class="headerlink" title="执行定时任务"></a>执行定时任务</h2><p>对于定时任务的线程池，其包含两个方法，用来运行定时任务。</p>
+<p><img src="/2018/09/10/concurrency-4/executors-6.png" alt="包装生成线程安全的hashmap"></p>
+<ul>
+<li>scheduleAtFixedRate 以上一个任务的开始时间为起点，等待period时长之后再调用下一个任务。即period的时长是包括上一个任务的运行时间的，<strong>如果上一个任务运行时长&gt;period时长，那么上一个任务执行完毕后会立即执行下一个任务</strong>。  </li>
+<li>scheduleWithFixedDelay 以上一个任务的结束时间为起点，等待delay时长以后再调用下一个任务。<strong>即下一个任务等待的时长=上一个任务运行的时长+delay时长</strong>。</li>
+</ul>
+<h1 id="线程池的内部实现"><a href="#线程池的内部实现" class="headerlink" title="线程池的内部实现"></a>线程池的内部实现</h1><p>从jdk中提供的几种线程池的源码中可以看到，其内部都是用了<strong>ThreadPoolExecutor</strong>。</p>
+<p><img src="/2018/09/10/concurrency-4/threadpoolexecutor.png" alt="包装生成线程安全的hashmap"></p>
+<h2 id="任务队列"><a href="#任务队列" class="headerlink" title="任务队列"></a>任务队列</h2><p>创建线程池的时候，需要指定线程池中的人物队列，从ThreadPoolExecutor的构造函数中可以看到，任务队列都是实现了接口BlockingQueue的队列对象。常用的人物队列有有<strong>SynchronousQueue，ArrayBlockingQueue，LinkedBlockingQueue，PriorityBlockQueue</strong>。</p>
+<h3 id="零界队列（SynchronousQueue）"><a href="#零界队列（SynchronousQueue）" class="headerlink" title="零界队列（SynchronousQueue）"></a>零界队列（SynchronousQueue）</h3><p>SynchronousQueue 是一个没有容量的队列。每一次插入操作都必须等待一个删除操作。反之，每一个删除操作都等待对应的插入操作。<strong>即一旦有元素进入队列（生产者插入）会被立即删除（消费者删除），更像是生产者利用该队列快速的将元素传递给消费者</strong>。<br><strong>newCachedThreadPool的线程池就使用了SynchronousQueue来作为任务队列</strong>，当有空闲线程时立即执行任务，当没有空闲线程的时候，任务会插入到SynchronousQueue中，由于SynchronousQueue的特性，当插入的时候就必须要有对应的删除，即需要立即创建新的线程从任务队列中获取任务。如果当前线程数已到达最大线程数。会触发拒绝策略，<strong>故使用SynchronousQueue的线程池其核心线程数要很大，否则很容易触发拒绝策略</strong>。</p>
+<h3 id="有界队列（ArrayBlockingQueue）"><a href="#有界队列（ArrayBlockingQueue）" class="headerlink" title="有界队列（ArrayBlockingQueue）"></a>有界队列（ArrayBlockingQueue）</h3><p>ArrayBlockingQueue 是一个有界队列。构造时需要指定初始容量。<br>当有任务时，线程池处理线程的逻辑如下：  </p>
+<ul>
+<li>线程数&lt;coreSize，创建线程，立即执行任务。  </li>
+<li>线程数&gt;coreSize，将任务添加到任务队列，等有空闲线程时再从线程中获取任务执行。  </li>
+<li>任务队列已满，线程数&lt;maxSize，创建新线程执行任务。</li>
+<li>任务队列已满，线程数=maxSize，触发拒绝策略。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">package demo.concurrency.threadpool;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.ArrayBlockingQueue;</span><br><span class="line">import java.util.concurrent.ThreadPoolExecutor;</span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">public class ThreadPoolDemo &#123;</span><br><span class="line">    public static void testArrayBlockingQueueThreadPool() &#123;</span><br><span class="line">        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(0, 2, 50000, TimeUnit.HOURS,new ArrayBlockingQueue&lt;Runnable&gt;(1));</span><br><span class="line">        Runnable longTimeTask = new Runnable() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    System.out.println(&quot;long time &quot;+Thread.currentThread().getName() + &quot; start ...&quot;);</span><br><span class="line">                    Thread.sleep(6000);</span><br><span class="line">                    System.out.println(&quot;long time &quot;+Thread.currentThread().getName() + &quot; done!&quot;);</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        Runnable quickTask = new Runnable() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    System.out.println(&quot;short time &quot;+Thread.currentThread().getName() + &quot; start ...&quot;);</span><br><span class="line">                    Thread.sleep(3000);</span><br><span class="line">                    System.out.println(&quot;short time &quot;+Thread.currentThread().getName() + &quot; done!&quot;);</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        threadPoolExecutor.submit(longTimeTask);</span><br><span class="line">        threadPoolExecutor.submit(longTimeTask);</span><br><span class="line">        System.out.println(&quot;thread pool size :&quot; + threadPoolExecutor.getPoolSize() + &quot; active :&quot; + threadPoolExecutor.getActiveCount());</span><br><span class="line">        threadPoolExecutor.submit(quickTask);</span><br><span class="line">        System.out.println(&quot;thread pool size :&quot; + threadPoolExecutor.getPoolSize() + &quot; active :&quot; + threadPoolExecutor.getActiveCount());</span><br><span class="line">        try &#123;</span><br><span class="line">            System.out.println(&quot;thread pool sleep...&quot;);</span><br><span class="line">            Thread.sleep(10000);</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;thread pool size :&quot; + threadPoolExecutor.getPoolSize() + &quot; active :&quot; + threadPoolExecutor.getActiveCount());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        testArrayBlockingQueueThreadPool();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输入如下：</p>
+<p><img src="/2018/09/10/concurrency-4/arrayblockqueue.png" alt="包装生成线程安全的hashmap"></p>
+<p>当时看到线程池基于有界队列任务的线程维护策略中对紧急状态时有些疑惑。故写了样例。样例中通过有界队列ArrayBlockingQueue来作为线程池的任务队列，线程池中提交了两种任务，一种长时间运行一种段时间运行。主要是为了测试当任务来临时，任务队列已满，线程数&lt;maxSize时会创建新的线程来执行任务，当最终任务执行完毕后，线程池中还保留的线程数是coreSize还是&gt;coreSize，通过查看输出可以看到，当紧急任务来临时，线程池会拓展线程数到maxSize,当任务执行完毕后，线程池并不会将&gt;coreSize的线程给销毁，会保留。</p>
+<h3 id="无界队列（LinkedBlockingQueue）"><a href="#无界队列（LinkedBlockingQueue）" class="headerlink" title="无界队列（LinkedBlockingQueue）"></a>无界队列（LinkedBlockingQueue）</h3><ul>
+<li>线程数&lt;coreSize，新建线程，立即执行任务。  </li>
+<li>线程数&gt;coreSize，将任务添加到对了，等待有空闲线程时执行任务。由于任务队列是无界队列，可以不断的增加队列长度，故<strong>直到系统资源耗尽，任务会一直添加到任务队列，也不会触发拒绝策略</strong>。  </li>
+</ul>
+<h3 id="优先级队列（PriorityBlockQueue）"><a href="#优先级队列（PriorityBlockQueue）" class="headerlink" title="优先级队列（PriorityBlockQueue）"></a>优先级队列（PriorityBlockQueue）</h3><p>线程池会根据任务的优先级来优先选择优先级高的任务优先执行。</p>
+<h2 id="拒绝策略"><a href="#拒绝策略" class="headerlink" title="拒绝策略"></a>拒绝策略</h2><p>对于有界队列或者零界队列时，当没有空闲线程，线程数到达maxSize则会触发拒绝策略。jdk提供的4种拒绝策略：  </p>
+<ul>
+<li>AbortPolicy 直接抛出异常。  </li>
+<li>CallerRunsPolicy 如果线程池没有停止，则直接在调用该任务的线程中执行。  </li>
+<li>DiscardOledestPolicy 丢弃最老的任务，由于除了优先级队列，有界和无界队列都是按照FIFO先进先出策略来处理任务，故最老的任务就是即将要被执行的任务。</li>
+<li>DiscardPolicy 直接丢弃当前任务。</li>
+</ul>
+<p>其他三个策略都好理解，对于CallerRunsPolicy，我的感觉就是当线程数到达maxSize的时候，对于新提交的任务，会直接在调用线程池提交任务的线程中来执行该任务，从而使得提交任务的线程被迫暂停原由的工作转而执行任务。</p>
+<blockquote>
+<p>参考样例：<a href="https://www.cnblogs.com/lic309/p/4564507.html" target="_blank" rel="noopener">https://www.cnblogs.com/lic309/p/4564507.html</a></p>
+</blockquote>
+<h3 id="自定义拒绝策略-RejectedExecutionHandler"><a href="#自定义拒绝策略-RejectedExecutionHandler" class="headerlink" title="自定义拒绝策略(RejectedExecutionHandler)"></a>自定义拒绝策略(RejectedExecutionHandler)</h3><p>实现接口RejectedExecutionHandler来自定义拒绝策略。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">package demo.concurrency.threadpool;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.*;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @descripte 线程池策略样例</span><br><span class="line"> */</span><br><span class="line">public class RejectedDemo &#123;</span><br><span class="line">    /**</span><br><span class="line">     * 自定义任务</span><br><span class="line">     */</span><br><span class="line">    class DemoRunnable implements Runnable &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; run &quot;);</span><br><span class="line">            try &#123;</span><br><span class="line">                Thread.sleep(1000);</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 自定义拒绝策略</span><br><span class="line">     */</span><br><span class="line">    class RejectedHandler implements RejectedExecutionHandler &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) &#123;</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; rejected !&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void test() &#123;</span><br><span class="line">        /**</span><br><span class="line">         * 自定义线程池</span><br><span class="line">         */</span><br><span class="line">        ExecutorService executorService = new ThreadPoolExecutor(5, 5, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingDeque&lt;Runnable&gt;(10), Executors.defaultThreadFactory(), new RejectedHandler());</span><br><span class="line">        DemoRunnable demoRunnable = new DemoRunnable();</span><br><span class="line">        for (int i = 0; i &lt; Integer.MAX_VALUE; i++) &#123;</span><br><span class="line">            executorService.submit(demoRunnable);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        RejectedDemo demo = new RejectedDemo();</span><br><span class="line">        demo.test();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="线程池拓展"><a href="#线程池拓展" class="headerlink" title="线程池拓展"></a>线程池拓展</h1><h2 id="自定义ThreadFactory"><a href="#自定义ThreadFactory" class="headerlink" title="自定义ThreadFactory"></a>自定义ThreadFactory</h2><p>在线程池中创建线程时，会通过线程工厂来创建线程，通过工厂来创建线程可以个性化的指定线程名称，线程组，优先级等，便于后续的维护。<br>继承ThreadFactory，重写newThread方法，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class DemoFactory implements ThreadFactory &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public Thread newThread(Runnable r) &#123;</span><br><span class="line">            Thread t = new Thread(r);</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; create new thread !&quot;);</span><br><span class="line">            return t;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="拓展ThreadExecutor-beforeExecute-AfterExecute和terminated"><a href="#拓展ThreadExecutor-beforeExecute-AfterExecute和terminated" class="headerlink" title="拓展ThreadExecutor(beforeExecute,AfterExecute和terminated)"></a>拓展ThreadExecutor(beforeExecute,AfterExecute和terminated)</h2><p>ThreadPoolExecutor支持个性化拓展。</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>beforeExecute</td>
+<td>在执行任务前调用</td>
+</tr>
+<tr>
+<td>afterExecute</td>
+<td>在执行任务后处理</td>
+</tr>
+<tr>
+<td>terminated</td>
+<td>线程池关闭时处理</td>
+</tr>
+</tbody>
+</table>
+<h2 id="查看异常堆栈"><a href="#查看异常堆栈" class="headerlink" title="查看异常堆栈"></a>查看异常堆栈</h2><ul>
+<li>最好使用execute方法来提交任务，而不是使用submit。submit会吃掉异常。</li>
+<li>可以重写submit方法，在submit进行提交任务时，包装一个新的任务，在新任务中执行原有任务，在执行的外层捕获异常并处理，这样我们可以通过submit来输出整个异常堆栈。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">        public Future&lt;?&gt; submit(Runnable task) &#123;</span><br><span class="line">            return super.submit(warp(task, Thread.currentThread().getId()));</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        private Runnable warp(final Runnable runnable, final long threadID)&#123;</span><br><span class="line">            return new Runnable() &#123;</span><br><span class="line">                @Override</span><br><span class="line">                public void run() &#123;</span><br><span class="line">                    try &#123;</span><br><span class="line">                        runnable.run();</span><br><span class="line">                    &#125; catch (Exception e) &#123;</span><br><span class="line">                        new Exception(&quot;MyThreadPool occured a exception at &quot; + threadID).printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>《实战java 高并发程序设计》葛一鸣 郭超 编著  </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/09/concurrency-3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2391,191 +2636,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/03/redis-3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/03/redis-3/" itemprop="url">redis持久化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T22:16:00+08:00">
-                2018-09-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/redis/" itemprop="url" rel="index">
-                    <span itemprop="name">redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/03/redis-3/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/09/03/redis-3/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Redis持久化方式"><a href="#Redis持久化方式" class="headerlink" title="Redis持久化方式"></a>Redis持久化方式</h2><h3 id="快照"><a href="#快照" class="headerlink" title="快照"></a>快照</h3><p>将某个时刻的数据持久化到硬盘中。用户可以对快照进行备份。支持复制到其他服务器。</p>
-<h4 id="创建快照"><a href="#创建快照" class="headerlink" title="创建快照"></a>创建快照</h4><ul>
-<li><strong>bgsave</strong> 创建一个快照。<strong>Redis会创建一个子进程来负责将快照写入硬盘。父进程继续接受请求。</strong></li>
-<li><strong>save</strong> Redis在快照创建完毕前不会接受任何请求。</li>
-<li><strong>shutdown</strong>命令用于停止redis服务的时候会执行一次<strong>save</strong>命令。停止所有请求。</li>
-<li><strong>sync</strong>命令进行Redis服务器之间的数据同步的时候。如果主服务器并没有正在进行bgsave或者不是刚刚结束bgsave命令时会执行bgsave命令。</li>
-</ul>
-<h4 id="快照配置"><a href="#快照配置" class="headerlink" title="快照配置"></a>快照配置</h4><blockquote>
-<p>save 60 1000    60秒内有1000次写操作则自动触发bgsave<br>stop-writes-on-bgsave-error-no  当创建快照失败时是否停止写操作<br>rdbcompression yes  是否对快照进行压缩<br>dbfilename dump.rdb 快照名称<br>dr ./   快照文件存储的路径</p>
-</blockquote>
-<h4 id="快照缺陷"><a href="#快照缺陷" class="headerlink" title="快照缺陷"></a>快照缺陷</h4><ul>
-<li>快照是某一个时间点的内存数据备份。如果在服务器崩溃则会丢失上一次快照到崩溃时的所有变更数据。   </li>
-<li>快照适合即使丢失一部分少量的数据也不会对整个应用造成问题的场景。   </li>
-</ul>
-<blockquote>
-<p>《Redis实战》中提到的对日志进行聚合计算。没有看懂到底是什么意思。   </p>
-</blockquote>
-<ul>
-<li>当大数据处理时，Redis占用的内存会很大，bgsave创建子进程会耗费一定的时间，这个创建的过程则会导致redis停顿。停顿的时间随着Redis占用内存越大而越久。相比较于创建子进程带来的停顿，save并不会因为要创建子进程而去争抢资源导致停顿。故save会较bgsave的速度更快。</li>
-</ul>
-<h3 id="AOF-append-only-file"><a href="#AOF-append-only-file" class="headerlink" title="AOF(append-only file)"></a>AOF(append-only file)</h3><p>将写操作的命令追加到备份文件中。等到需要恢复时（重启）从头到尾执行一遍备份文件中的写命令即可。</p>
-<h4 id="AOF文件重写"><a href="#AOF文件重写" class="headerlink" title="AOF文件重写"></a>AOF文件重写</h4><p>随着Redis不断的运行。aof文件会变得越来越大。占用硬盘同时在重启时根据aof重新执行写命令时耗时长。<br><strong>bgrewriteaof</strong> 等同bgsave，会启动子进程来重写aof文件。父进程继续接受请求。</p>
-<h4 id="AOF配置"><a href="#AOF配置" class="headerlink" title="AOF配置"></a>AOF配置</h4><blockquote>
-<p>appendonly yes  是否启用AOF模式<br>appendfsync everrysec 追加的频率。always每次写操作都同步。everysec每秒执行一次同步，可以同步多条写操作。no 由操作系统来决定何时进行同步。<br>no-appendfsync-on-rewrite no<br>auto-aof-rewrite-percentage 100 当aof文件比上一次重写时大了一倍则进行aof文件重写<br>auto-aof-rewrite-min-size 64mb  当aof文件的大小大于64mb时进行aof文件重写<br>dr ./   aof文件存储路径     </p>
-</blockquote>
-<h4 id="AOF缺陷"><a href="#AOF缺陷" class="headerlink" title="AOF缺陷"></a>AOF缺陷</h4><ul>
-<li><strong>bgrewriteaof</strong>命令创建子进程也会由于redis占用的内存越大而创建子进程的时间越长从而导致redis停顿。</li>
-<li>对aof文件进行重写时会涉及对旧的aof文件进行删除，如果文件很大很有可能导致操作系统的挂起。</li>
-</ul>
-<h2 id="持久化的意义"><a href="#持久化的意义" class="headerlink" title="持久化的意义"></a>持久化的意义</h2><ul>
-<li>数据重用。redis中很多的数据都是一些经过长时间计算得到的。这样持久化到硬盘中就不必再次计算可以方便下次使用。</li>
-<li>安全。将数据备份到硬盘防止因系统崩溃而丢失数据。Redis运行时数据都是存储在内存中，而一旦系统奔溃内存中的数据时很大程度会丢失。  </li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2630,7 +2690,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
