@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="小磊砸的布劳格">
 <meta property="og:description" content="ZK的权限管理主要是依靠节点的ACL(access control list)来实现的。节点的ACL由权限验证模式(Scheme)、权限(permission)和用户三部分组成。   Permission C(create)：创建子节点 D(delete)：删除子节点 R(read)：访问节点/子节点 W(write)：更新节点数据 A(admin)：管理员  Scheme   类型 说明 写法">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-26T14:38:02.199Z">
+<meta property="og:updated_time" content="2019-03-26T14:41:20.075Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="zookeeper 权限管理">
 <meta name="twitter:description" content="ZK的权限管理主要是依靠节点的ACL(access control list)来实现的。节点的ACL由权限验证模式(Scheme)、权限(permission)和用户三部分组成。   Permission C(create)：创建子节点 D(delete)：删除子节点 R(read)：访问节点/子节点 W(write)：更新节点数据 A(admin)：管理员  Scheme   类型 说明 写法">
@@ -343,7 +343,7 @@
       
 
       
-        <p>ZK的权限管理主要是依靠节点的<em>ACL(access control list)</em>来实现的。<br>节点的ACL由权限验证模式(Scheme)、权限(permission)和用户三部分组成。  </p>
+        <p>ZK的权限管理主要是依靠节点的<strong>ACL(access control list)</strong>来实现的。<br>节点的ACL由权限验证模式(Scheme)、权限(permission)和用户三部分组成。  </p>
 <h1 id="Permission"><a href="#Permission" class="headerlink" title="Permission"></a>Permission</h1><ul>
 <li>C(create)：创建子节点</li>
 <li>D(delete)：删除子节点</li>
@@ -376,13 +376,13 @@
 <td>auth:user:passwd:[permission]</td>
 </tr>
 <tr>
-<td><em>digest</em></td>
-<td><em>指定的用户才可以使用节点，但是密码需要输入密文</em></td>
+<td><strong>digest</strong></td>
+<td><strong>指定的用户才可以使用节点，但是密码需要输入密文</strong></td>
 <td>digest:user:BASE64(SHA1(passwd)):[permission]</td>
 </tr>
 </tbody>
 </table>
-<p><em>setAcl /path auth:lee:lee:cdrwa 与 setAcl /path digest:lee:BASE64(SHA1(password)):cdrwa是等价的，在通过 addauth digest lee:lee 后都能操作指定节点的权限。在实际情况中，digest要更为常用一些。</em></p>
+<p><strong>setAcl /path auth:lee:lee:cdrwa 与 setAcl /path digest:lee:BASE64(SHA1(password)):cdrwa是等价的，在通过 addauth digest lee:lee 后都能操作指定节点的权限。在实际情况中，digest要更为常用一些。</strong></p>
 <h1 id="操作指令"><a href="#操作指令" class="headerlink" title="操作指令"></a>操作指令</h1><ul>
 <li>getAcl 获取节点的acl</li>
 <li>setAcl 给节点设置acl</li>
