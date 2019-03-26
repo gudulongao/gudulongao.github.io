@@ -239,6 +239,594 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/06/CAS策略/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/06/CAS策略/" itemprop="url">CAS策略</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-06T22:33:08+08:00">
+                2018-09-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/高并发/" itemprop="url" rel="index">
+                    <span itemprop="name">高并发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/06/CAS策略/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/06/CAS策略/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>通常为了保护临界区资源的安全访问，都会通过synchronized或者ReetranLock来对资源先进行加锁。这种悲观锁会导致没有获得锁的线程阻塞。将并行改为串行，大大降低了系统的吞吐量。<br><strong>CAS(Compare and Swap)即比较交换</strong>。是无锁安全访问临界资源的一种策略。其假设访问临界资源不会有冲突，多线程对临界资源的访问无需加锁也无需等待阻塞。<strong>每个线程都可以访问临界区资源，也都可以对临界区资源进行修改，但修改不能提交。需要通过CAS算法来甄别是否有冲突，如果没有，则提交修改，如果有则重复当前操作直到没有冲突为止。</strong></p>
+<h1 id="CAS算法"><a href="#CAS算法" class="headerlink" title="CAS算法"></a>CAS算法</h1><p>CAS参数：  </p>
+<ul>
+<li>V要更新的变量值</li>
+<li>E该变量的期待值  </li>
+<li>N该变量的新值<br>只有当 V = E 的时候，才会将V更新到N，如果V != E，则表明该变量已被修改。本次修改无法提交。</li>
+</ul>
+<h1 id="atomic包"><a href="#atomic包" class="headerlink" title="atomic包"></a>atomic包</h1><p>jdk中有一个atomic包来支持CAS处理并发操作。</p>
+<h2 id="Unsafe"><a href="#Unsafe" class="headerlink" title="Unsafe"></a>Unsafe</h2><ul>
+<li>Unsafe提供了一系列原子性的方法来支撑CAS策略，很多数据结构例如AtomicInteger，ConcurrentLinkedQueue等，都是通过Unsafe的原子性操作来支持并发操作。</li>
+<li>Unsafe底层是使用C++来实现的，并且JDK也不建议开人人员直接使用unsafe来操作。</li>
+</ul>
+<p><img src="/2018/09/06/CAS策略/unsafe.png" alt="包装生成线程安全的hashmap"></p>
+<blockquote>
+<p>当调用Unsafe.getUnsafe()方法来获取Unsafe的时候会对调用方的类加载器进行检查。一般应用的类加载器都是由AppLoader来加载，而系统代码的加载都是由Bootstrap来加载，通过Bootstrap来加载的时候getClassLoader会返回空，而通过AppLoader加载的非空，这样就拒绝了开发人员在代码中自行获取Unsfae。</p>
+</blockquote>
+<h2 id="AtomicInteger"><a href="#AtomicInteger" class="headerlink" title="AtomicInteger"></a>AtomicInteger</h2><p><img src="/2018/09/06/CAS策略/atomicinteger源码.png" alt="包装生成线程安全的hashmap"></p>
+<p>如图是AtomicInteger的源码，可以看到实际存储数据的value和CAS策略实际实现Unsafe。  </p>
+<ul>
+<li>value字段是被volatile关键词修饰的，这样可以保证在多线程并发操作时数据的可见性。  </li>
+<li>valueOffset value数据位于AtomicInteger对象中的偏移量。实际对数据的获取以及修改都是基于偏移量来获取的，直接通过偏移量来处理个人理解应该是比较高效。</li>
+</ul>
+<p><img src="/2018/09/06/CAS策略/atomicinteger.png" alt="包装生成线程安全的hashmap"></p>
+<p>如图，是通过AtomicInteger来处理1000个并发线程处理将一个初始值0自增的过程。每个线程调用方法getAndIncrement来实现对临界资源进行自增。输出结果为1000显示整个并发操作的线程安全。<br>除了样例中的方法，AtomicInteger常用的方法如下表：  </p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>get()</td>
+<td>获取当前值</td>
+</tr>
+<tr>
+<td>set(int newValue)</td>
+<td>设置当前值</td>
+</tr>
+<tr>
+<td>int getAndSet(int newValue)</td>
+<td>设置新值并返回旧值</td>
+</tr>
+<tr>
+<td>boolean compareAndSet(int expect,int newValue)</td>
+<td>如果当前值为except，则更新为newValue</td>
+</tr>
+<tr>
+<td>int getAndIncreament()</td>
+<td>自增1，返回旧值</td>
+</tr>
+<tr>
+<td>int getAndDecrement()</td>
+<td>自减1，返回旧值</td>
+</tr>
+<tr>
+<td>int getAndAdd(int data)</td>
+<td>增加data，返回旧值</td>
+</tr>
+<tr>
+<td>int increamentAndGet()</td>
+<td>自增1并返回新值</td>
+</tr>
+<tr>
+<td>int decrementAndGet()</td>
+<td>自减1并返回新值</td>
+</tr>
+<tr>
+<td>int addAndGet(int data)</td>
+<td>增加data并返回新值</td>
+</tr>
+</tbody>
+</table>
+<h2 id="AtomicStampedReference（解决AAB问题）"><a href="#AtomicStampedReference（解决AAB问题）" class="headerlink" title="AtomicStampedReference（解决AAB问题）"></a>AtomicStampedReference（解决AAB问题）</h2><p>CAS策略在控制并发的时候很重要的一点是将期望值与当前值进行比对。如果一致则认为没有其他线程修改，当前修改可以提交，但如果数据从A修改为B又被修改为A，实际是发生了修改但数据一致，如果业务需求需要并发控制的时候不仅仅是通过数值的一致来判断，那么就需要使用到AtomicStampedReference，<strong>即每次修改的时候不仅仅是修改value数据区域，同时还有时间戳，每次进行比对的时候也不仅仅是比对value，还要比对时间戳。只有当时间戳和value都符合期望的时候，修改可以提交。</strong></p>
+<p><img src="/2018/09/06/CAS策略/atomicstampedreference.png" alt="包装生成线程安全的hashmap"></p>
+<p>如图中源码的compareAndSet方法，除了expectValue，还有expectStamped。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p><img src="/2018/09/06/CAS策略/other.png" alt="包装生成线程安全的hashmap"></p>
+<h1 id="参考资料："><a href="#参考资料：" class="headerlink" title="参考资料："></a>参考资料：</h1><blockquote>
+<p> 网络博客：<a href="https://blog.csdn.net/liubenlong007/article/details/53761730" target="_blank" rel="noopener">https://blog.csdn.net/liubenlong007/article/details/53761730</a><br>《实战java 高并发程序设计》葛一鸣 郭超 编著</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/05/collect-线程安全的hashmap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/05/collect-线程安全的hashmap/" itemprop="url">线程安全的HashMap</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-05T23:28:24+08:00">
+                2018-09-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/集合/" itemprop="url" rel="index">
+                    <span itemprop="name">集合</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/05/collect-线程安全的hashmap/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/05/collect-线程安全的hashmap/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="HashTable"><a href="#HashTable" class="headerlink" title="HashTable"></a>HashTable</h1><p><img src="/2018/09/05/collect-线程安全的hashmap/hashtable.png" alt="hashtable">  </p>
+<p>HashTable是线程安全的map，其对所有的get/put方法都通过synchronized关键词来保证线程安全。由于关键词synchronized修饰的是方法，所以线程在执行get/put操作时都会需要获取到这个map对象锁。效率低</p>
+<h1 id="Collections-synchronizedMap"><a href="#Collections-synchronizedMap" class="headerlink" title="Collections.synchronizedMap"></a>Collections.synchronizedMap</h1><p><img src="/2018/09/05/collect-线程安全的hashmap/包装.png" alt="包装生成线程安全的hashmap"></p>
+<p>如图所示，通过Collections.synchronizedMap可以将hashmap包装成一个线程安全的hashmap。</p>
+<p><img src="/2018/09/05/collect-线程安全的hashmap/synchronizedmap.png" alt="包装生成线程安全的hashmap"></p>
+<p>对于synchronziedMap其实也是基于synchronized来保证的线程安全性，在所有的方法操作之前都需要获取mutex对象锁。</p>
+<h1 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h1><h2 id="1-7版"><a href="#1-7版" class="headerlink" title="1.7版"></a>1.7版</h2><p><img src="/2018/09/05/collect-线程安全的hashmap/concurrenthashmap.png" alt="包装生成线程安全的hashmap"></p>
+<p>如图所示，concurrenthashmap主要由segemtn,entry和链表构成。concurrenthashmap本质是一个segment数组，每一个segment对应着一个Entry数组，Entry数组中的每一个Entry节点都是一个单向链表的头节点。</p>
+<h2 id="Segment"><a href="#Segment" class="headerlink" title="Segment"></a>Segment</h2><p>Segment继承自<strong>ReentranLock</strong>。故Segment其实就是一个锁，Segment是其对应的Entry数组(table)的线程安全的保证。即每当要对Segment对应的table进行操作首先要对Segment加锁。  </p>
+<h3 id="count"><a href="#count" class="headerlink" title="count"></a>count</h3><p>每一个Segment都有一个count属性，被<strong>volatile</strong>修饰的。这样每当有线程造成对table的结构性修改都会立即可见。其记录着Segment所包含的HashEntry个数，</p>
+<h3 id="table"><a href="#table" class="headerlink" title="table"></a>table</h3><p>每一个Segment对应着一个table，被<strong>volatile</strong>修饰。这样每当有线程造成对table的结构性修改都会立即可见。</p>
+<h3 id="HashEntry"><a href="#HashEntry" class="headerlink" title="HashEntry"></a>HashEntry</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">static final class HashEntry&lt;K,V&gt; &#123;</span><br><span class="line">        final int hash;</span><br><span class="line">        final K key;</span><br><span class="line">        volatile V value;</span><br><span class="line">        final  volatile HashEntry&lt;K,V&gt; next;</span><br></pre></td></tr></table></figure>
+<p>HashEntry是Segment中的所有元素的抽象。其value和next都是由volatile修饰的，<strong>由于value和next都被volatile修饰，故每次线程都能读取到最新的数据，所以concurrenthashmap的读操作并没有加锁</strong>。<br>由于next被final修饰，故当有冲突时，节点都从链表的头插入，</p>
+<h3 id="concurrencyLevel"><a href="#concurrencyLevel" class="headerlink" title="concurrencyLevel"></a>concurrencyLevel</h3><p>并发度就是concurrenthashmap理想可以支持并发线程数，即Segment的个数。<strong>concurrencyLevel默认是16，concurrentHashMap理想支持16个线程并发操作</strong>。</p>
+<h3 id="计算key所在的Segment位置"><a href="#计算key所在的Segment位置" class="headerlink" title="计算key所在的Segment位置"></a>计算key所在的Segment位置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">  * Returns the segment that should be used for key with given hash</span><br><span class="line">  * @param hash the hash code for the key</span><br><span class="line">  * @return the segment</span><br><span class="line">  */</span><br><span class="line"> final Segment&lt;K,V&gt; segmentFor(int hash) &#123;</span><br><span class="line">     return segments[(hash &gt;&gt;&gt; segmentShift) &amp; segmentMask];</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>方法segmentFor就是根据key的hash值来计算key所处的Segment位置，其中SegmentShift=log(size)以2为底。segmentMask=concurrencyLevel-1。</p>
+<h2 id="1-8"><a href="#1-8" class="headerlink" title="1.8"></a>1.8</h2><p><img src="/2018/09/05/collect-线程安全的hashmap/concurrencyhashmap1.8.png" alt="包装生成线程安全的hashmap"></p>
+<p>如图所示。在JDK1.8版本中，对ConcurrentHashMap做了很大的调整。去除了Segment分段锁的设计。采用Node结构，结合单向链表和红黑树来解决冲突（当冲突链表中数据个数大于8个自动将链表转化成红黑树，<strong>查询效率有O(n)降低到O(logn)</strong>，当红黑树的节点个数小于6再转化成链表）。</p>
+<h3 id="put方法"><a href="#put方法" class="headerlink" title="put方法"></a>put方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">/** Implementation for put and putIfAbsent */</span><br><span class="line">   final V putVal(K key, V value, boolean onlyIfAbsent) &#123;</span><br><span class="line">   	  //参数盘空</span><br><span class="line">       if (key == null || value == null) throw new NullPointerException();</span><br><span class="line">       //重算key的哈希值</span><br><span class="line">       int hash = spread(key.hashCode());</span><br><span class="line">       int binCount = 0;</span><br><span class="line">       //死循环，直到成功put才会结束循环（配合CAS策略）</span><br><span class="line">       for (Node&lt;K,V&gt;[] tab = table;;) &#123;</span><br><span class="line">           Node&lt;K,V&gt; f; int n, i, fh;</span><br><span class="line">           //如果table为空，则初始化table，concurrenthashmap的构造函数并不会初始化</span><br><span class="line">           if (tab == null || (n = tab.length) == 0)</span><br><span class="line">               tab = initTable();</span><br><span class="line">           //如果指定位置为空，则表明没有发生冲突，直接在table中增加节点（tabAt和casTabAt都是通过Unsafe的CAS操作）</span><br><span class="line">           else if ((f = tabAt(tab, i = (n - 1) &amp; hash)) == null) &#123;</span><br><span class="line">               if (casTabAt(tab, i, null,</span><br><span class="line">                            new Node&lt;K,V&gt;(hash, key, value, null)))</span><br><span class="line">                   break;                   // no lock when adding to empty bin</span><br><span class="line">           &#125;</span><br><span class="line">           //正在扩容，则帮助扩容。</span><br><span class="line">           else if ((fh = f.hash) == MOVED)</span><br><span class="line">               tab = helpTransfer(tab, f);</span><br><span class="line">           else &#123;</span><br><span class="line">               V oldVal = null;</span><br><span class="line">               //对指定位置的Node（头节点）加锁（注意使用的是synchronized来加锁）</span><br><span class="line">               synchronized (f) &#123;</span><br><span class="line">                   //比较头节点</span><br><span class="line">                   if (tabAt(tab, i) == f) &#123;</span><br><span class="line">                       if (fh &gt;= 0) &#123;</span><br><span class="line">                           binCount = 1;</span><br><span class="line">                           //遍历链表，找到尾部插入新节点</span><br><span class="line">                           for (Node&lt;K,V&gt; e = f;; ++binCount) &#123;</span><br><span class="line">                               K ek;</span><br><span class="line">                               if (e.hash == hash &amp;&amp;</span><br><span class="line">                                   ((ek = e.key) == key ||</span><br><span class="line">                                    (ek != null &amp;&amp; key.equals(ek)))) &#123;</span><br><span class="line">                                   oldVal = e.val;</span><br><span class="line">                                   if (!onlyIfAbsent)</span><br><span class="line">                                       e.val = value;</span><br><span class="line">                                   break;</span><br><span class="line">                               &#125;</span><br><span class="line">                               Node&lt;K,V&gt; pred = e;</span><br><span class="line">                               if ((e = e.next) == null) &#123;</span><br><span class="line">                                   pred.next = new Node&lt;K,V&gt;(hash, key,</span><br><span class="line">                                                             value, null);</span><br><span class="line">                                   break;</span><br><span class="line">                               &#125;</span><br><span class="line">                           &#125;</span><br><span class="line">                       &#125;</span><br><span class="line">                       //遍历红黑树，插入新节点</span><br><span class="line">                       else if (f instanceof TreeBin) &#123;</span><br><span class="line">                           Node&lt;K,V&gt; p;</span><br><span class="line">                           binCount = 2;</span><br><span class="line">                           if ((p = ((TreeBin&lt;K,V&gt;)f).putTreeVal(hash, key,</span><br><span class="line">                                                          value)) != null) &#123;</span><br><span class="line">                               oldVal = p.val;</span><br><span class="line">                               if (!onlyIfAbsent)</span><br><span class="line">                                   p.val = value;</span><br><span class="line">                           &#125;</span><br><span class="line">                       &#125;</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;</span><br><span class="line">               //如果链表的节点数达到需要转换成红黑树的阀值，在转换成红黑树</span><br><span class="line">               if (binCount != 0) &#123;</span><br><span class="line">                   if (binCount &gt;= TREEIFY_THRESHOLD)</span><br><span class="line">                       treeifyBin(tab, i);</span><br><span class="line">                   if (oldVal != null)</span><br><span class="line">                       return oldVal;</span><br><span class="line">                   break;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       addCount(1L, binCount);</span><br><span class="line">       return null;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>通过put方法的源码可以发现：  </p>
+<ul>
+<li>通过synchronized来对链表的头节点Node进行加锁。而没有使用1.7版本中的ReentranLock。  </li>
+<li>整个concurrentHashMap的初始化是发生在第一次put的时候。  </li>
+<li>指定位置节点的获取，更新以及增加的操作都是通过Unsafe利用CAS策略来实现的，这种无锁的处理方式减少了因为锁导致的线程阻塞，增大了系统的吞吐量。</li>
+</ul>
+<h3 id="get方法"><a href="#get方法" class="headerlink" title="get方法"></a>get方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public V get(Object key) &#123;</span><br><span class="line">        Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; e, p; int n, eh; K ek;</span><br><span class="line">        //重算key的哈希值</span><br><span class="line">        int h = spread(key.hashCode());</span><br><span class="line">        //获取指定位置的Node（无冲突时链表的头节点）判断如果一致则返回</span><br><span class="line">        if ((tab = table) != null &amp;&amp; (n = tab.length) &gt; 0 &amp;&amp;</span><br><span class="line">            (e = tabAt(tab, (n - 1) &amp; h)) != null) &#123;</span><br><span class="line">            if ((eh = e.hash) == h) &#123;</span><br><span class="line">                if ((ek = e.key) == key || (ek != null &amp;&amp; key.equals(ek)))</span><br><span class="line">                    return e.val;</span><br><span class="line">            &#125;</span><br><span class="line">            //如果是扩容，则通过ForwardingNode查找</span><br><span class="line">            else if (eh &lt; 0)</span><br><span class="line">                return (p = e.find(h, key)) != null ? p.val : null;</span><br><span class="line">            //依次遍历查找</span><br><span class="line">            while ((e = e.next) != null) &#123;</span><br><span class="line">                if (e.hash == h &amp;&amp;</span><br><span class="line">                    ((ek = e.key) == key || (ek != null &amp;&amp; key.equals(ek))))</span><br><span class="line">                    return e.val;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>通过get方法的源码，可以看出,get方法并没有加锁。</p>
+<h3 id="CAS操作"><a href="#CAS操作" class="headerlink" title="CAS操作"></a>CAS操作</h3><p><img src="/2018/09/05/collect-线程安全的hashmap/8-cas.png" alt="包装生成线程安全的hashmap"></p>
+<p>如图中所示，在1.8版的ConcurrentHashMap中还是使用到了CAS策略，通过Unsafe来完成获取指定位置的Node，通过比较交换来设置指定位置的Node以及增加对应位置的Node。</p>
+<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><ul>
+<li>1.8版本的锁颗粒度更小，只是对Node数组中的Node节点通过synchronized来加锁。而1.7版本中是对整个Segment来加锁。  </li>
+<li>1.8中除了通过链表来解决冲突之外，当链表中节点的个数大于8个之后会转换成红黑树，这样使得当有冲突时查找数据的效率由O(n)降低到了O(logn)。<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1></li>
+</ul>
+<blockquote>
+<p> <a href="https://blog.csdn.net/justloveyou_/article/details/72783008" target="_blank" rel="noopener">https://blog.csdn.net/justloveyou_/article/details/72783008</a><br> <a href="https://blog.csdn.net/bolang789/article/details/79855053" target="_blank" rel="noopener">https://blog.csdn.net/bolang789/article/details/79855053</a><br> <a href="https://blog.csdn.net/fouy_yun/article/details/77816587" target="_blank" rel="noopener">https://blog.csdn.net/fouy_yun/article/details/77816587</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/05/java-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/05/java-1/" itemprop="url">PO/BO/VO/POJO/DAO</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-05T16:06:34+08:00">
+                2018-09-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/05/java-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/05/java-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="PO-VO-BO-DAO-简介"><a href="#PO-VO-BO-DAO-简介" class="headerlink" title="PO/VO/BO/DAO 简介"></a>PO/VO/BO/DAO 简介</h1><h2 id="PO（Presistant-Object）"><a href="#PO（Presistant-Object）" class="headerlink" title="PO（Presistant Object）"></a>PO（Presistant Object）</h2><p>持久化对象，数据库中数据的抽象，即对应表中的一条记录。</p>
+<h2 id="BO-Business-Object"><a href="#BO-Business-Object" class="headerlink" title="BO(Business Object)"></a>BO(Business Object)</h2><p>业务对象，可以包含多个其他对象。</p>
+<blockquote>
+<p>一份简历，包含教育经历，工作经历等，教育经历对应一个PO，工作经历对应一个PO，这样简历BO就由这些PO组成。</p>
+</blockquote>
+<h2 id="DTO-Data-Transfer-Object"><a href="#DTO-Data-Transfer-Object" class="headerlink" title="DTO(Data Transfer Object)"></a>DTO(Data Transfer Object)</h2><p>数据传输对象，用于前端与后端进行数据交互。由于涉及到网络传输，故DTO会根据展示层的要求来简化数据来减少网络流量。</p>
+<blockquote>
+<p>比如一个表有20个字段，对应的PO也会有20个字段，界面展现只需要展现5个字段，故只需要DTO包含界面展现的5个字段进行传输即可，相比较传输真个PO，这样减少了网络流量，也不会暴露整个表结构。</p>
+</blockquote>
+<h2 id="VO-Value-Object"><a href="#VO-Value-Object" class="headerlink" title="VO(Value Object)"></a>VO(Value Object)</h2><p>值对象，常用于前端组件进行数据展现的时候所使用的数据结构。其来自于DTO。</p>
+<h2 id="POJO-plain-ordinary-java-object"><a href="#POJO-plain-ordinary-java-object" class="headerlink" title="POJO(plain ordinary java object)"></a>POJO(plain ordinary java object)</h2><p>简单的java对象。普通的javabean。</p>
+<h1 id="区别与应用"><a href="#区别与应用" class="headerlink" title="区别与应用"></a>区别与应用</h1><h2 id="VO与DTO"><a href="#VO与DTO" class="headerlink" title="VO与DTO"></a>VO与DTO</h2><p>当展现层的需求只有一种的时候，可以使用DTO来替代VO，在设计层面，DTO只是用来明确服务端接收的请求的数据或者响应请求的数据，而界面展现的时候，特别是当展现的需求多种多样的时候，会基于同一种DTO而衍生出不同的VO。</p>
+<blockquote>
+<p>比方说性别，DTO中sex是男女，如果普通的展现需求，可以直接利用DTO中的sex属性来展现。但如果有个性化定制的时候，比方说需要展现成帅哥/美女，这种时候基于同样的DTO就需要根据展现的需求来衍生出性别为帅哥/美女的VO。</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/05/collect-hashmap-hashtable/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1782,178 +2370,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/23/git操作笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/23/git操作笔记/" itemprop="url">git操作笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-23T10:56:55+08:00">
-                2018-08-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/git/" itemprop="url" rel="index">
-                    <span itemprop="name">git</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/08/23/git操作笔记/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/08/23/git操作笔记/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="配置相关"><a href="#配置相关" class="headerlink" title="配置相关"></a>配置相关</h1><h2 id="生成ssh密钥。"><a href="#生成ssh密钥。" class="headerlink" title="生成ssh密钥。"></a>生成ssh密钥。</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &apos;XXX@XXX&apos;</span><br></pre></td></tr></table></figure>
-<h2 id="指定ssh公钥"><a href="#指定ssh公钥" class="headerlink" title="指定ssh公钥"></a>指定ssh公钥</h2><p>当计算机中配置多个git账号，同时git都需要基于ssh key来进行操作的时候，需要使用到如下指令来显示的指定当前操作所使用的ssh key公钥。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh-gaent bash	</span><br><span class="line">ssh-agent -s	</span><br><span class="line">ssh-add ~/.ss/id* 使用指定的sshkey公钥</span><br></pre></td></tr></table></figure>
-<h2 id="指定远程仓库"><a href="#指定远程仓库" class="headerlink" title="指定远程仓库"></a>指定远程仓库</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin git@github.com:XXX/YYY</span><br></pre></td></tr></table></figure>
-<h2 id="测试git账号"><a href="#测试git账号" class="headerlink" title="测试git账号"></a>测试git账号</h2><p>指定ssh的公钥后可以采用如下操作来验证git账号的配置。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
-<h2 id="查看当前目录的用户信息"><a href="#查看当前目录的用户信息" class="headerlink" title="查看当前目录的用户信息"></a>查看当前目录的用户信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 查看用户名</span><br><span class="line">git config user.name</span><br><span class="line"># 修改用户名</span><br><span class="line">git config user.name &apos;用户名&apos;</span><br><span class="line"># 查看邮箱</span><br><span class="line">git config user.email</span><br><span class="line"># 修改邮箱</span><br><span class="line">git config user.email &apos;XXX@XXX&apos;</span><br></pre></td></tr></table></figure>
-<p>全局级的config 替换成global config即可。</p>
-<h1 id="操作相关"><a href="#操作相关" class="headerlink" title="操作相关"></a>操作相关</h1><h2 id="查看文件的提交历史"><a href="#查看文件的提交历史" class="headerlink" title="查看文件的提交历史"></a>查看文件的提交历史</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git log --filename 通过log指令来查看具体文件提交的历史记录</span><br><span class="line">git show commitid:filename 查看具体提交环节指定文件的内容</span><br></pre></td></tr></table></figure>
-<h2 id="暂存工作台（stash）"><a href="#暂存工作台（stash）" class="headerlink" title="暂存工作台（stash）"></a>暂存工作台（stash）</h2><p>当目前项目中有一些未完成的工作，由于不是完成态提交会影响别人没有必要提交的内容，可以先进行缓存，来继续别的工作。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git stash save 保存当前未commit的内容到stash  </span><br><span class="line">git stash list 查看所有暂存到stash的记录列表  </span><br><span class="line">git stash apply stash@&#123;index&#125; 根据list中罗列的暂存记录索引来恢复到暂存前的状态</span><br><span class="line">git stash pop  恢复stash最近暂存的记录，并删除</span><br><span class="line">git stash drop 删除stash最近暂存的记录</span><br><span class="line">git stash claer 清空stash</span><br></pre></td></tr></table></figure>
-<h1 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h1><h2 id="解决gerrit仓库pull报错"><a href="#解决gerrit仓库pull报错" class="headerlink" title="解决gerrit仓库pull报错"></a>解决gerrit仓库pull报错</h2><p>如果远程的git仓库有使用到gerrit，有可能会遇到git版本与gerrit版本不一致导致的错误。则需要使用如下指令：    </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export GIT_SSH_COMMAND=&apos;ssh -o KexAlgorithms=+diffie-hellman-group1-sha1&apos;</span><br></pre></td></tr></table></figure>
-<h2 id="解决no-matching-cipher-found-Their-offer-aes128-cbc-3des-cbc-blowfish-cbc"><a href="#解决no-matching-cipher-found-Their-offer-aes128-cbc-3des-cbc-blowfish-cbc" class="headerlink" title="解决no matching cipher found. Their offer: aes128-cbc,3des-cbc,blowfish-cbc"></a>解决no matching cipher found. Their offer: aes128-cbc,3des-cbc,blowfish-cbc</h2><p><img src="/2018/08/23/git操作笔记/error1.png" alt="报错">  </p>
-<p>修改/etc/ssh/ssh_config 文件，插入 Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc,aes192-cbc,aes256-cbc 保存即可。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2003,7 +2424,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">41</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2014,7 +2435,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2025,7 +2446,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
