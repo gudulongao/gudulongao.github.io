@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="小磊砸的布劳格">
 <meta property="og:description" content="ZK的权限管理主要是依靠节点的ACL(access control list)来实现的。节点的ACL由权限验证模式(Scheme)、权限(permission)和用户三部分组成。   Permission C(create)：创建子节点 D(delete)：删除子节点 R(read)：访问节点/子节点 W(write)：更新节点数据 A(admin)：管理员  Scheme   类型 说明 写法">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-26T14:34:34.345Z">
+<meta property="og:updated_time" content="2019-03-26T14:35:56.110Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="zookeeper 权限管理">
 <meta name="twitter:description" content="ZK的权限管理主要是依靠节点的ACL(access control list)来实现的。节点的ACL由权限验证模式(Scheme)、权限(permission)和用户三部分组成。   Permission C(create)：创建子节点 D(delete)：删除子节点 R(read)：访问节点/子节点 W(write)：更新节点数据 A(admin)：管理员  Scheme   类型 说明 写法">
@@ -373,12 +373,12 @@
 <tr>
 <td>auth</td>
 <td>指定的用户才可以使用节点</td>
-<td>auth:user passwd:[permission]</td>
+<td>auth:user:passwd:[permission]</td>
 </tr>
 <tr>
 <td><em>digest</em></td>
 <td><em>指定的用户才可以使用节点，但是密码需要输入密文</em></td>
-<td>digest:user BASE64(SHA1(passwd)):[permission]</td>
+<td>digest:user:BASE64(SHA1(passwd)):[permission]</td>
 </tr>
 </tbody>
 </table>
