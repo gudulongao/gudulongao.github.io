@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="参考资料 学习博客系列：https://blog.csdn.net/qq_34021712/article/details/82872311学习博客：https://www.jianshu.com/p/70151fc0ef5d学习博客：https://www.cnblogs.com/qingyunzong/p/8666288.html">
+<meta name="description" content="简介Curator是Netflix公司开源的一个Zookeeper客户端，后捐献给Apache，Curator框架在zookeeper原生API接口上进行了包装，解决了很多ZooKeeper客户端非常底层的细节开发。提供ZooKeeper各种应用场景(recipe， 比如：分布式锁服务、集群领导选举、共享计数器、缓存机制、分布式队列等)的抽象封装，实现了Fluent风格的API接口,是最好用，最流">
 <meta name="keywords" content="zookeeper，学习笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="zookeeper curator框架使用">
+<meta property="og:title" content="zookeeper curator框架一">
 <meta property="og:url" content="http://yoursite.com/2019/03/27/zookeeper-8/index.html">
 <meta property="og:site_name" content="小磊砸的布劳格">
-<meta property="og:description" content="参考资料 学习博客系列：https://blog.csdn.net/qq_34021712/article/details/82872311学习博客：https://www.jianshu.com/p/70151fc0ef5d学习博客：https://www.cnblogs.com/qingyunzong/p/8666288.html">
+<meta property="og:description" content="简介Curator是Netflix公司开源的一个Zookeeper客户端，后捐献给Apache，Curator框架在zookeeper原生API接口上进行了包装，解决了很多ZooKeeper客户端非常底层的细节开发。提供ZooKeeper各种应用场景(recipe， 比如：分布式锁服务、集群领导选举、共享计数器、缓存机制、分布式队列等)的抽象封装，实现了Fluent风格的API接口,是最好用，最流">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-27T15:17:52.940Z">
+<meta property="og:image" content="http://yoursite.com/2019/03/27/zookeeper-8/curatorframework.png">
+<meta property="og:updated_time" content="2019-03-28T13:44:51.295Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="zookeeper curator框架使用">
-<meta name="twitter:description" content="参考资料 学习博客系列：https://blog.csdn.net/qq_34021712/article/details/82872311学习博客：https://www.jianshu.com/p/70151fc0ef5d学习博客：https://www.cnblogs.com/qingyunzong/p/8666288.html">
+<meta name="twitter:title" content="zookeeper curator框架一">
+<meta name="twitter:description" content="简介Curator是Netflix公司开源的一个Zookeeper客户端，后捐献给Apache，Curator框架在zookeeper原生API接口上进行了包装，解决了很多ZooKeeper客户端非常底层的细节开发。提供ZooKeeper各种应用场景(recipe， 比如：分布式锁服务、集群领导选举、共享计数器、缓存机制、分布式队列等)的抽象封装，实现了Fluent风格的API接口,是最好用，最流">
+<meta name="twitter:image" content="http://yoursite.com/2019/03/27/zookeeper-8/curatorframework.png">
 
 
 
@@ -126,7 +128,7 @@
 
 
 
-  <title>zookeeper curator框架使用 | 小磊砸的布劳格</title>
+  <title>zookeeper curator框架一 | 小磊砸的布劳格</title>
   
 
 
@@ -260,7 +262,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">zookeeper curator框架使用</h1>
+          <h1 class="post-title" itemprop="name headline">zookeeper curator框架一</h1>
         
 
         <div class="post-meta">
@@ -343,7 +345,54 @@
       
 
       
-        <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Curator是Netflix公司开源的一个Zookeeper客户端，后捐献给Apache，Curator框架在zookeeper原生API接口上进行了包装，解决了很多ZooKeeper客户端非常底层的细节开发。提供ZooKeeper各种应用场景(recipe， 比如：分布式锁服务、集群领导选举、共享计数器、缓存机制、分布式队列等)的抽象封装，<strong>实现了Fluent风格的API接口,是最好用，最流行的zookeeper的客户端。</strong>    </p>
+<h1 id="Curator优势"><a href="#Curator优势" class="headerlink" title="Curator优势"></a>Curator优势</h1><ul>
+<li>能够递归创建和删除节点</li>
+<li>重试机制：提供可插拔的重试机制，对可捕获的可重试异常配置重试策略，框架也提供几种标准的重试策略。</li>
+<li>连接状态监控：curator创建后会一直对zk连接进行监控，可以对状态的变化作出响应。</li>
+<li>zk客户端实时管理：对zk客户端的连接进行管理，并在需要的时候重建zk客户端，保证连接的可靠性。</li>
+<li>各种场景支持：curator实现了zk的大部分场景，这些实现都遵循zk的最佳实践，并考虑了各种极端情况。</li>
+</ul>
+<h1 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h1><blockquote>
+<p>zookeeper 3.5版本的可以使用curator4.0<br>zookeeper 3.4版本的可以使用curator3.X</p>
+</blockquote>
+<p>目前我的zk版本是3.4，故我可以使用curator3.X版本。</p>
+<h1 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h1><h2 id="会话"><a href="#会话" class="headerlink" title="会话"></a>会话</h2><p>curator的会话是通过CuratorFramework负责的，而CuratorFramework是由CuratorFrameworkFactory来创建的。CuratorFrameworkFactory提供两种方式来创建会话。<strong>CuratorFramework是线程安全的</strong></p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>参数列表</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>newClient(String connectString, int sessionTimeoutMs, int connectionTimeoutMs, RetryPolicy retryPolicy)</td>
+<td>连接地址，会话超时时长，连接超时时长，重试策略</td>
+<td></td>
+</tr>
+<tr>
+<td>newClient(String connectString, RetryPolicy retryPolicy)</td>
+<td>连接地址，重试策略</td>
+<td>会话超时默认60000 连接超时时长默认15000</td>
+</tr>
+<tr>
+<td>builder()</td>
+<td></td>
+<td>提供更细粒度的控制</td>
+</tr>
+</tbody>
+</table>
+<p>在创建好CuratorFramework后需要通过start()方法来创建会话。<br>样例如下图所示：</p>
+<p><img src="/2019/03/27/zookeeper-8/curatorframework.png" alt="创建会话">  </p>
+<h2 id="重试策略"><a href="#重试策略" class="headerlink" title="重试策略"></a>重试策略</h2><h3 id="ExponentialBackoffRetry"><a href="#ExponentialBackoffRetry" class="headerlink" title="ExponentialBackoffRetry"></a>ExponentialBackoffRetry</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> * 随着重试次数增加重试时间间隔变大,指数倍增长baseSleepTimeMs * Math.max(1, random.nextInt(1 &lt;&lt; (retryCount + 1)))。</span><br><span class="line"> * 有两个构造方法</span><br><span class="line"> * baseSleepTimeMs初始sleep时间</span><br><span class="line"> * maxRetries最多重试几次</span><br><span class="line"> * maxSleepMs最大的重试时间</span><br><span class="line"> * 如果在最大重试次数内,根据公式计算出的睡眠时间超过了maxSleepMs，将打印warn级别日志,并使用最大sleep时间。</span><br><span class="line"> * 如果不指定maxSleepMs，那么maxSleepMs的默认值为Integer.MAX_VALUE。</span><br><span class="line"> */</span><br><span class="line">public ExponentialBackoffRetry(int baseSleepTimeMs, int maxRetries);</span><br><span class="line">public ExponentialBackoffRetry(int baseSleepTimeMs, int maxRetries, int maxSleepMs);</span><br></pre></td></tr></table></figure>
+<h3 id="BoundedExponentialBackoffRetry"><a href="#BoundedExponentialBackoffRetry" class="headerlink" title="BoundedExponentialBackoffRetry"></a>BoundedExponentialBackoffRetry</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 继承与ExponentialBackoffRetry ，BoundedExponentialBackoffRetry只有一个三个参数构造器，效果跟ExponentialBackoffRetry三个函数构造器是一样的,只是内部实现不一样。</span><br><span class="line"> * baseSleepTimeMs初始sleep时间</span><br><span class="line"> * maxSleepTimeMs最大sleep时间</span><br><span class="line"> * maxRetries最大重试次数</span><br><span class="line"> */</span><br><span class="line">public BoundedExponentialBackoffRetry(int baseSleepTimeMs, int maxSleepTimeMs, int maxRetries);</span><br></pre></td></tr></table></figure>
+<h3 id="RetryForever"><a href="#RetryForever" class="headerlink" title="RetryForever"></a>RetryForever</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * RetryForever：永远重试策略</span><br><span class="line"> * retryIntervalMs重试时间间隔</span><br><span class="line"> */</span><br><span class="line">public RetryForever(int retryIntervalMs);</span><br></pre></td></tr></table></figure>
+<h3 id="RetryNTimes"><a href="#RetryNTimes" class="headerlink" title="RetryNTimes"></a>RetryNTimes</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * RetryNTimes：重试N次</span><br><span class="line"> * n重试几次</span><br><span class="line"> * sleepMsBetweenRetries每次重试间隔时间</span><br><span class="line"> */</span><br><span class="line">public RetryNTimes(int n, int sleepMsBetweenRetries);</span><br></pre></td></tr></table></figure>
+<h3 id="RetryOneTime"><a href="#RetryOneTime" class="headerlink" title="RetryOneTime"></a>RetryOneTime</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * RetryOneTime：只重试一次</span><br><span class="line"> * sleepMsBetweenRetry:每次重试间隔的时间</span><br><span class="line"> */</span><br><span class="line">public RetryOneTime(int sleepMsBetweenRetry);</span><br></pre></td></tr></table></figure>
+<h3 id="RetryUntilElapsed"><a href="#RetryUntilElapsed" class="headerlink" title="RetryUntilElapsed"></a>RetryUntilElapsed</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * RetryUntilElapsed：一直重试，直到超过指定时间</span><br><span class="line"> * maxElapsedTimeMs最大重试时间</span><br><span class="line"> * sleepMsBetweenRetries每次重试间隔时间</span><br><span class="line"> */</span><br><span class="line">public RetryUntilElapsed(int maxElapsedTimeMs, int sleepMsBetweenRetries);</span><br></pre></td></tr></table></figure>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
 <p>学习博客系列：<a href="https://blog.csdn.net/qq_34021712/article/details/82872311" target="_blank" rel="noopener">https://blog.csdn.net/qq_34021712/article/details/82872311</a><br>学习博客：<a href="https://www.jianshu.com/p/70151fc0ef5d" target="_blank" rel="noopener">https://www.jianshu.com/p/70151fc0ef5d</a><br>学习博客：<a href="https://www.cnblogs.com/qingyunzong/p/8666288.html" target="_blank" rel="noopener">https://www.cnblogs.com/qingyunzong/p/8666288.html</a>  </p>
 </blockquote>
 
@@ -385,6 +434,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/01/zookeeper-9/" rel="prev" title="zookeeper 异常">
+                zookeeper 异常 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -481,7 +534,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">43</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -536,7 +589,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">1.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Curator优势"><span class="nav-number">2.</span> <span class="nav-text">Curator优势</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#兼容性"><span class="nav-number">3.</span> <span class="nav-text">兼容性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基本操作"><span class="nav-number">4.</span> <span class="nav-text">基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#会话"><span class="nav-number">4.1.</span> <span class="nav-text">会话</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重试策略"><span class="nav-number">4.2.</span> <span class="nav-text">重试策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ExponentialBackoffRetry"><span class="nav-number">4.2.1.</span> <span class="nav-text">ExponentialBackoffRetry</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BoundedExponentialBackoffRetry"><span class="nav-number">4.2.2.</span> <span class="nav-text">BoundedExponentialBackoffRetry</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RetryForever"><span class="nav-number">4.2.3.</span> <span class="nav-text">RetryForever</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RetryNTimes"><span class="nav-number">4.2.4.</span> <span class="nav-text">RetryNTimes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RetryOneTime"><span class="nav-number">4.2.5.</span> <span class="nav-text">RetryOneTime</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RetryUntilElapsed"><span class="nav-number">4.2.6.</span> <span class="nav-text">RetryUntilElapsed</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
@@ -701,7 +754,7 @@
         var disqus_config = function () {
           this.page.url = 'http://yoursite.com/2019/03/27/zookeeper-8/';
           this.page.identifier = '2019/03/27/zookeeper-8/';
-          this.page.title = 'zookeeper curator框架使用';
+          this.page.title = 'zookeeper curator框架一';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://xiaoleiza.disqus.com/embed.js';
