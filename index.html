@@ -258,7 +258,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/04/01/zookeeper-10/" itemprop="url">zookeeper curator异步</a></h1>
+                <a class="post-title-link" href="/2019/04/01/zookeeper-10/" itemprop="url">zookeeper curator异步和事务</a></h1>
         
 
         <div class="post-meta">
@@ -343,7 +343,39 @@
       
         
           
-            <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+            <h1 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h1><p>curator框架通过方法inBackground支持异步操作。<br>inBackground方法列表如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>参数列表</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>inBackground(BackgroundCallback callback)</td>
+<td>callback:异步执行成功后回调逻辑</td>
+<td>异步执行后进行回调</td>
+</tr>
+<tr>
+<td>inBackground(BackgroundCallback callback,Object context)</td>
+<td>callback:异步执行成功后回调逻辑 context：回调的时候可以从event.getContext获取，即回调时可以拿到</td>
+<td>带有回调数据的异步操作</td>
+</tr>
+<tr>
+<td>inBackground(BackgroundCallback callback,Object context,Executor executor)</td>
+<td>callback:异步执行成功后回调逻辑 context：回调的时候可以从event.getContext获取，即回调时可以拿到 executor：线程池，回调时可以用线程池来并发的处理任务</td>
+<td>带有回调数据并且支持线程池并发的处理回调任务</td>
+</tr>
+</tbody>
+</table>
+<p>样例代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">public static void testBackOper() throws Exception &#123;</span><br><span class="line">        CuratorFramework work = getWork();</span><br><span class="line">        System.out.println(&quot;main thread:&quot; + Thread.currentThread().getName());</span><br><span class="line">        //异步的方式创建节点</span><br><span class="line">        work.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE)</span><br><span class="line">                .inBackground(new BackgroundCallback() &#123;</span><br><span class="line">                    @Override</span><br><span class="line">                    public void processResult(CuratorFramework curatorFramework, CuratorEvent curatorEvent) throws</span><br><span class="line">                            Exception &#123;</span><br><span class="line">                        System.out.println(&quot;code:&quot; + curatorEvent.getResultCode() + &quot; type:&quot; + curatorEvent.getType());</span><br><span class="line">                        System.out.println(&quot;context:&quot; + curatorEvent.getContext());</span><br><span class="line">                        System.out.println(&quot;thread id:&quot; + Thread.currentThread().getId() + &quot; thread name:&quot; + Thread</span><br><span class="line">                                .currentThread().getName());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;).forPath(&quot;/demobackground&quot;);</span><br><span class="line">        Thread.sleep(3000);</span><br><span class="line"></span><br><span class="line">        //异步删除节点</span><br><span class="line">        @SuppressWarnings(&quot;AlibabaThreadPoolCreation&quot;)</span><br><span class="line">        ExecutorService executorService = Executors.newFixedThreadPool(10);</span><br><span class="line">        work.delete().deletingChildrenIfNeeded().withVersion(-1).inBackground(new BackgroundCallback() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void processResult(CuratorFramework curatorFramework, CuratorEvent curatorEvent) throws Exception &#123;</span><br><span class="line">                System.out.println(&quot;code:&quot; + curatorEvent.getResultCode() + &quot; type:&quot; + curatorEvent.getType());</span><br><span class="line">                System.out.println(&quot;context:&quot; + curatorEvent.getContext());</span><br><span class="line">                System.out.println(&quot;thread id:&quot; + Thread.currentThread().getId() + &quot; thread name:&quot; + Thread</span><br><span class="line">                        .currentThread().getName());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, &quot;test context&quot;, executorService).forPath(&quot;/demobackgroud&quot;);</span><br><span class="line">        Thread.sleep(3000);</span><br><span class="line"></span><br><span class="line">        executorService.shutdown();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：<br><img src="/2019/04/01/zookeeper-10/result.png" alt="执行结果">  </p>
+<p>先是异步的创建节点，只是注入了回调实例，并没有注入context，从输出信息中可以看到context是空的，第二次注入了context，回调的时候就输出了注入的context。<br>第一次没有注入线程池，回调的时候可以看到处理回调的线程也并不是主线程，是zookeeper的事件线程。第二次注入线程池之后处理回调的就是线程池中的线程。</p>
+<h1 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h1><p>zookeeper还支持事务性操作(擦，我的zk和curator版本没有事务的api)</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
 <p>学习博客：<a href="https://blog.csdn.net/qq_34021712/article/details/82872530" target="_blank" rel="noopener">https://blog.csdn.net/qq_34021712/article/details/82872530</a>  </p>
 </blockquote>
 
