@@ -239,6 +239,714 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/14/redblacktree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/14/redblacktree/" itemprop="url">红黑树</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-14T23:02:25+08:00">
+                2018-11-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/11/14/redblacktree/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/11/14/redblacktree/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h1><p>二叉搜索树，能够提供较好的查找，插入以及删除的效率。但是当插入的数据都是有序的，这会导致整个二叉搜索树退化为链表。当查找数据的时候由原来的二分查找变成了循环遍历。这种效率降低是因为树不够平衡导致的。红黑树就是对所有的节点增加红黑两种颜色，同时节点直接保持一种颜色的准则，在插入，删除等操作的同时也要维持这个准则，这样红黑树能够在处理排序数据时也能保证树的平衡，能够提供较好的查找效率。</p>
+<h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><ul>
+<li>所有节点要么是红色，要么是黑色</li>
+<li>根节点必须是黑色</li>
+<li>所有叶子节点的路径中不能有连续的红色节点（红色节点的子节点必须是黑色，反之不一定）</li>
+<li>所有叶子节点的路径中黑色个数相同（黑色高度一致）</li>
+</ul>
+<h1 id="左旋"><a href="#左旋" class="headerlink" title="左旋"></a>左旋</h1><p><img src="/2018/11/14/redblacktree/leftretato.png" alt="左旋"></p>
+<p>如图所示。左旋会将当前节点的右节点作为后继节点，当前节点作为后继节点的左子树。</p>
+<p><img src="/2018/11/14/redblacktree/redblacktree-1.png" alt="红黑树-1"></p>
+<h1 id="右旋"><a href="#右旋" class="headerlink" title="右旋"></a>右旋</h1><p><img src="/2018/11/14/redblacktree/rightretato.png" alt="右旋"></p>
+<p>如图所示，右旋会将当亲节点的左子节点为后继节点，当前节点作为后继节点的右子树。</p>
+<p><img src="/2018/11/14/redblacktree/redblacktree-2.png" alt="红黑树-2"></p>
+<h1 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h1><p>插入节点逻辑比较复杂。因为要保证插入新节点后整个红黑树还能够保持红黑树的定义。<br>我们默认新插入的节点都是红色的，因为新节点是红色的代价最小。当节点是黑色是一定会使得黑色高度发生变化。而当新节点是红色，当父节点是黑色，则不违背定义，但如果父节点是红色，我们可以通过很小的代价来修正。</p>
+<h2 id="修正"><a href="#修正" class="headerlink" title="修正"></a>修正</h2><p>当插入的新节点（红色）后，可能会违背红黑树的定义，这个时候需要进行修正。</p>
+<h3 id="父节点为黑色"><a href="#父节点为黑色" class="headerlink" title="父节点为黑色"></a>父节点为黑色</h3><p><img src="/2018/11/14/redblacktree/insert-1.png" alt="插入-1"></p>
+<p>这种场景不需要做修正。并不违反红黑树的定义。</p>
+<h3 id="父节点为红色，叔叔节点为红色"><a href="#父节点为红色，叔叔节点为红色" class="headerlink" title="父节点为红色，叔叔节点为红色"></a>父节点为红色，叔叔节点为红色</h3><p><img src="/2018/11/14/redblacktree/insert-2.png" alt="插入-2"></p>
+<p>这种场景只需要将父节点，叔叔节点都变成黑色，将祖父节点变为红色，再以祖父节点为基准开始修正（递归）。</p>
+<h3 id="父节点为红色，叔叔节点为黑色"><a href="#父节点为红色，叔叔节点为黑色" class="headerlink" title="父节点为红色，叔叔节点为黑色"></a>父节点为红色，叔叔节点为黑色</h3><p>当父节点为红色，叔叔节点为黑色时，需要按如下四种场景来进行修正。</p>
+<h4 id="父节点是左子节点，新节点为左子节点"><a href="#父节点是左子节点，新节点为左子节点" class="headerlink" title="父节点是左子节点，新节点为左子节点"></a>父节点是左子节点，新节点为左子节点</h4><p><img src="/2018/11/14/redblacktree/insert-3.png" alt="插入-3"></p>
+<p>这种场景，需要先将父节点变为黑色，将祖父节点变为红色。再以祖父节点为基准进行右旋。</p>
+<h4 id="父节点是右子节点，新节点是右子节点"><a href="#父节点是右子节点，新节点是右子节点" class="headerlink" title="父节点是右子节点，新节点是右子节点"></a>父节点是右子节点，新节点是右子节点</h4><p><img src="/2018/11/14/redblacktree/insert-4.png" alt="插入-4"></p>
+<p>这种场景，需要先将父节点变为黑色，将祖父节点变为红色，再以祖父节点为基准进行左旋。</p>
+<h4 id="父节点是左子节点，新节点是右子节点"><a href="#父节点是左子节点，新节点是右子节点" class="headerlink" title="父节点是左子节点，新节点是右子节点"></a>父节点是左子节点，新节点是右子节点</h4><p><img src="/2018/11/14/redblacktree/insert-5.png" alt="插入-5"></p>
+<p>这种场景，需要先以父节点为基准进行左旋。这个时候整个树会变成父节点时左子节点，新节点也是左子节点的场景，只是新节点是父节点的父节点。<br>这个时候同理，将新节点变为黑色，将祖父节点变为红色，再以祖父节点为基准节点进行右旋。</p>
+<h4 id="父节点是右子节点，新节点是左子节点"><a href="#父节点是右子节点，新节点是左子节点" class="headerlink" title="父节点是右子节点，新节点是左子节点"></a>父节点是右子节点，新节点是左子节点</h4><p><img src="/2018/11/14/redblacktree/insert-6.png" alt="插入-6"></p>
+<p>这种场景，需要先以父节点为基准进行右旋。这个时候整个树就会变成父节点是右子节点，新节点也是右子节点的场景。只是新节点是父节点的父节点。<br>这个时候同理，将新节点变为黑色，将祖父节点变为红色，再以祖父节点为基准节点进行左旋。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">    * 新增后修正</span><br><span class="line">    *</span><br><span class="line">    * @param currNode 当前节点</span><br><span class="line">    */</span><br><span class="line">   private void insertFix(RedBlackNode&lt;T&gt; currNode) throws Exception &#123;</span><br><span class="line">       NodeType currNodeType = currNode.nodeType();</span><br><span class="line">       //获取父级节点</span><br><span class="line">       RedBlackNode&lt;T&gt; parent = currNode.getParent();</span><br><span class="line">       if (parent == null) &#123;</span><br><span class="line">           return;</span><br><span class="line">       &#125;</span><br><span class="line">       //获取祖父节点</span><br><span class="line">       RedBlackNode&lt;T&gt; grandPa = parent.getParent();</span><br><span class="line">       if (grandPa == null) &#123;</span><br><span class="line">           return;</span><br><span class="line">       &#125;</span><br><span class="line">       //父节点的颜色</span><br><span class="line">       ColourType parentColour = parent.getColour();</span><br><span class="line">       //父节点是黑色不做处理</span><br><span class="line">       if (ColourType.BLACK == parentColour) &#123;</span><br><span class="line">           return;</span><br><span class="line">       &#125;</span><br><span class="line">       //获取父级节点的节点类型</span><br><span class="line">       NodeType parentNodeType = parent.nodeType();</span><br><span class="line">       //获取叔叔节点</span><br><span class="line">       RedBlackNode&lt;T&gt; uncale = getUncaleNode(currNode);</span><br><span class="line">       ColourType uncaleColour = uncale == null ? null : uncale.getColour();</span><br><span class="line">       //父节点是红色，叔叔节点是红色,直接变更父节点与叔叔节点的颜色，修改祖父节点的颜色</span><br><span class="line">       if (ColourType.RED == uncaleColour) &#123;</span><br><span class="line">           parent.setColour(ColourType.BLACK);</span><br><span class="line">           uncale.setColour(ColourType.BLACK);</span><br><span class="line">           grandPa.setColour(ColourType.RED);</span><br><span class="line">           //以祖父节点为基准开始修正</span><br><span class="line">           insertFix(grandPa);</span><br><span class="line">       &#125;</span><br><span class="line">       //父节点是红色，叔叔节点是黑色</span><br><span class="line">       else &#123;</span><br><span class="line">           if (NodeType.LEFT == parentNodeType) &#123;</span><br><span class="line">               if (NodeType.RIGHT == currNodeType) &#123;</span><br><span class="line">                   leftRotate(parent);</span><br><span class="line">                   parent = currNode;</span><br><span class="line">               &#125;</span><br><span class="line">               parent.setColour(ColourType.BLACK);</span><br><span class="line">               grandPa.setColour(ColourType.RED);</span><br><span class="line">               rightRotate(grandPa);</span><br><span class="line">           &#125; else &#123;</span><br><span class="line">               if (NodeType.LEFT == currNodeType) &#123;</span><br><span class="line">                   rightRotate(parent);</span><br><span class="line">                   parent = currNode;</span><br><span class="line">               &#125;</span><br><span class="line">               parent.setColour(ColourType.BLACK);</span><br><span class="line">               grandPa.setColour(ColourType.RED);</span><br><span class="line">               leftRotate(grandPa);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>#参考资料</p>
+<blockquote>
+<p>红黑树图片：<a href="https://blog.csdn.net/qq_34173549/article/details/79636764" target="_blank" rel="noopener">https://blog.csdn.net/qq_34173549/article/details/79636764</a><br>红黑树总结：<a href="https://m.imooc.com/article/247142" target="_blank" rel="noopener">https://m.imooc.com/article/247142</a><br>红黑树代码：<a href="https://www.cnblogs.com/skywang12345/p/3624343.html" target="_blank" rel="noopener">https://www.cnblogs.com/skywang12345/p/3624343.html</a><br>红黑树代码：<a href="https://www.cnblogs.com/ysocean/p/8004211.html" target="_blank" rel="noopener">https://www.cnblogs.com/ysocean/p/8004211.html</a><br>红黑树的删除：<a href="https://blog.csdn.net/qq_37169817/article/details/78880110" target="_blank" rel="noopener">https://blog.csdn.net/qq_37169817/article/details/78880110</a><br>红黑树的删除：<a href="https://blog.csdn.net/ChinaLeeSunnyBoy/article/details/79525456" target="_blank" rel="noopener">https://blog.csdn.net/ChinaLeeSunnyBoy/article/details/79525456</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/07/binarytree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/07/binarytree/" itemprop="url">二叉树</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-07T22:26:49+08:00">
+                2018-11-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/11/07/binarytree/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/11/07/binarytree/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><ul>
+<li>路径：从一个节点到另一个节点所经过的节点顺序集合。</li>
+<li>根：最顶端的节点。从根节点到其他节点都有一条唯一确定的路径。或者说到其他节点都需要从根节点出发。</li>
+<li>层：从根节点开始定义，根节点位于第一层。根的子节点为第二层。以此类推。</li>
+<li>深度：从根节点到某节点的路径长度。<strong>根节点的深度为0</strong>。</li>
+<li>高度：某节点到叶子节点的最大路径长度。<strong>叶子节点的高度为0</strong>。</li>
+<li>宽度：各层的最大节点数。如图1所示，第3层节点数做多，即树的宽度为4。</li>
+<li>二叉树：每个节点最多有两个子节点的树。</li>
+<li>二叉搜索树：若二叉树的左子树不空，则左子树所有节点的值都小于右子树的所有节点的值。若有子树不空，则右子树所有节点的值都大于子它根节点的值。</li>
+<li><strong>二叉树第n层最多有2^(n-1)个节点。</strong></li>
+<li><strong>二叉树第n层最多共有（2^n）-1个节点。</strong></li>
+<li><strong>二叉树查找的时间复杂度是O(logn),底数为2。</strong></li>
+</ul>
+<p><img src="/2018/11/07/binarytree/tree-1.png" alt="二叉树-1"></p>
+<h1 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h1><h2 id="先序遍历"><a href="#先序遍历" class="headerlink" title="先序遍历"></a>先序遍历</h2><p><img src="/2018/11/07/binarytree/preiterator.png" alt="二叉树-2"></p>
+<h2 id="中序遍历"><a href="#中序遍历" class="headerlink" title="中序遍历"></a>中序遍历</h2><p><img src="/2018/11/07/binarytree/miditerator.png" alt="二叉树-3"></p>
+<h2 id="后序遍历"><a href="#后序遍历" class="headerlink" title="后序遍历"></a>后序遍历</h2><p><img src="/2018/11/07/binarytree/postiterator.png" alt="二叉树-4"></p>
+<h2 id="层序遍历"><a href="#层序遍历" class="headerlink" title="层序遍历"></a>层序遍历</h2><p><img src="/2018/11/07/binarytree/leveliterator.png" alt="二叉树-5"></p>
+<p>层序遍历需要注意以下，因为遍历的时候先都是按照先左后右的顺序向下逐级遍历，故才有队列的方式来缓存当前根节点的子节点。</p>
+<h1 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h1><p><img src="/2018/11/07/binarytree/insert.png" alt="二叉树-6"></p>
+<p>插入的时候需要满足二叉搜索树的性质，即左子树的所有节点均小于右子树的所有节点，故需要从根节点开始，与待插入的数据进行比较，小于根节点的从左子树找，大于等于根节点的从右子树找。直到找到一个符合新值的叶子节点位置。</p>
+<h1 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h1><p><img src="/2018/11/07/binarytree/delete.png" alt="二叉树-7"></p>
+<p>删除操作首先需要查找到目标节点，删除目标节点肯定会涉及到目标节点的父级节点，以及目标节点是父级节点的子节点类型（左子节点还是右子节点），所以在查询的过程中需要一并获取这些数据。之后需要根据目标节点的类型来进行删除。需要考虑目标节点是否有子节点、目标节点有一个子节点以及目标节点有两个子节点这三种场景来考虑。</p>
+<h2 id="删除叶子"><a href="#删除叶子" class="headerlink" title="删除叶子"></a>删除叶子</h2><p><img src="/2018/11/07/binarytree/delete-3.png" alt="二叉树-10"></p>
+<p><img src="/2018/11/07/binarytree/delete-1.png" alt="二叉树-8"></p>
+<p>当目标节点没有子节点时（叶子），只需要将目标节点的父节点对应的子节点清空即可。即如果目标节点是父节点的左子树则清空父节点的左子节点。反之同反。</p>
+<h2 id="目标节点有一个子树"><a href="#目标节点有一个子树" class="headerlink" title="目标节点有一个子树"></a>目标节点有一个子树</h2><p><img src="/2018/11/07/binarytree/delete-4.png" alt="二叉树-11"></p>
+<p><img src="/2018/11/07/binarytree/delete-2.png" alt="二叉树-9"></p>
+<p>当目标节点有一个子节点时，需要将父级节点的对应子节点指向目标节点的子节点即可。</p>
+<h2 id="目标有两个子树"><a href="#目标有两个子树" class="headerlink" title="目标有两个子树"></a>目标有两个子树</h2><p><img src="/2018/11/07/binarytree/delete-5.png" alt="二叉树-12"></p>
+<p>当目标节点有两个子节点时，这种场景比较复杂。由于二叉搜索树的性质，删除的目标节点删除后，需要找到一个节点来替代目标节点，而替代的节点需要是目标节点的后继节点即，比目标节点大的最小值。所以需要获取目标节点右子树的最小值也就是目标节点右子树的最左节点。</p>
+<h3 id="后继节点是目标节点的右子节点"><a href="#后继节点是目标节点的右子节点" class="headerlink" title="后继节点是目标节点的右子节点"></a>后继节点是目标节点的右子节点</h3><p><img src="/2018/11/07/binarytree/delete-7.png" alt="二叉树-14"></p>
+<p><img src="/2018/11/07/binarytree/delete-6.png" alt="二叉树-13"></p>
+<p>当后继节点为目标节点右子节点，即目标节点的右子节点没有左子树的场景。这个时候，只需要将目标节点的父节点对应子节点指向后继节点即可。</p>
+<h3 id="后继节点是目标节点右子树中的左子节点"><a href="#后继节点是目标节点右子树中的左子节点" class="headerlink" title="后继节点是目标节点右子树中的左子节点"></a>后继节点是目标节点右子树中的左子节点</h3><p><img src="/2018/11/07/binarytree/delete-8.png" alt="二叉树-15"></p>
+<p><img src="/2018/11/07/binarytree/delete-9.png" alt="二叉树-16"></p>
+<p>当目标节点的右子节点右左子树时，则后继节点为右子树的最左节点，所以需要首先遍历目标节点的右子树的左子树。找到最左节点。</p>
+<h1 id="宽度"><a href="#宽度" class="headerlink" title="宽度"></a>宽度</h1><p><img src="/2018/11/07/binarytree/width.png" alt="二叉树-17"></p>
+<p>主要还是通过层序遍历的方式来统计每一层节点的子节点个数。没遍历一层，都会构建新的子节点队列。通过比较每一层的子节点个数之和来获取最大值，从而获取宽度。</p>
+<h1 id="深度"><a href="#深度" class="headerlink" title="深度"></a>深度</h1><p><img src="/2018/11/07/binarytree/deep.png" alt="二叉树-18"></p>
+<p>利用二叉搜索树的性质，直接进行深度优先遍历查找目标节点，没向下遍历一次则累加，这样获取深度。</p>
+<h1 id="高度"><a href="#高度" class="headerlink" title="高度"></a>高度</h1><p><img src="/2018/11/07/binarytree/height.png" alt="二叉树-19"></p>
+<h1 id="转换成数组"><a href="#转换成数组" class="headerlink" title="转换成数组"></a>转换成数组</h1><p><img src="/2018/11/07/binarytree/toArray.png" alt="二叉树-20"></p>
+<p>主要还是采用层序遍历的思路，将下一层的节点都存储在队列中，如果当前节点没有子节点，也需要将结果队列中存储元素。这样最终的结果队列会是按照满二叉树的元素来存储整个树的层序遍历结果。</p>
+<h2 id="数组的缺陷"><a href="#数组的缺陷" class="headerlink" title="数组的缺陷"></a>数组的缺陷</h2><p>从代码中就可以看到，数组存储二叉树的时候，空的节点也会占用存储空间，同时如果涉及到删除操作，还会牵扯到数组中数据的平移，效率很低。</p>
+<ul>
+<li>数组中index位置 其左子节点为<strong>2index+1</strong> 右子节点为<strong>2index+2</strong> 父节点 <strong>(index-1)/2</strong></li>
+</ul>
+<h1 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h1><p><a href="https://github.com/gudulongao/datastructalgorithm/blob/master/src/main/java/binarytree/demo/BinaryTree.java" target="_blank" rel="noopener">https://github.com/gudulongao/datastructalgorithm/blob/master/src/main/java/binarytree/demo/BinaryTree.java</a></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>参考网址：<a href="https://www.cnblogs.com/ysocean/p/8032642.html" target="_blank" rel="noopener">https://www.cnblogs.com/ysocean/p/8032642.html</a>  </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/26/mysql-lock/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/26/mysql-lock/" itemprop="url">Mysql锁</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-26T11:19:12+08:00">
+                2018-09-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySql数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">MySql数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/26/mysql-lock/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/26/mysql-lock/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h1><h1 id="MVCC并发控制"><a href="#MVCC并发控制" class="headerlink" title="MVCC并发控制"></a>MVCC并发控制</h1><p>多版本并发控制（Multi-Version-Concurrency-Control）。<br>InnoDB存储引擎，当事务的隔离级别为可重复读(REPEATABLE-READ)时。对于每一行数据都增加了两个隐藏列，一列是存储创建该行数据的系统版本号，另一列是删除该行的系统版本号。</p>
+<ul>
+<li>新增时，行数据的创建版本号为当前事务对应的系统版本号，删除版本号为空。</li>
+<li>查询时，只会查询到创建版本号小于等于当前事务的系统版本号，删除版本号未定义或者大于等于当前事务的版本号，即在当前事务开始时存在并且未删除的数据。</li>
+<li>删除时，行数据的删除版本号为当前事务对应的系统版本号。</li>
+<li>修改时，会新增一条数据，这条新数据的新增版本号为当前事务对应的系统版本号，删除版本号未定义。老数据的删除版本号为当前事务对应的系统版本号。</li>
+</ul>
+<p>这样保证了客重复读即在同一个事物中对于表的数据不会受到别的事务修改提交的影响。只会读取到当前事务创建时的数据状态。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>Mysql锁：<a href="https://blog.csdn.net/soonfly/article/details/70238902" target="_blank" rel="noopener">https://blog.csdn.net/soonfly/article/details/70238902</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/25/mac-help/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/25/mac-help/" itemprop="url">Mac报错笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-25T23:45:32+08:00">
+                2018-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mac系统/" itemprop="url" rel="index">
+                    <span itemprop="name">Mac系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/25/mac-help/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/25/mac-help/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h1><h2 id="查看IP"><a href="#查看IP" class="headerlink" title="查看IP"></a>查看IP</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig |grep &quot;inet &quot;|grep -v 127.0.0.1</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/09/25/mac-help/ifconfig.png" alt="查看ip"></p>
+<h1 id="升级后问题"><a href="#升级后问题" class="headerlink" title="升级后问题"></a>升级后问题</h1><h2 id="missing-xcrun"><a href="#missing-xcrun" class="headerlink" title="missing xcrun"></a>missing xcrun</h2><h3 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h3><p><img src="/2018/09/25/mac-help/error-1.png" alt="包装生成线程安全的hashmap"></p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcode-select --install</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/25/transection-isolation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1501,846 +2209,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/13/net-modle/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/13/net-modle/" itemprop="url">网络分层模型</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-13T10:31:18+08:00">
-                2018-09-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/网络/" itemprop="url" rel="index">
-                    <span itemprop="name">网络</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/13/net-modle/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/09/13/net-modle/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="OSI七层模型"><a href="#OSI七层模型" class="headerlink" title="OSI七层模型"></a>OSI七层模型</h1><p><strong>OSI(Open System Internet)开放式系统互联网</strong>。  </p>
-<p><img src="/2018/09/13/net-modle/osi.png" alt="包装生成线程安全的hashmap"></p>
-<h2 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h2><p>面向实际的应用程序，向应用程序提供网路服务。<br>常用的网络层协议有：  </p>
-<ul>
-<li>HTTP 超文本传输协议  </li>
-<li>FTP 文件传输协议  </li>
-<li>TFTP 简单文件传输协议  </li>
-<li>SMTP 简单邮件传输协议  </li>
-<li>NTP 网络时间协议  </li>
-<li>POP3 邮件协议第三版</li>
-<li>IMAP4 网络信息访问协议第四版</li>
-</ul>
-<blockquote>
-<p>两国之间可以通过书信，大使互访，邮件等多种方式来沟通互信，每种方式都有着各自的规矩。目前采用书信来举例。<br>故应用层中提供了多种网络服务的协议，每种协议都有着不同的处理方式。</p>
-</blockquote>
-<h2 id="表示层（编码，加密，压缩）"><a href="#表示层（编码，加密，压缩）" class="headerlink" title="表示层（编码，加密，压缩）"></a>表示层（编码，加密，压缩）</h2><blockquote>
-<p>当两国文字不同语言不通时，这种互通需要翻译将本国语言书写的内容翻译成标准语言，方便对方能正常解读。同时为了安全，还会进行加密处理。</p>
-</blockquote>
-<p>故应用层的数据编码和转换（加/解密和数据压缩），确保应用层的数据能够被别的系统应用层能够正常识别。  </p>
-<h2 id="会话层"><a href="#会话层" class="headerlink" title="会话层"></a>会话层</h2><blockquote>
-<p>外交部拥有对方国家邮箱的地址，当外交部收到来自翻译后的国书后，外交部将建立本次会话的记录。外交部将国书中增加对方国家的地址信息。准备将国书进行投递。当收到对方的回信，则此次会话结束。</p>
-</blockquote>
-<p>故会话层是负责建立，管理表示层之间的通信会话。</p>
-<h2 id="传输层（端到端）"><a href="#传输层（端到端）" class="headerlink" title="传输层（端到端）"></a>传输层（端到端）</h2><blockquote>
-<p>邮递员负责邮件的收发工作。  </p>
-</blockquote>
-<p>传输层负责了<strong>端到端的链接（端口号）</strong>，为会话层提供了可靠透明的数据传输服务。包括差错处理和流量控制。<br>包含协议：<strong>TCP/UDP</strong>。</p>
-<h2 id="网络层（IP协议层）"><a href="#网络层（IP协议层）" class="headerlink" title="网络层（IP协议层）"></a>网络层（IP协议层）</h2><blockquote>
-<p>负责传输邮件的是复杂的快递网络。覆盖各地的集散中心，从端到端的传递需要经过集散中心。</p>
-</blockquote>
-<p>负责通过IP寻址来建立端到端的链接，选择合适的路由和交换节点，将数据正确无误的传输到目的端。</p>
-<h2 id="数据链路成"><a href="#数据链路成" class="headerlink" title="数据链路成"></a>数据链路成</h2><p>将数据组合成帧，以<strong>MAC地址</strong>来访问，并提供差错检测。</p>
-<h1 id="物理层"><a href="#物理层" class="headerlink" title="物理层"></a>物理层</h1><p>以物理介质来传输比特流。</p>
-<h1 id="TCP-IP五层模型"><a href="#TCP-IP五层模型" class="headerlink" title="TCP/IP五层模型"></a>TCP/IP五层模型</h1><p><img src="/2018/09/13/net-modle/osi-tcp-ip.png" alt="包装生成线程安全的hashmap"></p>
-<h1 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h1><p><img src="/2018/09/13/net-modle/grid.png" alt="包装生成线程安全的hashmap"><br><img src="/2018/09/13/net-modle/xieyi.png" alt="包装生成线程安全的hashmap"><br><img src="/2018/09/13/net-modle/xieyi-2.png" alt="包装生成线程安全的hashmap"></p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p><a href="https://www.cnblogs.com/qishui/p/5428938.html" target="_blank" rel="noopener">https://www.cnblogs.com/qishui/p/5428938.html</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/12/jvm-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/12/jvm-2/" itemprop="url">对象的创建存储以及访问</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-12T00:34:06+08:00">
-                2018-09-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/jvm/" itemprop="url" rel="index">
-                    <span itemprop="name">jvm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/12/jvm-2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/09/12/jvm-2/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="对象的创建"><a href="#对象的创建" class="headerlink" title="对象的创建"></a>对象的创建</h1><p>当遇到new指令时，jvm其实就在进行对象的创建。对象的创建有以下几个步骤：  </p>
-<h2 id="类加载检查。"><a href="#类加载检查。" class="headerlink" title="类加载检查。"></a>类加载检查。</h2><p>在运行时常量池中寻找类的符号引用，并检查符号引用对应的类是否被加载、解析和初始化。如果没有则进行类加载。  </p>
-<h2 id="分配内存。"><a href="#分配内存。" class="headerlink" title="分配内存。"></a>分配内存。</h2><p>对象所需要的内存空间大小在类加载之后就能完全确定。所以首先需要类加载的过程。对象在堆中分配内存的方式主要有两种：<strong>指针碰撞和空闲列表</strong>。</p>
-<h3 id="指针碰撞"><a href="#指针碰撞" class="headerlink" title="指针碰撞"></a>指针碰撞</h3><p>堆空间很规整，即使用的空间存放在内存中的一边，空闲的在另一边，使用和未使用的空间分界为指示器，分配内存只需要将指示器向空闲区域挪一段与新对象大小相当的距离即可。</p>
-<h3 id="空闲列表"><a href="#空闲列表" class="headerlink" title="空闲列表"></a>空闲列表</h3><p>堆空间不规则，已使用和未使用的内存区域零散分布。jvm维护着一个空闲区域的列表，记录可用的内存空间，为对象分配内存的时候只需要选择一个足够大的空间分配给新的对象并更新列表。</p>
-<h3 id="线程安全的分配内存"><a href="#线程安全的分配内存" class="headerlink" title="线程安全的分配内存"></a>线程安全的分配内存</h3><ul>
-<li>分配内存的同步处理：jvm采用CAS策略以及失败重试的方式来保证分配内存操作的原子性。  </li>
-<li>分配内存根据线程来划分区域：TLAB(Thread Local Allocation Buffer)，堆中每个线程都会预先分配一块内存，每个线程需要分配内存时都是在自己的TLAB中分配，只有自己的TLAB分配完毕才会同步锁定。</li>
-</ul>
-<h2 id="内存初始化（零值）"><a href="#内存初始化（零值）" class="headerlink" title="内存初始化（零值）"></a>内存初始化（零值）</h2><p>将分配到的内存空间初始化为零值。</p>
-<blockquote>
-<p>保证对象的实例字段在java代码中可以不赋初始值就直接使用，程序能访问到这些字段的数据类型所对应的零值。</p>
-</blockquote>
-<h2 id="初始化对象头"><a href="#初始化对象头" class="headerlink" title="初始化对象头"></a>初始化对象头</h2><blockquote>
-<p>对对象进行必要的设置，例如这个对象是哪个类的实例，如何才能找到累的元数据信息、对象的哈希码、对象的GC分代年龄等。</p>
-</blockquote>
-<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><blockquote>
-<p>把对象按照程序员的意愿进行初始化。</p>
-</blockquote>
-<p>个人感觉这一步就是调用初始化方法。</p>
-<h1 id="对象的内存布局"><a href="#对象的内存布局" class="headerlink" title="对象的内存布局"></a>对象的内存布局</h1><blockquote>
-<p>对象在内存中存储的布局可以分为3块区域：<strong>对象头，实例数据和对其填充</strong>。</p>
-</blockquote>
-<h2 id="对象头"><a href="#对象头" class="headerlink" title="对象头"></a>对象头</h2><p>对象头包含两部分：<strong>对象运行时数据和类型指针</strong>。<br>如果对象是数组数据，对象头还必须有一块用于记录数组长度的数据。</p>
-<h3 id="对象运行时数据（Mark-Word）"><a href="#对象运行时数据（Mark-Word）" class="headerlink" title="对象运行时数据（Mark Word）"></a>对象运行时数据（Mark Word）</h3><p>包含哈希码、GC分代年龄、锁状态标志、线程持有的锁、偏向线程ID、偏向时间戳等信息。<br>数据长度在32位和64位虚拟机中分别为32位和64位。</p>
-<h3 id="类型指针"><a href="#类型指针" class="headerlink" title="类型指针"></a>类型指针</h3><p>指向类 元数据的指针，虚拟机通过这个指针来确定对象是哪个类的实例。<br><strong>并不是所有的虚拟机都必须在对象数据上保留类型指针</strong>。  </p>
-<h2 id="实例数据"><a href="#实例数据" class="headerlink" title="实例数据"></a>实例数据</h2><p>对象真正存储信息的部分。即实例对象中所有的字段内容。包含从基类中继承的字段。</p>
-<h2 id="对其填充"><a href="#对其填充" class="headerlink" title="对其填充"></a>对其填充</h2><p><strong>非必须存在</strong>。当对象的实例数据部分数据没有对齐时需要对其填充来补全占位。</p>
-<h1 id="对象的访问"><a href="#对象的访问" class="headerlink" title="对象的访问"></a>对象的访问</h1><h2 id="句柄池访问"><a href="#句柄池访问" class="headerlink" title="句柄池访问"></a>句柄池访问</h2><p><img src="/2018/09/12/jvm-2/handler.png" alt="包装生成线程安全的hashmap"></p>
-<p>如图所示，堆空间会存在句柄池和实例池，句柄池中的句柄包含实例对象的地址和对象类型的指针。而栈帧中的局部变量表中的reference指向句柄池中的句柄。<br><strong>使用句柄池的好处是reference中存储的是稳定的句柄地址，当GC垃圾回收导致对象的地址变动的时候，只需要变更句柄池中实例对象指针的地址，无需修改reference</strong>。</p>
-<h2 id="直接指针访问（Sun-HotSpot采用）"><a href="#直接指针访问（Sun-HotSpot采用）" class="headerlink" title="直接指针访问（Sun HotSpot采用）"></a>直接指针访问（Sun HotSpot采用）</h2><p><img src="/2018/09/12/jvm-2/direct.png" alt="包装生成线程安全的hashmap"></p>
-<p>如图所示，栈帧中局部变量表的reference直接指向实例对象，实例对象对象头的类型指针指向类型数据。<br><strong>直接指针的好处是因为少一次指针定位的时间开销，故对象访问的速度更快</strong>。</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>《深入理解java虚拟机》 周志明 编著<br><a href="https://blog.csdn.net/qq_34280276/article/details/52793234" target="_blank" rel="noopener">https://blog.csdn.net/qq_34280276/article/details/52793234</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/10/jvm-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/10/jvm-1/" itemprop="url">JVM内存分布</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-10T23:58:51+08:00">
-                2018-09-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/jvm/" itemprop="url" rel="index">
-                    <span itemprop="name">jvm</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/10/jvm-1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/09/10/jvm-1/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><img src="/2018/09/10/jvm-1/jvm-memory.png" alt="包装生成线程安全的hashmap"></p>
-<h1 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h1><p>当前线程执行字节码的行号指示器，说白了就是存储当前线程执行指令到哪个位置了。</p>
-<ul>
-<li><strong>线程私有（每个线程都有自己的程序计数器，互补影响，独立存储）</strong>。</li>
-<li>执行java方法时，存储执行字节码行号的执行器，执行native方法时为空。</li>
-<li>不会抛oom异常。</li>
-</ul>
-<h1 id="虚拟机栈"><a href="#虚拟机栈" class="headerlink" title="虚拟机栈"></a>虚拟机栈</h1><blockquote>
-<p>描述执行java方法时，每个方法执行时都会创建一个栈帧用于存储局部变量表，方法出入口等信息。每个方法的调用直至完成执行的过程，都是栈帧入栈出栈的过程。  </p>
-</blockquote>
-<p>个人感觉虚拟机栈，就是一个栈，在每次调用方法的时候，会创建栈帧来存储线程的局部变量表，方法的出入口地址等信息，方法调用就将栈帧压入虚拟机栈，方法执行成功则弹栈。  </p>
-<h2 id="局部变量表"><a href="#局部变量表" class="headerlink" title="局部变量表"></a>局部变量表</h2><blockquote>
-<p>局部变量表存放了编译期间基本类型（boolean,byte,char,short,int,float,long,double）和对象引用类型等变量所需的内存空间。当进入一个方法，这个方法需要在栈帧中分配多大的局部变量空间是完全确定的，在方法运行期间不会改变局部变量表的大小。</p>
-</blockquote>
-<p>个人感觉局部变量表就是一个专门用于存储在这个方法作用于所有的基本类型变量和引用类型变量的内存区域，随着进入方法的时候创建，随着离开方法时销毁。</p>
-<ul>
-<li><strong>线程私有。</strong></li>
-<li><strong>当线程请求的栈深大于虚拟机允许的栈深，抛出StackOverFlow异常。</strong>  </li>
-<li><strong>当虚拟机栈动态拓展时无法申请到足够的内存时，抛出OutOfMemory异常。</strong></li>
-</ul>
-<h1 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h1><p>类比虚拟机栈，只不过本地方法栈是线程调用本地方法时，所涉及到的内存区域。</p>
-<ul>
-<li><strong>会抛出StackOverFlow和OutOfMemory异常</strong>。</li>
-</ul>
-<h1 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h1><blockquote>
-<p>所有对象实例以及数组都要在堆分配。</p>
-</blockquote>
-<ul>
-<li><strong>所有线程共享</strong>。</li>
-<li><strong>垃圾回收的主要区域</strong>。</li>
-<li><strong>物理无需连续，逻辑上连续的内存空间</strong>。</li>
-<li><strong>如果没有空间给对象分配内存，同时堆也无法继续拓展，则会抛出OutOfMemory异常</strong>。</li>
-</ul>
-<h1 id="方法区（非堆-Non-Heap）"><a href="#方法区（非堆-Non-Heap）" class="headerlink" title="方法区（非堆 Non-Heap）"></a>方法区（非堆 Non-Heap）</h1><blockquote>
-<p>用于存储已被虚拟机加载的类信息、常量、静态变量等数据。</p>
-</blockquote>
-<ul>
-<li><strong>线程共享。</strong></li>
-<li><strong>当没有空间满足内存分配时，抛出OutOfMemory异常</strong>。</li>
-</ul>
-<h2 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h2><blockquote>
-<p>方法区的一部分。<br>Class文件中除了有类的版本、字段、方法、接口等描述信息外，还有常量池，用于存放编译期间生产的各种字面量和符号饮用，这部分内容在类加载后进入方法区的运行时常量池存放。<br>java语言并不要求常量一定只有编译期间才能产生，运行期间也可能将新的常量放入常量池。例如String类的intern方法。  </p>
-</blockquote>
-<p>感觉运行时常量池就是用来存储类的相关信息，包括类的常量，静态变量等信息。同时String类的intern也会将字符串常量添加到运行时常量池中。</p>
-<h2 id="字符串的使用"><a href="#字符串的使用" class="headerlink" title="字符串的使用"></a>字符串的使用</h2><h3 id="new-String（）-的存储"><a href="#new-String（）-的存储" class="headerlink" title="new String（） 的存储"></a>new String（） 的存储</h3><p><img src="/2018/09/10/jvm-1/intern-1.png" alt="包装生成线程安全的hashmap"></p>
-<p>new String(“abc”)，会直接在堆空间中分配空间来存储字符串abc。</p>
-<p><img src="/2018/09/10/jvm-1/intern-1-1.png" alt="包装生成线程安全的hashmap"></p>
-<p>通过new String是直接实例化String对象，实例化对象都是在堆空间中分配内存，故例子中str1与str2存储着两块不同的堆空间地址。</p>
-<h3 id="字符串拼接和常量拼接"><a href="#字符串拼接和常量拼接" class="headerlink" title="字符串拼接和常量拼接"></a>字符串拼接和常量拼接</h3><p><img src="/2018/09/10/jvm-1/intern-1-2.png" alt="包装生成线程安全的hashmap"></p>
-<p>字符串的拼接以及常量的拼接，java会在编译期间就会做拼接，即在编译期间，str9=”str8”,str10=”str8”。当前代码是在一个方法中，故属于方法的局部变量，所以此处的三个变量位于虚拟机栈的局部变量表中。</p>
-<h3 id="变量与字符串拼接"><a href="#变量与字符串拼接" class="headerlink" title="变量与字符串拼接"></a>变量与字符串拼接</h3><p><img src="/2018/09/10/jvm-1/intern-1-3.png" alt="包装生成线程安全的hashmap"></p>
-<p>当字符串与变量拼接的时候，jvm底层会通过StringBuilder.append在堆上构建新的对象。字符串对象是不可变的，所以对于这种字符串与变量的拼接，实际创建一个新的字符串对象，内容是拼接的字符串。</p>
-<p><img src="/2018/09/10/jvm-1/stringbuilder-1.png" alt="包装生成线程安全的hashmap"><br><img src="/2018/09/10/jvm-1/stringbuilder-2.png" alt="包装生成线程安全的hashmap"></p>
-<p>通过append的源码可以看到，StringBuilder其实底层是一个数组，每次append的时候，把字符串的每个字符都插入到数组里。在toString方法中构建一个新的字符串对象。</p>
-<h2 id="String-intern方法"><a href="#String-intern方法" class="headerlink" title="String.intern方法"></a>String.intern方法</h2><p>jvm为了使得同样的字符串能够复用而不再分配内存，减少内存的消耗。</p>
-<h3 id="1-6版本"><a href="#1-6版本" class="headerlink" title="1.6版本"></a>1.6版本</h3><p><img src="/2018/09/10/jvm-1/intern-2.png" alt="包装生成线程安全的hashmap"></p>
-<p>在1.6版本中，定义字符串（String str1 = “abc”）时，会先查询运行时常量池，如果有一致内容，则直接返回运行时常量池的引用，即str1直接指向运行常量池中字符串”abc”。如果没有，则直接在运行时常量池中自动添加一个字符串”abc”，然后返回字符串”abc”的引用。<strong>在1.6版本中运行时常量池中还是会存储字符串数据的</strong>。</p>
-<h3 id="1-7版本"><a href="#1-7版本" class="headerlink" title="1.7版本"></a>1.7版本</h3><p><img src="/2018/09/10/jvm-1/intern-3.png" alt="包装生成线程安全的hashmap"><br><img src="/2018/09/10/jvm-1/intern-3-1.png" alt="包装生成线程安全的hashmap"></p>
-<p>在1.7版本中，定义字符串变量的时候，一样会先在运行时常量池中查找是否有内容一致的字符串，有则返回运行时常量池的引用。如果没有，则会在堆中创建字符串对象，再在运行时常量池中引用堆中的字符串对象。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
-<li>不论1.6还是1.7，字符串变量都是指向运行时常量区。只不过1.6中运行时常量池直接存储字符串内容。而1.7版运行时常量池存储的事堆中字符串对象的引用。</li>
-<li>相同内容的字符串变量其实都指向运行时常量区中同一块内存空间。</li>
-</ul>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>《深入理解java虚拟机》 周志明 编著<br>JVM：<a href="https://blog.csdn.net/quinnnorris/article/details/74503168" target="_blank" rel="noopener">https://blog.csdn.net/quinnnorris/article/details/74503168</a><br>字符串常量池：<a href="https://blog.csdn.net/soonfly/article/details/70147205" target="_blank" rel="noopener">https://blog.csdn.net/soonfly/article/details/70147205</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/10/concurrency-4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/10/concurrency-4/" itemprop="url">线程池</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-10T23:27:13+08:00">
-                2018-09-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/高并发/" itemprop="url" rel="index">
-                    <span itemprop="name">高并发</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/10/concurrency-4/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/09/10/concurrency-4/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="为什么要使用线程池"><a href="#为什么要使用线程池" class="headerlink" title="为什么要使用线程池"></a>为什么要使用线程池</h1><ul>
-<li>线程的创建和销毁都需要耗费时间</li>
-<li>线程也是需要瓜分内存空间，不加节制的增加线程会造成内存不足（oom异常）  </li>
-<li>大量的线程造成的内存耗费，导致垃圾回收的时间加长（gc停顿）  </li>
-</ul>
-<h1 id="JDK提供的线程池"><a href="#JDK提供的线程池" class="headerlink" title="JDK提供的线程池"></a>JDK提供的线程池</h1><p>Executor框架提供了几种线程池，可以通过Executors工厂类来获取。</p>
-<h2 id="固定线程数线程池（newFiexdThreadPool）"><a href="#固定线程数线程池（newFiexdThreadPool）" class="headerlink" title="固定线程数线程池（newFiexdThreadPool）"></a>固定线程数线程池（newFiexdThreadPool）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecutorService executorService = Executors.newFixedThreadPool(20);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/09/10/concurrency-4/executors-1.png" alt="包装生成线程安全的hashmap"></p>
-<p>固定线程数线程池，其线程数量在初始化时已固定，不会发生变化，提交任务时，如果有空闲线程时，则立即执行。如果没有，任务会进入一个任务队列，从源码中可以看到其任务队列为<strong>LinkedBlockingQueue</strong>。</p>
-<h2 id="单个线程线程池-newSingleThreadExecutor"><a href="#单个线程线程池-newSingleThreadExecutor" class="headerlink" title="单个线程线程池(newSingleThreadExecutor)"></a>单个线程线程池(newSingleThreadExecutor)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecutorService executorService = Executors.newSingleThreadExecutor();</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/09/10/concurrency-4/executors-2.png" alt="包装生成线程安全的hashmap"></p>
-<p>单一线程池，其线程数只有一个，当提交任务多于1个时，任务会进入任务队列，待线程空闲时按照任务队列中先进先出的顺序来执行。通过源码可以看到，单个线程池与固定线程数线程池的实现逻辑类似，都是使用<strong>LinkedBlockingQueue</strong>来作为任务队列的。</p>
-<h2 id="不定线程数线程池-newCachedThreadPool"><a href="#不定线程数线程池-newCachedThreadPool" class="headerlink" title="不定线程数线程池(newCachedThreadPool)"></a>不定线程数线程池(newCachedThreadPool)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecutorService executorService = Executors.newCachedThreadPool();</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/09/10/concurrency-4/executors-3.png" alt="包装生成线程安全的hashmap"></p>
-<p>不定线程数线程池，其线程数量是动态变化的，提交任务时，如果有空闲线程，则立即执行，如果没有，则会创建新的线程处理任务。当所有执行完毕任务后，会返回到线程池中等待复用。从源码冲可以看到，其使用<strong>SynchronsQueue</strong>作为任务队列。</p>
-<h2 id="单个定时任务线程池（newSingleThreadScheduledExecutor）"><a href="#单个定时任务线程池（newSingleThreadScheduledExecutor）" class="headerlink" title="单个定时任务线程池（newSingleThreadScheduledExecutor）"></a>单个定时任务线程池（newSingleThreadScheduledExecutor）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecutorService executorService = Executors.newSingleThreadScheduledExecutor();</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/09/10/concurrency-4/executors-4.png" alt="包装生成线程安全的hashmap"></p>
-<p>线程数为1的可定时执行任务的线程池。</p>
-<h2 id="定时任务线程池（newScheduledThreadPool）"><a href="#定时任务线程池（newScheduledThreadPool）" class="headerlink" title="定时任务线程池（newScheduledThreadPool）"></a>定时任务线程池（newScheduledThreadPool）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecutorService executorService = Executors.newScheduledThreadPool(20);</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/09/10/concurrency-4/executors-5.png" alt="包装生成线程安全的hashmap"></p>
-<p>可以指定线程数的可执行定时任务的线程池。</p>
-<h2 id="执行定时任务"><a href="#执行定时任务" class="headerlink" title="执行定时任务"></a>执行定时任务</h2><p>对于定时任务的线程池，其包含两个方法，用来运行定时任务。</p>
-<p><img src="/2018/09/10/concurrency-4/executors-6.png" alt="包装生成线程安全的hashmap"></p>
-<ul>
-<li>scheduleAtFixedRate 以上一个任务的开始时间为起点，等待period时长之后再调用下一个任务。即period的时长是包括上一个任务的运行时间的，<strong>如果上一个任务运行时长&gt;period时长，那么上一个任务执行完毕后会立即执行下一个任务</strong>。  </li>
-<li>scheduleWithFixedDelay 以上一个任务的结束时间为起点，等待delay时长以后再调用下一个任务。<strong>即下一个任务等待的时长=上一个任务运行的时长+delay时长</strong>。</li>
-</ul>
-<h1 id="线程池的内部实现"><a href="#线程池的内部实现" class="headerlink" title="线程池的内部实现"></a>线程池的内部实现</h1><p>从jdk中提供的几种线程池的源码中可以看到，其内部都是用了<strong>ThreadPoolExecutor</strong>。</p>
-<p><img src="/2018/09/10/concurrency-4/threadpoolexecutor.png" alt="包装生成线程安全的hashmap"></p>
-<h2 id="任务队列"><a href="#任务队列" class="headerlink" title="任务队列"></a>任务队列</h2><p>创建线程池的时候，需要指定线程池中的人物队列，从ThreadPoolExecutor的构造函数中可以看到，任务队列都是实现了接口BlockingQueue的队列对象。常用的人物队列有有<strong>SynchronousQueue，ArrayBlockingQueue，LinkedBlockingQueue，PriorityBlockQueue</strong>。</p>
-<h3 id="零界队列（SynchronousQueue）"><a href="#零界队列（SynchronousQueue）" class="headerlink" title="零界队列（SynchronousQueue）"></a>零界队列（SynchronousQueue）</h3><p>SynchronousQueue 是一个没有容量的队列。每一次插入操作都必须等待一个删除操作。反之，每一个删除操作都等待对应的插入操作。<strong>即一旦有元素进入队列（生产者插入）会被立即删除（消费者删除），更像是生产者利用该队列快速的将元素传递给消费者</strong>。<br><strong>newCachedThreadPool的线程池就使用了SynchronousQueue来作为任务队列</strong>，当有空闲线程时立即执行任务，当没有空闲线程的时候，任务会插入到SynchronousQueue中，由于SynchronousQueue的特性，当插入的时候就必须要有对应的删除，即需要立即创建新的线程从任务队列中获取任务。如果当前线程数已到达最大线程数。会触发拒绝策略，<strong>故使用SynchronousQueue的线程池其核心线程数要很大，否则很容易触发拒绝策略</strong>。</p>
-<h3 id="有界队列（ArrayBlockingQueue）"><a href="#有界队列（ArrayBlockingQueue）" class="headerlink" title="有界队列（ArrayBlockingQueue）"></a>有界队列（ArrayBlockingQueue）</h3><p>ArrayBlockingQueue 是一个有界队列。构造时需要指定初始容量。<br>当有任务时，线程池处理线程的逻辑如下：  </p>
-<ul>
-<li>线程数&lt;coreSize，创建线程，立即执行任务。  </li>
-<li>线程数&gt;coreSize，将任务添加到任务队列，等有空闲线程时再从线程中获取任务执行。  </li>
-<li>任务队列已满，线程数&lt;maxSize，创建新线程执行任务。</li>
-<li>任务队列已满，线程数=maxSize，触发拒绝策略。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">package demo.concurrency.threadpool;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.ArrayBlockingQueue;</span><br><span class="line">import java.util.concurrent.ThreadPoolExecutor;</span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">public class ThreadPoolDemo &#123;</span><br><span class="line">    public static void testArrayBlockingQueueThreadPool() &#123;</span><br><span class="line">        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(0, 2, 50000, TimeUnit.HOURS,new ArrayBlockingQueue&lt;Runnable&gt;(1));</span><br><span class="line">        Runnable longTimeTask = new Runnable() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    System.out.println(&quot;long time &quot;+Thread.currentThread().getName() + &quot; start ...&quot;);</span><br><span class="line">                    Thread.sleep(6000);</span><br><span class="line">                    System.out.println(&quot;long time &quot;+Thread.currentThread().getName() + &quot; done!&quot;);</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        Runnable quickTask = new Runnable() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    System.out.println(&quot;short time &quot;+Thread.currentThread().getName() + &quot; start ...&quot;);</span><br><span class="line">                    Thread.sleep(3000);</span><br><span class="line">                    System.out.println(&quot;short time &quot;+Thread.currentThread().getName() + &quot; done!&quot;);</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        threadPoolExecutor.submit(longTimeTask);</span><br><span class="line">        threadPoolExecutor.submit(longTimeTask);</span><br><span class="line">        System.out.println(&quot;thread pool size :&quot; + threadPoolExecutor.getPoolSize() + &quot; active :&quot; + threadPoolExecutor.getActiveCount());</span><br><span class="line">        threadPoolExecutor.submit(quickTask);</span><br><span class="line">        System.out.println(&quot;thread pool size :&quot; + threadPoolExecutor.getPoolSize() + &quot; active :&quot; + threadPoolExecutor.getActiveCount());</span><br><span class="line">        try &#123;</span><br><span class="line">            System.out.println(&quot;thread pool sleep...&quot;);</span><br><span class="line">            Thread.sleep(10000);</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;thread pool size :&quot; + threadPoolExecutor.getPoolSize() + &quot; active :&quot; + threadPoolExecutor.getActiveCount());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        testArrayBlockingQueueThreadPool();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输入如下：</p>
-<p><img src="/2018/09/10/concurrency-4/arrayblockqueue.png" alt="包装生成线程安全的hashmap"></p>
-<p>当时看到线程池基于有界队列任务的线程维护策略中对紧急状态时有些疑惑。故写了样例。样例中通过有界队列ArrayBlockingQueue来作为线程池的任务队列，线程池中提交了两种任务，一种长时间运行一种段时间运行。主要是为了测试当任务来临时，任务队列已满，线程数&lt;maxSize时会创建新的线程来执行任务，当最终任务执行完毕后，线程池中还保留的线程数是coreSize还是&gt;coreSize，通过查看输出可以看到，当紧急任务来临时，线程池会拓展线程数到maxSize,当任务执行完毕后，线程池并不会将&gt;coreSize的线程给销毁，会保留。</p>
-<h3 id="无界队列（LinkedBlockingQueue）"><a href="#无界队列（LinkedBlockingQueue）" class="headerlink" title="无界队列（LinkedBlockingQueue）"></a>无界队列（LinkedBlockingQueue）</h3><ul>
-<li>线程数&lt;coreSize，新建线程，立即执行任务。  </li>
-<li>线程数&gt;coreSize，将任务添加到对了，等待有空闲线程时执行任务。由于任务队列是无界队列，可以不断的增加队列长度，故<strong>直到系统资源耗尽，任务会一直添加到任务队列，也不会触发拒绝策略</strong>。  </li>
-</ul>
-<h3 id="优先级队列（PriorityBlockQueue）"><a href="#优先级队列（PriorityBlockQueue）" class="headerlink" title="优先级队列（PriorityBlockQueue）"></a>优先级队列（PriorityBlockQueue）</h3><p>线程池会根据任务的优先级来优先选择优先级高的任务优先执行。</p>
-<h2 id="拒绝策略"><a href="#拒绝策略" class="headerlink" title="拒绝策略"></a>拒绝策略</h2><p>对于有界队列或者零界队列时，当没有空闲线程，线程数到达maxSize则会触发拒绝策略。jdk提供的4种拒绝策略：  </p>
-<ul>
-<li>AbortPolicy 直接抛出异常。  </li>
-<li>CallerRunsPolicy 如果线程池没有停止，则直接在调用该任务的线程中执行。  </li>
-<li>DiscardOledestPolicy 丢弃最老的任务，由于除了优先级队列，有界和无界队列都是按照FIFO先进先出策略来处理任务，故最老的任务就是即将要被执行的任务。</li>
-<li>DiscardPolicy 直接丢弃当前任务。</li>
-</ul>
-<p>其他三个策略都好理解，对于CallerRunsPolicy，我的感觉就是当线程数到达maxSize的时候，对于新提交的任务，会直接在调用线程池提交任务的线程中来执行该任务，从而使得提交任务的线程被迫暂停原由的工作转而执行任务。</p>
-<blockquote>
-<p>参考样例：<a href="https://www.cnblogs.com/lic309/p/4564507.html" target="_blank" rel="noopener">https://www.cnblogs.com/lic309/p/4564507.html</a></p>
-</blockquote>
-<h3 id="自定义拒绝策略-RejectedExecutionHandler"><a href="#自定义拒绝策略-RejectedExecutionHandler" class="headerlink" title="自定义拒绝策略(RejectedExecutionHandler)"></a>自定义拒绝策略(RejectedExecutionHandler)</h3><p>实现接口RejectedExecutionHandler来自定义拒绝策略。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">package demo.concurrency.threadpool;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.*;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * @descripte 线程池策略样例</span><br><span class="line"> */</span><br><span class="line">public class RejectedDemo &#123;</span><br><span class="line">    /**</span><br><span class="line">     * 自定义任务</span><br><span class="line">     */</span><br><span class="line">    class DemoRunnable implements Runnable &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; run &quot;);</span><br><span class="line">            try &#123;</span><br><span class="line">                Thread.sleep(1000);</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 自定义拒绝策略</span><br><span class="line">     */</span><br><span class="line">    class RejectedHandler implements RejectedExecutionHandler &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) &#123;</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getId() + &quot; rejected !&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void test() &#123;</span><br><span class="line">        /**</span><br><span class="line">         * 自定义线程池</span><br><span class="line">         */</span><br><span class="line">        ExecutorService executorService = new ThreadPoolExecutor(5, 5, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingDeque&lt;Runnable&gt;(10), Executors.defaultThreadFactory(), new RejectedHandler());</span><br><span class="line">        DemoRunnable demoRunnable = new DemoRunnable();</span><br><span class="line">        for (int i = 0; i &lt; Integer.MAX_VALUE; i++) &#123;</span><br><span class="line">            executorService.submit(demoRunnable);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        RejectedDemo demo = new RejectedDemo();</span><br><span class="line">        demo.test();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="线程池拓展"><a href="#线程池拓展" class="headerlink" title="线程池拓展"></a>线程池拓展</h1><h2 id="自定义ThreadFactory"><a href="#自定义ThreadFactory" class="headerlink" title="自定义ThreadFactory"></a>自定义ThreadFactory</h2><p>在线程池中创建线程时，会通过线程工厂来创建线程，通过工厂来创建线程可以个性化的指定线程名称，线程组，优先级等，便于后续的维护。<br>继承ThreadFactory，重写newThread方法，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class DemoFactory implements ThreadFactory &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public Thread newThread(Runnable r) &#123;</span><br><span class="line">            Thread t = new Thread(r);</span><br><span class="line">            System.out.println(System.currentTimeMillis() + &quot; create new thread !&quot;);</span><br><span class="line">            return t;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h2 id="拓展ThreadExecutor-beforeExecute-AfterExecute和terminated"><a href="#拓展ThreadExecutor-beforeExecute-AfterExecute和terminated" class="headerlink" title="拓展ThreadExecutor(beforeExecute,AfterExecute和terminated)"></a>拓展ThreadExecutor(beforeExecute,AfterExecute和terminated)</h2><p>ThreadPoolExecutor支持个性化拓展。</p>
-<table>
-<thead>
-<tr>
-<th>方法名</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>beforeExecute</td>
-<td>在执行任务前调用</td>
-</tr>
-<tr>
-<td>afterExecute</td>
-<td>在执行任务后处理</td>
-</tr>
-<tr>
-<td>terminated</td>
-<td>线程池关闭时处理</td>
-</tr>
-</tbody>
-</table>
-<h2 id="查看异常堆栈"><a href="#查看异常堆栈" class="headerlink" title="查看异常堆栈"></a>查看异常堆栈</h2><ul>
-<li>最好使用execute方法来提交任务，而不是使用submit。submit会吃掉异常。</li>
-<li>可以重写submit方法，在submit进行提交任务时，包装一个新的任务，在新任务中执行原有任务，在执行的外层捕获异常并处理，这样我们可以通过submit来输出整个异常堆栈。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">        public Future&lt;?&gt; submit(Runnable task) &#123;</span><br><span class="line">            return super.submit(warp(task, Thread.currentThread().getId()));</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        private Runnable warp(final Runnable runnable, final long threadID)&#123;</span><br><span class="line">            return new Runnable() &#123;</span><br><span class="line">                @Override</span><br><span class="line">                public void run() &#123;</span><br><span class="line">                    try &#123;</span><br><span class="line">                        runnable.run();</span><br><span class="line">                    &#125; catch (Exception e) &#123;</span><br><span class="line">                        new Exception(&quot;MyThreadPool occured a exception at &quot; + threadID).printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>《实战java 高并发程序设计》葛一鸣 郭超 编著  </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2395,7 +2263,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">49</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2406,7 +2274,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2417,7 +2285,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
