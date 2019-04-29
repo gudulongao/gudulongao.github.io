@@ -79,18 +79,22 @@
 
 
 
-<meta name="description" content="参考资料 kafka中文教程：http://www.orchome.com/5kafka与activemq的区别：https://blog.csdn.net/caokun12321/article/details/81118310">
+<meta name="description" content="什么是kafkaApache kafka是消息中间件的一种。用于构建实时数据管道和流应用程序。具有横向扩展，容错，wicked fast（变态快）等优点， 名次解释Topickafka将消息种子(feed)通过Topic进行分类。每一种消息的分类就是一种主题（topic）。 Producer发布消息的一方称之为消息的生产者(producer)。 Consumer订阅消息并处理消息的一方称之为消息的">
 <meta name="keywords" content="KafKa,学习笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="KafKa 入门">
 <meta property="og:url" content="http://yoursite.com/2019/04/28/kafka-01/index.html">
 <meta property="og:site_name" content="小磊砸的布劳格">
-<meta property="og:description" content="参考资料 kafka中文教程：http://www.orchome.com/5kafka与activemq的区别：https://blog.csdn.net/caokun12321/article/details/81118310">
+<meta property="og:description" content="什么是kafkaApache kafka是消息中间件的一种。用于构建实时数据管道和流应用程序。具有横向扩展，容错，wicked fast（变态快）等优点， 名次解释Topickafka将消息种子(feed)通过Topic进行分类。每一种消息的分类就是一种主题（topic）。 Producer发布消息的一方称之为消息的生产者(producer)。 Consumer订阅消息并处理消息的一方称之为消息的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-28T07:04:46.455Z">
+<meta property="og:image" content="http://yoursite.com/2019/04/28/kafka-01/apimap.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/28/kafka-01/topicpartition.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/28/kafka-01/log.png">
+<meta property="og:updated_time" content="2019-04-29T03:25:51.453Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="KafKa 入门">
-<meta name="twitter:description" content="参考资料 kafka中文教程：http://www.orchome.com/5kafka与activemq的区别：https://blog.csdn.net/caokun12321/article/details/81118310">
+<meta name="twitter:description" content="什么是kafkaApache kafka是消息中间件的一种。用于构建实时数据管道和流应用程序。具有横向扩展，容错，wicked fast（变态快）等优点， 名次解释Topickafka将消息种子(feed)通过Topic进行分类。每一种消息的分类就是一种主题（topic）。 Producer发布消息的一方称之为消息的生产者(producer)。 Consumer订阅消息并处理消息的一方称之为消息的">
+<meta name="twitter:image" content="http://yoursite.com/2019/04/28/kafka-01/apimap.png">
 
 
 
@@ -343,8 +347,38 @@
       
 
       
-        <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>kafka中文教程：<a href="http://www.orchome.com/5" target="_blank" rel="noopener">http://www.orchome.com/5</a><br>kafka与activemq的区别：<a href="https://blog.csdn.net/caokun12321/article/details/81118310" target="_blank" rel="noopener">https://blog.csdn.net/caokun12321/article/details/81118310</a></p>
+        <h1 id="什么是kafka"><a href="#什么是kafka" class="headerlink" title="什么是kafka"></a>什么是kafka</h1><p>Apache kafka是消息中间件的一种。用于构建实时数据管道和流应用程序。具有横向扩展，容错，wicked fast（变态快）等优点，</p>
+<h1 id="名次解释"><a href="#名次解释" class="headerlink" title="名次解释"></a>名次解释</h1><h2 id="Topic"><a href="#Topic" class="headerlink" title="Topic"></a>Topic</h2><p>kafka将消息种子(feed)通过Topic进行分类。每一种消息的分类就是一种主题（topic）。</p>
+<h2 id="Producer"><a href="#Producer" class="headerlink" title="Producer"></a>Producer</h2><p>发布消息的一方称之为消息的生产者(producer)。</p>
+<h2 id="Consumer"><a href="#Consumer" class="headerlink" title="Consumer"></a>Consumer</h2><p>订阅消息并处理消息的一方称之为消息的消费者（consumer）。</p>
+<h2 id="Broker"><a href="#Broker" class="headerlink" title="Broker"></a>Broker</h2><p>已发布的消息存储在kafka集群中，集群中的每一个节点都是一个kafka服务的代理，消费者从这个服务代理中拉取消息并消费。这个服务代理就是broker。</p>
+<blockquote>
+<p>生产者消费者，生产者生产鸡蛋，消费者消费鸡蛋，生产者生产一个鸡蛋，消费者就消费一个鸡蛋，假设消费者消费鸡蛋的时候噎住了（系统宕机了），生产者还在生产鸡蛋，那新生产的鸡蛋就丢失了。再比如生产者很强劲（大交易量的情况），生产者1秒钟生产100个鸡蛋，消费者1秒钟只能吃50个鸡蛋，那要不了一会，消费者就吃不消了（消息堵塞，最终导致系统超时），消费者拒绝再吃了，”鸡蛋“又丢失了，这个时候我们放个篮子在它们中间，生产出来的鸡蛋都放到篮子里，消费者去篮子里拿鸡蛋，这样鸡蛋就不会丢失了，都在篮子里，而这个篮子就是”kafka“。<br>鸡蛋其实就是“数据流”，系统之间的交互都是通过“数据流”来传输的（就是tcp、http什么的），也称为报文，也叫“消息”。<br>消息队列满了，其实就是篮子满了，”鸡蛋“ 放不下了，那赶紧多放几个篮子，其实就是kafka的扩容。<br>各位现在知道kafka是干什么的了吧，它就是那个”篮子”。  </p>
+</blockquote>
+<h1 id="特征概要"><a href="#特征概要" class="headerlink" title="特征概要"></a>特征概要</h1><p>Kafka是一个分布式的流平台。一个流处理的平台所具备的3个关键能力：  </p>
+<blockquote>
+<p>1.消息的发布/订阅功能。类似消息中间件。<br>2.消息发生时能得到及时的处理。<br>3.对消息支持容错处理。</p>
+</blockquote>
+<p>Kafka作为一个流处理平台。具备如下特征：</p>
+<blockquote>
+<p>1.Kafka支持集群部署。<br>2.Kafka是以topic为类别对消息进行记录的。<br>3.每一条消息(record)是由key,value和ts(时间戳)组成的。  </p>
+</blockquote>
+<p>Kafka具有的4个核心API：</p>
+<ul>
+<li><strong>Producer API</strong>：发布一个/多个topic的消息。  </li>
+<li><strong>Costumer API</strong>：订阅一个/多个topic并处理消息。  </li>
+<li><strong>Sttreams API</strong>：流处理器，有效的将输入流转换成输出流。  </li>
+<li><strong>Connector API</strong>：用于构建多个生产者/消费者，并将多个topic连接到现有的应用程序。</li>
+</ul>
+<p><img src="/2019/04/28/kafka-01/apimap.png" alt="kafka核心api">  </p>
+<p><strong>kafka的客户端和服务端的连接是基于一条简单、高性能与编程语言无关的TCP协议信道来通信</strong></p>
+<h1 id="主题与日志（Topci-Log）"><a href="#主题与日志（Topci-Log）" class="headerlink" title="主题与日志（Topci/Log）"></a>主题与日志（Topci/Log）</h1><p><img src="/2019/04/28/kafka-01/topicpartition.png" alt="主题分区"> </p>
+<p>kafka中的主题有多个分区，每一个分区实际是一个顺序的消息队列（log），队列中消息都有一个序号，称之为偏移量(offset)。</p>
+<p><img src="/2019/04/28/kafka-01/log.png" alt="主题日志">  </p>
+<p>kafka集群中保存着所有已发布未过期的消息，对于消息，不论是否被消费，对于消费者而言只是保留了主题分区中的偏移量。当消息被消费的时候，偏移量会线性的增加，可以读取后续的消息。当然消费者也可以控制偏移量的值来获取想要的消息。比方说将偏移量改小用于获取一个更早的消息。</p>
+<h2 id="设计优势"><a href="#设计优势" class="headerlink" title="设计优势"></a>设计优势</h2><p>采用偏移量的方式来读取消息，避免了不同的消费者对同一个log的修改。消费者也可以更加自如的读取消息。<br>采用分区的方式是为了让主题可以同时处理更多的数据，也更方便支持后续的并发处理。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p><a href="http://www.orchome.com/3" target="_blank" rel="noopener">kafka中文教程</a><br>kafka与activemq的区别：<a href="https://blog.csdn.net/caokun12321/article/details/81118310" target="_blank" rel="noopener">https://blog.csdn.net/caokun12321/article/details/81118310</a></p>
 </blockquote>
 
       
@@ -536,7 +570,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">1.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是kafka"><span class="nav-number">1.</span> <span class="nav-text">什么是kafka</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#名次解释"><span class="nav-number">2.</span> <span class="nav-text">名次解释</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Topic"><span class="nav-number">2.1.</span> <span class="nav-text">Topic</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Producer"><span class="nav-number">2.2.</span> <span class="nav-text">Producer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Consumer"><span class="nav-number">2.3.</span> <span class="nav-text">Consumer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Broker"><span class="nav-number">2.4.</span> <span class="nav-text">Broker</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#特征概要"><span class="nav-number">3.</span> <span class="nav-text">特征概要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#主题与日志（Topci-Log）"><span class="nav-number">4.</span> <span class="nav-text">主题与日志（Topci/Log）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#设计优势"><span class="nav-number">4.1.</span> <span class="nav-text">设计优势</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
