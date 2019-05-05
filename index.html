@@ -368,13 +368,77 @@
 </ul>
 <p><img src="/2019/04/28/kafka-01/apimap.png" alt="kafka核心api">  </p>
 <p><strong>kafka的客户端和服务端的连接是基于一条简单、高性能与编程语言无关的TCP协议信道来通信</strong></p>
-<h1 id="主题与日志（Topci-Log）"><a href="#主题与日志（Topci-Log）" class="headerlink" title="主题与日志（Topci/Log）"></a>主题与日志（Topci/Log）</h1><p><img src="/2019/04/28/kafka-01/topicpartition.png" alt="主题分区"> </p>
-<p>kafka中的主题有多个分区，每一个分区实际是一个顺序的消息队列（log），队列中消息都有一个序号，称之为偏移量(offset)。</p>
-<p><img src="/2019/04/28/kafka-01/log.png" alt="主题日志">  </p>
-<p>kafka集群中保存着所有已发布未过期的消息，对于消息，不论是否被消费，对于消费者而言只是保留了主题分区中的偏移量。当消息被消费的时候，偏移量会线性的增加，可以读取后续的消息。当然消费者也可以控制偏移量的值来获取想要的消息。比方说将偏移量改小用于获取一个更早的消息。</p>
-<h2 id="设计优势"><a href="#设计优势" class="headerlink" title="设计优势"></a>设计优势</h2><p>采用偏移量的方式来读取消息，避免了不同的消费者对同一个log的修改。消费者也可以更加自如的读取消息。<br>采用分区的方式是为了让主题可以同时处理更多的数据，也更方便支持后续的并发处理。</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p><a href="http://www.orchome.com/3" target="_blank" rel="noopener">kafka中文教程</a><br>kafka与activemq的区别：<a href="https://blog.csdn.net/caokun12321/article/details/81118310" target="_blank" rel="noopener">https://blog.csdn.net/caokun12321/article/details/81118310</a></p>
+<h1 id="Log存储机制"><a href="#Log存储机制" class="headerlink" title="Log存储机制"></a>Log存储机制</h1><p>kafka中的message是通过topic进行分类的。每一个topic都是相互独立的，每个topic由一个或多个partition(分区)</p>
+<p><img src="/2019/04/28/kafka-01/topicpartition.png" alt="主题分区"></p>
+<p>partition是以文件的形式存储在文件系统中的。</p>
+<blockquote>
+<p>比如创建了一个名为page_visits的topic，其有5个partition，那么在Kafka的数据目录中(由配置文件中的log.dirs指定的)中就有这样5个目录: page_visits-0， page_visits-1，page_visits-2，page_visits-3，page_visits-4，其命名规则为[topic_name]-[partition_id]，里面存储的分别就是这5个partition的数据。</p>
+</blockquote>
+<h2 id="分区（Partition）"><a href="#分区（Partition）" class="headerlink" title="分区（Partition）"></a>分区（Partition）</h2><p>partition中存储着message，每一个message都有一个offset。是逻辑上的一个位置索引。<br>partition中的message由三部分组成：</p>
+<table>
+<thead>
+<tr>
+<th>部分</th>
+<th>数据类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>offset</td>
+<td>long</td>
+<td>表示message在partition中的存储位置的偏移量，逻辑意义的位置索引</td>
+</tr>
+<tr>
+<td>messagesize</td>
+<td>int32</td>
+<td>表示message的大小</td>
+</tr>
+<tr>
+<td>data</td>
+<td><a href="https://blog.csdn.net/jewes/article/details/42744855" target="_blank" rel="noopener">kafka通讯协议规定的数据格式</a></td>
+<td>消息内容</td>
+</tr>
+</tbody>
+</table>
+<p>所以partition就是message按照offset顺序存储的集合。即是数据文件的集合。<a href="https://blog.csdn.net/jewes/article/details/42970799#" target="_blank" rel="noopener">kafka是通过FileMessageSet来对数据文件进行操作和管理</a>。</p>
+<p><img src="/2019/04/28/kafka-01/filemessageset.png" alt="filemessageset"></p>
+<p>FileMessageSet提供了searchFile方法来从startPos位置开始查找指定的targetOffset位置的message。这个查找的逻辑是首先读取startPos位置的message，判断当前message的offset是否匹配targetOffset。如果大了，则往前读，小了再往后读。当然移动的过程中需要牵扯到messageSize。</p>
+<p>从这里可以看到，如果数据文件很大的时候数据的查找效率很低。<strong>为了提升数据文件查找效率,kafka将数据文件做了分段和数据索引。</strong></p>
+<h3 id="设计优势"><a href="#设计优势" class="headerlink" title="设计优势"></a>设计优势</h3><p>采用偏移量的方式来读取消息，避免了不同的消费者对同一个分区的修改。消费者也可以更加自如的读取消息。<br>采用分区的方式是为了让主题可以同时处理更多的数据，也更方便支持后续的并发处理。</p>
+<h3 id="分段-logsegment"><a href="#分段-logsegment" class="headerlink" title="分段(logsegment)"></a>分段(logsegment)</h3><p>kafka为了提神数据文件的查找性能。将数据文件进行了分段。</p>
+<blockquote>
+<p>比如有100条Message，它们的offset是从0到99。假设将数据文件分成5段，第一段为0-19，第二段为20-39，以此类推，每段放在一个单独的数据文件里面，数据文件以该段中最小的offset命名。这样在查找指定offset的Message的时候，用二分查找就可以定位到该Message在哪个段中。</p>
+</blockquote>
+<h3 id="数据索引"><a href="#数据索引" class="headerlink" title="数据索引"></a>数据索引</h3><p>对数据文件的分段，使得最终只需要在很小的数据文件中遍历查找offset对应的message了，但为了更进一步的提升查找的效率，kafka为分段后的数据文件创建了数据索引。索引与数据文件名一致，但是文件类型是index。<br>数据索引的每一条明细中包含两个部分：</p>
+<ul>
+<li>相对offset：数据分段之后，相对于当前段的offset。即message相对于分段后该段中最小的offset的相对值。比方说分段后一个段最小的offset=20,而message的offset=23，则相对offset=3。<strong>减少offset所占用的存储空间。</strong></li>
+<li>position：message在数据文件中的绝对位置。</li>
+</ul>
+<p>**kafka并没有为每一条message都创建数据索引，间隔一定字节的message创建索引，这样避免索引文件占用的空间过多，方便索引可以直接加载到内存中。但这也导致没有添加索引的message无法一次定位到。还是需要基于索引的前后范围区间内进行小范围的遍历。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><img src="/2019/04/28/kafka-01/partition.png" alt="partition"></p>
+<p>主题page_visits有5个partition。</p>
+<p><img src="/2019/04/28/kafka-01/logsegment.png" alt="logsegment"></p>
+<p>partition是分段的，其中某个partition中的logsegment和index如下。</p>
+<p><img src="/2019/04/28/kafka-01/search.png" alt="search"></p>
+<p>我们查找offset=6的message过程如下：</p>
+<ul>
+<li>首先我们要找到offset=6的message位于哪个logsegment中，我们通过二分查找可以知道位于000000000000000.log中。</li>
+<li>我们000000000000000.index索引中偏移量（最小offset+相对offset）最接近目标offset的明细，我们找到了6，9807。这样我们就获取到了offset=6的message绝对位置=9807。</li>
+<li>我们直接从000000000000000.log中从9807开始读就能读取到想要的message。</li>
+</ul>
+<h1 id="分布式"><a href="#分布式" class="headerlink" title="分布式"></a>分布式</h1><p>上面提到的kafka中topic的partition，是可以分布式的存储在多个kafka节点中的。这样每个节点只需要处理其分到的partition。当然还可以通过配置将partition的数据复制到别的节点用于容错。当一个partition有多个节点负责存储处理的时候，这些个节点之间会有leader和follower两个角色。leader负责处理这个分区所有的读写操作请求。而follower负责同步leader节点的数据。如果leader宕机，其余的follower节点可以立即重新推举新的leader节点。同时kafka中的一个节点可以是一个partition的leader，也可以是其他partition的follower。这样做避免所有的请求都只让一个节点处理，达到负载均衡的效果。</p>
+<h1 id="生产者-Producer"><a href="#生产者-Producer" class="headerlink" title="生产者(Producer)"></a>生产者(Producer)</h1><p>生产者负责将message发布到topic的partition上。最简单的是从partition列表中依次轮流的发布。也可以根据某种权重算法来选择。</p>
+<h1 id="消费者-Consumer"><a href="#消费者-Consumer" class="headerlink" title="消费者(Consumer)"></a>消费者(Consumer)</h1><p>消费模型有队列和订阅两种模型。</p>
+<ul>
+<li>队列：多个消费者从服务器中获取消息，但一条message只能被一个消费者消费。</li>
+<li>发布/订阅：一条消息被广播到多个消费者。收到消息的消费者都可以处理消息。</li>
+</ul>
+<p>但是在kafka中，专门抽象了一个消费组的模型。当多个消费者在同一个消费组内时，发布在topic的消息只会发给消费组中一个消费者，即队列模式。当多个消费者都位于不同的消费组时，消息会广播到不同的消费组，即发布/订阅模型。</p>
+<p><img src="/2019/04/28/kafka-01/consumergroup.png" alt="消费者组"></p>
+<p>生产者发布message时会指定topic中的partition。kafka能够保证生产者发布的消息能够按照发布的顺序顺序加入到topic的partition中。并且这个消息只会被消费组中的一个消费者消费。即保证了partition层面的消息能够顺序的发布，同一个topic的partition中的消息能够顺序处理。</p>
+<h1 id="Kafka的保证"><a href="#Kafka的保证" class="headerlink" title="Kafka的保证"></a>Kafka的保证</h1><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p><a href="http://www.orchome.com/3" target="_blank" rel="noopener">kafka中文教程</a><br><a href="https://blog.csdn.net/caokun12321/article/details/81118310" target="_blank" rel="noopener">kafka与activemq的区别</a><br><a href="https://blog.csdn.net/jewes/article/details/42970799#" target="_blank" rel="noopener">kafka的log存储解析</a><br><a href="https://blog.csdn.net/jewes/article/details/42744855" target="_blank" rel="noopener">kafka通讯协议</a>   </p>
 </blockquote>
 
           
