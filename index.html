@@ -456,7 +456,7 @@
 </table>
 <h2 id="消费组"><a href="#消费组" class="headerlink" title="消费组"></a>消费组</h2><p>但是在kafka中，专门抽象了一个消费组的模型。当多个消费者在同一个消费组内时，发布在topic的消息只会发给消费组中一个消费者，即队列模式。当多个消费者都位于不同的消费组时，消息会广播到不同的消费组，即发布/订阅模型。</p>
 <p><img src="/2019/04/28/kafka-01/consumergroup.png" alt="消费者组"></p>
-<p>生产者发布message时会指定topic中的partition。kafka能够保证生产者发布的消息能够按照发布的顺序顺序加入到topic的partition中。并且这个消息只会被消费组中的一个消费者消费。即保证了partition层面的消息能够顺序的发布，同一个topic的partition中的消息能够顺序处理。</p>
+<p>生产者发布message时会指定topic中的partition。kafka能够保证生产者发布的消息能够按照发布的顺序顺序加入到topic的partition中。并且这个消息只会被消费组中的一个消费者消费。即保证了partition层面的消息能够顺序的发布，同一个topic的partition中的消息能够顺序处理。<br><strong>一个消费组的消费者数量不要多过partition的数量，避免有空闲的消费者</strong></p>
 <h1 id="Kafka的保证"><a href="#Kafka的保证" class="headerlink" title="Kafka的保证"></a>Kafka的保证</h1><ul>
 <li>生产者将message发布到topic的partition中，kafka能够保证message会按照生产者发布的顺序加入到partition中。同时，消费者也会按照顺序收到message。即producer顺序发布的消息m1和m2。则m1的offset会比m2小。</li>
 <li>如果topic配置了复制因子N，则N-1个节点宕机也不会丢失已提交的message。上面提到的消费组，kafka能够保证同一个partition中的消息被一个消费组中的一个消费者消费。故能够保证partition内的消息能够被顺序消费。</li>
