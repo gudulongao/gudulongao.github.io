@@ -430,14 +430,40 @@
 <h1 id="分布式"><a href="#分布式" class="headerlink" title="分布式"></a>分布式</h1><p>上面提到的kafka中topic的partition，是可以分布式的存储在多个kafka节点中的。这样每个节点只需要处理其分到的partition。当然还可以通过配置将partition的数据复制到别的节点用于容错。当一个partition有多个节点负责存储处理的时候，这些个节点之间会有leader和follower两个角色。leader负责处理这个分区所有的读写操作请求。而follower负责同步leader节点的数据。如果leader宕机，其余的follower节点可以立即重新推举新的leader节点。同时kafka中的一个节点可以是一个partition的leader，也可以是其他partition的follower。这样做避免所有的请求都只让一个节点处理，达到负载均衡的效果。</p>
 <h1 id="生产者-Producer"><a href="#生产者-Producer" class="headerlink" title="生产者(Producer)"></a>生产者(Producer)</h1><p>生产者负责将message发布到topic的partition上。最简单的是从partition列表中依次轮流的发布。也可以根据某种权重算法来选择。</p>
 <h1 id="消费者-Consumer"><a href="#消费者-Consumer" class="headerlink" title="消费者(Consumer)"></a>消费者(Consumer)</h1><p>消费模型有队列和订阅两种模型。</p>
-<ul>
-<li>队列：多个消费者从服务器中获取消息，但一条message只能被一个消费者消费。</li>
-<li>发布/订阅：一条消息被广播到多个消费者。收到消息的消费者都可以处理消息。</li>
-</ul>
-<p>但是在kafka中，专门抽象了一个消费组的模型。当多个消费者在同一个消费组内时，发布在topic的消息只会发给消费组中一个消费者，即队列模式。当多个消费者都位于不同的消费组时，消息会广播到不同的消费组，即发布/订阅模型。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>队列</td>
+<td>多个消费者共享一个topic，但是一条message只能被一个消费者消费</td>
+<td>可以通过增加消费者来提升消息处理的能力，提升吞吐量</td>
+<td>一旦消费了消息的消费者进程宕机，消息就彻底丢失</td>
+</tr>
+<tr>
+<td>发布/订阅</td>
+<td>多个消费者共享一个topic，一条消息会广播给多个消费者，收到消息的消费者都可以处理消息</td>
+<td>消息可以同时被多个消费者处理</td>
+<td>由于会广播消息，所以无法收缩消息的处理</td>
+</tr>
+</tbody>
+</table>
+<h2 id="消费组"><a href="#消费组" class="headerlink" title="消费组"></a>消费组</h2><p>但是在kafka中，专门抽象了一个消费组的模型。当多个消费者在同一个消费组内时，发布在topic的消息只会发给消费组中一个消费者，即队列模式。当多个消费者都位于不同的消费组时，消息会广播到不同的消费组，即发布/订阅模型。</p>
 <p><img src="/2019/04/28/kafka-01/consumergroup.png" alt="消费者组"></p>
 <p>生产者发布message时会指定topic中的partition。kafka能够保证生产者发布的消息能够按照发布的顺序顺序加入到topic的partition中。并且这个消息只会被消费组中的一个消费者消费。即保证了partition层面的消息能够顺序的发布，同一个topic的partition中的消息能够顺序处理。</p>
-<h1 id="Kafka的保证"><a href="#Kafka的保证" class="headerlink" title="Kafka的保证"></a>Kafka的保证</h1><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<h1 id="Kafka的保证"><a href="#Kafka的保证" class="headerlink" title="Kafka的保证"></a>Kafka的保证</h1><ul>
+<li>生产者将message发布到topic的partition中，kafka能够保证message会按照生产者发布的顺序加入到partition中。同时，消费者也会按照顺序收到message。即producer顺序发布的消息m1和m2。则m1的offset会比m2小。</li>
+<li>如果topic配置了复制因子N，则N-1个节点宕机也不会丢失已提交的message。上面提到的消费组，kafka能够保证同一个partition中的消息被一个消费组中的一个消费者消费。故能够保证partition内的消息能够被顺序消费。</li>
+</ul>
+<h1 id="存储系统"><a href="#存储系统" class="headerlink" title="存储系统"></a>存储系统</h1><p>kafka本身也是一个高性能，低延迟的分布式文件系统。<br>写入到kafka的数据将写入到磁盘并复制到集群中保证数据的容错性。</p>
+<h1 id="流处理"><a href="#流处理" class="headerlink" title="流处理"></a>流处理</h1><p>kafka能够支持实时的流处理。可以持续的获取输入topic的数据，加工处理后写入输出topic。通过stream API可以构建聚合计算的复杂应用程序。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
 <p><a href="http://www.orchome.com/3" target="_blank" rel="noopener">kafka中文教程</a><br><a href="https://blog.csdn.net/caokun12321/article/details/81118310" target="_blank" rel="noopener">kafka与activemq的区别</a><br><a href="https://blog.csdn.net/jewes/article/details/42970799#" target="_blank" rel="noopener">kafka的log存储解析</a><br><a href="https://blog.csdn.net/jewes/article/details/42744855" target="_blank" rel="noopener">kafka通讯协议</a>   </p>
 </blockquote>
 
