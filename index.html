@@ -239,6 +239,161 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/06/kafka-02/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/06/kafka-02/" itemprop="url">kafka 安装和启动</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-06T22:14:32+08:00">
+                2019-05-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/KafKa/" itemprop="url" rel="index">
+                    <span itemprop="name">KafKa</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/05/06/kafka-02/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/05/06/kafka-02/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p><a href="http://www.orchome.com/6" target="_blank" rel="noopener">kafka安装和启动</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/28/kafka-01/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -463,8 +618,19 @@
 </ul>
 <h1 id="存储系统"><a href="#存储系统" class="headerlink" title="存储系统"></a>存储系统</h1><p>kafka本身也是一个高性能，低延迟的分布式文件系统。<br>写入到kafka的数据将写入到磁盘并复制到集群中保证数据的容错性。</p>
 <h1 id="流处理"><a href="#流处理" class="headerlink" title="流处理"></a>流处理</h1><p>kafka能够支持实时的流处理。可以持续的获取输入topic的数据，加工处理后写入输出topic。通过stream API可以构建聚合计算的复杂应用程序。</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p><a href="http://www.orchome.com/3" target="_blank" rel="noopener">kafka中文教程</a><br><a href="https://blog.csdn.net/caokun12321/article/details/81118310" target="_blank" rel="noopener">kafka与activemq的区别</a><br><a href="https://blog.csdn.net/jewes/article/details/42970799#" target="_blank" rel="noopener">kafka的log存储解析</a><br><a href="https://blog.csdn.net/jewes/article/details/42744855" target="_blank" rel="noopener">kafka通讯协议</a>   </p>
+<h1 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h1><h2 id="消息中间件"><a href="#消息中间件" class="headerlink" title="消息中间件"></a>消息中间件</h2><p>kafka作为消息中间件可以接耦数据的生产和消费场景，与传统的消息中间件拥有更高的吞吐量，分区，副本和故障转移更利于大数据量的消息处理。</p>
+<h2 id="网站活动追踪"><a href="#网站活动追踪" class="headerlink" title="网站活动追踪"></a>网站活动追踪</h2><blockquote>
+<p>kafka原本的使用场景：用户的活动追踪，网站的活动（网页游览，搜索或其他用户的操作信息）发布到不同的话题中心，这些消息可实时处理，实时监测，也可加载到Hadoop或离线处理数据仓库。<br>每个用户页面视图都会产生非常高的量。</p>
+</blockquote>
+<h2 id="监控"><a href="#监控" class="headerlink" title="监控"></a>监控</h2><p>可以将分布式应用的数据进行统计汇总聚合。</p>
+<h2 id="日志聚合"><a href="#日志聚合" class="headerlink" title="日志聚合"></a>日志聚合</h2><blockquote>
+<p>许多人使用Kafka作为日志聚合解决方案的替代品。日志聚合通常从服务器中收集物理日志文件，并将它们放在中央位置（可能是文件服务器或HDFS）进行处理。Kafka抽象出文件的细节，并将日志或事件数据更清晰地抽象为消息流。这允许更低延迟的处理并更容易支持多个数据源和分布式数据消费。</p>
+</blockquote>
+<h2 id="流处理-1"><a href="#流处理-1" class="headerlink" title="流处理"></a>流处理</h2><h2 id="事件采集"><a href="#事件采集" class="headerlink" title="事件采集"></a>事件采集</h2><blockquote>
+<p>事件采集是一种应用程序的设计风格，其中状态的变化根据时间的顺序记录下来，kafka支持这种非常大的存储日志数据的场景。</p>
+</blockquote>
+<h2 id="提交日志"><a href="#提交日志" class="headerlink" title="提交日志"></a>提交日志</h2><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p><a href="http://www.orchome.com/3" target="_blank" rel="noopener">kafka中文教程</a><br><a href="https://blog.csdn.net/caokun12321/article/details/81118310" target="_blank" rel="noopener">kafka与activemq的区别</a><br><a href="https://blog.csdn.net/jewes/article/details/42970799#" target="_blank" rel="noopener">kafka的log存储解析</a><br><a href="https://blog.csdn.net/jewes/article/details/42744855" target="_blank" rel="noopener">kafka通讯协议</a><br><a href="http://www.orchome.com/295" target="_blank" rel="noopener">kafka适用场景</a></p>
 </blockquote>
 
           
@@ -1862,161 +2028,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/25/redis-4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/25/redis-4/" itemprop="url">redis 实现分布式锁</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-25T19:57:04+08:00">
-                2019-03-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/redis/" itemprop="url" rel="index">
-                    <span itemprop="name">redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/03/25/redis-4/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/03/25/redis-4/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>学习博客：<a href="https://www.cnblogs.com/liuyang0/p/6744076.html" target="_blank" rel="noopener">https://www.cnblogs.com/liuyang0/p/6744076.html</a>  </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2071,7 +2082,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">49</span>
+                  <span class="site-state-item-count">50</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
