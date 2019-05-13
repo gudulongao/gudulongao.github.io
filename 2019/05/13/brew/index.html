@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="小磊砸的布劳格">
 <meta property="og:description" content="简介homebrew，号称是MacOS缺失的包管理器。可以方便的安装/卸载/更新 软件包。可以方便快捷的搭建开放环境。是程序员必备的工具。 安装执行如下命令以安装brew 1/usr/bin/ruby -e &amp;quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&amp;quot; 基础操作">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-13T13:15:35.518Z">
+<meta property="og:updated_time" content="2019-05-13T13:37:39.137Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="brew 使用说明">
 <meta name="twitter:description" content="简介homebrew，号称是MacOS缺失的包管理器。可以方便的安装/卸载/更新 软件包。可以方便快捷的搭建开放环境。是程序员必备的工具。 安装执行如下命令以安装brew 1/usr/bin/ruby -e &amp;quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&amp;quot; 基础操作">
@@ -350,6 +350,7 @@
 <h1 id="服务管理"><a href="#服务管理" class="headerlink" title="服务管理"></a>服务管理</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 查看运行的服务</span><br><span class="line">brew services list</span><br><span class="line"># 启动服务</span><br><span class="line">brew services start target</span><br><span class="line"># 停止服务</span><br><span class="line">brew services stop target</span><br><span class="line"># 重启服务</span><br><span class="line">brew service restart target</span><br></pre></td></tr></table></figure>
 <h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>由brew负责管理的软件，默认路径：</p>
 <ul>
+<li>软件安装目录:/usr/local/Cellar</li>
 <li>配置文件:/usr/local/etc</li>
 <li>日志文件:/usr/local/var/log  </li>
 </ul>
