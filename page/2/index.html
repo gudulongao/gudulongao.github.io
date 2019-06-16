@@ -239,6 +239,292 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/28/kafka-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/28/kafka-01/" itemprop="url">KafKa 入门</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-28T14:51:22+08:00">
+                2019-04-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/KafKa/" itemprop="url" rel="index">
+                    <span itemprop="name">KafKa</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/04/28/kafka-01/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/04/28/kafka-01/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="什么是kafka"><a href="#什么是kafka" class="headerlink" title="什么是kafka"></a>什么是kafka</h1><p>Apache kafka是消息中间件的一种。用于构建实时数据管道和流应用程序。具有横向扩展，容错，wicked fast（变态快）等优点，</p>
+<h1 id="名次解释"><a href="#名次解释" class="headerlink" title="名次解释"></a>名次解释</h1><h2 id="Topic"><a href="#Topic" class="headerlink" title="Topic"></a>Topic</h2><p>kafka将消息种子(feed)通过Topic进行分类。每一种消息的分类就是一种主题（topic）。</p>
+<h2 id="Producer"><a href="#Producer" class="headerlink" title="Producer"></a>Producer</h2><p>发布消息的一方称之为消息的生产者(producer)。</p>
+<h2 id="Consumer"><a href="#Consumer" class="headerlink" title="Consumer"></a>Consumer</h2><p>订阅消息并处理消息的一方称之为消息的消费者（consumer）。</p>
+<h2 id="Broker"><a href="#Broker" class="headerlink" title="Broker"></a>Broker</h2><p>已发布的消息存储在kafka集群中，集群中的每一个节点都是一个kafka服务的代理，消费者从这个服务代理中拉取消息并消费。这个服务代理就是broker。</p>
+<blockquote>
+<p>生产者消费者，生产者生产鸡蛋，消费者消费鸡蛋，生产者生产一个鸡蛋，消费者就消费一个鸡蛋，假设消费者消费鸡蛋的时候噎住了（系统宕机了），生产者还在生产鸡蛋，那新生产的鸡蛋就丢失了。再比如生产者很强劲（大交易量的情况），生产者1秒钟生产100个鸡蛋，消费者1秒钟只能吃50个鸡蛋，那要不了一会，消费者就吃不消了（消息堵塞，最终导致系统超时），消费者拒绝再吃了，”鸡蛋“又丢失了，这个时候我们放个篮子在它们中间，生产出来的鸡蛋都放到篮子里，消费者去篮子里拿鸡蛋，这样鸡蛋就不会丢失了，都在篮子里，而这个篮子就是”kafka“。<br>鸡蛋其实就是“数据流”，系统之间的交互都是通过“数据流”来传输的（就是tcp、http什么的），也称为报文，也叫“消息”。<br>消息队列满了，其实就是篮子满了，”鸡蛋“ 放不下了，那赶紧多放几个篮子，其实就是kafka的扩容。<br>各位现在知道kafka是干什么的了吧，它就是那个”篮子”。  </p>
+</blockquote>
+<h1 id="特征概要"><a href="#特征概要" class="headerlink" title="特征概要"></a>特征概要</h1><p>Kafka是一个分布式的流平台。一个流处理的平台所具备的3个关键能力：  </p>
+<blockquote>
+<p>1.消息的发布/订阅功能。类似消息中间件。<br>2.消息发生时能得到及时的处理。<br>3.对消息支持容错处理。</p>
+</blockquote>
+<p>Kafka作为一个流处理平台。具备如下特征：</p>
+<blockquote>
+<p>1.Kafka支持集群部署。<br>2.Kafka是以topic为类别对消息进行记录的。<br>3.每一条消息(record)是由key,value和ts(时间戳)组成的。  </p>
+</blockquote>
+<p>Kafka具有的4个核心API：</p>
+<ul>
+<li><strong>Producer API</strong>：发布一个/多个topic的消息。  </li>
+<li><strong>Costumer API</strong>：订阅一个/多个topic并处理消息。  </li>
+<li><strong>Sttreams API</strong>：流处理器，有效的将输入流转换成输出流。  </li>
+<li><strong>Connector API</strong>：用于构建多个生产者/消费者，并将多个topic连接到现有的应用程序。</li>
+</ul>
+<p><img src="/2019/04/28/kafka-01/apimap.png" alt="kafka核心api">  </p>
+<p><strong>kafka的客户端和服务端的连接是基于一条简单、高性能与编程语言无关的TCP协议信道来通信</strong></p>
+<h1 id="Log存储机制"><a href="#Log存储机制" class="headerlink" title="Log存储机制"></a>Log存储机制</h1><p>kafka中的message是通过topic进行分类的。每一个topic都是相互独立的，每个topic由一个或多个partition(分区)</p>
+<p><img src="/2019/04/28/kafka-01/topicpartition.png" alt="主题分区"></p>
+<p>partition是以文件的形式存储在文件系统中的。</p>
+<blockquote>
+<p>比如创建了一个名为page_visits的topic，其有5个partition，那么在Kafka的数据目录中(由配置文件中的log.dirs指定的)中就有这样5个目录: page_visits-0， page_visits-1，page_visits-2，page_visits-3，page_visits-4，其命名规则为[topic_name]-[partition_id]，里面存储的分别就是这5个partition的数据。</p>
+</blockquote>
+<h2 id="分区（Partition）"><a href="#分区（Partition）" class="headerlink" title="分区（Partition）"></a>分区（Partition）</h2><p>partition中存储着message，每一个message都有一个offset。是逻辑上的一个位置索引。<br>partition中的message由三部分组成：</p>
+<table>
+<thead>
+<tr>
+<th>部分</th>
+<th>数据类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>offset</td>
+<td>long</td>
+<td>表示message在partition中的存储位置的偏移量，逻辑意义的位置索引</td>
+</tr>
+<tr>
+<td>messagesize</td>
+<td>int32</td>
+<td>表示message的大小</td>
+</tr>
+<tr>
+<td>data</td>
+<td><a href="https://blog.csdn.net/jewes/article/details/42744855" target="_blank" rel="noopener">kafka通讯协议规定的数据格式</a></td>
+<td>消息内容</td>
+</tr>
+</tbody>
+</table>
+<p>所以partition就是message按照offset顺序存储的集合。即是数据文件的集合。<a href="https://blog.csdn.net/jewes/article/details/42970799#" target="_blank" rel="noopener">kafka是通过FileMessageSet来对数据文件进行操作和管理</a>。</p>
+<p><img src="/2019/04/28/kafka-01/filemessageset.png" alt="filemessageset"></p>
+<p>FileMessageSet提供了searchFile方法来从startPos位置开始查找指定的targetOffset位置的message。这个查找的逻辑是首先读取startPos位置的message，判断当前message的offset是否匹配targetOffset。如果大了，则往前读，小了再往后读。当然移动的过程中需要牵扯到messageSize。</p>
+<p>从这里可以看到，如果数据文件很大的时候数据的查找效率很低。<strong>为了提升数据文件查找效率,kafka将数据文件做了分段和数据索引。</strong></p>
+<h3 id="设计优势"><a href="#设计优势" class="headerlink" title="设计优势"></a>设计优势</h3><p>采用偏移量的方式来读取消息，避免了不同的消费者对同一个分区的修改。消费者也可以更加自如的读取消息。<br>采用分区的方式是为了让主题可以同时处理更多的数据，也更方便支持后续的并发处理。</p>
+<h3 id="分段-logsegment"><a href="#分段-logsegment" class="headerlink" title="分段(logsegment)"></a>分段(logsegment)</h3><p>kafka为了提神数据文件的查找性能。将数据文件进行了分段。</p>
+<blockquote>
+<p>比如有100条Message，它们的offset是从0到99。假设将数据文件分成5段，第一段为0-19，第二段为20-39，以此类推，每段放在一个单独的数据文件里面，数据文件以该段中最小的offset命名。这样在查找指定offset的Message的时候，用二分查找就可以定位到该Message在哪个段中。</p>
+</blockquote>
+<h3 id="数据索引"><a href="#数据索引" class="headerlink" title="数据索引"></a>数据索引</h3><p>对数据文件的分段，使得最终只需要在很小的数据文件中遍历查找offset对应的message了，但为了更进一步的提升查找的效率，kafka为分段后的数据文件创建了数据索引。索引与数据文件名一致，但是文件类型是index。<br>数据索引的每一条明细中包含两个部分：</p>
+<ul>
+<li>相对offset：数据分段之后，相对于当前段的offset。即message相对于分段后该段中最小的offset的相对值。比方说分段后一个段最小的offset=20,而message的offset=23，则相对offset=3。<strong>减少offset所占用的存储空间。</strong></li>
+<li>position：message在数据文件中的绝对位置。</li>
+</ul>
+<p>**kafka并没有为每一条message都创建数据索引，间隔一定字节的message创建索引，这样避免索引文件占用的空间过多，方便索引可以直接加载到内存中。但这也导致没有添加索引的message无法一次定位到。还是需要基于索引的前后范围区间内进行小范围的遍历。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><img src="/2019/04/28/kafka-01/partition.png" alt="partition"></p>
+<p>主题page_visits有5个partition。</p>
+<p><img src="/2019/04/28/kafka-01/logsegment.png" alt="logsegment"></p>
+<p>partition是分段的，其中某个partition中的logsegment和index如下。</p>
+<p><img src="/2019/04/28/kafka-01/search.png" alt="search"></p>
+<p>我们查找offset=6的message过程如下：</p>
+<ul>
+<li>首先我们要找到offset=6的message位于哪个logsegment中，我们通过二分查找可以知道位于000000000000000.log中。</li>
+<li>我们000000000000000.index索引中偏移量（最小offset+相对offset）最接近目标offset的明细，我们找到了6，9807。这样我们就获取到了offset=6的message绝对位置=9807。</li>
+<li>我们直接从000000000000000.log中从9807开始读就能读取到想要的message。</li>
+</ul>
+<h1 id="分布式"><a href="#分布式" class="headerlink" title="分布式"></a>分布式</h1><p>上面提到的kafka中topic的partition，是可以分布式的存储在多个kafka节点中的。这样每个节点只需要处理其分到的partition。当然还可以通过配置将partition的数据复制到别的节点用于容错。当一个partition有多个节点负责存储处理的时候，这些个节点之间会有leader和follower两个角色。leader负责处理这个分区所有的读写操作请求。而follower负责同步leader节点的数据。如果leader宕机，其余的follower节点可以立即重新推举新的leader节点。同时kafka中的一个节点可以是一个partition的leader，也可以是其他partition的follower。这样做避免所有的请求都只让一个节点处理，达到负载均衡的效果。</p>
+<h1 id="生产者-Producer"><a href="#生产者-Producer" class="headerlink" title="生产者(Producer)"></a>生产者(Producer)</h1><p>生产者负责将message发布到topic的partition上。最简单的是从partition列表中依次轮流的发布。也可以根据某种权重算法来选择。</p>
+<h1 id="消费者-Consumer"><a href="#消费者-Consumer" class="headerlink" title="消费者(Consumer)"></a>消费者(Consumer)</h1><p>消费模型有队列和订阅两种模型。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>队列</td>
+<td>多个消费者共享一个topic，但是一条message只能被一个消费者消费</td>
+<td>可以通过增加消费者来提升消息处理的能力，提升吞吐量</td>
+<td>一旦消费了消息的消费者进程宕机，消息就彻底丢失</td>
+</tr>
+<tr>
+<td>发布/订阅</td>
+<td>多个消费者共享一个topic，一条消息会广播给多个消费者，收到消息的消费者都可以处理消息</td>
+<td>消息可以同时被多个消费者处理</td>
+<td>由于会广播消息，所以无法收缩消息的处理</td>
+</tr>
+</tbody>
+</table>
+<h2 id="消费组"><a href="#消费组" class="headerlink" title="消费组"></a>消费组</h2><p>但是在kafka中，专门抽象了一个消费组的模型。当多个消费者在同一个消费组内时，发布在topic的消息只会发给消费组中一个消费者，即队列模式。当多个消费者都位于不同的消费组时，消息会广播到不同的消费组，即发布/订阅模型。</p>
+<p><img src="/2019/04/28/kafka-01/consumergroup.png" alt="消费者组"></p>
+<p>生产者发布message时会指定topic中的partition。kafka能够保证生产者发布的消息能够按照发布的顺序顺序加入到topic的partition中。并且这个消息只会被消费组中的一个消费者消费。即保证了partition层面的消息能够顺序的发布，同一个topic的partition中的消息能够顺序处理。<br><strong>一个消费组的消费者数量不要多过partition的数量，避免有空闲的消费者</strong></p>
+<h1 id="Kafka的保证"><a href="#Kafka的保证" class="headerlink" title="Kafka的保证"></a>Kafka的保证</h1><ul>
+<li>生产者将message发布到topic的partition中，kafka能够保证message会按照生产者发布的顺序加入到partition中。同时，消费者也会按照顺序收到message。即producer顺序发布的消息m1和m2。则m1的offset会比m2小。</li>
+<li>如果topic配置了复制因子N，则N-1个节点宕机也不会丢失已提交的message。上面提到的消费组，kafka能够保证同一个partition中的消息被一个消费组中的一个消费者消费。故能够保证partition内的消息能够被顺序消费。</li>
+</ul>
+<h1 id="存储系统"><a href="#存储系统" class="headerlink" title="存储系统"></a>存储系统</h1><p>kafka本身也是一个高性能，低延迟的分布式文件系统。<br>写入到kafka的数据将写入到磁盘并复制到集群中保证数据的容错性。</p>
+<h1 id="流处理"><a href="#流处理" class="headerlink" title="流处理"></a>流处理</h1><p>kafka能够支持实时的流处理。可以持续的获取输入topic的数据，加工处理后写入输出topic。通过stream API可以构建聚合计算的复杂应用程序。</p>
+<h1 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h1><h2 id="消息中间件"><a href="#消息中间件" class="headerlink" title="消息中间件"></a>消息中间件</h2><p>kafka作为消息中间件可以接耦数据的生产和消费场景，与传统的消息中间件拥有更高的吞吐量，分区，副本和故障转移更利于大数据量的消息处理。</p>
+<h2 id="网站活动追踪"><a href="#网站活动追踪" class="headerlink" title="网站活动追踪"></a>网站活动追踪</h2><blockquote>
+<p>kafka原本的使用场景：用户的活动追踪，网站的活动（网页游览，搜索或其他用户的操作信息）发布到不同的话题中心，这些消息可实时处理，实时监测，也可加载到Hadoop或离线处理数据仓库。<br>每个用户页面视图都会产生非常高的量。</p>
+</blockquote>
+<h2 id="监控"><a href="#监控" class="headerlink" title="监控"></a>监控</h2><p>可以将分布式应用的数据进行统计汇总聚合。</p>
+<h2 id="日志聚合"><a href="#日志聚合" class="headerlink" title="日志聚合"></a>日志聚合</h2><blockquote>
+<p>许多人使用Kafka作为日志聚合解决方案的替代品。日志聚合通常从服务器中收集物理日志文件，并将它们放在中央位置（可能是文件服务器或HDFS）进行处理。Kafka抽象出文件的细节，并将日志或事件数据更清晰地抽象为消息流。这允许更低延迟的处理并更容易支持多个数据源和分布式数据消费。</p>
+</blockquote>
+<h2 id="流处理-1"><a href="#流处理-1" class="headerlink" title="流处理"></a>流处理</h2><h2 id="事件采集"><a href="#事件采集" class="headerlink" title="事件采集"></a>事件采集</h2><blockquote>
+<p>事件采集是一种应用程序的设计风格，其中状态的变化根据时间的顺序记录下来，kafka支持这种非常大的存储日志数据的场景。</p>
+</blockquote>
+<h2 id="提交日志"><a href="#提交日志" class="headerlink" title="提交日志"></a>提交日志</h2><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p><a href="http://www.orchome.com/3" target="_blank" rel="noopener">kafka中文教程</a><br><a href="https://www.cnblogs.com/qingyunzong/category/1212387.html" target="_blank" rel="noopener">kafka教程</a><br><a href="https://blog.csdn.net/caokun12321/article/details/81118310" target="_blank" rel="noopener">kafka与activemq的区别</a><br><a href="https://blog.csdn.net/jewes/article/details/42970799#" target="_blank" rel="noopener">kafka的log存储解析</a><br><a href="https://blog.csdn.net/jewes/article/details/42744855" target="_blank" rel="noopener">kafka通讯协议</a><br><a href="http://www.orchome.com/295" target="_blank" rel="noopener">kafka适用场景</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/23/distrubutesystem-01/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1742,213 +2028,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/21/zookeeper-6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/21/zookeeper-6/" itemprop="url">zookeeper 权限管理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-21T22:16:49+08:00">
-                2019-03-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ZooKeeper/" itemprop="url" rel="index">
-                    <span itemprop="name">ZooKeeper</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/03/21/zookeeper-6/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/03/21/zookeeper-6/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>ZK的权限管理主要是依靠节点的<strong>ACL(access control list)</strong>来实现的。<br>节点的ACL由权限验证模式(Scheme)、权限(permission)和用户三部分组成。  </p>
-<h1 id="Permission"><a href="#Permission" class="headerlink" title="Permission"></a>Permission</h1><ul>
-<li>C(create)：创建子节点</li>
-<li>D(delete)：删除子节点</li>
-<li>R(read)：访问节点/子节点</li>
-<li>W(write)：更新节点数据</li>
-<li>A(admin)：管理员</li>
-</ul>
-<h1 id="Scheme"><a href="#Scheme" class="headerlink" title="Scheme"></a>Scheme</h1><table>
-<thead>
-<tr>
-<th>类型</th>
-<th>说明</th>
-<th>写法</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>world</td>
-<td>不进行权限验证</td>
-<td>world:anyone:[permission]</td>
-</tr>
-<tr>
-<td>ip</td>
-<td>指定的ip才可以使用节点</td>
-<td>ip:[ip]:[permission]</td>
-</tr>
-<tr>
-<td>auth</td>
-<td>指定的用户才可以使用节点</td>
-<td>auth:user:passwd:[permission]</td>
-</tr>
-<tr>
-<td><strong>digest</strong></td>
-<td><strong>指定的用户才可以使用节点，但是密码需要输入密文</strong></td>
-<td>digest:user:BASE64(SHA1(passwd)):[permission]</td>
-</tr>
-</tbody>
-</table>
-<p><strong>setAcl /path auth:lee:lee:cdrwa 与 setAcl /path digest:lee:BASE64(SHA1(password)):cdrwa是等价的，在通过 addauth digest lee:lee 后都能操作指定节点的权限。在实际情况中，digest要更为常用一些。</strong></p>
-<h1 id="操作指令"><a href="#操作指令" class="headerlink" title="操作指令"></a>操作指令</h1><ul>
-<li>getAcl 获取节点的acl</li>
-<li>setAcl 给节点设置acl</li>
-<li>addauth 进行用户认证</li>
-</ul>
-<h1 id="超级管理员"><a href="#超级管理员" class="headerlink" title="超级管理员"></a>超级管理员</h1><p>在zkServer.sh中的nohup后面追加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;-Dzookeeper.DigestAuthenticationProvider.superDigest=user1:HYGa7IZRm2PUBFiFFu8xY2pPP/s=&quot;</span><br></pre></td></tr></table></figure>
-<p>这句话是指定用户：user1，密码123456(配置语句中的是BASE64(SHA1(passwd))处理过后的密文)</p>
-<p>如图所示：</p>
-<p><img src="/2019/03/21/zookeeper-6/zookeeper-7/sueradminconf.png" alt="超级管理员配置">  </p>
-<p>配置后需要重启生效，超级管理员可以不受权限控制。当然如果不想要超级管理员在zkServer.sh中去除配置即可。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 进行超级管理员登陆认证</span><br><span class="line">addauth digest user1:123456</span><br></pre></td></tr></table></figure>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>权限管理：<a href="https://blog.csdn.net/gangsijay888/article/details/82426475" target="_blank" rel="noopener">https://blog.csdn.net/gangsijay888/article/details/82426475</a><br>指令操作：<a href="https://blog.51cto.com/zero01/2106801" target="_blank" rel="noopener">https://blog.51cto.com/zero01/2106801</a>  </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2003,7 +2082,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2014,7 +2093,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2025,7 +2104,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">41</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>

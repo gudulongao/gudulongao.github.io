@@ -239,6 +239,191 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/14/redblacktree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/14/redblacktree/" itemprop="url">红黑树</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-14T23:02:25+08:00">
+                2018-11-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/11/14/redblacktree/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/11/14/redblacktree/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h1><p>二叉搜索树，能够提供较好的查找，插入以及删除的效率。但是当插入的数据都是有序的，这会导致整个二叉搜索树退化为链表。当查找数据的时候由原来的二分查找变成了循环遍历。这种效率降低是因为树不够平衡导致的。红黑树就是对所有的节点增加红黑两种颜色，同时节点直接保持一种颜色的准则，在插入，删除等操作的同时也要维持这个准则，这样红黑树能够在处理排序数据时也能保证树的平衡，能够提供较好的查找效率。</p>
+<h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><ul>
+<li>所有节点要么是红色，要么是黑色</li>
+<li>根节点必须是黑色</li>
+<li>所有叶子节点的路径中不能有连续的红色节点（红色节点的子节点必须是黑色，反之不一定）</li>
+<li>所有叶子节点的路径中黑色个数相同（黑色高度一致）</li>
+</ul>
+<h1 id="左旋"><a href="#左旋" class="headerlink" title="左旋"></a>左旋</h1><p><img src="/2018/11/14/redblacktree/leftretato.png" alt="左旋"></p>
+<p>如图所示。左旋会将当前节点的右节点作为后继节点，当前节点作为后继节点的左子树。</p>
+<p><img src="/2018/11/14/redblacktree/redblacktree-1.png" alt="红黑树-1"></p>
+<h1 id="右旋"><a href="#右旋" class="headerlink" title="右旋"></a>右旋</h1><p><img src="/2018/11/14/redblacktree/rightretato.png" alt="右旋"></p>
+<p>如图所示，右旋会将当亲节点的左子节点为后继节点，当前节点作为后继节点的右子树。</p>
+<p><img src="/2018/11/14/redblacktree/redblacktree-2.png" alt="红黑树-2"></p>
+<h1 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h1><p>插入节点逻辑比较复杂。因为要保证插入新节点后整个红黑树还能够保持红黑树的定义。<br>我们默认新插入的节点都是红色的，因为新节点是红色的代价最小。当节点是黑色是一定会使得黑色高度发生变化。而当新节点是红色，当父节点是黑色，则不违背定义，但如果父节点是红色，我们可以通过很小的代价来修正。</p>
+<h2 id="修正"><a href="#修正" class="headerlink" title="修正"></a>修正</h2><p>当插入的新节点（红色）后，可能会违背红黑树的定义，这个时候需要进行修正。</p>
+<h3 id="父节点为黑色"><a href="#父节点为黑色" class="headerlink" title="父节点为黑色"></a>父节点为黑色</h3><p><img src="/2018/11/14/redblacktree/insert-1.png" alt="插入-1"></p>
+<p>这种场景不需要做修正。并不违反红黑树的定义。</p>
+<h3 id="父节点为红色，叔叔节点为红色"><a href="#父节点为红色，叔叔节点为红色" class="headerlink" title="父节点为红色，叔叔节点为红色"></a>父节点为红色，叔叔节点为红色</h3><p><img src="/2018/11/14/redblacktree/insert-2.png" alt="插入-2"></p>
+<p>这种场景只需要将父节点，叔叔节点都变成黑色，将祖父节点变为红色，再以祖父节点为基准开始修正（递归）。</p>
+<h3 id="父节点为红色，叔叔节点为黑色"><a href="#父节点为红色，叔叔节点为黑色" class="headerlink" title="父节点为红色，叔叔节点为黑色"></a>父节点为红色，叔叔节点为黑色</h3><p>当父节点为红色，叔叔节点为黑色时，需要按如下四种场景来进行修正。</p>
+<h4 id="父节点是左子节点，新节点为左子节点"><a href="#父节点是左子节点，新节点为左子节点" class="headerlink" title="父节点是左子节点，新节点为左子节点"></a>父节点是左子节点，新节点为左子节点</h4><p><img src="/2018/11/14/redblacktree/insert-3.png" alt="插入-3"></p>
+<p>这种场景，需要先将父节点变为黑色，将祖父节点变为红色。再以祖父节点为基准进行右旋。</p>
+<h4 id="父节点是右子节点，新节点是右子节点"><a href="#父节点是右子节点，新节点是右子节点" class="headerlink" title="父节点是右子节点，新节点是右子节点"></a>父节点是右子节点，新节点是右子节点</h4><p><img src="/2018/11/14/redblacktree/insert-4.png" alt="插入-4"></p>
+<p>这种场景，需要先将父节点变为黑色，将祖父节点变为红色，再以祖父节点为基准进行左旋。</p>
+<h4 id="父节点是左子节点，新节点是右子节点"><a href="#父节点是左子节点，新节点是右子节点" class="headerlink" title="父节点是左子节点，新节点是右子节点"></a>父节点是左子节点，新节点是右子节点</h4><p><img src="/2018/11/14/redblacktree/insert-5.png" alt="插入-5"></p>
+<p>这种场景，需要先以父节点为基准进行左旋。这个时候整个树会变成父节点时左子节点，新节点也是左子节点的场景，只是新节点是父节点的父节点。<br>这个时候同理，将新节点变为黑色，将祖父节点变为红色，再以祖父节点为基准节点进行右旋。</p>
+<h4 id="父节点是右子节点，新节点是左子节点"><a href="#父节点是右子节点，新节点是左子节点" class="headerlink" title="父节点是右子节点，新节点是左子节点"></a>父节点是右子节点，新节点是左子节点</h4><p><img src="/2018/11/14/redblacktree/insert-6.png" alt="插入-6"></p>
+<p>这种场景，需要先以父节点为基准进行右旋。这个时候整个树就会变成父节点是右子节点，新节点也是右子节点的场景。只是新节点是父节点的父节点。<br>这个时候同理，将新节点变为黑色，将祖父节点变为红色，再以祖父节点为基准节点进行左旋。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">    * 新增后修正</span><br><span class="line">    *</span><br><span class="line">    * @param currNode 当前节点</span><br><span class="line">    */</span><br><span class="line">   private void insertFix(RedBlackNode&lt;T&gt; currNode) throws Exception &#123;</span><br><span class="line">       NodeType currNodeType = currNode.nodeType();</span><br><span class="line">       //获取父级节点</span><br><span class="line">       RedBlackNode&lt;T&gt; parent = currNode.getParent();</span><br><span class="line">       if (parent == null) &#123;</span><br><span class="line">           return;</span><br><span class="line">       &#125;</span><br><span class="line">       //获取祖父节点</span><br><span class="line">       RedBlackNode&lt;T&gt; grandPa = parent.getParent();</span><br><span class="line">       if (grandPa == null) &#123;</span><br><span class="line">           return;</span><br><span class="line">       &#125;</span><br><span class="line">       //父节点的颜色</span><br><span class="line">       ColourType parentColour = parent.getColour();</span><br><span class="line">       //父节点是黑色不做处理</span><br><span class="line">       if (ColourType.BLACK == parentColour) &#123;</span><br><span class="line">           return;</span><br><span class="line">       &#125;</span><br><span class="line">       //获取父级节点的节点类型</span><br><span class="line">       NodeType parentNodeType = parent.nodeType();</span><br><span class="line">       //获取叔叔节点</span><br><span class="line">       RedBlackNode&lt;T&gt; uncale = getUncaleNode(currNode);</span><br><span class="line">       ColourType uncaleColour = uncale == null ? null : uncale.getColour();</span><br><span class="line">       //父节点是红色，叔叔节点是红色,直接变更父节点与叔叔节点的颜色，修改祖父节点的颜色</span><br><span class="line">       if (ColourType.RED == uncaleColour) &#123;</span><br><span class="line">           parent.setColour(ColourType.BLACK);</span><br><span class="line">           uncale.setColour(ColourType.BLACK);</span><br><span class="line">           grandPa.setColour(ColourType.RED);</span><br><span class="line">           //以祖父节点为基准开始修正</span><br><span class="line">           insertFix(grandPa);</span><br><span class="line">       &#125;</span><br><span class="line">       //父节点是红色，叔叔节点是黑色</span><br><span class="line">       else &#123;</span><br><span class="line">           if (NodeType.LEFT == parentNodeType) &#123;</span><br><span class="line">               if (NodeType.RIGHT == currNodeType) &#123;</span><br><span class="line">                   leftRotate(parent);</span><br><span class="line">                   parent = currNode;</span><br><span class="line">               &#125;</span><br><span class="line">               parent.setColour(ColourType.BLACK);</span><br><span class="line">               grandPa.setColour(ColourType.RED);</span><br><span class="line">               rightRotate(grandPa);</span><br><span class="line">           &#125; else &#123;</span><br><span class="line">               if (NodeType.LEFT == currNodeType) &#123;</span><br><span class="line">                   rightRotate(parent);</span><br><span class="line">                   parent = currNode;</span><br><span class="line">               &#125;</span><br><span class="line">               parent.setColour(ColourType.BLACK);</span><br><span class="line">               grandPa.setColour(ColourType.RED);</span><br><span class="line">               leftRotate(grandPa);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>#参考资料</p>
+<blockquote>
+<p>红黑树图片：<a href="https://blog.csdn.net/qq_34173549/article/details/79636764" target="_blank" rel="noopener">https://blog.csdn.net/qq_34173549/article/details/79636764</a><br>红黑树总结：<a href="https://m.imooc.com/article/247142" target="_blank" rel="noopener">https://m.imooc.com/article/247142</a><br>红黑树代码：<a href="https://www.cnblogs.com/skywang12345/p/3624343.html" target="_blank" rel="noopener">https://www.cnblogs.com/skywang12345/p/3624343.html</a><br>红黑树代码：<a href="https://www.cnblogs.com/ysocean/p/8004211.html" target="_blank" rel="noopener">https://www.cnblogs.com/ysocean/p/8004211.html</a><br>红黑树的删除：<a href="https://blog.csdn.net/qq_37169817/article/details/78880110" target="_blank" rel="noopener">https://blog.csdn.net/qq_37169817/article/details/78880110</a><br>红黑树的删除：<a href="https://blog.csdn.net/ChinaLeeSunnyBoy/article/details/79525456" target="_blank" rel="noopener">https://blog.csdn.net/ChinaLeeSunnyBoy/article/details/79525456</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/07/binarytree/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2026,196 +2211,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/13/net-modle/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/13/net-modle/" itemprop="url">网络分层模型</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-13T10:31:18+08:00">
-                2018-09-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/网络/" itemprop="url" rel="index">
-                    <span itemprop="name">网络</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/13/net-modle/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/09/13/net-modle/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="OSI七层模型"><a href="#OSI七层模型" class="headerlink" title="OSI七层模型"></a>OSI七层模型</h1><p><strong>OSI(Open System Internet)开放式系统互联网</strong>。  </p>
-<p><img src="/2018/09/13/net-modle/osi.png" alt="包装生成线程安全的hashmap"></p>
-<h2 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h2><p>面向实际的应用程序，向应用程序提供网路服务。<br>常用的网络层协议有：  </p>
-<ul>
-<li>HTTP 超文本传输协议  </li>
-<li>FTP 文件传输协议  </li>
-<li>TFTP 简单文件传输协议  </li>
-<li>SMTP 简单邮件传输协议  </li>
-<li>NTP 网络时间协议  </li>
-<li>POP3 邮件协议第三版</li>
-<li>IMAP4 网络信息访问协议第四版</li>
-</ul>
-<blockquote>
-<p>两国之间可以通过书信，大使互访，邮件等多种方式来沟通互信，每种方式都有着各自的规矩。目前采用书信来举例。<br>故应用层中提供了多种网络服务的协议，每种协议都有着不同的处理方式。</p>
-</blockquote>
-<h2 id="表示层（编码，加密，压缩）"><a href="#表示层（编码，加密，压缩）" class="headerlink" title="表示层（编码，加密，压缩）"></a>表示层（编码，加密，压缩）</h2><blockquote>
-<p>当两国文字不同语言不通时，这种互通需要翻译将本国语言书写的内容翻译成标准语言，方便对方能正常解读。同时为了安全，还会进行加密处理。</p>
-</blockquote>
-<p>故应用层的数据编码和转换（加/解密和数据压缩），确保应用层的数据能够被别的系统应用层能够正常识别。  </p>
-<h2 id="会话层"><a href="#会话层" class="headerlink" title="会话层"></a>会话层</h2><blockquote>
-<p>外交部拥有对方国家邮箱的地址，当外交部收到来自翻译后的国书后，外交部将建立本次会话的记录。外交部将国书中增加对方国家的地址信息。准备将国书进行投递。当收到对方的回信，则此次会话结束。</p>
-</blockquote>
-<p>故会话层是负责建立，管理表示层之间的通信会话。</p>
-<h2 id="传输层（端到端）"><a href="#传输层（端到端）" class="headerlink" title="传输层（端到端）"></a>传输层（端到端）</h2><blockquote>
-<p>邮递员负责邮件的收发工作。  </p>
-</blockquote>
-<p>传输层负责了<strong>端到端的链接（端口号）</strong>，为会话层提供了可靠透明的数据传输服务。包括差错处理和流量控制。<br>包含协议：<strong>TCP/UDP</strong>。</p>
-<h2 id="网络层（IP协议层）"><a href="#网络层（IP协议层）" class="headerlink" title="网络层（IP协议层）"></a>网络层（IP协议层）</h2><blockquote>
-<p>负责传输邮件的是复杂的快递网络。覆盖各地的集散中心，从端到端的传递需要经过集散中心。</p>
-</blockquote>
-<p>负责通过IP寻址来建立端到端的链接，选择合适的路由和交换节点，将数据正确无误的传输到目的端。</p>
-<h2 id="数据链路成"><a href="#数据链路成" class="headerlink" title="数据链路成"></a>数据链路成</h2><p>将数据组合成帧，以<strong>MAC地址</strong>来访问，并提供差错检测。</p>
-<h1 id="物理层"><a href="#物理层" class="headerlink" title="物理层"></a>物理层</h1><p>以物理介质来传输比特流。</p>
-<h1 id="TCP-IP五层模型"><a href="#TCP-IP五层模型" class="headerlink" title="TCP/IP五层模型"></a>TCP/IP五层模型</h1><p><img src="/2018/09/13/net-modle/osi-tcp-ip.png" alt="包装生成线程安全的hashmap"></p>
-<h1 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h1><p><img src="/2018/09/13/net-modle/grid.png" alt="包装生成线程安全的hashmap"><br><img src="/2018/09/13/net-modle/xieyi.png" alt="包装生成线程安全的hashmap"><br><img src="/2018/09/13/net-modle/xieyi-2.png" alt="包装生成线程安全的hashmap"></p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p><a href="https://www.cnblogs.com/qishui/p/5428938.html" target="_blank" rel="noopener">https://www.cnblogs.com/qishui/p/5428938.html</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2270,7 +2265,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2281,7 +2276,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2292,7 +2287,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">41</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>

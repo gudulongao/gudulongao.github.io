@@ -239,6 +239,173 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/05/java-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/05/java-1/" itemprop="url">PO/BO/VO/POJO/DAO</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-05T16:06:34+08:00">
+                2018-09-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/05/java-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/05/java-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="PO-VO-BO-DAO-简介"><a href="#PO-VO-BO-DAO-简介" class="headerlink" title="PO/VO/BO/DAO 简介"></a>PO/VO/BO/DAO 简介</h1><h2 id="PO（Presistant-Object）"><a href="#PO（Presistant-Object）" class="headerlink" title="PO（Presistant Object）"></a>PO（Presistant Object）</h2><p>持久化对象，数据库中数据的抽象，即对应表中的一条记录。</p>
+<h2 id="BO-Business-Object"><a href="#BO-Business-Object" class="headerlink" title="BO(Business Object)"></a>BO(Business Object)</h2><p>业务对象，可以包含多个其他对象。</p>
+<blockquote>
+<p>一份简历，包含教育经历，工作经历等，教育经历对应一个PO，工作经历对应一个PO，这样简历BO就由这些PO组成。</p>
+</blockquote>
+<h2 id="DTO-Data-Transfer-Object"><a href="#DTO-Data-Transfer-Object" class="headerlink" title="DTO(Data Transfer Object)"></a>DTO(Data Transfer Object)</h2><p>数据传输对象，用于前端与后端进行数据交互。由于涉及到网络传输，故DTO会根据展示层的要求来简化数据来减少网络流量。</p>
+<blockquote>
+<p>比如一个表有20个字段，对应的PO也会有20个字段，界面展现只需要展现5个字段，故只需要DTO包含界面展现的5个字段进行传输即可，相比较传输真个PO，这样减少了网络流量，也不会暴露整个表结构。</p>
+</blockquote>
+<h2 id="VO-Value-Object"><a href="#VO-Value-Object" class="headerlink" title="VO(Value Object)"></a>VO(Value Object)</h2><p>值对象，常用于前端组件进行数据展现的时候所使用的数据结构。其来自于DTO。</p>
+<h2 id="POJO-plain-ordinary-java-object"><a href="#POJO-plain-ordinary-java-object" class="headerlink" title="POJO(plain ordinary java object)"></a>POJO(plain ordinary java object)</h2><p>简单的java对象。普通的javabean。</p>
+<h1 id="区别与应用"><a href="#区别与应用" class="headerlink" title="区别与应用"></a>区别与应用</h1><h2 id="VO与DTO"><a href="#VO与DTO" class="headerlink" title="VO与DTO"></a>VO与DTO</h2><p>当展现层的需求只有一种的时候，可以使用DTO来替代VO，在设计层面，DTO只是用来明确服务端接收的请求的数据或者响应请求的数据，而界面展现的时候，特别是当展现的需求多种多样的时候，会基于同一种DTO而衍生出不同的VO。</p>
+<blockquote>
+<p>比方说性别，DTO中sex是男女，如果普通的展现需求，可以直接利用DTO中的sex属性来展现。但如果有个性化定制的时候，比方说需要展现成帅哥/美女，这种时候基于同样的DTO就需要根据展现的需求来衍生出性别为帅哥/美女的VO。</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/05/collect-hashmap-hashtable/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1739,7 +1906,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1750,7 +1917,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1761,7 +1928,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">41</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
