@@ -460,6 +460,1180 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/12/logback/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/12/logback/" itemprop="url">日志系统</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-12T20:54:30+08:00">
+                2019-06-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/日志系统/" itemprop="url" rel="index">
+                    <span itemprop="name">日志系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/12/logback/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/06/12/logback/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Log4J"><a href="#Log4J" class="headerlink" title="Log4J"></a>Log4J</h1><ul>
+<li>Log4J(Log for Java)  </li>
+<li>支持properties和xml两种方式配置</li>
+</ul>
+<h2 id="日志级别"><a href="#日志级别" class="headerlink" title="日志级别"></a>日志级别</h2><p><strong>TRACE&lt;DEBUG&lt;INFO&lt;WARN&lt;ERROR&lt;FATAL&lt;OFF</strong> </p>
+<h2 id="配置样例"><a href="#配置样例" class="headerlink" title="配置样例"></a>配置样例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE log4j:configuration PUBLIC &quot;-//LOGGER&quot; &quot;http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd&quot;&gt;</span><br><span class="line">&lt;log4j:configuration&gt;    </span><br><span class="line">　　&lt;!--an appender is an output destination, such as the console or a file; names of appenders are arbitrarily chosen--&gt;    </span><br><span class="line">　　&lt;appender name=&quot;stdout&quot; class=&quot;org.apache.log4j.ConsoleAppender&quot;&gt;</span><br><span class="line">　　　　&lt;layout class=&quot;org.apache.log4j.PatternLayout&quot;&gt;</span><br><span class="line">　　　　　　&lt;param name=&quot;ConversionPattern&quot; value=&quot;%d&#123;ABSOLUTE&#125; %5p %c&#123;1&#125;:%L - %m%n&quot; /&gt;</span><br><span class="line">　　　　&lt;/layout&gt;</span><br><span class="line">　　&lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">　　&lt;!--loggers of category &apos;org.springframework&apos; will only log messages of level &quot;info&quot; or higher; if you retrieve Loggers by using the class name (e.g. Logger.getLogger(AClass.class)) and if AClass is part of the org.springframework package, it will belong to this category--&gt;    </span><br><span class="line">　　&lt;logger name=&quot;org.springframework&quot;&gt;        </span><br><span class="line">　　　　&lt;level value=&quot;info&quot;/&gt;    </span><br><span class="line">　　&lt;/logger&gt;    </span><br><span class="line"></span><br><span class="line">　　&lt;!--everything of spring was set to &quot;info&quot; but for class PropertyEditorRegistrySupport we want &quot;debug&quot; logging--&gt;    </span><br><span class="line">　　&lt;logger name=&quot;org.springframework.beans.PropertyEditorRegistrySupport&quot;&gt;        </span><br><span class="line">　　　　&lt;level value=&quot;debug&quot;/&gt;    </span><br><span class="line">　　&lt;/logger&gt;     </span><br><span class="line">　　</span><br><span class="line">　　&lt;root&gt;    </span><br><span class="line">　　&lt;!--all log messages of level &quot;debug&quot; or higher will be logged, unless defined otherwise all log messages will be logged to the appender &quot;stdout&quot;, unless defined otherwise--&gt;        </span><br><span class="line">　　　　&lt;level value=&quot;debug&quot; /&gt;        </span><br><span class="line">　　　　&lt;appender-ref ref=&quot;stdout&quot; /&gt;    </span><br><span class="line">　　&lt;/root&gt;</span><br><span class="line"></span><br><span class="line">&lt;/log4j:configuration&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="SLF4J"><a href="#SLF4J" class="headerlink" title="SLF4J"></a>SLF4J</h1><p>SLF4J(Simple Logging Fcade Java)简单的日志门面。<br>SLF4J是提供了一系列的日志接口，但不提供实现，不同的日志框架来提供具体的实现，这样允许用户在最终部署系统时可以随意切换自己的日志框架。<br>实际SLF4J提供核心的日志API以及LoggerFactory。在使用日志的时候，不需要代码或者配置文件显示的指定日志框架，之需要通过SLF4J的api来进行日志记录，最终日志的格式，级别，输出方式等都是由具体的日志框架的配置来决定。因此可以灵活的切换日志框架而代码无感。</p>
+<h1 id="Logback"><a href="#Logback" class="headerlink" title="Logback"></a>Logback</h1><p>一个可靠、通用、快速而灵活的日志系统。<strong>性能优于log4j（大约快10倍，并更少的内存消耗）</strong><br>由logback-core、logback-classic:log4j、和logback-access三个模块组成。</p>
+<ul>
+<li>logback-core:核心代码模块</li>
+<li>logback-classis:log4j:log4j改良版，同时实现了self4j的接口。支持通过sefl4j的api来使用日志系统。</li>
+<li>logback-access:访问模块并与Servlet容器集成提供通过http来访问日志的功能。</li>
+</ul>
+<h2 id="配置文件的加载顺序"><a href="#配置文件的加载顺序" class="headerlink" title="配置文件的加载顺序"></a>配置文件的加载顺序</h2><ol>
+<li>java启动参数logback.configurationFile 指定的配置文件(如java -Dlogback.configurationFile=/path/to/mylogback.xml Test) </li>
+<li>在classpath下查找logback.groovy文件</li>
+<li>在calsspath下查找logback-test.xml文件</li>
+<li>在classpath下查找logback.xml文件</li>
+<li>如果是JDK6+，会调用ServiceLoader查找com.qos.logback.classic.spi.Configurator接口的第一个实现类</li>
+<li>默认使用ch.qos.logback.classic.BasicConfigurator在控制台输出日志</li>
+</ol>
+<p>logback会按照上面的顺序依次查找配置文件，找到了就不会再往下走（ContextInitializer#autoConfig()）。</p>
+<h2 id="日志级别-1"><a href="#日志级别-1" class="headerlink" title="日志级别"></a>日志级别</h2><p><strong>trace&lt;debug&lt;info&lt;warn&lt;error</strong></p>
+<h2 id="配置样例-1"><a href="#配置样例-1" class="headerlink" title="配置样例"></a>配置样例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;configuration debug=&quot;true&quot; scan=&quot;true&quot; scanPeriod=&quot;1 seconds&quot;&gt;</span><br><span class="line">	&lt;!-- 定义日志上下文的名称，可以通过%contextName%来使用 --&gt;</span><br><span class="line">    &lt;contextName&gt;logback&lt;/contextName&gt;</span><br><span class="line">    &lt;!--定义参数,后面可以通过$&#123;app.name&#125;使用--&gt;</span><br><span class="line">    &lt;property name=&quot;app.name&quot; value=&quot;logback_test&quot;/&gt;</span><br><span class="line">    &lt;!--ConsoleAppender 用于在屏幕上输出日志--&gt;</span><br><span class="line">    &lt;appender name=&quot;stdout&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;</span><br><span class="line">        &lt;!--定义了一个过滤器,在LEVEL之下的日志输出不会被打印出来--&gt;</span><br><span class="line">        &lt;!--这里定义了DEBUG，也就是控制台不会输出比DEBUG级别小的日志--&gt;</span><br><span class="line">        &lt;filter class=&quot;ch.qos.logback.classic.filter.ThresholdFilter&quot;&gt;</span><br><span class="line">            &lt;level&gt;DEBUG&lt;/level&gt;</span><br><span class="line">        &lt;/filter&gt;</span><br><span class="line">        &lt;!-- encoder 默认配置为PatternLayoutEncoder --&gt;</span><br><span class="line">        &lt;!--定义控制台输出格式--&gt;</span><br><span class="line">        &lt;encoder&gt;</span><br><span class="line">            &lt;pattern&gt;%d [%thread] %-5level %logger&#123;36&#125; [%file : %line] - %msg%n&lt;/pattern&gt;</span><br><span class="line">        &lt;/encoder&gt;</span><br><span class="line">    &lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">    &lt;appender name=&quot;file&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;</span><br><span class="line">        &lt;!--定义日志输出的路径--&gt;</span><br><span class="line">        &lt;!--这里的scheduler.manager.server.home 没有在上面的配置中设定，所以会使用java启动时配置的值--&gt;</span><br><span class="line">        &lt;!--比如通过 java -Dscheduler.manager.server.home=/path/to XXXX 配置该属性--&gt;</span><br><span class="line">        &lt;file&gt;$&#123;scheduler.manager.server.home&#125;/logs/$&#123;app.name&#125;.log&lt;/file&gt;</span><br><span class="line">        &lt;!--定义日志滚动的策略--&gt;</span><br><span class="line">        &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;</span><br><span class="line">            &lt;!--定义文件滚动时的文件名的格式--&gt;</span><br><span class="line">            &lt;fileNamePattern&gt;$&#123;scheduler.manager.server.home&#125;/logs/$&#123;app.name&#125;.%d&#123;yyyy-MM-dd.HH&#125;.log.gz</span><br><span class="line">            &lt;/fileNamePattern&gt;</span><br><span class="line">            &lt;!--60天的时间周期，日志量最大20GB--&gt;</span><br><span class="line">            &lt;maxHistory&gt;60&lt;/maxHistory&gt;</span><br><span class="line">            &lt;!-- 该属性在 1.1.6版本后 才开始支持--&gt;</span><br><span class="line">            &lt;totalSizeCap&gt;20GB&lt;/totalSizeCap&gt;</span><br><span class="line">        &lt;/rollingPolicy&gt;</span><br><span class="line">        &lt;triggeringPolicy class=&quot;ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy&quot;&gt;</span><br><span class="line">            &lt;!--每个日志文件最大100MB--&gt;</span><br><span class="line">            &lt;maxFileSize&gt;100MB&lt;/maxFileSize&gt;</span><br><span class="line">        &lt;/triggeringPolicy&gt;</span><br><span class="line">        &lt;!--定义输出格式--&gt;</span><br><span class="line">        &lt;encoder&gt;</span><br><span class="line">            &lt;pattern&gt;%d [%thread] %-5level %logger&#123;36&#125; [%file : %line] - %msg%n&lt;/pattern&gt;</span><br><span class="line">        &lt;/encoder&gt;</span><br><span class="line">    &lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--root是默认的logger 这里设定输出级别是debug--&gt;</span><br><span class="line">    &lt;root level=&quot;trace&quot;&gt;</span><br><span class="line">        &lt;!--定义了两个appender，日志会通过往这两个appender里面写--&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;stdout&quot;/&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;file&quot;/&gt;</span><br><span class="line">    &lt;/root&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--对于类路径以 com.example.logback 开头的Logger,输出级别设置为warn,并且只输出到控制台--&gt;</span><br><span class="line">    &lt;!--这个logger没有指定appender，它会继承root节点中定义的那些appender--&gt;</span><br><span class="line">    &lt;logger name=&quot;com.example.logback&quot; level=&quot;warn&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--通过 LoggerFactory.getLogger(&quot;mytest&quot;) 可以获取到这个logger--&gt;</span><br><span class="line">    &lt;!--由于这个logger自动继承了root的appender，root中已经有stdout的appender了，自己这边又引入了stdout的appender--&gt;</span><br><span class="line">    &lt;!--如果没有设置 additivity=&quot;false&quot; ,就会导致一条日志在控制台输出两次的情况--&gt;</span><br><span class="line">    &lt;!--additivity表示要不要使用rootLogger配置的appender进行输出--&gt;</span><br><span class="line">    &lt;logger name=&quot;mytest&quot; level=&quot;info&quot; additivity=&quot;false&quot;&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;stdout&quot;/&gt;</span><br><span class="line">    &lt;/logger&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;!--由于设置了 additivity=&quot;false&quot; ，所以输出时不会使用rootLogger的appender--&gt;</span><br><span class="line">    &lt;!--但是这个logger本身又没有配置appender，所以使用这个logger输出日志的话就不会输出到任何地方--&gt;</span><br><span class="line">    &lt;logger name=&quot;mytest2&quot; level=&quot;info&quot; additivity=&quot;false&quot;/&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="configuration"><a href="#configuration" class="headerlink" title="configuration"></a>configuration</h3><table>
+<thead>
+<tr>
+<th>属性</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>debug</td>
+<td>false</td>
+<td>是否打印logback本身内部的日志</td>
+</tr>
+<tr>
+<td>scan</td>
+<td>true</td>
+<td>配置变化，是否重新加载</td>
+</tr>
+<tr>
+<td>scanPeriod</td>
+<td>1 seconds</td>
+<td>检查配置变化的时间间隔,默认单位是毫秒</td>
+</tr>
+</tbody>
+</table>
+<h3 id="contextName"><a href="#contextName" class="headerlink" title="contextName"></a>contextName</h3><p>定义日志上下文的名称，通过%contextName%来作为变量使用</p>
+<h3 id="property"><a href="#property" class="headerlink" title="property"></a>property</h3><p>定义上下文中可用的属性，通过key,value来定义，通过${key}来使用</p>
+<h3 id="appender"><a href="#appender" class="headerlink" title="appender"></a>appender</h3><p>定义日志输出组件。常用的属性是name和class</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>无</td>
+<td>日志输出组件的名称</td>
+</tr>
+<tr>
+<td>class</td>
+<td>无</td>
+<td>日志输出组件的具体实现类，常用的有ConsoleAppender、FileAppender、RollingFileAppender</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>ConsoleAppender:控制台输出组件实现类</li>
+<li>FileAppender:文件输出组件实现类</li>
+<li>RollingFileAppender:结合滚动策略滚动生成日志文件的实现类</li>
+</ul>
+<p>appender可以配置filter，样例配置中配置了一个ch.qos.logback.classic.filter.ThresholdFilter来过滤日志。<br>RollingFileAppender可以配置滚动策略（rollingPolicy），</p>
+<h3 id="root"><a href="#root" class="headerlink" title="root"></a>root</h3><p>定义默认的日志记录器，即针对LoggerFactory.getLogger(XXX)获取的所有Logger如果没有特殊的logger匹配，则默认就是root定义的logger。常用的属性有level</p>
+<ul>
+<li>level 定义默认的日志记录器的日志级别</li>
+</ul>
+<p>root下面可以通过appender-ref指定默认日志记录器对应的日志输出组件。样例中默认日志记录器采用控制台和滚动文件两种日志输出组件。</p>
+<h3 id="logger"><a href="#logger" class="headerlink" title="logger"></a>logger</h3><p>定义日志记录器,常用的属性有name，level和additivity。</p>
+<ul>
+<li>name 日志记录器的名称，即LoggerFactory.getLogger(name)来获取logger。通过name来匹配。同时LoggerFactory.getLogger(XXX.class)会自动转换成字符串packagepath+’.’+className+’.’+class。当然这里的name可以配置部分包路径，这样包下的所有都会匹配该logger。</li>
+<li>level 日志记录器的日志级别</li>
+<li>additivity 是否采用root下使用的日志输出组件(appender-ref)，日志最大容量(totalSizeCap)和日志文件最大含量(maxFileSize)，<strong>maxFileSize和totalSizeCap属性在1.1.6版本后才支持。</strong></li>
+</ul>
+<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>可以看<a href="https://www.jianshu.com/p/04065d8cb2a9" target="_blank" rel="noopener">简书</a></p>
+<h2 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h2><ul>
+<li>性能较log4j 快10倍，并且更少的内存消耗。</li>
+<li>logback实现了self4j接口，可以为以后日志系统的切换提供便捷</li>
+<li>logback除了支持xml配置还支持groovy格式的配置（更加直观简洁）</li>
+<li>logback能够检测到配置文件的修改并实时加载更新配置（热部署）</li>
+<li>logback能自动从I/O异常中恢复，无需重启服务</li>
+<li>logback可以配置上限值，自动删除旧的日志</li>
+<li>logback能够自动压缩日志</li>
+<li>logback配置中支持if，then,else的条件语句，这样在dev，product等不同的环境下避免日志配置的重复</li>
+<li>logback的stack trace包含更多的信息</li>
+<li>logback提供更多的filter</li>
+<li>logback能够结合Servlet容器提供http-access日志</li>
+</ul>
+<h1 id="Log4j2"><a href="#Log4j2" class="headerlink" title="Log4j2"></a>Log4j2</h1><ul>
+<li>log4j 改良版</li>
+<li>插件式结构，支持自行拓展自己的appender,logger,filter。</li>
+<li>支持json配置文件</li>
+<li>配置文件中可以直接引用属性，还可以直接替代或传值到组件</li>
+</ul>
+<h2 id="配置样例-2"><a href="#配置样例-2" class="headerlink" title="配置样例"></a>配置样例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE xml&gt;</span><br><span class="line">&lt;!-- Log4j 2.x 配置文件。每30秒自动检查和应用配置文件的更新； --&gt;</span><br><span class="line">&lt;Configuration status=&quot;warn&quot; monitorInterval=&quot;30&quot; strict=&quot;true&quot; schema=&quot;Log4J-V2.2.xsd&quot;&gt;</span><br><span class="line">    &lt;Appenders&gt;</span><br><span class="line">           &lt;!-- 输出到控制台 --&gt;</span><br><span class="line">           &lt;Console name=&quot;Console&quot; target=&quot;SYSTEM_OUT&quot;&gt;</span><br><span class="line">               &lt;!-- 需要记录的级别 --&gt;</span><br><span class="line">               &lt;!-- &lt;ThresholdFilter level=&quot;debug&quot; onMatch=&quot;ACCEPT&quot; onMismatch=&quot;DENY&quot; /&gt; --&gt;</span><br><span class="line">               &lt;PatternLayout pattern=&quot;%d&#123;yyyy-MM-dd HH:mm:ss,SSS&#125;:%4p %t (%F:%L) - %m%n&quot; /&gt;</span><br><span class="line">          &lt;/Console&gt;</span><br><span class="line"></span><br><span class="line">          &lt;!-- 输出到文件，按天或者超过80MB分割 --&gt;</span><br><span class="line">          &lt;RollingFile name=&quot;RollingFile&quot; fileName=&quot;../logs/xjj.log&quot;    filePattern=&quot;../logs/$$&#123;date:yyyy-MM&#125;/xjj-%d&#123;yyyy-MM-dd&#125;-%i.log.gz&quot;&gt;</span><br><span class="line">               &lt;!-- 需要记录的级别 --&gt;</span><br><span class="line">               &lt;!-- &lt;ThresholdFilter level=&quot;info&quot; onMatch=&quot;ACCEPT&quot; onMismatch=&quot;DENY&quot; /&gt; --&gt;</span><br><span class="line">               &lt;PatternLayout pattern=&quot;%d&#123;yyyy-MM-dd HH:mm:ss,SSS&#125;:%4p %t (%F:%L) - %m%n&quot; /&gt;</span><br><span class="line">               &lt;Policies&gt;</span><br><span class="line">                    &lt;OnStartupTriggeringPolicy /&gt;</span><br><span class="line">                    &lt;TimeBasedTriggeringPolicy /&gt;</span><br><span class="line">                    &lt;SizeBasedTriggeringPolicy size=&quot;80 MB&quot; /&gt;</span><br><span class="line">               &lt;/Policies&gt;</span><br><span class="line">          &lt;/RollingFile&gt;</span><br><span class="line">     &lt;/Appenders&gt;</span><br><span class="line">     &lt;Loggers&gt;</span><br><span class="line">          &lt;Root level=&quot;info&quot;&gt; &lt;!-- 全局配置 --&gt;</span><br><span class="line">               &lt;AppenderRef ref=&quot;Console&quot; /&gt;</span><br><span class="line">               &lt;AppenderRef ref=&quot;RollingFile&quot;/&gt;</span><br><span class="line">          &lt;/Root&gt;</span><br><span class="line">          &lt;!-- 为sql语句配置特殊的Log级别，方便调试 --&gt;</span><br><span class="line">          &lt;Logger name=&quot;com.xjj.dao&quot; level=&quot;$&#123;log.sql.level&#125;&quot; additivity=&quot;false&quot;&gt;</span><br><span class="line">               &lt;AppenderRef ref=&quot;Console&quot; /&gt;</span><br><span class="line">          &lt;/Logger&gt;</span><br><span class="line">     &lt;/Loggers&gt;</span><br><span class="line">&lt;/Configuration&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="JUL"><a href="#JUL" class="headerlink" title="JUL"></a>JUL</h1><ul>
+<li>JUL(java.util.logging)</li>
+<li>Java自身的日志系统，类似log4j。但是对开发者很不友好，还有bug。</li>
+</ul>
+<h1 id="JCL"><a href="#JCL" class="headerlink" title="JCL"></a>JCL</h1><p>与self4j类似，也是提供一套日志API，但其查找logger的算法复杂，出现classloader异常时无法修复。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p><a href="https://www.jianshu.com/p/04065d8cb2a9" target="_blank" rel="noopener">简书：logback详解</a><br><a href="https://www.cnblogs.com/junzi2099/p/7930268.html" target="_blank" rel="noopener">各种日志框架的差异</a><br><a href="https://www.jianshu.com/p/04065d8cb2a9" target="_blank" rel="noopener">logback日志配置文件详解</a>    </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/11/maven-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/11/maven-01/" itemprop="url">maven scope属性</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-11T22:28:35+08:00">
+                2019-06-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/maven/" itemprop="url" rel="index">
+                    <span itemprop="name">maven</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/11/maven-01/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/06/11/maven-01/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>compile</td>
+<td>缺省值。适用于所有的阶段，随着项目一起发布</td>
+</tr>
+<tr>
+<td>provided</td>
+<td>该依赖不随项目发布而打包，由JDK或者容器来提供该依赖，例如Servlet API。</td>
+</tr>
+<tr>
+<td>runtime</td>
+<td>编译时不需要，运行时才需要，例如JDBC API Jar，编译时并不关注JDBC驱动的具体实现</td>
+</tr>
+<tr>
+<td>test</td>
+<td>编译和运行时不需要，仅仅在测试时需要</td>
+</tr>
+<tr>
+<td>system</td>
+<td>与provided类似，但需要显示的指定一个本地的JAR包文件路径。即解决依赖不是通过maven仓库，而是通过本地系统类库</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/2019/06/11/maven-01/scope.png" alt="scope属性">  </p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p><a href="https://www.cnblogs.com/hzzll/p/6738955.html" target="_blank" rel="noopener">maven中scope属性</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/10/springboot-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/10/springboot-3/" itemprop="url">spring MVC 4.X</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-10T23:35:40+08:00">
+                2019-06-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/springboot/" itemprop="url" rel="index">
+                    <span itemprop="name">springboot</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/10/springboot-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/06/10/springboot-3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="SpringMVC-基础"><a href="#SpringMVC-基础" class="headerlink" title="SpringMVC 基础"></a>SpringMVC 基础</h1><ul>
+<li>MVC：Model+View+Controller(数据模型+视图+控制器)</li>
+<li>三层架构：Persentation tier+Application tier+Data tier（展现层+应用层+数据访问层）</li>
+</ul>
+<blockquote>
+<p>MVC中只有三层架构中的视图层</p>
+</blockquote>
+<h1 id="SpringMVC-常用注解"><a href="#SpringMVC-常用注解" class="headerlink" title="SpringMVC 常用注解"></a>SpringMVC 常用注解</h1><h1 id="SpringMVC-基本配置"><a href="#SpringMVC-基本配置" class="headerlink" title="SpringMVC 基本配置"></a>SpringMVC 基本配置</h1><h1 id="SpringMVC-高级配置"><a href="#SpringMVC-高级配置" class="headerlink" title="SpringMVC 高级配置"></a>SpringMVC 高级配置</h1><h1 id="SpringMVC-测试"><a href="#SpringMVC-测试" class="headerlink" title="SpringMVC 测试"></a>SpringMVC 测试</h1><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>《SpringBoot实战》 汪云飞著<br><a href="https://www.jianshu.com/p/04065d8cb2a9" target="_blank" rel="noopener">logback日志配置文件详解</a>  </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/04/springboot-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/04/springboot-2/" itemprop="url">spring 高级</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-04T21:28:10+08:00">
+                2019-06-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/springboot/" itemprop="url" rel="index">
+                    <span itemprop="name">springboot</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/04/springboot-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/06/04/springboot-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Spring-Aware"><a href="#Spring-Aware" class="headerlink" title="Spring Aware"></a>Spring Aware</h1><p>Spring的依赖注入最大特点就是低侵入。对于Bean而言Spring容器是无感的。但实际应用中我们需要使用到Spring容器本身的功能，我们需要使用Spring Aware（其本身是Spring设计用来框架内部使用的），这样我们的Bean将会和Spring的代码耦合。</p>
+<table>
+<thead>
+<tr>
+<th>Aware类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BeanNameAware</td>
+<td>获取容器中Bean的名称</td>
+</tr>
+<tr>
+<td>BeanFactoryAware</td>
+<td>获取容器中Bean的工厂</td>
+</tr>
+<tr>
+<td>ApplicationContextAware</td>
+<td>获取当前的applicationcontext</td>
+</tr>
+<tr>
+<td>MessageSourceAware</td>
+<td>获取message source</td>
+</tr>
+<tr>
+<td>ApplicationEventPublisherAware</td>
+<td>事件发生器，可以发布事件</td>
+</tr>
+<tr>
+<td>ResourceLoaderAware</td>
+<td>获取资源加载器，可以加载外部资源</td>
+</tr>
+</tbody>
+</table>
+<p>实现相应的Aware接口就能够使用对应的Spring容器功能。接口ApplicationContext集成了ApplicationContextAware、ApplicationEventPubliserAware和ResourceLoaderAware。<strong>只要Bean实现ApplicationContext就可以获取到Spring容器的所有功能。</strong></p>
+<p><img src="/2019/06/04/springboot-2/applicationcontext.png" alt="applicationcontext类图">  </p>
+<h2 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class DemoAllAware implements ApplicationContextAware &#123;</span><br><span class="line">    ApplicationContext context;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException &#123;</span><br><span class="line">        this.context = applicationContext;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void test() &#123;</span><br><span class="line">        System.out.println(&quot;applictionName: &quot; + context.getApplicationName());</span><br><span class="line">        System.out.println(&quot;displayName: &quot; + context.getDisplayName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Component</span><br><span class="line">public class DemoAware implements BeanNameAware, BeanFactoryAware, MessageSourceAware,</span><br><span class="line">        ApplicationEventPublisherAware, ResourceLoaderAware &#123;</span><br><span class="line">    private String beanName;</span><br><span class="line">    private BeanFactory beanFactory;</span><br><span class="line">    private ApplicationEventPublisher eventPublisher;</span><br><span class="line">    private MessageSource messageSource;</span><br><span class="line">    private ResourceLoader resourceLoader;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void setBeanName(String s) &#123;</span><br><span class="line"></span><br><span class="line">        this.beanName = s;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void setBeanFactory(BeanFactory beanFactory) throws BeansException &#123;</span><br><span class="line">        this.beanFactory = beanFactory;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) &#123;</span><br><span class="line">        this.eventPublisher = applicationEventPublisher;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void setMessageSource(MessageSource messageSource) &#123;</span><br><span class="line">        this.messageSource = messageSource;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void setResourceLoader(ResourceLoader resourceLoader) &#123;</span><br><span class="line">        this.resourceLoader = resourceLoader;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void print() throws IOException &#123;</span><br><span class="line">        System.out.println(&quot;bean name: &quot; + this.beanName);</span><br><span class="line">        System.out.println(&quot;bean facotry: &quot; + this.beanFactory.getClass());</span><br><span class="line">        Resource resource = this.resourceLoader.getResource(&quot;classpath:valuedemo.properties&quot;);</span><br><span class="line">        System.out.println(&quot;props: &quot; + IOUtils.toString(resource.getInputStream()));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">@ComponentScan(&quot;demo.base.aware&quot;)</span><br><span class="line">public class DemoConfig &#123;</span><br><span class="line">    public static void main(String[] args) throws IOException &#123;</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DemoConfig.class);</span><br><span class="line">        DemoAware bean = context.getBean(DemoAware.class);</span><br><span class="line">        bean.print();</span><br><span class="line"></span><br><span class="line">        DemoAllAware demoAllAware = context.getBean(DemoAllAware.class);</span><br><span class="line">        demoAllAware.test();</span><br><span class="line">        </span><br><span class="line">        context.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="异步任务"><a href="#异步任务" class="headerlink" title="异步任务"></a>异步任务</h1><p>Spring支持通过ThreadPoolTaskExecutor来执行异步任务。</p>
+<h2 id="样例-1"><a href="#样例-1" class="headerlink" title="样例"></a>样例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">@Service</span><br><span class="line">@Async</span><br><span class="line">public class DemoAsyncService &#123;</span><br><span class="line">    public void test() &#123;</span><br><span class="line">        System.out.println(&quot;ThreadID:&quot; + Thread.currentThread().getId() + &quot; tmie: &quot; + System.currentTimeMillis());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">@ComponentScan(&quot;demo.base.async&quot;)</span><br><span class="line">@EnableAsync</span><br><span class="line">public class DemoConfig implements AsyncConfigurer &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public Executor getAsyncExecutor() &#123;</span><br><span class="line">        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();</span><br><span class="line">        executor.setCorePoolSize(5);</span><br><span class="line">        executor.setMaxPoolSize(10);</span><br><span class="line">        executor.setQueueCapacity(20);</span><br><span class="line">        executor.initialize();</span><br><span class="line">        return executor;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DemoConfig.class);</span><br><span class="line">        DemoAsyncService service = context.getBean(DemoAsyncService.class);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        for (int i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">            service.test();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在异步任务组件中通过注解@Async 来表明当前是个异步任务，可以用于类和方法，作用在类上时表明类的所有方法都将是异步任务。</li>
+<li>实现接口AsyncConfigurer 来构建用于执行异步任务的线程池。</li>
+<li>在配置类中通过注解@EnableAsync来开启异步任务的支持。</li>
+</ul>
+<h1 id="计划任务"><a href="#计划任务" class="headerlink" title="计划任务"></a>计划任务</h1><p>Spring支持通过注解来执行计划任务</p>
+<h2 id="样例-2"><a href="#样例-2" class="headerlink" title="样例"></a>样例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class DemoSchedul &#123;</span><br><span class="line">    @Scheduled(fixedRate = 1000)</span><br><span class="line">    public void printTime() &#123;</span><br><span class="line">        System.out.println(&quot;time: &quot; + System.currentTimeMillis());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">@ComponentScan(&quot;demo.base.schedul&quot;)</span><br><span class="line">@EnableScheduling</span><br><span class="line">public class DemoConfig &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DemoConfig.class);</span><br><span class="line">        DemoSchedul schedul = context.getBean(DemoSchedul.class);</span><br><span class="line">        schedul.printTime();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>计划任务在方法层通过注解@Scheduled来制定该方法周期运行的方式。</li>
+<li>配置类中通过注解@EnableScheduling 开启异步任务支持。</li>
+</ul>
+<h2 id="异步任务的执行方式"><a href="#异步任务的执行方式" class="headerlink" title="异步任务的执行方式"></a>异步任务的执行方式</h2><p><img src="/2019/06/04/springboot-2/schedul.png" alt="@Scheduled">  </p>
+<p>从注解@Scheduled的源码中可以看到，其支持的异步执行方式有cron，zone，fixedDelay，fixedDelayString,fixedRate,fixedRateString，initDelay和initalDelayString这几种方式。<br>下面简单介绍一下这几种方式。</p>
+<h3 id="cron表达式"><a href="#cron表达式" class="headerlink" title="cron表达式"></a>cron表达式</h3><p>cron的方式是采用Unix系统的定时任务，其表达式是由空格分隔的6（或7）个数字 秒 分钟 小时 日期 月份 星期 年（可选）组成。其具体如下表所示。</p>
+<p><img src="/2019/06/04/springboot-2/cron.png" alt="cron表达式说明">  </p>
+<p><a href="http://cron.qqe2.com" target="_blank" rel="noopener">cron表达式生成网址</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class DemoSchedul &#123;</span><br><span class="line">    @Scheduled(cron = &quot;0/59 * * * * ?&quot;)</span><br><span class="line">    public void printTimeOnceMin()&#123;</span><br><span class="line">        System.out.println(System.currentTimeMillis());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="zone时区"><a href="#zone时区" class="headerlink" title="zone时区"></a>zone时区</h3><p>cron计划任务时间所采用的时区，默认是空串，采用当前时区。样例: Asia/Shanghai</p>
+<h3 id="fixedDelay和fixedDelayString"><a href="#fixedDelay和fixedDelayString" class="headerlink" title="fixedDelay和fixedDelayString"></a>fixedDelay和fixedDelayString</h3><p>上一次执行后延迟多长时间再次执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Scheduled(fixedDelay = 5000) //上一次执行完毕时间点之后5秒再执行</span><br></pre></td></tr></table></figure>
+<p>fixedDelayString是通过字符串的方式来指定，同时支持占位符（可从配置中获取参数）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Scheduled(fixedDelayString = &quot;$&#123;time.fixedDelay&#125;&quot;)</span><br></pre></td></tr></table></figure>
+<p><strong>这种方式，如果定时任务执行时间长，则会等待上一个任务执行完毕之后再等待延迟时长后再次执行</strong></p>
+<h3 id="fixedRate和fixedRateString"><a href="#fixedRate和fixedRateString" class="headerlink" title="fixedRate和fixedRateString"></a>fixedRate和fixedRateString</h3><p>任务开始后等待多长时间后再次执行任务。<br><strong>这种方式不论定时任务执行多长是否执行完毕，延时时长足够就会再次执行任务。</strong><br>fixedRateString同上。</p>
+<h3 id="initDelay和initDelayString"><a href="#initDelay和initDelayString" class="headerlink" title="initDelay和initDelayString"></a>initDelay和initDelayString</h3><p>第一次执行后等待时长再次执行任务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Scheduled(initialDelay=1000, fixedRate=5000) //第一次延迟1秒后执行，之后按fixedRate的规则每5秒执行一次</span><br></pre></td></tr></table></figure>
+<p>initDelayString同上，即通过字符串的方式来注入参数，但不支持占位符（无法从配置中获取参数）</p>
+<h1 id="条件注解"><a href="#条件注解" class="headerlink" title="条件注解"></a>条件注解</h1><p>通过@Condition条件注解，我们可以个性化的定制不同的场景来构建不同的bean。</p>
+<h2 id="样例-3"><a href="#样例-3" class="headerlink" title="样例"></a>样例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">public interface ICommand &#123;</span><br><span class="line">    public String showListCommand();</span><br><span class="line">&#125;</span><br><span class="line">public class MacCommand implements ICommand &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public String showListCommand() &#123;</span><br><span class="line">        return &quot;ls&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class WindowsCommand implements ICommand&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public String showListCommand() &#123;</span><br><span class="line">        return &quot;dir&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class MacCondition implements Condition &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) &#123;</span><br><span class="line">        return context.getEnvironment().getProperty(&quot;os.name&quot;).contains(&quot;Mac&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class WindowsCondition implements Condition &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) &#123;</span><br><span class="line">        return context.getEnvironment().getProperty(&quot;os.name&quot;).contains(&quot;Windows&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">public class ConditionConfig &#123;</span><br><span class="line">    @Bean</span><br><span class="line">    @Conditional(WindowsCondition.class)</span><br><span class="line">    public ICommand windowCommand() &#123;</span><br><span class="line">        return new WindowsCommand();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    @Conditional(MacCondition.class)</span><br><span class="line">    public ICommand macCommand() &#123;</span><br><span class="line">        return new MacCommand();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ConditionConfig.class);</span><br><span class="line">        ICommand command = context.getBean(ICommand.class);</span><br><span class="line">        System.out.println(command.showListCommand());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>实现接口Condition 来个性化定制自己的条件，这里定制了windows的条件和Mac的条件，即通过操作系统名来判断是否符合Windows和Mac操作系统。</li>
+<li>在配置类中，通过@Conditional来采用不同的条件生成不同的bean。</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>《SpringBoot实战》 汪云飞著<br><a href="https://www.jianshu.com/p/1defb0f22ed1" target="_blank" rel="noopener">@Scheduled注解用法说明</a><br><a href="https://www.cnblogs.com/javahr/p/8318728.html" target="_blank" rel="noopener">cron表达式</a><br><a href="http://cron.qqe2.com" target="_blank" rel="noopener">cron表达式生成网址</a>  </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/03/springboot-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/03/springboot-1/" itemprop="url">spring 基础</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-03T20:38:35+08:00">
+                2019-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/springboot/" itemprop="url" rel="index">
+                    <span itemprop="name">springboot</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/03/springboot-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/06/03/springboot-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Spring基础"><a href="#Spring基础" class="headerlink" title="Spring基础"></a>Spring基础</h1><p>spring框架的四个特性：</p>
+<ul>
+<li>使用POJO进行轻量级和最小侵入式的开发。</li>
+<li>通过依赖注入和基于接口编程实现松耦合。</li>
+<li>使用AOP和默认习惯进行声明式编程。</li>
+<li>使用AOP和模版(Template)减少模式化代码。</li>
+</ul>
+<h2 id="依赖注入-DI"><a href="#依赖注入-DI" class="headerlink" title="依赖注入(DI)"></a>依赖注入(DI)</h2><p>所谓依赖注入是指通过容器来负责创建对象和维护对象之间的依赖关系。而不是通过对象本身负责自己的创建和解决自己的依赖。<br><strong>依赖注入主要是为了解耦。体现了组合的理念。</strong>继承会使得子类与父类耦合，组合会降低耦合。  </p>
+<h2 id="基础注解"><a href="#基础注解" class="headerlink" title="基础注解"></a>基础注解</h2><h3 id="bean的生命周期（Scope）"><a href="#bean的生命周期（Scope）" class="headerlink" title="bean的生命周期（Scope）"></a>bean的生命周期（Scope）</h3><p>Spring中bean的生命周期可以通过注解@Scope来声明配置，其中注解Scope支持的生命周期如下表所示。  </p>
+<table>
+<thead>
+<tr>
+<th>Scope</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Singleton</td>
+<td>单例，默认配置</td>
+</tr>
+<tr>
+<td>Peororype</td>
+<td>每次调用都会构建</td>
+</tr>
+<tr>
+<td>Request</td>
+<td>Web项目中每一次http request新建</td>
+</tr>
+<tr>
+<td>Session</td>
+<td>Web项目中每一个http session新建</td>
+</tr>
+</tbody>
+</table>
+<h3 id="bean的创建和销毁"><a href="#bean的创建和销毁" class="headerlink" title="bean的创建和销毁"></a>bean的创建和销毁</h3><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@Bean注解的initMethod属性</td>
+<td>通过在配置类中声明bean的时候显示的指定该bean的初始化逻辑</td>
+</tr>
+<tr>
+<td>@Bean注解的destoryMethod属性</td>
+<td>通过在配置类中声明bean的时候显示的指定该bean的销毁逻辑</td>
+</tr>
+<tr>
+<td>@PostConstruct</td>
+<td>JSR-250提供，用于声明于方法体，表明该方法将在构造函数之后调用</td>
+</tr>
+<tr>
+<td>@PreDestory</td>
+<td>JSR-250提供，用于声明于方法体，表明该方法将在对象回收之前调用</td>
+</tr>
+</tbody>
+</table>
+<h3 id="加载配置文件"><a href="#加载配置文件" class="headerlink" title="加载配置文件"></a>加载配置文件</h3><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@PropertySource</td>
+<td>指定待加载配置文件的路径，通常用于配置类</td>
+</tr>
+<tr>
+<td>@Value</td>
+<td>通过注入的属性来匹配配置文件中的配置，常用于字段,即将配置文件中对应配置的值注入到当前字段</td>
+</tr>
+</tbody>
+</table>
+<p>对于@Value注解，如果当前配置类中有使用注解@ProppertySource,则表明该注解匹配的配置文件是注解中指定的配置文件，否则就是加载的PeopertySourcesPlaceholderConfigurer中配置的配置文件。  </p>
+<p><strong>正如注解的的名称，PropertySource只能加载properties配置文件，对于yml的配置，可以通过注解@ConfigurationProperties来加载。</strong></p>
+<h4 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">package demo.base;</span><br><span class="line"></span><br><span class="line">import org.apache.commons.io.IOUtils;</span><br><span class="line">import org.springframework.beans.factory.annotation.Value;</span><br><span class="line">import org.springframework.context.annotation.*;</span><br><span class="line">import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;</span><br><span class="line">import org.springframework.core.io.Resource;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 注解@Value样例</span><br><span class="line"> * @author gudulongao</span><br><span class="line"> */</span><br><span class="line">@Configuration</span><br><span class="line">@ComponentScan(&quot;demo.base&quot;)</span><br><span class="line">@PropertySource(&quot;valuedemo.properties&quot;)</span><br><span class="line">public class ValueAnnDemo &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 加载配置文件中配置</span><br><span class="line">     */</span><br><span class="line">    @Value(&quot;$&#123;demo.name&#125;&quot;)</span><br><span class="line">    private String name;</span><br><span class="line"></span><br><span class="line">    @Value(&quot;$&#123;demo.age&#125;&quot;)</span><br><span class="line">    private int age;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 自定义注入</span><br><span class="line">     */</span><br><span class="line">    @Value(&quot;abc&quot;)</span><br><span class="line">    private String str;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 读取系统参数</span><br><span class="line">     */</span><br><span class="line">    @Value(&quot;#&#123;systemProperties[&apos;os.name&apos;]&#125;&quot;)</span><br><span class="line">    private String osName;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 注入网络资源</span><br><span class="line">     */</span><br><span class="line">    @Value(&quot;http://www.baidu.com&quot;)</span><br><span class="line">    private Resource resource;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 注入文件</span><br><span class="line">     */</span><br><span class="line">    @Value(&quot;classpath:valuedemo.properties&quot;)</span><br><span class="line">    private Resource file;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 如果使用value注解加载配置文件内容，必须要有该bean</span><br><span class="line">     */</span><br><span class="line">    @Bean</span><br><span class="line">    public static PropertySourcesPlaceholderConfigurer propertyConfigure()&#123;</span><br><span class="line">        return new PropertySourcesPlaceholderConfigurer();</span><br><span class="line">    &#125;                                                 </span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws IOException &#123;</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ValueAnnDemo.class);</span><br><span class="line">        ValueAnnDemo demo = context.getBean(ValueAnnDemo.class);</span><br><span class="line">        System.out.println(demo.name);</span><br><span class="line">        System.out.println(demo.str);</span><br><span class="line">        System.out.println(demo.age);</span><br><span class="line">        System.out.println(demo.osName);</span><br><span class="line">        System.out.println(demo.resource);</span><br><span class="line">        System.out.println(IOUtils.toString(demo.file.getInputStream()));</span><br><span class="line">        //关闭</span><br><span class="line">        context.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>对于@Value注解只能用于实体属性，用于给当前实体属性注入值，值取决于注解的用法，可以匹配配置文件中的配置属性值，也可以是系统环境变量，字符串等。</li>
+<li>在使用@Value注解来匹配配置文件中的属性值的时候，必须在当前的配置类中构建或者声明一个PropertySourcesPlaceholderConfigurer的bean。</li>
+</ul>
+<h3 id="Profile"><a href="#Profile" class="headerlink" title="Profile"></a>Profile</h3><p>Profile能够在不同的环境下使用不同的配置（如不同的环境加载不同的数据源等）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">package demo.base.bean;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 抽象基类</span><br><span class="line"> */</span><br><span class="line">public abstract class BaseBean &#123;</span><br><span class="line">    public abstract void hello();</span><br><span class="line">&#125;</span><br><span class="line">package demo.base.bean;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 开发bean</span><br><span class="line"> */</span><br><span class="line">public class DevBean extends BaseBean&#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void hello() &#123;</span><br><span class="line">        System.out.println(&quot;dev hello&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">package demo.base.bean;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 正式bean</span><br><span class="line"> */</span><br><span class="line">public class ProBean extends BaseBean &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void hello() &#123;</span><br><span class="line">        System.out.println(&quot;pro hello&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">package demo.base;</span><br><span class="line"></span><br><span class="line">import demo.base.bean.BaseBean;</span><br><span class="line">import demo.base.bean.DevBean;</span><br><span class="line">import demo.base.bean.ProBean;</span><br><span class="line">import org.springframework.context.annotation.*;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 配置类</span><br><span class="line"> */</span><br><span class="line">@Configuration</span><br><span class="line">@ComponentScan(&quot;demo.base&quot;)</span><br><span class="line">public class ProfileDemo &#123;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    @Profile(&quot;dev&quot;)</span><br><span class="line">    public BaseBean getDevBean()&#123;</span><br><span class="line">        return new DevBean();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    @Profile(&quot;pro&quot;)</span><br><span class="line">    public BaseBean getProBean()&#123;</span><br><span class="line">        return new ProBean();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        //构建注解上下文的时候没有注入配置类</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();</span><br><span class="line">        //注入环境的profile 注入profile之后再注入配置类，否则会报类未定义</span><br><span class="line">        context.getEnvironment().setActiveProfiles(&quot;pro&quot;);</span><br><span class="line">        //注册配置类</span><br><span class="line">        context.register(ProfileDemo.class);</span><br><span class="line">        //刷新</span><br><span class="line">        context.refresh();</span><br><span class="line">        //获取bean</span><br><span class="line">        BaseBean bean = context.getBean(BaseBean.class);</span><br><span class="line">        bean.hello();</span><br><span class="line">        //关闭上下文</span><br><span class="line">        context.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="事件机制"><a href="#事件机制" class="headerlink" title="事件机制"></a>事件机制</h2><table>
+<thead>
+<tr>
+<th>组件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Event</td>
+<td>继承ApplicationEvent，通信消息的内容本身</td>
+</tr>
+<tr>
+<td>Listener</td>
+<td>实现ApplicationListener&lt;? extends ApplicationEvent&gt;，监听某一消费者，事件的消费者。</td>
+</tr>
+<tr>
+<td>Publisher</td>
+<td>事件发生器。依托Spring容器来发布事件。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="样例-1"><a href="#样例-1" class="headerlink" title="样例"></a>样例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">package demo.base.event;</span><br><span class="line"></span><br><span class="line">import org.springframework.context.ApplicationEvent;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 自定义事件</span><br><span class="line"> *</span><br><span class="line"> * @author gudulongao</span><br><span class="line"> */</span><br><span class="line">public class DemoEvent extends ApplicationEvent &#123;</span><br><span class="line">    private String msg;</span><br><span class="line"></span><br><span class="line">    public DemoEvent(Object source, String msg) &#123;</span><br><span class="line">        super(source);</span><br><span class="line">        this.msg = msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getMsg() &#123;</span><br><span class="line">        return msg;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">package demo.base.event;</span><br><span class="line"></span><br><span class="line">import org.springframework.context.ApplicationListener;</span><br><span class="line">import org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 自定义监听器</span><br><span class="line"> */</span><br><span class="line">@Component</span><br><span class="line">public class DemoListener implements ApplicationListener&lt;DemoEvent&gt; &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void onApplicationEvent(DemoEvent demoEvent) &#123;</span><br><span class="line">        System.out.println(&quot;i accept a msg from &quot; + demoEvent.getClass().getSimpleName() + &quot;,msg: &quot; + demoEvent.getMsg() + &quot;!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">package demo.base.event;</span><br><span class="line"></span><br><span class="line">import org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line">import org.springframework.context.ApplicationContext;</span><br><span class="line">import org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 自定义事件发布器</span><br><span class="line"> */</span><br><span class="line">@Component</span><br><span class="line">public class DemoPublish &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    private ApplicationContext context;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 发布事件</span><br><span class="line">     * @param msg</span><br><span class="line">     */</span><br><span class="line">    public void publish(String msg) &#123;</span><br><span class="line">        context.publishEvent(new DemoEvent(this, msg));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">package demo.base;</span><br><span class="line"></span><br><span class="line">import demo.base.event.DemoPublish;</span><br><span class="line">import org.springframework.context.annotation.AnnotationConfigApplicationContext;</span><br><span class="line">import org.springframework.context.annotation.ComponentScan;</span><br><span class="line">import org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">@ComponentScan(&quot;demo.base&quot;)</span><br><span class="line">public class EventDemo &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(EventDemo.class);</span><br><span class="line">        DemoPublish publish = context.getBean(DemoPublish.class);</span><br><span class="line">        publish.publish(&quot;hello&quot;);</span><br><span class="line">        context.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h2><ul>
+<li>@Apsect 声明切面</li>
+<li>@After,@Before,@Around 定义建言(advice)</li>
+<li>@After,@Before,@Around 注解的参数是拦截规则（切点），也可以通过@PointCut来定义拦截规则方便在@After,@Before和@Around中调用服实现复用。</li>
+<li>符合切点的位置称之为连接点(JoinPoint)。</li>
+</ul>
+<p><img src="/2019/06/03/springboot-1/aop-anno.png" alt="spring-aop涉及的注解">  </p>
+<h4 id="annotation"><a href="#annotation" class="headerlink" title="annotation"></a>annotation</h4><p>通过注解来匹配。</p>
+<h4 id="execution表达式"><a href="#execution表达式" class="headerlink" title="execution表达式"></a>execution表达式</h4><p>切点可以通过execution表达式来声明拦截规则。<br>例如：execution (<em> com.sample.service.impl..\</em>.*(..))</p>
+<ul>
+<li>第一个* 匹配返回值，表示返回类型为任意返回值。  </li>
+<li>com.sample.service.impl.. 匹配包路径，表明包路径com.sample.service.impl下两级目录（子孙）。  </li>
+<li>第二个* 匹配类名，表示任何类名。  </li>
+<li>*(..) 匹配方法及方法参数，表示所有的方法参数。    </li>
+</ul>
+<h4 id="args"><a href="#args" class="headerlink" title="args"></a>args</h4><p>切点可以通过@args来匹配方法入参是制定类型的方法。@args必须指定类名。即匹配方法入参是该类及其派生出字类的所有方法。</p>
+<h3 id="顺序"><a href="#顺序" class="headerlink" title="顺序"></a>顺序</h3><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>说明</th>
+<th>入参</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@before,@After</td>
+<td>前后建言,<strong>后建言不论核心代码是否报错都会执行</strong></td>
+<td>JoinPoint</td>
+</tr>
+<tr>
+<td>@Around</td>
+<td>环绕建言。</td>
+<td>ProceedingJionPoint（是JoinPoint的子类，其特殊拥有proceed方法）</td>
+</tr>
+<tr>
+<td>@AfterReturning</td>
+<td>核心代码执行成功后执行</td>
+<td>匹配的方法返回值作为入参</td>
+</tr>
+<tr>
+<td>@AfterThrowing</td>
+<td>核心代码执行异常后执行</td>
+<td>无入参</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/2019/06/03/springboot-1/order.png" alt="spring-aop涉及的注解">  </p>
+<p>顺序说明：</p>
+<ul>
+<li>都会事先走AOP的代码。</li>
+<li>执行Around中proceed()之前的逻辑。</li>
+<li>执行Before中的逻辑。</li>
+<li>执行核心逻辑。</li>
+<li>执行Around中proceed()之后的逻辑。</li>
+<li>执行After的逻辑。</li>
+<li>如果核心逻辑成功，执行AfterReturning，否则执行AfterThrowing。</li>
+</ul>
+<h3 id="样例-2"><a href="#样例-2" class="headerlink" title="样例"></a>样例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">@Aspect</span><br><span class="line">@Component</span><br><span class="line">public class DemoAOP &#123;</span><br><span class="line">    @Before(&quot;execution(* demo.base.aop.*.*(..))&quot;)</span><br><span class="line">    public void before(JoinPoint joinPoint) &#123;</span><br><span class="line">        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();</span><br><span class="line">        Method method = methodSignature.getMethod();</span><br><span class="line">        System.out.println(&quot;will call &quot; + method.getName());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @After(&quot;execution(* demo.base.aop.DemoService.*(..))&quot;)</span><br><span class="line">    public void after(JoinPoint joinPoint) &#123;</span><br><span class="line">        System.out.println(&quot;after call...&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Service</span><br><span class="line">public class DemoService &#123;</span><br><span class="line">    public void say() &#123;</span><br><span class="line">        System.out.println(&quot;hello world!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">@ComponentScan(&quot;demo.base.aop&quot;)</span><br><span class="line">@EnableAspectJAutoProxy//开启Aspect支持</span><br><span class="line">public class AopConfig &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        AnnotationConfigApplicationContext accontext = new AnnotationConfigApplicationContext(AopConfig.class);</span><br><span class="line">        DemoService service = accontext.getBean(DemoService.class);</span><br><span class="line">        service.say();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>拦截规则（切点）的定义规则</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>《SpringBoot实战》 汪云飞著<br><a href="https://blog.csdn.net/zhanglf02/article/details/78132304" target="_blank" rel="noopener">SpringAOP中切点的执行顺序</a><br><a href="https://blog.csdn.net/lmx125254/article/details/84398412" target="_blank" rel="noopener">切点执行顺序的demo</a><br><a href="https://www.cnblogs.com/powerwu/articles/5177662.html" target="_blank" rel="noopener">exeution表达式说明</a>  </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/21/java-2-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1226,841 +2400,6 @@
 </blockquote>
 <h2 id="提交日志"><a href="#提交日志" class="headerlink" title="提交日志"></a>提交日志</h2><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
 <p><a href="http://www.orchome.com/3" target="_blank" rel="noopener">kafka中文教程</a><br><a href="https://www.cnblogs.com/qingyunzong/category/1212387.html" target="_blank" rel="noopener">kafka教程</a><br><a href="https://blog.csdn.net/caokun12321/article/details/81118310" target="_blank" rel="noopener">kafka与activemq的区别</a><br><a href="https://blog.csdn.net/jewes/article/details/42970799#" target="_blank" rel="noopener">kafka的log存储解析</a><br><a href="https://blog.csdn.net/jewes/article/details/42744855" target="_blank" rel="noopener">kafka通讯协议</a><br><a href="http://www.orchome.com/295" target="_blank" rel="noopener">kafka适用场景</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/23/distrubutesystem-01/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/23/distrubutesystem-01/" itemprop="url">分布式系统</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-23T20:59:10+08:00">
-                2019-04-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/分布式系统/" itemprop="url" rel="index">
-                    <span itemprop="name">分布式系统</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/04/23/distrubutesystem-01/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/04/23/distrubutesystem-01/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>学习博客：<a href="https://www.cnblogs.com/xybaby/p/7787034.html" target="_blank" rel="noopener">https://www.cnblogs.com/xybaby/p/7787034.html</a>    </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/19/eureka/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/19/eureka/" itemprop="url">eureka</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-19T19:24:37+08:00">
-                2019-04-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/eureka/" itemprop="url" rel="index">
-                    <span itemprop="name">eureka</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/04/19/eureka/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/04/19/eureka/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>删除不健康服务：<a href="https://blog.csdn.net/xiaobao5214/article/details/81263445" target="_blank" rel="noopener">https://blog.csdn.net/xiaobao5214/article/details/81263445</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/19/ruby/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/19/ruby/" itemprop="url">ruby</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-19T14:55:42+08:00">
-                2019-04-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Mac系统/" itemprop="url" rel="index">
-                    <span itemprop="name">Mac系统</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/04/19/ruby/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/04/19/ruby/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>安装gpg2:<a href="https://www.jianshu.com/p/0ba7c3fc5344" target="_blank" rel="noopener">https://www.jianshu.com/p/0ba7c3fc5344</a><br>安装rvm:<a href="https://rvm.io" target="_blank" rel="noopener">https://rvm.io</a><br>安装ruby:<a href="https://www.jianshu.com/p/c073e6fc01f5" target="_blank" rel="noopener">https://www.jianshu.com/p/c073e6fc01f5</a>  </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/08/zookeeper-11/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/08/zookeeper-11/" itemprop="url">zookeeper curator事件监听（Cache）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-08T22:24:53+08:00">
-                2019-04-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ZooKeeper/" itemprop="url" rel="index">
-                    <span itemprop="name">ZooKeeper</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/04/08/zookeeper-11/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/04/08/zookeeper-11/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>zookeeper原生就支持事件监听机制，但是只能被触发一次需要反复的注册监听使用繁琐。curator提供了Cache来实现对zookeeper的事件监听。Cache对事件的监听过程可以看成是本地缓存视图与远程zookeeper视图的比对过程。<br>Cache有NodeCache,PathChildrenCache和TreeCache。</p>
-<h1 id="NodeCache"><a href="#NodeCache" class="headerlink" title="NodeCache"></a>NodeCache</h1><p>NodeCache主要是关心指定节点的数据变化。<br>NodeCache构造函数如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">*</span><br><span class="line">* @param client curator连接</span><br><span class="line">* @param path 指定节点路径</span><br><span class="line">**/</span><br><span class="line">NodeCache(CuratorFramework client, String path)</span><br><span class="line">/**</span><br><span class="line">*</span><br><span class="line">* @param client curator连接</span><br><span class="line">* @param path 指定节点路径</span><br><span class="line">* @dataIsCompressed 是否压缩数据</span><br><span class="line">**/</span><br><span class="line">NodeCache(CuratorFramework client, String path, boolean dataIsCompressed)</span><br></pre></td></tr></table></figure>
-<h2 id="NodeCacheListener"><a href="#NodeCacheListener" class="headerlink" title="NodeCacheListener"></a>NodeCacheListener</h2><p>NodeCacheListener主要是作为NodeCache的监听，即当指定节点的数据发生变化后执行的回调逻辑。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public interface NodeCacheListener &#123;</span><br><span class="line">    void nodeChanged() throws Exception;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="样例代码"><a href="#样例代码" class="headerlink" title="样例代码"></a>样例代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">package demo.curator;</span><br><span class="line"></span><br><span class="line">import org.apache.curator.framework.CuratorFramework;</span><br><span class="line">import org.apache.curator.framework.CuratorFrameworkFactory;</span><br><span class="line">import org.apache.curator.framework.recipes.cache.*;</span><br><span class="line">import org.apache.curator.retry.ExponentialBackoffRetry;</span><br><span class="line"></span><br><span class="line">public class CuratorCacheDemo &#123;</span><br><span class="line">    /**</span><br><span class="line">     * zk 服务地址</span><br><span class="line">     */</span><br><span class="line">    private static final String ZK_SERVER = &quot;127.0.0.1:2182&quot;;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 获取连接</span><br><span class="line">     *</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public static CuratorFramework getWork() &#123;</span><br><span class="line">        //基于/demo为基准路径创建会话</span><br><span class="line">        CuratorFramework curatorFramework = CuratorFrameworkFactory.builder().connectString</span><br><span class="line">                (ZK_SERVER)</span><br><span class="line">                .sessionTimeoutMs(60000)</span><br><span class="line">                .connectionTimeoutMs(20000).retryPolicy(new ExponentialBackoffRetry(3000, 2)).build();</span><br><span class="line">        curatorFramework.start();</span><br><span class="line">        return curatorFramework;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 获取缓存监听</span><br><span class="line">     *</span><br><span class="line">     * @param nodeCache</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public static NodeCacheListener getNodeCacheListener(final NodeCache nodeCache) &#123;</span><br><span class="line">        return new NodeCacheListener() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void nodeChanged() throws Exception &#123;</span><br><span class="line">                ChildData currentData = nodeCache.getCurrentData();</span><br><span class="line">                System.out.println(&quot;path:&quot; + currentData.getPath());</span><br><span class="line">                System.out.println(&quot;data:&quot; + new String(currentData.getData()));</span><br><span class="line">                System.out.println(&quot;-----------&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void testNodeCache() throws Exception &#123;</span><br><span class="line">        //获取连接</span><br><span class="line">        CuratorFramework work = getWork();</span><br><span class="line">        String nodePath = &quot;/demo/demochild&quot;;</span><br><span class="line">        //构建NodeCache</span><br><span class="line">        final NodeCache nodeCache = new NodeCache(work, nodePath, false);</span><br><span class="line">        //开始缓存</span><br><span class="line">        //true nodecache会检查节点是否存在，同时立即缓存节点数据</span><br><span class="line">        //之后与zk进行比对的时候，就不会因为缓存中没有数据而zk有的不同变化而触发监听。可以看start的源码</span><br><span class="line">        nodeCache.start(true);</span><br><span class="line">        //添加监听</span><br><span class="line">        nodeCache.getListenable().addListener(getNodeCacheListener(nodeCache));</span><br><span class="line"></span><br><span class="line">        //测试几次注册，永久监听的效果</span><br><span class="line">        Thread.sleep(1000);</span><br><span class="line">        work.setData().forPath(nodePath, &quot;abc&quot;.getBytes());</span><br><span class="line">        Thread.sleep(1000);</span><br><span class="line">        work.setData().forPath(nodePath, &quot;edf&quot;.getBytes());</span><br><span class="line">        Thread.sleep(1000);</span><br><span class="line">        work.setData().forPath(nodePath, &quot;ccc&quot;.getBytes());</span><br><span class="line">        Thread.sleep(1000);</span><br><span class="line">        //测试删除会不会触发监听</span><br><span class="line">        work.delete().deletingChildrenIfNeeded().forPath(nodePath);</span><br><span class="line">        Thread.sleep(3000);</span><br><span class="line">        nodeCache.close();</span><br><span class="line">        work.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws Exception &#123;</span><br><span class="line">        testNodeCache();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出截图：</p>
-<p><img src="/2019/04/08/zookeeper-11/result.png" alt="执行结果">  </p>
-<p><strong>从上面的样例可以看到，删除操作不会触发NodeCacheListener。</strong></p>
-<h2 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h2><p>样例中NodeCache调用start的时候，是注入了参数的，可以看start方法的源码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">*  默认不初始化节点缓存</span><br><span class="line">**/</span><br><span class="line">public void start() throws Exception &#123;</span><br><span class="line">        this.start(false);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">*  启用缓存</span><br><span class="line">**/</span><br><span class="line">public void start(boolean buildInitial) throws Exception &#123;</span><br><span class="line">		 //原子操作的方式更新nodecache状态</span><br><span class="line">        Preconditions.checkState(this.state.compareAndSet(NodeCache.State.LATENT, NodeCache.State.STARTED), &quot;Cannot be started more than once&quot;);</span><br><span class="line">        //缓存监听中添加连接状态的监听</span><br><span class="line">        this.client.getConnectionStateListenable().addListener(this.connectionStateListener);</span><br><span class="line">        //如果需要初始化节点缓存</span><br><span class="line">        if (buildInitial) &#123;</span><br><span class="line">        	  //检查zk中节点是否存在</span><br><span class="line">            this.client.checkExists().creatingParentContainersIfNeeded().forPath(this.path);</span><br><span class="line">            //内部重建（同步zk节点数据到缓存）</span><br><span class="line">            this.internalRebuild();</span><br><span class="line">        &#125;</span><br><span class="line">        this.reset();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">/**</span><br><span class="line">*  内部重建</span><br><span class="line">**/</span><br><span class="line">private void internalRebuild() throws Exception &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            Stat stat = new Stat();</span><br><span class="line">            //从zk获取节点的数据，如果要压缩则解压</span><br><span class="line">            byte[] bytes = this.dataIsCompressed ? (byte[])((WatchPathable)((GetDataWatchBackgroundStatable)this.client.getData().decompressed()).storingStatIn(stat)).forPath(this.path) : (byte[])((WatchPathable)this.client.getData().storingStatIn(stat)).forPath(this.path);</span><br><span class="line">            //将zk中节点的数据注入缓存中</span><br><span class="line">            this.data.set(new ChildData(this.path, stat, bytes));</span><br><span class="line">        &#125; catch (NoNodeException var3) &#123;</span><br><span class="line">            this.data.set((Object)null);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">*  重置</span><br><span class="line">**/</span><br><span class="line">private void reset() throws Exception &#123;</span><br><span class="line">		检查zk中节点是否存在，并通过异步的方式来处理监听</span><br><span class="line">        if (this.state.get() == NodeCache.State.STARTED &amp;&amp; this.isConnected.get()) &#123;</span><br><span class="line">            ((ErrorListenerPathable)((BackgroundPathable)this.client.checkExists().creatingParentContainersIfNeeded().usingWatcher(this.watcher)).inBackground(this.backgroundCallback)).forPath(this.path);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;    </span><br><span class="line">/**</span><br><span class="line">*  异步处理监听回调</span><br><span class="line">**/    </span><br><span class="line">private void processBackgroundResult(CuratorEvent event) throws Exception &#123;</span><br><span class="line">		//判断事件类型</span><br><span class="line">        switch(event.getType()) &#123;</span><br><span class="line">        //查询数据类型</span><br><span class="line">        case GET_DATA:</span><br><span class="line">        	  //操作成功，则同步缓存数据</span><br><span class="line">            if (event.getResultCode() == Code.OK.intValue()) &#123;</span><br><span class="line">                ChildData childData = new ChildData(this.path, event.getStat(), event.getData());</span><br><span class="line">                this.setNewData(childData);</span><br><span class="line">            &#125;</span><br><span class="line">            break;</span><br><span class="line">        //检查节点存在</span><br><span class="line">        case EXISTS:</span><br><span class="line">        	  //节点不存在则清空缓存中的数据</span><br><span class="line">            if (event.getResultCode() == Code.NONODE.intValue()) &#123;</span><br><span class="line">                this.setNewData((ChildData)null);</span><br><span class="line">            //节点存在，操作成功，同步缓存数据</span><br><span class="line">            &#125; else if (event.getResultCode() == Code.OK.intValue()) &#123;</span><br><span class="line">                if (this.dataIsCompressed) &#123;</span><br><span class="line">                    ((ErrorListenerPathable)((BackgroundPathable)((GetDataWatchBackgroundStatable)this.client.getData().decompressed()).usingWatcher(this.watcher)).inBackground(this.backgroundCallback)).forPath(this.path);</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    ((ErrorListenerPathable)((BackgroundPathable)this.client.getData().usingWatcher(this.watcher)).inBackground(this.backgroundCallback)).forPath(this.path);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">*  同步缓存数据</span><br><span class="line">*/</span><br><span class="line">private void setNewData(ChildData newData) throws InterruptedException &#123;</span><br><span class="line">		 //原子操作，更新缓存数据，并获取旧值</span><br><span class="line">        ChildData previousData = (ChildData)this.data.getAndSet(newData);</span><br><span class="line">        //如果旧值与新值不一致，则按照缓存监听列表挨个触发</span><br><span class="line">        if (!Objects.equal(previousData, newData)) &#123;</span><br><span class="line">            this.listeners.forEach(new Function&lt;NodeCacheListener, Void&gt;() &#123;</span><br><span class="line">                public Void apply(NodeCacheListener listener) &#123;</span><br><span class="line">                    try &#123;</span><br><span class="line">                        listener.nodeChanged();</span><br><span class="line">                    &#125; catch (Exception var3) &#123;</span><br><span class="line">                        ThreadUtils.checkInterrupted(var3);</span><br><span class="line">                        NodeCache.this.log.error(&quot;Calling listener&quot;, var3);</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    return null;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            if (this.rebuildTestExchanger != null) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    this.rebuildTestExchanger.exchange(new Object());</span><br><span class="line">                &#125; catch (InterruptedException var4) &#123;</span><br><span class="line">                    Thread.currentThread().interrupt();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>从源码中可以看到，如果一开始并没有初始化的开启缓存，缓存数据中的data=null。在reset里会检查节点是否存在，这个时候会触发到EXISTS事件的回调，zk中节点存在，就会同步zk节点数据到缓存中，在setNewData中新值与旧值(null)肯定是不一致的，这个时候就会触发我们定义的NodeCacheListener。所以如果不初始化缓存就启用，就会多一次缓存监听被执行。应该是采用初始化启用缓存即start(true)，在internalrebuild中就将zk节点数据同步到缓存中，这样后面的setNewData中新值旧值会一致便不会出发我们定义的NodeCacheListener。</p>
-<h1 id="PathChildrenCache"><a href="#PathChildrenCache" class="headerlink" title="PathChildrenCache"></a>PathChildrenCache</h1><p>PathChildrenCache用于管理子节点的变化监听。构造函数如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public PathChildrenCache(CuratorFramework client, String path, boolean cacheData) </span><br><span class="line">public PathChildrenCache(CuratorFramework client, String path, boolean cacheData, ThreadFactory threadFactory)</span><br><span class="line">public PathChildrenCache(CuratorFramework client, String path, boolean cacheData, boolean dataIsCompressed, ThreadFactory threadFactory)</span><br><span class="line">public PathChildrenCache(CuratorFramework client, String path, boolean cacheData, boolean dataIsCompressed, ExecutorService executorService)</span><br><span class="line">public PathChildrenCache(CuratorFramework client, String path, boolean cacheData, boolean dataIsCompressed, CloseableExecutorService executorService)</span><br></pre></td></tr></table></figure>
-<p>构造函数涉及的类型与NodeCache类似。唯一区别的是可以注入<strong>CloseableExecutorService 线程池</strong>。这个还不太熟悉。看着像可以被关闭的线程池。</p>
-<h2 id="PathChildrenCacheListener"><a href="#PathChildrenCacheListener" class="headerlink" title="PathChildrenCacheListener"></a>PathChildrenCacheListener</h2><p>针对PathChildrenCache缓存的监听。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public interface PathChildrenCacheListener &#123;</span><br><span class="line">    void childEvent(CuratorFramework var1, PathChildrenCacheEvent var2) throws Exception;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="样例代码-1"><a href="#样例代码-1" class="headerlink" title="样例代码"></a>样例代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">private static PathChildrenCacheListener getPathChildrenCacheListener() &#123;</span><br><span class="line">        return new PathChildrenCacheListener() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void childEvent(CuratorFramework curatorFramework, PathChildrenCacheEvent pathChildrenCacheEvent)</span><br><span class="line">                    throws Exception &#123;</span><br><span class="line">                System.out.println(&quot;type: &quot; + pathChildrenCacheEvent.getType());</span><br><span class="line">                System.out.println(&quot;path: &quot; + pathChildrenCacheEvent.getData().getPath());</span><br><span class="line">                System.out.println(&quot;data: &quot; + new String(pathChildrenCacheEvent.getData().getData()));</span><br><span class="line">                System.out.println(&quot;----------&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void testPathChildrenCache() throws Exception &#123;</span><br><span class="line">        CuratorFramework work = getWork();</span><br><span class="line">        String path = &quot;/demo/demochild&quot;;</span><br><span class="line">        //构建子节点缓存</span><br><span class="line">        PathChildrenCache cache = new PathChildrenCache(work, path, true);</span><br><span class="line">        //开启缓存</span><br><span class="line">        cache.start(PathChildrenCache.StartMode.BUILD_INITIAL_CACHE);</span><br><span class="line">        //添加缓存</span><br><span class="line">        cache.getListenable().addListener(getPathChildrenCacheListener());</span><br><span class="line"></span><br><span class="line">        Thread.sleep(1000);</span><br><span class="line">        //创建子节点</span><br><span class="line">        work.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE)</span><br><span class="line">                .forPath(path + &quot;/a&quot;, &quot;axi&quot;.getBytes());</span><br><span class="line">        Thread.sleep(1000);</span><br><span class="line">        //创建孙子节点</span><br><span class="line">        work.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE)</span><br><span class="line">                .forPath(path + &quot;/a/b&quot;, &quot;bxi&quot;.getBytes());</span><br><span class="line">        Thread.sleep(1000);</span><br><span class="line">        //修改孙子节点</span><br><span class="line">        work.setData().forPath(path + &quot;/a/b&quot;, &quot;b&quot;.getBytes());</span><br><span class="line">        Thread.sleep(1000);</span><br><span class="line">        //修改子节点</span><br><span class="line">        work.setData().forPath(path + &quot;/a&quot;, &quot;a&quot;.getBytes());</span><br><span class="line">        Thread.sleep(1000);</span><br><span class="line">        //删除孙子节点</span><br><span class="line">        work.delete().forPath(path + &quot;/a/b&quot;);</span><br><span class="line">        Thread.sleep(1000);</span><br><span class="line">        //删除子节点</span><br><span class="line">        work.delete().forPath(path + &quot;/a&quot;);</span><br><span class="line">        Thread.sleep(1000);</span><br><span class="line">        //关闭缓存</span><br><span class="line">        cache.close();</span><br><span class="line">        System.out.println(&quot;-----close cache--------&quot;);</span><br><span class="line">        Thread.sleep(1000);</span><br><span class="line">        //创建子节点</span><br><span class="line">        work.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE)</span><br><span class="line">                .forPath(path + &quot;/a&quot;);</span><br><span class="line">        System.out.println(&quot;-----create node--------&quot;);</span><br><span class="line">        Thread.sleep(1000);</span><br><span class="line">        //删除子节点</span><br><span class="line">        work.delete().forPath(path + &quot;/a&quot;);</span><br><span class="line">        System.out.println(&quot;-----delete node--------&quot;);</span><br><span class="line">        Thread.sleep(1000);</span><br><span class="line">        work.close();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>执行结果如下：</p>
-<p><img src="/2019/04/08/zookeeper-11/result2.png" alt="执行结果">  </p>
-<p>从上面的样例可以看到，PathChildrenCache只是对子节点这一层的节点变化做监听，对于孙子层的节点无感。同时缓存关闭后监听就不会再被触发了，很好理解，监听只在缓存start和close期间有效。</p>
-<h2 id="源码解析-1"><a href="#源码解析-1" class="headerlink" title="源码解析"></a>源码解析</h2><p>PathChildrenCache采用了命令模式。<br>还是照旧从start开始看起<br>PathChildrenCache缓存数据是存储在map中  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">//开启服务，指定启用模式</span><br><span class="line">public void start(PathChildrenCache.StartMode mode) throws Exception &#123;</span><br><span class="line">		  //检查缓存的状态标志</span><br><span class="line">        Preconditions.checkState(this.state.compareAndSet(PathChildrenCache.State.LATENT, PathChildrenCache.State.STARTED), &quot;already started&quot;);</span><br><span class="line">        mode = (PathChildrenCache.StartMode)Preconditions.checkNotNull(mode, &quot;mode cannot be null&quot;);</span><br><span class="line">        //添加连接状态的监听</span><br><span class="line">        this.client.getConnectionStateListenable().addListener(this.connectionStateListener);</span><br><span class="line">        //根据启用模式分别处理</span><br><span class="line">        switch(mode) &#123;</span><br><span class="line">        //普通模式，执行刷新命令</span><br><span class="line">        case NORMAL:</span><br><span class="line">            this.offerOperation(new RefreshOperation(this, PathChildrenCache.RefreshMode.STANDARD));</span><br><span class="line">            break;</span><br><span class="line">        //初始化缓存模式，重写构建    </span><br><span class="line">        case BUILD_INITIAL_CACHE:</span><br><span class="line">            this.rebuild();</span><br><span class="line">            break;</span><br><span class="line">        //提前初始化模式，采用刷新命令</span><br><span class="line">        case POST_INITIALIZED_EVENT:</span><br><span class="line">            this.initialSet.set(Maps.newConcurrentMap());</span><br><span class="line">            this.offerOperation(new RefreshOperation(this, PathChildrenCache.RefreshMode.POST_INITIALIZED));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到start指定不同的模式会有不同的启用效果，我们先看最简单的BUILD_INITIAL_CACHE模式，会直接进行重建。重建的逻辑如下。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">//重新构建</span><br><span class="line">public void rebuild() throws Exception &#123;</span><br><span class="line">		 //查看线程池是否关闭</span><br><span class="line">        Preconditions.checkState(!this.executorService.isShutdown(), &quot;cache has been closed&quot;);</span><br><span class="line">        this.ensurePath();</span><br><span class="line">        //清空缓存数据</span><br><span class="line">        this.clear();</span><br><span class="line">        //获取关注节点的所有子节点</span><br><span class="line">        List&lt;String&gt; children = (List)this.client.getChildren().forPath(this.path);</span><br><span class="line">        Iterator var2 = children.iterator();</span><br><span class="line">		 //遍历所有子节点</span><br><span class="line">        while(var2.hasNext()) &#123;</span><br><span class="line">            String child = (String)var2.next();</span><br><span class="line">            String fullPath = ZKPaths.makePath(this.path, child);</span><br><span class="line">            //同步节点数据到缓存中</span><br><span class="line">            this.internalRebuildNode(fullPath);</span><br><span class="line">            if (this.rebuildTestExchanger != null) &#123;</span><br><span class="line">            	   //Exchanger机制，会是当前线程阻塞在这里，等待另一个共享Exchanger的线程也通过Exchanger进行exchange后方能唤醒</span><br><span class="line">                this.rebuildTestExchanger.exchange(new Object());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">		 //发起强制更新的命令</span><br><span class="line">        this.offerOperation(new RefreshOperation(this, PathChildrenCache.RefreshMode.FORCE_GET_DATA_AND_STAT));</span><br><span class="line">    &#125;</span><br><span class="line">//内部重构</span><br><span class="line">private void internalRebuildNode(String fullPath) throws Exception &#123;</span><br><span class="line">        Stat stat;</span><br><span class="line">        if (this.cacheData) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                stat = new Stat();</span><br><span class="line">                //异步的查询zk节点数据同步到缓存中</span><br><span class="line">                byte[] bytes = this.dataIsCompressed ? (byte[])((WatchPathable)((GetDataWatchBackgroundStatable)this.client.getData().decompressed()).storingStatIn(stat)).forPath(fullPath) : (byte[])((WatchPathable)this.client.getData().storingStatIn(stat)).forPath(fullPath);</span><br><span class="line">                this.currentData.put(fullPath, new ChildData(fullPath, stat, bytes));</span><br><span class="line">            &#125; catch (NoNodeException var4) &#123;</span><br><span class="line">                this.currentData.remove(fullPath);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            stat = (Stat)this.client.checkExists().forPath(fullPath);</span><br><span class="line">            if (stat != null) &#123;</span><br><span class="line">                this.currentData.put(fullPath, new ChildData(fullPath, stat, (byte[])null));</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                this.currentData.remove(fullPath);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>BUILD_INITIAL_CACHE模式首先会将缓存中已存在的子节点数据清空，再重新与zk中的数据进行同步，最后发起强制更新的命令。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">//刷新命令的构造</span><br><span class="line"> void refresh(final PathChildrenCache.RefreshMode mode) throws Exception &#123;</span><br><span class="line">        this.ensurePath();</span><br><span class="line">        //定义异步处理逻辑</span><br><span class="line">        BackgroundCallback callback = new BackgroundCallback() &#123;</span><br><span class="line">            public void processResult(CuratorFramework client, CuratorEvent event) throws Exception &#123;</span><br><span class="line">                if (!((PathChildrenCache.State)PathChildrenCache.this.state.get()).equals(PathChildrenCache.State.CLOSED)) &#123;</span><br><span class="line">                    //如果子节点状态正常，则处理子节点的数据</span><br><span class="line">                    if (event.getResultCode() == Code.OK.intValue()) &#123;</span><br><span class="line">                        PathChildrenCache.this.processChildren(event.getChildren(), mode);</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        //给子节点添加监听（采用异步的方式处理回调）</span><br><span class="line">        ((ErrorListenerPathable)((BackgroundPathable)this.client.getChildren().usingWatcher(this.childrenWatcher)).inBackground(callback)).forPath(this.path);</span><br><span class="line">    &#125;   </span><br><span class="line">//处理子节点的数据     </span><br><span class="line">private void processChildren(List&lt;String&gt; children, PathChildrenCache.RefreshMode mode) throws Exception &#123;</span><br><span class="line">	     //获取当前缓存中的节点数据</span><br><span class="line">        Set&lt;String&gt; removedNodes = Sets.newHashSet(this.currentData.keySet());</span><br><span class="line">        Iterator var4 = children.iterator();</span><br><span class="line"></span><br><span class="line">        String name;</span><br><span class="line">        //从当前缓存中删除zk中的子节点，剩下的就是zk中不存在的即已被删除的节点</span><br><span class="line">        while(var4.hasNext()) &#123;</span><br><span class="line">            name = (String)var4.next();</span><br><span class="line">            removedNodes.remove(ZKPaths.makePath(this.path, name));</span><br><span class="line">        &#125;</span><br><span class="line">		 //遍历zk中不存在的子节点即已删除的节点，同时通过remove方法会触发删除子节点的事件</span><br><span class="line">        var4 = removedNodes.iterator();</span><br><span class="line">		//通过遍历缓存的节点，</span><br><span class="line">        while(var4.hasNext()) &#123;</span><br><span class="line">            name = (String)var4.next();</span><br><span class="line">            this.remove(name);</span><br><span class="line">        &#125;</span><br><span class="line">        for(var4 = children.iterator(); var4.hasNext(); this.updateInitialSet(name, NULL_CHILD_DATA)) &#123;</span><br><span class="line">            name = (String)var4.next();</span><br><span class="line">            String fullPath = ZKPaths.makePath(this.path, name);</span><br><span class="line">            if (mode == PathChildrenCache.RefreshMode.FORCE_GET_DATA_AND_STAT || !this.currentData.containsKey(fullPath)) &#123;</span><br><span class="line">                this.getDataAndStat(fullPath);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        this.maybeOfferInitializedEvent((Map)this.initialSet.get());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h1 id="TreeCache"><a href="#TreeCache" class="headerlink" title="TreeCache"></a>TreeCache</h1><p>结合了NodeCache和PathChildrenCache的特性，对整个目录进行监听。</p>
-<h2 id="TreeCacheListener"><a href="#TreeCacheListener" class="headerlink" title="TreeCacheListener"></a>TreeCacheListener</h2><h2 id="样例代码-2"><a href="#样例代码-2" class="headerlink" title="样例代码"></a>样例代码</h2><h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>学习博客：<a href="https://blog.csdn.net/qq_34021712/article/details/82877236" target="_blank" rel="noopener">https://blog.csdn.net/qq_34021712/article/details/82877236</a><br>NodeCache源码解析：<a href="https://my.oschina.net/roccn/blog/918458" target="_blank" rel="noopener">https://my.oschina.net/roccn/blog/918458</a><br>PathChildrenCache源码解析：<a href="https://my.oschina.net/roccn/blog/918209" target="_blank" rel="noopener">https://my.oschina.net/roccn/blog/918209</a><br>Exchanger机制：<a href="https://www.cnblogs.com/davidwang456/p/4179488.html" target="_blank" rel="noopener">https://www.cnblogs.com/davidwang456/p/4179488.html</a>  </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/01/zookeeper-10/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/01/zookeeper-10/" itemprop="url">zookeeper curator异步和事务</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-01T21:59:01+08:00">
-                2019-04-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ZooKeeper/" itemprop="url" rel="index">
-                    <span itemprop="name">ZooKeeper</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/04/01/zookeeper-10/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/04/01/zookeeper-10/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h1><p>curator框架通过方法inBackground支持异步操作。<br>inBackground方法列表如下表所示：</p>
-<table>
-<thead>
-<tr>
-<th>方法名</th>
-<th>参数列表</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>inBackground(BackgroundCallback callback)</td>
-<td>callback:异步执行成功后回调逻辑</td>
-<td>异步执行后进行回调</td>
-</tr>
-<tr>
-<td>inBackground(BackgroundCallback callback,Object context)</td>
-<td>callback:异步执行成功后回调逻辑 context：回调的时候可以从event.getContext获取，即回调时可以拿到</td>
-<td>带有回调数据的异步操作</td>
-</tr>
-<tr>
-<td>inBackground(BackgroundCallback callback,Object context,Executor executor)</td>
-<td>callback:异步执行成功后回调逻辑 context：回调的时候可以从event.getContext获取，即回调时可以拿到 executor：线程池，回调时可以用线程池来并发的处理任务</td>
-<td>带有回调数据并且支持线程池并发的处理回调任务</td>
-</tr>
-</tbody>
-</table>
-<p>样例代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">public static void testBackOper() throws Exception &#123;</span><br><span class="line">        CuratorFramework work = getWork();</span><br><span class="line">        System.out.println(&quot;main thread:&quot; + Thread.currentThread().getName());</span><br><span class="line">        //异步的方式创建节点</span><br><span class="line">        work.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE)</span><br><span class="line">                .inBackground(new BackgroundCallback() &#123;</span><br><span class="line">                    @Override</span><br><span class="line">                    public void processResult(CuratorFramework curatorFramework, CuratorEvent curatorEvent) throws</span><br><span class="line">                            Exception &#123;</span><br><span class="line">                        System.out.println(&quot;code:&quot; + curatorEvent.getResultCode() + &quot; type:&quot; + curatorEvent.getType());</span><br><span class="line">                        System.out.println(&quot;context:&quot; + curatorEvent.getContext());</span><br><span class="line">                        System.out.println(&quot;thread id:&quot; + Thread.currentThread().getId() + &quot; thread name:&quot; + Thread</span><br><span class="line">                                .currentThread().getName());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;).forPath(&quot;/demobackground&quot;);</span><br><span class="line">        Thread.sleep(3000);</span><br><span class="line"></span><br><span class="line">        //异步删除节点</span><br><span class="line">        @SuppressWarnings(&quot;AlibabaThreadPoolCreation&quot;)</span><br><span class="line">        ExecutorService executorService = Executors.newFixedThreadPool(10);</span><br><span class="line">        work.delete().deletingChildrenIfNeeded().withVersion(-1).inBackground(new BackgroundCallback() &#123;</span><br><span class="line">            @Override</span><br><span class="line">            public void processResult(CuratorFramework curatorFramework, CuratorEvent curatorEvent) throws Exception &#123;</span><br><span class="line">                System.out.println(&quot;code:&quot; + curatorEvent.getResultCode() + &quot; type:&quot; + curatorEvent.getType());</span><br><span class="line">                System.out.println(&quot;context:&quot; + curatorEvent.getContext());</span><br><span class="line">                System.out.println(&quot;thread id:&quot; + Thread.currentThread().getId() + &quot; thread name:&quot; + Thread</span><br><span class="line">                        .currentThread().getName());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, &quot;test context&quot;, executorService).forPath(&quot;/demobackgroud&quot;);</span><br><span class="line">        Thread.sleep(3000);</span><br><span class="line"></span><br><span class="line">        executorService.shutdown();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>输出结果：<br><img src="/2019/04/01/zookeeper-10/result.png" alt="执行结果">  </p>
-<p>先是异步的创建节点，只是注入了回调实例，并没有注入context，从输出信息中可以看到context是空的，第二次注入了context，回调的时候就输出了注入的context。<br>第一次没有注入线程池，回调的时候可以看到处理回调的线程也并不是主线程，是zookeeper的事件线程。第二次注入线程池之后处理回调的就是线程池中的线程。</p>
-<h1 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h1><p>zookeeper还支持事务性操作(擦，我的zk和curator版本没有事务的api)</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>学习博客：<a href="https://blog.csdn.net/qq_34021712/article/details/82872530" target="_blank" rel="noopener">https://blog.csdn.net/qq_34021712/article/details/82872530</a>  </p>
 </blockquote>
 
           

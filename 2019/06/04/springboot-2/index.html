@@ -83,18 +83,18 @@
 <meta name="keywords" content="SpringBoot,学习笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="spring 高级">
-<meta property="og:url" content="http://yoursite.com/2018/06/04/springboot-2/index.html">
+<meta property="og:url" content="http://yoursite.com/2019/06/04/springboot-2/index.html">
 <meta property="og:site_name" content="小磊砸的布劳格">
 <meta property="og:description" content="Spring AwareSpring的依赖注入最大特点就是低侵入。对于Bean而言Spring容器是无感的。但实际应用中我们需要使用到Spring容器本身的功能，我们需要使用Spring Aware（其本身是Spring设计用来框架内部使用的），这样我们的Bean将会和Spring的代码耦合。    Aware类型 说明     BeanNameAware 获取容器中Bean的名称   BeanF">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2018/06/04/springboot-2/applicationcontext.png">
-<meta property="og:image" content="http://yoursite.com/2018/06/04/springboot-2/schedul.png">
-<meta property="og:image" content="http://yoursite.com/2018/06/04/springboot-2/cron.png">
-<meta property="og:updated_time" content="2019-06-10T15:32:56.580Z">
+<meta property="og:image" content="http://yoursite.com/2019/06/04/springboot-2/applicationcontext.png">
+<meta property="og:image" content="http://yoursite.com/2019/06/04/springboot-2/schedul.png">
+<meta property="og:image" content="http://yoursite.com/2019/06/04/springboot-2/cron.png">
+<meta property="og:updated_time" content="2019-06-16T09:03:56.716Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spring 高级">
 <meta name="twitter:description" content="Spring AwareSpring的依赖注入最大特点就是低侵入。对于Bean而言Spring容器是无感的。但实际应用中我们需要使用到Spring容器本身的功能，我们需要使用Spring Aware（其本身是Spring设计用来框架内部使用的），这样我们的Bean将会和Spring的代码耦合。    Aware类型 说明     BeanNameAware 获取容器中Bean的名称   BeanF">
-<meta name="twitter:image" content="http://yoursite.com/2018/06/04/springboot-2/applicationcontext.png">
+<meta name="twitter:image" content="http://yoursite.com/2019/06/04/springboot-2/applicationcontext.png">
 
 
 
@@ -124,7 +124,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/06/04/springboot-2/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/06/04/springboot-2/"/>
 
 
 
@@ -247,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/04/springboot-2/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/04/springboot-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小磊砸">
@@ -276,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-04T21:28:10+08:00">
-                2018-06-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-04T21:28:10+08:00">
+                2019-06-04
               </time>
             
 
@@ -317,9 +317,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/06/04/springboot-2/#comments" itemprop="discussionUrl">
+                <a href="/2019/06/04/springboot-2/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/06/04/springboot-2/" itemprop="commentCount"></span>
+                        data-disqus-identifier="2019/06/04/springboot-2/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -383,7 +383,7 @@
 </tbody>
 </table>
 <p>实现相应的Aware接口就能够使用对应的Spring容器功能。接口ApplicationContext集成了ApplicationContextAware、ApplicationEventPubliserAware和ResourceLoaderAware。<strong>只要Bean实现ApplicationContext就可以获取到Spring容器的所有功能。</strong></p>
-<p><img src="/2018/06/04/springboot-2/applicationcontext.png" alt="applicationcontext类图">  </p>
+<p><img src="/2019/06/04/springboot-2/applicationcontext.png" alt="applicationcontext类图">  </p>
 <h2 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class DemoAllAware implements ApplicationContextAware &#123;</span><br><span class="line">    ApplicationContext context;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException &#123;</span><br><span class="line">        this.context = applicationContext;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void test() &#123;</span><br><span class="line">        System.out.println(&quot;applictionName: &quot; + context.getApplicationName());</span><br><span class="line">        System.out.println(&quot;displayName: &quot; + context.getDisplayName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Component</span><br><span class="line">public class DemoAware implements BeanNameAware, BeanFactoryAware, MessageSourceAware,</span><br><span class="line">        ApplicationEventPublisherAware, ResourceLoaderAware &#123;</span><br><span class="line">    private String beanName;</span><br><span class="line">    private BeanFactory beanFactory;</span><br><span class="line">    private ApplicationEventPublisher eventPublisher;</span><br><span class="line">    private MessageSource messageSource;</span><br><span class="line">    private ResourceLoader resourceLoader;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void setBeanName(String s) &#123;</span><br><span class="line"></span><br><span class="line">        this.beanName = s;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void setBeanFactory(BeanFactory beanFactory) throws BeansException &#123;</span><br><span class="line">        this.beanFactory = beanFactory;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) &#123;</span><br><span class="line">        this.eventPublisher = applicationEventPublisher;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void setMessageSource(MessageSource messageSource) &#123;</span><br><span class="line">        this.messageSource = messageSource;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void setResourceLoader(ResourceLoader resourceLoader) &#123;</span><br><span class="line">        this.resourceLoader = resourceLoader;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void print() throws IOException &#123;</span><br><span class="line">        System.out.println(&quot;bean name: &quot; + this.beanName);</span><br><span class="line">        System.out.println(&quot;bean facotry: &quot; + this.beanFactory.getClass());</span><br><span class="line">        Resource resource = this.resourceLoader.getResource(&quot;classpath:valuedemo.properties&quot;);</span><br><span class="line">        System.out.println(&quot;props: &quot; + IOUtils.toString(resource.getInputStream()));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">@ComponentScan(&quot;demo.base.aware&quot;)</span><br><span class="line">public class DemoConfig &#123;</span><br><span class="line">    public static void main(String[] args) throws IOException &#123;</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DemoConfig.class);</span><br><span class="line">        DemoAware bean = context.getBean(DemoAware.class);</span><br><span class="line">        bean.print();</span><br><span class="line"></span><br><span class="line">        DemoAllAware demoAllAware = context.getBean(DemoAllAware.class);</span><br><span class="line">        demoAllAware.test();</span><br><span class="line">        </span><br><span class="line">        context.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h1 id="异步任务"><a href="#异步任务" class="headerlink" title="异步任务"></a>异步任务</h1><p>Spring支持通过ThreadPoolTaskExecutor来执行异步任务。</p>
 <h2 id="样例-1"><a href="#样例-1" class="headerlink" title="样例"></a>样例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">@Service</span><br><span class="line">@Async</span><br><span class="line">public class DemoAsyncService &#123;</span><br><span class="line">    public void test() &#123;</span><br><span class="line">        System.out.println(&quot;ThreadID:&quot; + Thread.currentThread().getId() + &quot; tmie: &quot; + System.currentTimeMillis());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">@ComponentScan(&quot;demo.base.async&quot;)</span><br><span class="line">@EnableAsync</span><br><span class="line">public class DemoConfig implements AsyncConfigurer &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public Executor getAsyncExecutor() &#123;</span><br><span class="line">        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();</span><br><span class="line">        executor.setCorePoolSize(5);</span><br><span class="line">        executor.setMaxPoolSize(10);</span><br><span class="line">        executor.setQueueCapacity(20);</span><br><span class="line">        executor.initialize();</span><br><span class="line">        return executor;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() &#123;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DemoConfig.class);</span><br><span class="line">        DemoAsyncService service = context.getBean(DemoAsyncService.class);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        for (int i = 0; i &lt; 10; i++) &#123;</span><br><span class="line">            service.test();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -398,10 +398,10 @@
 <li>计划任务在方法层通过注解@Scheduled来制定该方法周期运行的方式。</li>
 <li>配置类中通过注解@EnableScheduling 开启异步任务支持。</li>
 </ul>
-<h2 id="异步任务的执行方式"><a href="#异步任务的执行方式" class="headerlink" title="异步任务的执行方式"></a>异步任务的执行方式</h2><p><img src="/2018/06/04/springboot-2/schedul.png" alt="@Scheduled">  </p>
+<h2 id="异步任务的执行方式"><a href="#异步任务的执行方式" class="headerlink" title="异步任务的执行方式"></a>异步任务的执行方式</h2><p><img src="/2019/06/04/springboot-2/schedul.png" alt="@Scheduled">  </p>
 <p>从注解@Scheduled的源码中可以看到，其支持的异步执行方式有cron，zone，fixedDelay，fixedDelayString,fixedRate,fixedRateString，initDelay和initalDelayString这几种方式。<br>下面简单介绍一下这几种方式。</p>
 <h3 id="cron表达式"><a href="#cron表达式" class="headerlink" title="cron表达式"></a>cron表达式</h3><p>cron的方式是采用Unix系统的定时任务，其表达式是由空格分隔的6（或7）个数字 秒 分钟 小时 日期 月份 星期 年（可选）组成。其具体如下表所示。</p>
-<p><img src="/2018/06/04/springboot-2/cron.png" alt="cron表达式说明">  </p>
+<p><img src="/2019/06/04/springboot-2/cron.png" alt="cron表达式说明">  </p>
 <p><a href="http://cron.qqe2.com" target="_blank" rel="noopener">cron表达式生成网址</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class DemoSchedul &#123;</span><br><span class="line">    @Scheduled(cron = &quot;0/59 * * * * ?&quot;)</span><br><span class="line">    public void printTimeOnceMin()&#123;</span><br><span class="line">        System.out.println(System.currentTimeMillis());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="zone时区"><a href="#zone时区" class="headerlink" title="zone时区"></a>zone时区</h3><p>cron计划任务时间所采用的时区，默认是空串，采用当前时区。样例: Asia/Shanghai</p>
@@ -453,7 +453,7 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/03/springboot-1/" rel="next" title="spring 基础">
+              <a href="/2019/06/03/springboot-1/" rel="next" title="spring 基础">
                 <i class="fa fa-chevron-left"></i> spring 基础
               </a>
             
@@ -463,7 +463,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/06/10/springboot-3/" rel="prev" title="spring MVC 4.X">
+              <a href="/2019/06/10/springboot-3/" rel="prev" title="spring MVC 4.X">
                 spring MVC 4.X <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -780,8 +780,8 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2018/06/04/springboot-2/';
-          this.page.identifier = '2018/06/04/springboot-2/';
+          this.page.url = 'http://yoursite.com/2019/06/04/springboot-2/';
+          this.page.identifier = '2019/06/04/springboot-2/';
           this.page.title = 'spring 高级';
         };
         var d = document, s = d.createElement('script');
