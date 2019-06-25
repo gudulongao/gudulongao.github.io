@@ -430,6 +430,8 @@
 <li>WebSocket是通过一个Socket来实现双工异步通信能力的。直接使用WebSocket协议进行开发会特别的繁琐，实际会使用较WebSocket协议更加高级的子协议STOMP，基于帧格式来定义信息与http的request和response类似的方式来进行开发。  </li>
 <li>SpringBoot为WebSocket提供的starter是spring-boot-starter-websocket。</li>
 </ul>
+<p>引入websocket支持</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-websocket&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
 <h2 id="广播"><a href="#广播" class="headerlink" title="广播"></a>广播</h2><p>服务端有消息时，会将消息广播给所有连接到当前endpoint的浏览器。</p>
 <ul>
 <li>@EnableWebSocketMessageBroker 开启websocket支持</li>
