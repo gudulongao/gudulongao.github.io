@@ -239,6 +239,170 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/03/mysql-install/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/03/mysql-install/" itemprop="url">mysql 安装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-03T20:45:39+08:00">
+                2019-07-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySql数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">MySql数据库</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/07/03/mysql-install/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/07/03/mysql-install/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>本次采用HomeBrew来安装Mysql，记录一下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 安装mysql5.7</span><br><span class="line">brew install mysql@5.7</span><br></pre></td></tr></table></figure>
+<h1 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 在Cellar目录(/usr/local/Cellar)目录下，存放有mysql@5.7</span><br><span class="line">cd $BREW_HOME/mysql@5.7/5.7.26/bin</span><br><span class="line"># 执行初始化脚本mysql_secure_installation</span><br><span class="line">./mysql_secure_installation</span><br></pre></td></tr></table></figure>
+<p>有交互式的选项</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Securing the MySQL server deployment.</span><br><span class="line"></span><br><span class="line">Connecting to MySQL using a blank password.</span><br><span class="line"></span><br><span class="line">VALIDATE PASSWORD PLUGIN can be used to test passwords</span><br><span class="line">and improve security. It checks the strength of password</span><br><span class="line">and allows the users to set only those passwords which are</span><br><span class="line">secure enough. Would you like to setup VALIDATE PASSWORD plugin?</span><br><span class="line"># 是否设置验证密码插件</span><br><span class="line">Press y|Y for Yes, any other key for No: y</span><br><span class="line"># 验证密码策略 低，中，强三个级别选择</span><br><span class="line">There are three levels of password validation policy:</span><br><span class="line"></span><br><span class="line">LOW    Length &gt;= 8</span><br><span class="line">MEDIUM Length &gt;= 8, numeric, mixed case, and special characters</span><br><span class="line">STRONG Length &gt;= 8, numeric, mixed case, special characters and dictionary                  file</span><br><span class="line"></span><br><span class="line">Please enter 0 = LOW, 1 = MEDIUM and 2 = STRONG: 0</span><br><span class="line">Please set the password for root here.</span><br><span class="line"></span><br><span class="line"># 设置新的密码</span><br><span class="line">New password: </span><br><span class="line"># 确认密码</span><br><span class="line">Re-enter new password: </span><br><span class="line"></span><br><span class="line"># 对输入的密码评测 50分</span><br><span class="line">Estimated strength of the password: 50 </span><br><span class="line"># 是否要使用提供的密码</span><br><span class="line">Do you wish to continue with the password provided?(Press y|Y for Yes, any other key for No) : y</span><br><span class="line"># 为了测试，没有被创建的用户也可以登陆，应该删除这些用户</span><br><span class="line">By default, a MySQL installation has an anonymous user,</span><br><span class="line">allowing anyone to log into MySQL without having to have</span><br><span class="line">a user account created for them. This is intended only for</span><br><span class="line">testing, and to make the installation go a bit smoother.</span><br><span class="line">You should remove them before moving into a production</span><br><span class="line">environment.</span><br><span class="line"># 是否删除匿名用户</span><br><span class="line">Remove anonymous users? (Press y|Y for Yes, any other key for No) : y</span><br><span class="line">Success.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Normally, root should only be allowed to connect from</span><br><span class="line">&apos;localhost&apos;. This ensures that someone cannot guess at</span><br><span class="line">the root password from the network.</span><br><span class="line"></span><br><span class="line"># 是否精禁止远程登录</span><br><span class="line">Disallow root login remotely? (Press y|Y for Yes, any other key for No) : y</span><br><span class="line">Success.</span><br><span class="line"></span><br><span class="line">By default, MySQL comes with a database named &apos;test&apos; that</span><br><span class="line">anyone can access. This is also intended only for testing,</span><br><span class="line">and should be removed before moving into a production</span><br><span class="line">environment.</span><br><span class="line"></span><br><span class="line"># 是否删除test库</span><br><span class="line">Remove test database and access to it? (Press y|Y for Yes, any other key for No) : n</span><br><span class="line"></span><br><span class="line"> ... skipping.</span><br><span class="line">Reloading the privilege tables will ensure that all changes</span><br><span class="line">made so far will take effect immediately.</span><br><span class="line"># 是否重新加载权限表 保证修改立即生效</span><br><span class="line">Reload privilege tables now? (Press y|Y for Yes, any other key for No) : y</span><br><span class="line">Success.</span><br><span class="line"></span><br><span class="line">All done!</span><br></pre></td></tr></table></figure>
+<h1 id="启动登录"><a href="#启动登录" class="headerlink" title="启动登录"></a>启动登录</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 启动</span><br><span class="line">brew services start mysql@5.7</span><br><span class="line"># 登录</span><br><span class="line">./mysql -u root -p</span><br></pre></td></tr></table></figure>
+<h1 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h1><p>修改用户目录中的.bash_profile文件，将mysql的命令加入到path中，可以在任何路径都能够访问mysql命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 定义HomeBrew软件安装地址</span><br><span class="line">BREW_HOME=/usr/local/Cellar</span><br><span class="line"># 定义mysql的安装地址</span><br><span class="line">MYSQL_HOME=$BREW_HOME/mysql@5.7/5.7.26</span><br><span class="line"># 将mysql的bin目录加到path中</span><br><span class="line">PATH=~/bin:$JAVA_HOME/bin:$MYSQL_HOME/bin:$BREW_HOME/bin:$PATH:.</span><br><span class="line"># 重新加载.bash_profile，让修改立即生效</span><br><span class="line">source .bash_profile</span><br></pre></td></tr></table></figure>
+<h1 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h1><h2 id="找不到mysql-sock"><a href="#找不到mysql-sock" class="headerlink" title="找不到mysql.sock"></a>找不到mysql.sock</h2><p>初始化的时候，发现报错，在/tmp下找不到mysql.sock。看了<a href="https://segmentfault.com/q/1010000004078668?_ea=496690" target="_blank" rel="noopener">解决mysql启动找不到mysql.sock</a>中提到的方式，通过mysql.server起服务会重新生成mysql.sock文件。可是我用mysql.server start报错了，没有起起来但是生成了报错日志。我查看报错日志发现，是我原先有一个mysql服务。我把服务杀死，mysql.server就能起来了，也重新生成了mysql.sock。最后成功初始化。  </p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p><a href="https://www.jianshu.com/p/e5c9e8ef8ccb" target="_blank" rel="noopener">简书：Mac安装mysql</a><br><a href="https://segmentfault.com/q/1010000004078668?_ea=496690" target="_blank" rel="noopener">解决mysql启动找不到mysql.sock</a>  </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/01/java-5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2084,192 +2248,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/11/maven-01/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/06/11/maven-01/" itemprop="url">maven scope属性</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-11T22:28:35+08:00">
-                2019-06-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/maven/" itemprop="url" rel="index">
-                    <span itemprop="name">maven</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/06/11/maven-01/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/06/11/maven-01/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <table>
-<thead>
-<tr>
-<th>类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>compile</td>
-<td>缺省值。适用于所有的阶段，随着项目一起发布</td>
-</tr>
-<tr>
-<td>provided</td>
-<td>该依赖不随项目发布而打包，由JDK或者容器来提供该依赖，例如Servlet API。</td>
-</tr>
-<tr>
-<td>runtime</td>
-<td>编译时不需要，运行时才需要，例如JDBC API Jar，编译时并不关注JDBC驱动的具体实现</td>
-</tr>
-<tr>
-<td>test</td>
-<td>编译和运行时不需要，仅仅在测试时需要</td>
-</tr>
-<tr>
-<td>system</td>
-<td>与provided类似，但需要显示的指定一个本地的JAR包文件路径。即解决依赖不是通过maven仓库，而是通过本地系统类库</td>
-</tr>
-</tbody>
-</table>
-<p><img src="/2019/06/11/maven-01/scope.png" alt="scope属性">  </p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p><a href="https://www.cnblogs.com/hzzll/p/6738955.html" target="_blank" rel="noopener">maven中scope属性</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2324,7 +2302,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">64</span>
+                  <span class="site-state-item-count">65</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2346,7 +2324,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
