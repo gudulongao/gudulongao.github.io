@@ -239,6 +239,224 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/10/jvm-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/10/jvm-1/" itemprop="url">JVM内存分布</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-10T23:58:51+08:00">
+                2018-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/jvm/" itemprop="url" rel="index">
+                    <span itemprop="name">jvm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/10/jvm-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/10/jvm-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="/2018/09/10/jvm-1/jvm-memory.png" alt="包装生成线程安全的hashmap"></p>
+<h1 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h1><p>当前线程执行字节码的行号指示器，说白了就是存储当前线程执行指令到哪个位置了。</p>
+<ul>
+<li><strong>线程私有（每个线程都有自己的程序计数器，互补影响，独立存储）</strong>。</li>
+<li>执行java方法时，存储执行字节码行号的执行器，执行native方法时为空。</li>
+<li>不会抛oom异常。</li>
+</ul>
+<h1 id="虚拟机栈"><a href="#虚拟机栈" class="headerlink" title="虚拟机栈"></a>虚拟机栈</h1><blockquote>
+<p>描述执行java方法时，每个方法执行时都会创建一个栈帧用于存储局部变量表，方法出入口等信息。每个方法的调用直至完成执行的过程，都是栈帧入栈出栈的过程。  </p>
+</blockquote>
+<p>个人感觉虚拟机栈，就是一个栈，在每次调用方法的时候，会创建栈帧来存储线程的局部变量表，方法的出入口地址等信息，方法调用就将栈帧压入虚拟机栈，方法执行成功则弹栈。  </p>
+<h2 id="局部变量表"><a href="#局部变量表" class="headerlink" title="局部变量表"></a>局部变量表</h2><blockquote>
+<p>局部变量表存放了编译期间基本类型（boolean,byte,char,short,int,float,long,double）和对象引用类型等变量所需的内存空间。当进入一个方法，这个方法需要在栈帧中分配多大的局部变量空间是完全确定的，在方法运行期间不会改变局部变量表的大小。</p>
+</blockquote>
+<p>个人感觉局部变量表就是一个专门用于存储在这个方法作用于所有的基本类型变量和引用类型变量的内存区域，随着进入方法的时候创建，随着离开方法时销毁。</p>
+<ul>
+<li><strong>线程私有。</strong></li>
+<li><strong>当线程请求的栈深大于虚拟机允许的栈深，抛出StackOverFlow异常。</strong>  </li>
+<li><strong>当虚拟机栈动态拓展时无法申请到足够的内存时，抛出OutOfMemory异常。</strong></li>
+</ul>
+<h1 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h1><p>类比虚拟机栈，只不过本地方法栈是线程调用本地方法时，所涉及到的内存区域。</p>
+<ul>
+<li><strong>会抛出StackOverFlow和OutOfMemory异常</strong>。</li>
+</ul>
+<h1 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h1><blockquote>
+<p>所有对象实例以及数组都要在堆分配。</p>
+</blockquote>
+<ul>
+<li><strong>所有线程共享</strong>。</li>
+<li><strong>垃圾回收的主要区域</strong>。</li>
+<li><strong>物理无需连续，逻辑上连续的内存空间</strong>。</li>
+<li><strong>如果没有空间给对象分配内存，同时堆也无法继续拓展，则会抛出OutOfMemory异常</strong>。</li>
+</ul>
+<h1 id="方法区（非堆-Non-Heap）"><a href="#方法区（非堆-Non-Heap）" class="headerlink" title="方法区（非堆 Non-Heap）"></a>方法区（非堆 Non-Heap）</h1><blockquote>
+<p>用于存储已被虚拟机加载的类信息、常量、静态变量等数据。</p>
+</blockquote>
+<ul>
+<li><strong>线程共享。</strong></li>
+<li><strong>当没有空间满足内存分配时，抛出OutOfMemory异常</strong>。</li>
+</ul>
+<h2 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h2><blockquote>
+<p>方法区的一部分。<br>Class文件中除了有类的版本、字段、方法、接口等描述信息外，还有常量池，用于存放编译期间生产的各种字面量和符号饮用，这部分内容在类加载后进入方法区的运行时常量池存放。<br>java语言并不要求常量一定只有编译期间才能产生，运行期间也可能将新的常量放入常量池。例如String类的intern方法。  </p>
+</blockquote>
+<p>感觉运行时常量池就是用来存储类的相关信息，包括类的常量，静态变量等信息。同时String类的intern也会将字符串常量添加到运行时常量池中。</p>
+<h2 id="字符串的使用"><a href="#字符串的使用" class="headerlink" title="字符串的使用"></a>字符串的使用</h2><h3 id="new-String（）-的存储"><a href="#new-String（）-的存储" class="headerlink" title="new String（） 的存储"></a>new String（） 的存储</h3><p><img src="/2018/09/10/jvm-1/intern-1.png" alt="包装生成线程安全的hashmap"></p>
+<p>new String(“abc”)，会直接在堆空间中分配空间来存储字符串abc。</p>
+<p><img src="/2018/09/10/jvm-1/intern-1-1.png" alt="包装生成线程安全的hashmap"></p>
+<p>通过new String是直接实例化String对象，实例化对象都是在堆空间中分配内存，故例子中str1与str2存储着两块不同的堆空间地址。</p>
+<h3 id="字符串拼接和常量拼接"><a href="#字符串拼接和常量拼接" class="headerlink" title="字符串拼接和常量拼接"></a>字符串拼接和常量拼接</h3><p><img src="/2018/09/10/jvm-1/intern-1-2.png" alt="包装生成线程安全的hashmap"></p>
+<p>字符串的拼接以及常量的拼接，java会在编译期间就会做拼接，即在编译期间，str9=”str8”,str10=”str8”。当前代码是在一个方法中，故属于方法的局部变量，所以此处的三个变量位于虚拟机栈的局部变量表中。</p>
+<h3 id="变量与字符串拼接"><a href="#变量与字符串拼接" class="headerlink" title="变量与字符串拼接"></a>变量与字符串拼接</h3><p><img src="/2018/09/10/jvm-1/intern-1-3.png" alt="包装生成线程安全的hashmap"></p>
+<p>当字符串与变量拼接的时候，jvm底层会通过StringBuilder.append在堆上构建新的对象。字符串对象是不可变的，所以对于这种字符串与变量的拼接，实际创建一个新的字符串对象，内容是拼接的字符串。</p>
+<p><img src="/2018/09/10/jvm-1/stringbuilder-1.png" alt="包装生成线程安全的hashmap"><br><img src="/2018/09/10/jvm-1/stringbuilder-2.png" alt="包装生成线程安全的hashmap"></p>
+<p>通过append的源码可以看到，StringBuilder其实底层是一个数组，每次append的时候，把字符串的每个字符都插入到数组里。在toString方法中构建一个新的字符串对象。</p>
+<h2 id="String-intern方法"><a href="#String-intern方法" class="headerlink" title="String.intern方法"></a>String.intern方法</h2><p>jvm为了使得同样的字符串能够复用而不再分配内存，减少内存的消耗。</p>
+<h3 id="1-6版本"><a href="#1-6版本" class="headerlink" title="1.6版本"></a>1.6版本</h3><p><img src="/2018/09/10/jvm-1/intern-2.png" alt="包装生成线程安全的hashmap"></p>
+<p>在1.6版本中，定义字符串（String str1 = “abc”）时，会先查询运行时常量池，如果有一致内容，则直接返回运行时常量池的引用，即str1直接指向运行常量池中字符串”abc”。如果没有，则直接在运行时常量池中自动添加一个字符串”abc”，然后返回字符串”abc”的引用。<strong>在1.6版本中运行时常量池中还是会存储字符串数据的</strong>。</p>
+<h3 id="1-7版本"><a href="#1-7版本" class="headerlink" title="1.7版本"></a>1.7版本</h3><p><img src="/2018/09/10/jvm-1/intern-3.png" alt="包装生成线程安全的hashmap"><br><img src="/2018/09/10/jvm-1/intern-3-1.png" alt="包装生成线程安全的hashmap"></p>
+<p>在1.7版本中，定义字符串变量的时候，一样会先在运行时常量池中查找是否有内容一致的字符串，有则返回运行时常量池的引用。如果没有，则会在堆中创建字符串对象，再在运行时常量池中引用堆中的字符串对象。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>不论1.6还是1.7，字符串变量都是指向运行时常量区。只不过1.6中运行时常量池直接存储字符串内容。而1.7版运行时常量池存储的事堆中字符串对象的引用。</li>
+<li>相同内容的字符串变量其实都指向运行时常量区中同一块内存空间。</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>《深入理解java虚拟机》 周志明 编著<br>JVM：<a href="https://blog.csdn.net/quinnnorris/article/details/74503168" target="_blank" rel="noopener">https://blog.csdn.net/quinnnorris/article/details/74503168</a><br>字符串常量池：<a href="https://blog.csdn.net/soonfly/article/details/70147205" target="_blank" rel="noopener">https://blog.csdn.net/soonfly/article/details/70147205</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/10/concurrency-4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2218,424 +2436,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/04/http-state-code/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/04/http-state-code/" itemprop="url">http状态码</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-04T23:18:03+08:00">
-                2018-09-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/网络/" itemprop="url" rel="index">
-                    <span itemprop="name">网络</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/04/http-state-code/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/09/04/http-state-code/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>面试的时候被问到了有关状态码的内容，现整理如下表所示：</p>
-<h1 id="正在执行"><a href="#正在执行" class="headerlink" title="正在执行"></a>正在执行</h1><table>
-<thead>
-<tr>
-<th>code</th>
-<th>des</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>100</td>
-<td>Continue</td>
-<td>正在执行</td>
-</tr>
-</tbody>
-</table>
-<h1 id="成功处理请求"><a href="#成功处理请求" class="headerlink" title="成功处理请求"></a>成功处理请求</h1><table>
-<thead>
-<tr>
-<th>code</th>
-<th>des</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>200</td>
-<td>OK</td>
-<td><strong>成功返回</strong></td>
-</tr>
-<tr>
-<td>201</td>
-<td>Created</td>
-<td>资源已依据请求创建</td>
-</tr>
-<tr>
-<td>202</td>
-<td>Accepted</td>
-<td><strong>已接收请求但并未处理，异步执行，可能执行了可能没执行</strong></td>
-</tr>
-<tr>
-<td>203</td>
-<td>Non-Authoritative Information</td>
-<td>已处理请求，但返回数据的来源非原始服务器，可能来自本地或第三方的拷贝。即<strong>非授权信息</strong></td>
-</tr>
-<tr>
-<td>204</td>
-<td>No Content</td>
-<td>处理请求后无返回数据</td>
-</tr>
-<tr>
-<td>205</td>
-<td>Reset Content</td>
-<td>处理请求后无返回，但需要请求方需要重置文档视图（浏览器需要重置表单）</td>
-</tr>
-</tbody>
-</table>
-<h1 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h1><table>
-<thead>
-<tr>
-<th>code</th>
-<th>des</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>300</td>
-<td>Multiple Choices</td>
-<td>被请求的资源有多个备选的操作供请求者选择，每一个操作都对应一个地址来重定向</td>
-</tr>
-<tr>
-<td>301</td>
-<td>Moved Permanently</td>
-<td>被请求的资源已被永久的变更到新地址，<strong>使用get请求时会自动重定向</strong></td>
-</tr>
-<tr>
-<td>302</td>
-<td>Move temporarily</td>
-<td>被请求的资源临时从别的地址来响应，请求者还是通过原有地址来请求</td>
-</tr>
-<tr>
-<td>303</td>
-<td>See Other</td>
-<td>请求的资源可以在另一个URI中获取，请求者应该通过一个专门的get请求来获取响应</td>
-</tr>
-<tr>
-<td>304</td>
-<td>Not Modified</td>
-<td>本次请求与上一次的请求，请求的网页没有变化，返回此状态码而不会返回网页数据</td>
-</tr>
-<tr>
-<td>305</td>
-<td>Use Proxy</td>
-<td>请求的资源必须通过指定的代理才可以被访问</td>
-</tr>
-<tr>
-<td>306</td>
-<td>Temporary Redirect</td>
-<td>服务器临时从别的地址来响应请求，请求者还是通过原有地址来请求</td>
-</tr>
-</tbody>
-</table>
-<h1 id="请求错误"><a href="#请求错误" class="headerlink" title="请求错误"></a>请求错误</h1><table>
-<thead>
-<tr>
-<th>code</th>
-<th>des</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>400</td>
-<td>Bad Request</td>
-<td><strong>请求参数错误/语义错误</strong></td>
-</tr>
-<tr>
-<td>401</td>
-<td>Unauthorized</td>
-<td>需要认证</td>
-</tr>
-<tr>
-<td>403</td>
-<td>Forbidden</td>
-<td>拒绝该请求</td>
-</tr>
-<tr>
-<td>404</td>
-<td>Not Found</td>
-<td>未找到指定的资源</td>
-</tr>
-<tr>
-<td>405</td>
-<td>Method Not Allowed</td>
-<td>拒绝请求的方法</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable</td>
-<td>无法使用请求的内容特性响应请求的网页</td>
-</tr>
-<tr>
-<td>407</td>
-<td>Proxy Authentication Required</td>
-<td>与401类似，但是需要在代理服务器进行身份认证</td>
-</tr>
-<tr>
-<td>408</td>
-<td>Request Timeout</td>
-<td>请求超时</td>
-</tr>
-<tr>
-<td>409</td>
-<td>Conflict</td>
-<td>服务器在处理请求时发生冲突，需要返回详细的信息告知请求方冲突的来源</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone</td>
-<td>请求的资源已永久的不可用（已删除）</td>
-</tr>
-<tr>
-<td>411</td>
-<td>Length Required</td>
-<td>需要定义content length，即服务器拒绝没有定义有效长度的请求</td>
-</tr>
-<tr>
-<td>412</td>
-<td>Precondition Failed</td>
-<td>未满足先决条件</td>
-</tr>
-<tr>
-<td>413</td>
-<td>Request Entity Too Large</td>
-<td>请求的实体数据太大</td>
-</tr>
-<tr>
-<td>414</td>
-<td>Request-URI Too Long</td>
-<td>请求的URI超长</td>
-</tr>
-<tr>
-<td>415</td>
-<td>Unsupported Media Type</td>
-<td>服务器不支持请求的数据格式</td>
-</tr>
-<tr>
-<td>416</td>
-<td>Requested Range Not Satisfiable</td>
-<td>请求中包含Range,但返回的数据中不符合在范围内</td>
-</tr>
-<tr>
-<td>417</td>
-<td>Expectation Failed</td>
-<td>请求中包含Except，但服务器无法满足预期</td>
-</tr>
-<tr>
-<td>421</td>
-<td>too many connections</td>
-<td>服务器的连接数超限</td>
-</tr>
-<tr>
-<td>422</td>
-<td>Unprocessable Entity</td>
-<td>请求格式正确但含有语义错误</td>
-</tr>
-<tr>
-<td>423</td>
-<td>Locked</td>
-<td>请求资源被锁定</td>
-</tr>
-<tr>
-<td>424</td>
-<td>Failed Dependency</td>
-<td>由于之前的请求导致本次请求失败</td>
-</tr>
-<tr>
-<td>451</td>
-<td>Unavailable For Legal Reasons</td>
-<td>请求因法律原因而不可用</td>
-</tr>
-</tbody>
-</table>
-<h1 id="服务器错误"><a href="#服务器错误" class="headerlink" title="服务器错误"></a>服务器错误</h1><table>
-<thead>
-<tr>
-<th>code</th>
-<th>des</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>500</td>
-<td>Internal Server Error</td>
-<td><strong>服务器端发生异常</strong></td>
-</tr>
-<tr>
-<td>501</td>
-<td>Not Implemented</td>
-<td>服务器不支持该功能，无法识别该请求或者不能支持该请求的资源</td>
-</tr>
-<tr>
-<td>502</td>
-<td>Bad Gateway</td>
-<td><strong>网关或者代理服务器在处理请求时，无法从上游服务器获取响应</strong></td>
-</tr>
-<tr>
-<td>503</td>
-<td>Service Unavailable</td>
-<td><strong>服务器维护或者过载导致无法处理请求</strong></td>
-</tr>
-<tr>
-<td>504</td>
-<td>Gateway Timeout</td>
-<td><strong>网关或代理服务器处理请求时，获取上游服务器响应超时</strong></td>
-</tr>
-<tr>
-<td>505</td>
-<td>HTTP Version Not Supported</td>
-<td>服务器不支持请求指定的http版本</td>
-</tr>
-</tbody>
-</table>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2690,7 +2490,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2712,7 +2512,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">49</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
