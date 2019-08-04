@@ -239,6 +239,213 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/21/zookeeper-6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/21/zookeeper-6/" itemprop="url">zookeeper 权限管理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-21T22:16:49+08:00">
+                2019-03-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ZooKeeper/" itemprop="url" rel="index">
+                    <span itemprop="name">ZooKeeper</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/21/zookeeper-6/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/03/21/zookeeper-6/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>ZK的权限管理主要是依靠节点的<strong>ACL(access control list)</strong>来实现的。<br>节点的ACL由权限验证模式(Scheme)、权限(permission)和用户三部分组成。  </p>
+<h1 id="Permission"><a href="#Permission" class="headerlink" title="Permission"></a>Permission</h1><ul>
+<li>C(create)：创建子节点</li>
+<li>D(delete)：删除子节点</li>
+<li>R(read)：访问节点/子节点</li>
+<li>W(write)：更新节点数据</li>
+<li>A(admin)：管理员</li>
+</ul>
+<h1 id="Scheme"><a href="#Scheme" class="headerlink" title="Scheme"></a>Scheme</h1><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+<th>写法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>world</td>
+<td>不进行权限验证</td>
+<td>world:anyone:[permission]</td>
+</tr>
+<tr>
+<td>ip</td>
+<td>指定的ip才可以使用节点</td>
+<td>ip:[ip]:[permission]</td>
+</tr>
+<tr>
+<td>auth</td>
+<td>指定的用户才可以使用节点</td>
+<td>auth:user:passwd:[permission]</td>
+</tr>
+<tr>
+<td><strong>digest</strong></td>
+<td><strong>指定的用户才可以使用节点，但是密码需要输入密文</strong></td>
+<td>digest:user:BASE64(SHA1(passwd)):[permission]</td>
+</tr>
+</tbody>
+</table>
+<p><strong>setAcl /path auth:lee:lee:cdrwa 与 setAcl /path digest:lee:BASE64(SHA1(password)):cdrwa是等价的，在通过 addauth digest lee:lee 后都能操作指定节点的权限。在实际情况中，digest要更为常用一些。</strong></p>
+<h1 id="操作指令"><a href="#操作指令" class="headerlink" title="操作指令"></a>操作指令</h1><ul>
+<li>getAcl 获取节点的acl</li>
+<li>setAcl 给节点设置acl</li>
+<li>addauth 进行用户认证</li>
+</ul>
+<h1 id="超级管理员"><a href="#超级管理员" class="headerlink" title="超级管理员"></a>超级管理员</h1><p>在zkServer.sh中的nohup后面追加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;-Dzookeeper.DigestAuthenticationProvider.superDigest=user1:HYGa7IZRm2PUBFiFFu8xY2pPP/s=&quot;</span><br></pre></td></tr></table></figure>
+<p>这句话是指定用户：user1，密码123456(配置语句中的是BASE64(SHA1(passwd))处理过后的密文)</p>
+<p>如图所示：</p>
+<p><img src="/2019/03/21/zookeeper-6/zookeeper-7/sueradminconf.png" alt="超级管理员配置">  </p>
+<p>配置后需要重启生效，超级管理员可以不受权限控制。当然如果不想要超级管理员在zkServer.sh中去除配置即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 进行超级管理员登陆认证</span><br><span class="line">addauth digest user1:123456</span><br></pre></td></tr></table></figure>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>权限管理：<a href="https://blog.csdn.net/gangsijay888/article/details/82426475" target="_blank" rel="noopener">https://blog.csdn.net/gangsijay888/article/details/82426475</a><br>指令操作：<a href="https://blog.51cto.com/zero01/2106801" target="_blank" rel="noopener">https://blog.51cto.com/zero01/2106801</a>  </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/20/docker-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2139,191 +2346,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/14/redblacktree/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/14/redblacktree/" itemprop="url">红黑树</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-14T23:02:25+08:00">
-                2018-11-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据结构/" itemprop="url" rel="index">
-                    <span itemprop="name">数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/11/14/redblacktree/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/11/14/redblacktree/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="意义"><a href="#意义" class="headerlink" title="意义"></a>意义</h1><p>二叉搜索树，能够提供较好的查找，插入以及删除的效率。但是当插入的数据都是有序的，这会导致整个二叉搜索树退化为链表。当查找数据的时候由原来的二分查找变成了循环遍历。这种效率降低是因为树不够平衡导致的。红黑树就是对所有的节点增加红黑两种颜色，同时节点直接保持一种颜色的准则，在插入，删除等操作的同时也要维持这个准则，这样红黑树能够在处理排序数据时也能保证树的平衡，能够提供较好的查找效率。</p>
-<h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><ul>
-<li>所有节点要么是红色，要么是黑色</li>
-<li>根节点必须是黑色</li>
-<li>所有叶子节点的路径中不能有连续的红色节点（红色节点的子节点必须是黑色，反之不一定）</li>
-<li>所有叶子节点的路径中黑色个数相同（黑色高度一致）</li>
-</ul>
-<h1 id="左旋"><a href="#左旋" class="headerlink" title="左旋"></a>左旋</h1><p><img src="/2018/11/14/redblacktree/leftretato.png" alt="左旋"></p>
-<p>如图所示。左旋会将当前节点的右节点作为后继节点，当前节点作为后继节点的左子树。</p>
-<p><img src="/2018/11/14/redblacktree/redblacktree-1.png" alt="红黑树-1"></p>
-<h1 id="右旋"><a href="#右旋" class="headerlink" title="右旋"></a>右旋</h1><p><img src="/2018/11/14/redblacktree/rightretato.png" alt="右旋"></p>
-<p>如图所示，右旋会将当亲节点的左子节点为后继节点，当前节点作为后继节点的右子树。</p>
-<p><img src="/2018/11/14/redblacktree/redblacktree-2.png" alt="红黑树-2"></p>
-<h1 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h1><p>插入节点逻辑比较复杂。因为要保证插入新节点后整个红黑树还能够保持红黑树的定义。<br>我们默认新插入的节点都是红色的，因为新节点是红色的代价最小。当节点是黑色是一定会使得黑色高度发生变化。而当新节点是红色，当父节点是黑色，则不违背定义，但如果父节点是红色，我们可以通过很小的代价来修正。</p>
-<h2 id="修正"><a href="#修正" class="headerlink" title="修正"></a>修正</h2><p>当插入的新节点（红色）后，可能会违背红黑树的定义，这个时候需要进行修正。</p>
-<h3 id="父节点为黑色"><a href="#父节点为黑色" class="headerlink" title="父节点为黑色"></a>父节点为黑色</h3><p><img src="/2018/11/14/redblacktree/insert-1.png" alt="插入-1"></p>
-<p>这种场景不需要做修正。并不违反红黑树的定义。</p>
-<h3 id="父节点为红色，叔叔节点为红色"><a href="#父节点为红色，叔叔节点为红色" class="headerlink" title="父节点为红色，叔叔节点为红色"></a>父节点为红色，叔叔节点为红色</h3><p><img src="/2018/11/14/redblacktree/insert-2.png" alt="插入-2"></p>
-<p>这种场景只需要将父节点，叔叔节点都变成黑色，将祖父节点变为红色，再以祖父节点为基准开始修正（递归）。</p>
-<h3 id="父节点为红色，叔叔节点为黑色"><a href="#父节点为红色，叔叔节点为黑色" class="headerlink" title="父节点为红色，叔叔节点为黑色"></a>父节点为红色，叔叔节点为黑色</h3><p>当父节点为红色，叔叔节点为黑色时，需要按如下四种场景来进行修正。</p>
-<h4 id="父节点是左子节点，新节点为左子节点"><a href="#父节点是左子节点，新节点为左子节点" class="headerlink" title="父节点是左子节点，新节点为左子节点"></a>父节点是左子节点，新节点为左子节点</h4><p><img src="/2018/11/14/redblacktree/insert-3.png" alt="插入-3"></p>
-<p>这种场景，需要先将父节点变为黑色，将祖父节点变为红色。再以祖父节点为基准进行右旋。</p>
-<h4 id="父节点是右子节点，新节点是右子节点"><a href="#父节点是右子节点，新节点是右子节点" class="headerlink" title="父节点是右子节点，新节点是右子节点"></a>父节点是右子节点，新节点是右子节点</h4><p><img src="/2018/11/14/redblacktree/insert-4.png" alt="插入-4"></p>
-<p>这种场景，需要先将父节点变为黑色，将祖父节点变为红色，再以祖父节点为基准进行左旋。</p>
-<h4 id="父节点是左子节点，新节点是右子节点"><a href="#父节点是左子节点，新节点是右子节点" class="headerlink" title="父节点是左子节点，新节点是右子节点"></a>父节点是左子节点，新节点是右子节点</h4><p><img src="/2018/11/14/redblacktree/insert-5.png" alt="插入-5"></p>
-<p>这种场景，需要先以父节点为基准进行左旋。这个时候整个树会变成父节点时左子节点，新节点也是左子节点的场景，只是新节点是父节点的父节点。<br>这个时候同理，将新节点变为黑色，将祖父节点变为红色，再以祖父节点为基准节点进行右旋。</p>
-<h4 id="父节点是右子节点，新节点是左子节点"><a href="#父节点是右子节点，新节点是左子节点" class="headerlink" title="父节点是右子节点，新节点是左子节点"></a>父节点是右子节点，新节点是左子节点</h4><p><img src="/2018/11/14/redblacktree/insert-6.png" alt="插入-6"></p>
-<p>这种场景，需要先以父节点为基准进行右旋。这个时候整个树就会变成父节点是右子节点，新节点也是右子节点的场景。只是新节点是父节点的父节点。<br>这个时候同理，将新节点变为黑色，将祖父节点变为红色，再以祖父节点为基准节点进行左旋。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">    * 新增后修正</span><br><span class="line">    *</span><br><span class="line">    * @param currNode 当前节点</span><br><span class="line">    */</span><br><span class="line">   private void insertFix(RedBlackNode&lt;T&gt; currNode) throws Exception &#123;</span><br><span class="line">       NodeType currNodeType = currNode.nodeType();</span><br><span class="line">       //获取父级节点</span><br><span class="line">       RedBlackNode&lt;T&gt; parent = currNode.getParent();</span><br><span class="line">       if (parent == null) &#123;</span><br><span class="line">           return;</span><br><span class="line">       &#125;</span><br><span class="line">       //获取祖父节点</span><br><span class="line">       RedBlackNode&lt;T&gt; grandPa = parent.getParent();</span><br><span class="line">       if (grandPa == null) &#123;</span><br><span class="line">           return;</span><br><span class="line">       &#125;</span><br><span class="line">       //父节点的颜色</span><br><span class="line">       ColourType parentColour = parent.getColour();</span><br><span class="line">       //父节点是黑色不做处理</span><br><span class="line">       if (ColourType.BLACK == parentColour) &#123;</span><br><span class="line">           return;</span><br><span class="line">       &#125;</span><br><span class="line">       //获取父级节点的节点类型</span><br><span class="line">       NodeType parentNodeType = parent.nodeType();</span><br><span class="line">       //获取叔叔节点</span><br><span class="line">       RedBlackNode&lt;T&gt; uncale = getUncaleNode(currNode);</span><br><span class="line">       ColourType uncaleColour = uncale == null ? null : uncale.getColour();</span><br><span class="line">       //父节点是红色，叔叔节点是红色,直接变更父节点与叔叔节点的颜色，修改祖父节点的颜色</span><br><span class="line">       if (ColourType.RED == uncaleColour) &#123;</span><br><span class="line">           parent.setColour(ColourType.BLACK);</span><br><span class="line">           uncale.setColour(ColourType.BLACK);</span><br><span class="line">           grandPa.setColour(ColourType.RED);</span><br><span class="line">           //以祖父节点为基准开始修正</span><br><span class="line">           insertFix(grandPa);</span><br><span class="line">       &#125;</span><br><span class="line">       //父节点是红色，叔叔节点是黑色</span><br><span class="line">       else &#123;</span><br><span class="line">           if (NodeType.LEFT == parentNodeType) &#123;</span><br><span class="line">               if (NodeType.RIGHT == currNodeType) &#123;</span><br><span class="line">                   leftRotate(parent);</span><br><span class="line">                   parent = currNode;</span><br><span class="line">               &#125;</span><br><span class="line">               parent.setColour(ColourType.BLACK);</span><br><span class="line">               grandPa.setColour(ColourType.RED);</span><br><span class="line">               rightRotate(grandPa);</span><br><span class="line">           &#125; else &#123;</span><br><span class="line">               if (NodeType.LEFT == currNodeType) &#123;</span><br><span class="line">                   rightRotate(parent);</span><br><span class="line">                   parent = currNode;</span><br><span class="line">               &#125;</span><br><span class="line">               parent.setColour(ColourType.BLACK);</span><br><span class="line">               grandPa.setColour(ColourType.RED);</span><br><span class="line">               leftRotate(grandPa);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p>#参考资料</p>
-<blockquote>
-<p>红黑树图片：<a href="https://blog.csdn.net/qq_34173549/article/details/79636764" target="_blank" rel="noopener">https://blog.csdn.net/qq_34173549/article/details/79636764</a><br>红黑树总结：<a href="https://m.imooc.com/article/247142" target="_blank" rel="noopener">https://m.imooc.com/article/247142</a><br>红黑树代码：<a href="https://www.cnblogs.com/skywang12345/p/3624343.html" target="_blank" rel="noopener">https://www.cnblogs.com/skywang12345/p/3624343.html</a><br>红黑树代码：<a href="https://www.cnblogs.com/ysocean/p/8004211.html" target="_blank" rel="noopener">https://www.cnblogs.com/ysocean/p/8004211.html</a><br>红黑树的删除：<a href="https://blog.csdn.net/qq_37169817/article/details/78880110" target="_blank" rel="noopener">https://blog.csdn.net/qq_37169817/article/details/78880110</a><br>红黑树的删除：<a href="https://blog.csdn.net/ChinaLeeSunnyBoy/article/details/79525456" target="_blank" rel="noopener">https://blog.csdn.net/ChinaLeeSunnyBoy/article/details/79525456</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2378,7 +2400,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-count">68</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2400,7 +2422,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>

@@ -239,6 +239,196 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/13/net-modle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/13/net-modle/" itemprop="url">网络分层模型</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-13T10:31:18+08:00">
+                2018-09-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/网络/" itemprop="url" rel="index">
+                    <span itemprop="name">网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/13/net-modle/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/13/net-modle/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="OSI七层模型"><a href="#OSI七层模型" class="headerlink" title="OSI七层模型"></a>OSI七层模型</h1><p><strong>OSI(Open System Internet)开放式系统互联网</strong>。  </p>
+<p><img src="/2018/09/13/net-modle/osi.png" alt="包装生成线程安全的hashmap"></p>
+<h2 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h2><p>面向实际的应用程序，向应用程序提供网路服务。<br>常用的网络层协议有：  </p>
+<ul>
+<li>HTTP 超文本传输协议  </li>
+<li>FTP 文件传输协议  </li>
+<li>TFTP 简单文件传输协议  </li>
+<li>SMTP 简单邮件传输协议  </li>
+<li>NTP 网络时间协议  </li>
+<li>POP3 邮件协议第三版</li>
+<li>IMAP4 网络信息访问协议第四版</li>
+</ul>
+<blockquote>
+<p>两国之间可以通过书信，大使互访，邮件等多种方式来沟通互信，每种方式都有着各自的规矩。目前采用书信来举例。<br>故应用层中提供了多种网络服务的协议，每种协议都有着不同的处理方式。</p>
+</blockquote>
+<h2 id="表示层（编码，加密，压缩）"><a href="#表示层（编码，加密，压缩）" class="headerlink" title="表示层（编码，加密，压缩）"></a>表示层（编码，加密，压缩）</h2><blockquote>
+<p>当两国文字不同语言不通时，这种互通需要翻译将本国语言书写的内容翻译成标准语言，方便对方能正常解读。同时为了安全，还会进行加密处理。</p>
+</blockquote>
+<p>故应用层的数据编码和转换（加/解密和数据压缩），确保应用层的数据能够被别的系统应用层能够正常识别。  </p>
+<h2 id="会话层"><a href="#会话层" class="headerlink" title="会话层"></a>会话层</h2><blockquote>
+<p>外交部拥有对方国家邮箱的地址，当外交部收到来自翻译后的国书后，外交部将建立本次会话的记录。外交部将国书中增加对方国家的地址信息。准备将国书进行投递。当收到对方的回信，则此次会话结束。</p>
+</blockquote>
+<p>故会话层是负责建立，管理表示层之间的通信会话。</p>
+<h2 id="传输层（端到端）"><a href="#传输层（端到端）" class="headerlink" title="传输层（端到端）"></a>传输层（端到端）</h2><blockquote>
+<p>邮递员负责邮件的收发工作。  </p>
+</blockquote>
+<p>传输层负责了<strong>端到端的链接（端口号）</strong>，为会话层提供了可靠透明的数据传输服务。包括差错处理和流量控制。<br>包含协议：<strong>TCP/UDP</strong>。</p>
+<h2 id="网络层（IP协议层）"><a href="#网络层（IP协议层）" class="headerlink" title="网络层（IP协议层）"></a>网络层（IP协议层）</h2><blockquote>
+<p>负责传输邮件的是复杂的快递网络。覆盖各地的集散中心，从端到端的传递需要经过集散中心。</p>
+</blockquote>
+<p>负责通过IP寻址来建立端到端的链接，选择合适的路由和交换节点，将数据正确无误的传输到目的端。</p>
+<h2 id="数据链路成"><a href="#数据链路成" class="headerlink" title="数据链路成"></a>数据链路成</h2><p>将数据组合成帧，以<strong>MAC地址</strong>来访问，并提供差错检测。</p>
+<h1 id="物理层"><a href="#物理层" class="headerlink" title="物理层"></a>物理层</h1><p>以物理介质来传输比特流。</p>
+<h1 id="TCP-IP五层模型"><a href="#TCP-IP五层模型" class="headerlink" title="TCP/IP五层模型"></a>TCP/IP五层模型</h1><p><img src="/2018/09/13/net-modle/osi-tcp-ip.png" alt="包装生成线程安全的hashmap"></p>
+<h1 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h1><p><img src="/2018/09/13/net-modle/grid.png" alt="包装生成线程安全的hashmap"><br><img src="/2018/09/13/net-modle/xieyi.png" alt="包装生成线程安全的hashmap"><br><img src="/2018/09/13/net-modle/xieyi-2.png" alt="包装生成线程安全的hashmap"></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p><a href="https://www.cnblogs.com/qishui/p/5428938.html" target="_blank" rel="noopener">https://www.cnblogs.com/qishui/p/5428938.html</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/12/jvm-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2274,173 +2464,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/05/java-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/05/java-1/" itemprop="url">PO/BO/VO/POJO/DAO</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-05T16:06:34+08:00">
-                2018-09-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/05/java-1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/09/05/java-1/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="PO-VO-BO-DAO-简介"><a href="#PO-VO-BO-DAO-简介" class="headerlink" title="PO/VO/BO/DAO 简介"></a>PO/VO/BO/DAO 简介</h1><h2 id="PO（Presistant-Object）"><a href="#PO（Presistant-Object）" class="headerlink" title="PO（Presistant Object）"></a>PO（Presistant Object）</h2><p>持久化对象，数据库中数据的抽象，即对应表中的一条记录。</p>
-<h2 id="BO-Business-Object"><a href="#BO-Business-Object" class="headerlink" title="BO(Business Object)"></a>BO(Business Object)</h2><p>业务对象，可以包含多个其他对象。</p>
-<blockquote>
-<p>一份简历，包含教育经历，工作经历等，教育经历对应一个PO，工作经历对应一个PO，这样简历BO就由这些PO组成。</p>
-</blockquote>
-<h2 id="DTO-Data-Transfer-Object"><a href="#DTO-Data-Transfer-Object" class="headerlink" title="DTO(Data Transfer Object)"></a>DTO(Data Transfer Object)</h2><p>数据传输对象，用于前端与后端进行数据交互。由于涉及到网络传输，故DTO会根据展示层的要求来简化数据来减少网络流量。</p>
-<blockquote>
-<p>比如一个表有20个字段，对应的PO也会有20个字段，界面展现只需要展现5个字段，故只需要DTO包含界面展现的5个字段进行传输即可，相比较传输真个PO，这样减少了网络流量，也不会暴露整个表结构。</p>
-</blockquote>
-<h2 id="VO-Value-Object"><a href="#VO-Value-Object" class="headerlink" title="VO(Value Object)"></a>VO(Value Object)</h2><p>值对象，常用于前端组件进行数据展现的时候所使用的数据结构。其来自于DTO。</p>
-<h2 id="POJO-plain-ordinary-java-object"><a href="#POJO-plain-ordinary-java-object" class="headerlink" title="POJO(plain ordinary java object)"></a>POJO(plain ordinary java object)</h2><p>简单的java对象。普通的javabean。</p>
-<h1 id="区别与应用"><a href="#区别与应用" class="headerlink" title="区别与应用"></a>区别与应用</h1><h2 id="VO与DTO"><a href="#VO与DTO" class="headerlink" title="VO与DTO"></a>VO与DTO</h2><p>当展现层的需求只有一种的时候，可以使用DTO来替代VO，在设计层面，DTO只是用来明确服务端接收的请求的数据或者响应请求的数据，而界面展现的时候，特别是当展现的需求多种多样的时候，会基于同一种DTO而衍生出不同的VO。</p>
-<blockquote>
-<p>比方说性别，DTO中sex是男女，如果普通的展现需求，可以直接利用DTO中的sex属性来展现。但如果有个性化定制的时候，比方说需要展现成帅哥/美女，这种时候基于同样的DTO就需要根据展现的需求来衍生出性别为帅哥/美女的VO。</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2495,7 +2518,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-count">68</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2517,7 +2540,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">50</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
