@@ -108,7 +108,13 @@
 <meta property="og:image" content="http://yoursite.com/2019/07/08/stream/demo_count.png">
 <meta property="og:image" content="http://yoursite.com/2019/07/08/stream/demo_max.png">
 <meta property="og:image" content="http://yoursite.com/2019/07/08/stream/demo_min.png">
-<meta property="og:updated_time" content="2019-07-31T15:12:09.414Z">
+<meta property="og:image" content="http://yoursite.com/2019/07/08/stream/demo_allmatch.png">
+<meta property="og:image" content="http://yoursite.com/2019/07/08/stream/demo_anymatch.png">
+<meta property="og:image" content="http://yoursite.com/2019/07/08/stream/demo_nonematch.png">
+<meta property="og:image" content="http://yoursite.com/2019/07/08/stream/demo_findany.png">
+<meta property="og:image" content="http://yoursite.com/2019/07/08/stream/demo_findfirst.png">
+<meta property="og:image" content="http://yoursite.com/2019/07/08/stream/demo_limit.png">
+<meta property="og:updated_time" content="2019-08-19T13:37:18.021Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="stream">
 <meta name="twitter:description" content="JDK1.8 提供了流Stream的API。将数据元素集合看作流，流在管道中传输，并且可以在管道的节点对数据进行筛选、排序，聚合等处理。    什么是流流(Stream)是来自数据源可以进行聚合操作的元素队列。    数据源：流的来源，可以是集合，数组，I/O channel等。 聚合操作：如filter、map、reduce、find、match、sort等。  流操作的特点 针对流的操作都会立">
@@ -489,7 +495,19 @@
 <p><img src="/2019/07/08/stream/demo_max.png" alt="max方法样例"></p>
 <h2 id="min"><a href="#min" class="headerlink" title="min"></a>min</h2><p>找出stream元素排序后的第一个元素</p>
 <p><img src="/2019/07/08/stream/demo_min.png" alt="min方法样例"></p>
-<h2 id="reduce"><a href="#reduce" class="headerlink" title="reduce"></a>reduce</h2><h2 id="allMatch"><a href="#allMatch" class="headerlink" title="allMatch"></a>allMatch</h2><h2 id="anyMatch"><a href="#anyMatch" class="headerlink" title="anyMatch"></a>anyMatch</h2><h2 id="noeMatch"><a href="#noeMatch" class="headerlink" title="noeMatch"></a>noeMatch</h2><h2 id="findAny"><a href="#findAny" class="headerlink" title="findAny"></a>findAny</h2><h2 id="findFirst"><a href="#findFirst" class="headerlink" title="findFirst"></a>findFirst</h2><h2 id="limit"><a href="#limit" class="headerlink" title="limit"></a>limit</h2><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<h2 id="reduce"><a href="#reduce" class="headerlink" title="reduce"></a>reduce</h2><h2 id="allMatch"><a href="#allMatch" class="headerlink" title="allMatch"></a>allMatch</h2><p>用于判断stream元素是否全部满足条件，如果全部满足返回true否则false。</p>
+<p><img src="/2019/07/08/stream/demo_allmatch.png" alt="allmatch方法样例"></p>
+<h2 id="anyMatch"><a href="#anyMatch" class="headerlink" title="anyMatch"></a>anyMatch</h2><p>用于判断stream元素中是否有一个元素满足条件，任意一个元素满足返回true否则false。</p>
+<p><img src="/2019/07/08/stream/demo_anymatch.png" alt="anymatch方法样例"></p>
+<h2 id="noeMatch"><a href="#noeMatch" class="headerlink" title="noeMatch"></a>noeMatch</h2><p>用于判断stream元素是否所有都不满足条件，如果都不满足返回true否则false。</p>
+<p><img src="/2019/07/08/stream/demo_nonematch.png" alt="nonematch方法样例"></p>
+<h2 id="findAny"><a href="#findAny" class="headerlink" title="findAny"></a>findAny</h2><p>用于获取含有stream元素的optional。<strong>如果stream为空，则optional为空，此操作不是确定的。并行操作时，可能会获取不同的结果，串行操作感觉是获取的第一个元素</strong></p>
+<p><img src="/2019/07/08/stream/demo_findany.png" alt="findany方法样例"></p>
+<h2 id="findFirst"><a href="#findFirst" class="headerlink" title="findFirst"></a>findFirst</h2><p>用于获取含有stream第一个元素的optional。<strong>如果stream为空则optional为空</strong></p>
+<p><img src="/2019/07/08/stream/demo_findfirst.png" alt="findfirst方法样例"></p>
+<h2 id="limit"><a href="#limit" class="headerlink" title="limit"></a>limit</h2><p>截取stream，如果limit保留的个数大于stream的元素个数，则返回stream全部元素，否则只保留指定个数的元素。</p>
+<p><img src="/2019/07/08/stream/demo_limit.png" alt="limit方法样例"></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
 <p><a href="https://www.runoob.com/java/java8-streams.html" target="_blank" rel="noopener">菜鸟教程：Stream</a><br><a href="https://blog.csdn.net/IO_Field/article/details/54971761" target="_blank" rel="noopener">CSDN：stream详解</a><br><a href="https://blog.csdn.net/tayanxunhua/article/details/19700579" target="_blank" rel="noopener">Java8中的Random</a><br><a href="https://www.runoob.com/java/java-bitset-class.html" target="_blank" rel="noopener">Java中的BitSet</a><br><a href="https://www.jianshu.com/p/4fbad3a6d253" target="_blank" rel="noopener">Java中BitSet原理</a><br><a href="https://dextersmake.iteye.com/blog/2353406" target="_blank" rel="noopener">BitSet样例</a><br><a href="https://www.runoob.com/java/java-regular-expressions.html" target="_blank" rel="noopener">菜鸟驿站:正则表达式</a><br><a href="https://blog.csdn.net/darrensty/article/details/79283146" target="_blank" rel="noopener">stream和parallelStream</a><br><a href="https://www.cnblogs.com/yucy/p/10260014.html" target="_blank" rel="noopener">flatmap和map的区别</a><br><a href="https://blog.csdn.net/huo065000/article/details/78964382" target="_blank" rel="noopener">Function接口说明</a><br><a href="https://blog.csdn.net/weixin_33971205/article/details/92694495" target="_blank" rel="noopener">Comparable与Comparator区别</a><br><a href="https://blog.csdn.net/IO_Field/article/details/54971608" target="_blank" rel="noopener">collect说明</a><br><a href="https://blog.csdn.net/IO_Field/article/details/54971679" target="_blank" rel="noopener">reduce说明</a>  </p>
 </blockquote>
 
