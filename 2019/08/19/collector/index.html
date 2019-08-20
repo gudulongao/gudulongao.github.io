@@ -79,15 +79,14 @@
 
 
 
-<meta name="description" content="stream提供了方法collect。如下图源码所示。  辅助接口Supplier Supplier接口主要是提供方法用于获取指定类型的对象。 BiConsumer  accept(T,U) 提供对数据的处理逻辑 andThen(BiConsumer&amp;lt;T,U&amp;gt; after) 返回一个新的BiConsumer 其accept逻辑是先执行当前accept，成功后再执行after的accep">
+<meta name="description" content="辅助接口Supplier Supplier接口主要是提供方法用于获取指定类型的对象。 BiConsumer  accept(T,U) 提供对数据的处理逻辑 andThen(BiConsumer&amp;lt;T,U&amp;gt; after) 返回一个新的BiConsumer 其accept逻辑是先执行当前accept，成功后再执行after的accept逻辑。  样例 通过样例验证了 andThen是生成了一">
 <meta name="keywords" content="java,java8,Stream,Collector,学习笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="collect">
 <meta property="og:url" content="http://yoursite.com/2019/08/19/collector/index.html">
 <meta property="og:site_name" content="小磊砸的布劳格">
-<meta property="og:description" content="stream提供了方法collect。如下图源码所示。  辅助接口Supplier Supplier接口主要是提供方法用于获取指定类型的对象。 BiConsumer  accept(T,U) 提供对数据的处理逻辑 andThen(BiConsumer&amp;lt;T,U&amp;gt; after) 返回一个新的BiConsumer 其accept逻辑是先执行当前accept，成功后再执行after的accep">
+<meta property="og:description" content="辅助接口Supplier Supplier接口主要是提供方法用于获取指定类型的对象。 BiConsumer  accept(T,U) 提供对数据的处理逻辑 andThen(BiConsumer&amp;lt;T,U&amp;gt; after) 返回一个新的BiConsumer 其accept逻辑是先执行当前accept，成功后再执行after的accept逻辑。  样例 通过样例验证了 andThen是生成了一">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2019/08/19/collector/src_collect.png">
 <meta property="og:image" content="http://yoursite.com/2019/08/19/collector/src_supplier.png">
 <meta property="og:image" content="http://yoursite.com/2019/08/19/collector/src_biconsumer.png">
 <meta property="og:image" content="http://yoursite.com/2019/08/19/collector/demo_biconsumer.png">
@@ -98,11 +97,13 @@
 <meta property="og:image" content="http://yoursite.com/2019/08/19/collector/demo_bifunction.png">
 <meta property="og:image" content="http://yoursite.com/2019/08/19/collector/src_binaryoperator.png">
 <meta property="og:image" content="http://yoursite.com/2019/08/19/collector/demo_binaryoperator.png">
-<meta property="og:updated_time" content="2019-08-20T15:46:55.722Z">
+<meta property="og:image" content="http://yoursite.com/2019/08/19/collector/src_collect.png">
+<meta property="og:image" content="http://yoursite.com/2019/08/19/collector/src_collector.png">
+<meta property="og:updated_time" content="2019-08-20T15:52:02.692Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="collect">
-<meta name="twitter:description" content="stream提供了方法collect。如下图源码所示。  辅助接口Supplier Supplier接口主要是提供方法用于获取指定类型的对象。 BiConsumer  accept(T,U) 提供对数据的处理逻辑 andThen(BiConsumer&amp;lt;T,U&amp;gt; after) 返回一个新的BiConsumer 其accept逻辑是先执行当前accept，成功后再执行after的accep">
-<meta name="twitter:image" content="http://yoursite.com/2019/08/19/collector/src_collect.png">
+<meta name="twitter:description" content="辅助接口Supplier Supplier接口主要是提供方法用于获取指定类型的对象。 BiConsumer  accept(T,U) 提供对数据的处理逻辑 andThen(BiConsumer&amp;lt;T,U&amp;gt; after) 返回一个新的BiConsumer 其accept逻辑是先执行当前accept，成功后再执行after的accept逻辑。  样例 通过样例验证了 andThen是生成了一">
+<meta name="twitter:image" content="http://yoursite.com/2019/08/19/collector/src_supplier.png">
 
 
 
@@ -355,9 +356,7 @@
       
 
       
-        <p>stream提供了方法collect。如下图源码所示。</p>
-<p><img src="/2019/08/19/collector/src_collect.png" alt="collect方法源码"></p>
-<h1 id="辅助接口"><a href="#辅助接口" class="headerlink" title="辅助接口"></a>辅助接口</h1><h2 id="Supplier"><a href="#Supplier" class="headerlink" title="Supplier"></a>Supplier</h2><p><img src="/2019/08/19/collector/src_supplier.png" alt="supplier接口源码"></p>
+        <h1 id="辅助接口"><a href="#辅助接口" class="headerlink" title="辅助接口"></a>辅助接口</h1><h2 id="Supplier"><a href="#Supplier" class="headerlink" title="Supplier"></a>Supplier</h2><p><img src="/2019/08/19/collector/src_supplier.png" alt="supplier接口源码"></p>
 <p>Supplier接口主要是提供方法用于获取指定类型的对象。</p>
 <h2 id="BiConsumer"><a href="#BiConsumer" class="headerlink" title="BiConsumer"></a>BiConsumer</h2><p><img src="/2019/08/19/collector/src_biconsumer.png" alt="BiConsumer接口源码"></p>
 <ul>
@@ -388,6 +387,10 @@
 </ul>
 <p><strong>BinaryOperator是继承了函数接口BiFunction的，即根据两个输入参数来获取结果数据，由于要对输入的两个参数进行比较，所以参数类型要一致，故BiFunction的三个参数类型都是一样的</strong></p>
 <h3 id="样例-3"><a href="#样例-3" class="headerlink" title="样例"></a>样例</h3><p><img src="/2019/08/19/collector/demo_binaryoperator.png" alt="BinaryFunction样例代码"></p>
+<h1 id="Collector"><a href="#Collector" class="headerlink" title="Collector"></a>Collector</h1><p>stream提供了方法collect。如下图源码所示。</p>
+<p><img src="/2019/08/19/collector/src_collect.png" alt="collect方法源码"></p>
+<p>其中一个collect的方法参数是Collector实例。可以看到Collection的源码如下图所示。</p>
+<p><img src="/2019/08/19/collector/src_collector.png" alt="Collector源码"></p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
 <p><a href="https://blog.csdn.net/IO_Field/article/details/54971608" target="_blank" rel="noopener">CSDN：Collector</a>  </p>
 </blockquote>
@@ -581,7 +584,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#辅助接口"><span class="nav-number">1.</span> <span class="nav-text">辅助接口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Supplier"><span class="nav-number">1.1.</span> <span class="nav-text">Supplier</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BiConsumer"><span class="nav-number">1.2.</span> <span class="nav-text">BiConsumer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例"><span class="nav-number">1.2.1.</span> <span class="nav-text">样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Function"><span class="nav-number">1.3.</span> <span class="nav-text">Function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BiFunction"><span class="nav-number">1.4.</span> <span class="nav-text">BiFunction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例-2"><span class="nav-number">1.4.1.</span> <span class="nav-text">样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BinaryOperator"><span class="nav-number">1.5.</span> <span class="nav-text">BinaryOperator</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例-3"><span class="nav-number">1.5.1.</span> <span class="nav-text">样例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#辅助接口"><span class="nav-number">1.</span> <span class="nav-text">辅助接口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Supplier"><span class="nav-number">1.1.</span> <span class="nav-text">Supplier</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BiConsumer"><span class="nav-number">1.2.</span> <span class="nav-text">BiConsumer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例"><span class="nav-number">1.2.1.</span> <span class="nav-text">样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Function"><span class="nav-number">1.3.</span> <span class="nav-text">Function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BiFunction"><span class="nav-number">1.4.</span> <span class="nav-text">BiFunction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例-2"><span class="nav-number">1.4.1.</span> <span class="nav-text">样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BinaryOperator"><span class="nav-number">1.5.</span> <span class="nav-text">BinaryOperator</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例-3"><span class="nav-number">1.5.1.</span> <span class="nav-text">样例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Collector"><span class="nav-number">2.</span> <span class="nav-text">Collector</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
