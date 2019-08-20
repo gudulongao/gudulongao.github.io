@@ -95,7 +95,10 @@
 <meta property="og:image" content="http://yoursite.com/2019/08/19/collector/demo_function.png">
 <meta property="og:image" content="http://yoursite.com/2019/08/19/collector/demo_function2.png">
 <meta property="og:image" content="http://yoursite.com/2019/08/19/collector/src_bifunction.png">
-<meta property="og:updated_time" content="2019-08-20T15:17:25.209Z">
+<meta property="og:image" content="http://yoursite.com/2019/08/19/collector/demo_bifunction.png">
+<meta property="og:image" content="http://yoursite.com/2019/08/19/collector/src_binaryoperator.png">
+<meta property="og:image" content="http://yoursite.com/2019/08/19/collector/demo_binaryoperator.png">
+<meta property="og:updated_time" content="2019-08-20T15:46:55.722Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="collect">
 <meta name="twitter:description" content="stream提供了方法collect。如下图源码所示。  辅助接口Supplier Supplier接口主要是提供方法用于获取指定类型的对象。 BiConsumer  accept(T,U) 提供对数据的处理逻辑 andThen(BiConsumer&amp;lt;T,U&amp;gt; after) 返回一个新的BiConsumer 其accept逻辑是先执行当前accept，成功后再执行after的accep">
@@ -377,7 +380,15 @@
 <li>R apply(T t,U u) 根据参数t 和 u来处理获取返回类型数据</li>
 <li>V andThen(Function&lt;R,V&gt; after) 执行apply逻辑，根据t 和 u生成结果R 再作为afterd的输入数据生成结果V 并返回。</li>
 </ul>
-<h3 id="样例-2"><a href="#样例-2" class="headerlink" title="样例"></a>样例</h3><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<h3 id="样例-2"><a href="#样例-2" class="headerlink" title="样例"></a>样例</h3><p><img src="/2019/08/19/collector/demo_bifunction.png" alt="BiFunction样例代码"></p>
+<h2 id="BinaryOperator"><a href="#BinaryOperator" class="headerlink" title="BinaryOperator"></a>BinaryOperator</h2><p><img src="/2019/08/19/collector/src_binaryoperator.png" alt="BinaryOperator接口源码"></p>
+<ul>
+<li>minBy(Comparator<t> c) 构建一个新的BinaryOperator实例，其apply逻辑是通过比较器获得两个输入参数中比较后小的值。</t></li>
+<li>maxBy(Comparator<t> c) 与上面的类似，只是获取输入参数重比较大的值。</t></li>
+</ul>
+<p><strong>BinaryOperator是继承了函数接口BiFunction的，即根据两个输入参数来获取结果数据，由于要对输入的两个参数进行比较，所以参数类型要一致，故BiFunction的三个参数类型都是一样的</strong></p>
+<h3 id="样例-3"><a href="#样例-3" class="headerlink" title="样例"></a>样例</h3><p><img src="/2019/08/19/collector/demo_binaryoperator.png" alt="BinaryFunction样例代码"></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
 <p><a href="https://blog.csdn.net/IO_Field/article/details/54971608" target="_blank" rel="noopener">CSDN：Collector</a>  </p>
 </blockquote>
 
@@ -570,7 +581,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#辅助接口"><span class="nav-number">1.</span> <span class="nav-text">辅助接口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Supplier"><span class="nav-number">1.1.</span> <span class="nav-text">Supplier</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BiConsumer"><span class="nav-number">1.2.</span> <span class="nav-text">BiConsumer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例"><span class="nav-number">1.2.1.</span> <span class="nav-text">样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Function"><span class="nav-number">1.3.</span> <span class="nav-text">Function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BiFunction"><span class="nav-number">1.4.</span> <span class="nav-text">BiFunction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例-2"><span class="nav-number">1.4.1.</span> <span class="nav-text">样例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#辅助接口"><span class="nav-number">1.</span> <span class="nav-text">辅助接口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Supplier"><span class="nav-number">1.1.</span> <span class="nav-text">Supplier</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BiConsumer"><span class="nav-number">1.2.</span> <span class="nav-text">BiConsumer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例"><span class="nav-number">1.2.1.</span> <span class="nav-text">样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Function"><span class="nav-number">1.3.</span> <span class="nav-text">Function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BiFunction"><span class="nav-number">1.4.</span> <span class="nav-text">BiFunction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例-2"><span class="nav-number">1.4.1.</span> <span class="nav-text">样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BinaryOperator"><span class="nav-number">1.5.</span> <span class="nav-text">BinaryOperator</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例-3"><span class="nav-number">1.5.1.</span> <span class="nav-text">样例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
