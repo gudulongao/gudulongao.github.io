@@ -362,7 +362,13 @@
 <li>identity(T t) 将输入结果作为输出结果。</li>
 </ul>
 <h3 id="样例-1"><a href="#样例-1" class="headerlink" title="样例"></a>样例</h3><p><img src="/2019/08/19/collector/demo_function.png" alt="Function样例代码"><br><img src="/2019/08/19/collector/demo_function2.png" alt="Function样例代码执行结果"></p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>通过样例验证了compose方法和andThen的逻辑。</p>
+<h2 id="BiFunction"><a href="#BiFunction" class="headerlink" title="BiFunction"></a>BiFunction</h2><p><img src="/2019/08/19/collector/src_bifunction.png" alt="BiFunction接口源码"></p>
+<ul>
+<li>R apply(T t,U u) 根据参数t 和 u来处理获取返回类型数据</li>
+<li>V andThen(Function&lt;R,V&gt; after) 执行apply逻辑，根据t 和 u生成结果R 再作为afterd的输入数据生成结果V 并返回。</li>
+</ul>
+<h3 id="样例-2"><a href="#样例-2" class="headerlink" title="样例"></a>样例</h3><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
 <p><a href="https://blog.csdn.net/IO_Field/article/details/54971608" target="_blank" rel="noopener">CSDN：Collector</a>  </p>
 </blockquote>
 
