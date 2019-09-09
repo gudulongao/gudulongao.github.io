@@ -107,7 +107,11 @@
 <meta property="og:image" content="http://yoursite.com/2019/08/19/collector/src_tomap.png">
 <meta property="og:image" content="http://yoursite.com/2019/08/19/collector/src_mapmerage.png">
 <meta property="og:image" content="http://yoursite.com/2019/08/19/collector/src_toconcurrentmap.png">
-<meta property="og:updated_time" content="2019-08-21T14:27:26.040Z">
+<meta property="og:image" content="http://yoursite.com/2019/08/19/collector/demo_sum.png">
+<meta property="og:image" content="http://yoursite.com/2019/08/19/collector/demo_partion.png">
+<meta property="og:image" content="http://yoursite.com/2019/08/19/collector/demo_group.png">
+<meta property="og:image" content="http://yoursite.com/2019/08/19/collector/demo_join.png">
+<meta property="og:updated_time" content="2019-09-09T16:02:19.256Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="collect收集器">
 <meta name="twitter:description" content="Stream的collect方法，即收集器，只要注入转换的方法，通过collect方法就可以基于stream中的元素来生成我们想要的数据结构。 辅助接口Supplier Supplier接口主要是提供方法用于获取指定类型的对象。 BiConsumer  accept(T,U) 提供对数据的处理逻辑 andThen(BiConsumer&amp;lt;T,U&amp;gt; after) 返回一个新的BiConsu">
@@ -524,9 +528,66 @@
 <p>merage方法注入了三个参数，key的值，vlue的值和一个用于处理合并的逻辑。通过分析源码可以看到，当key相同的时候，需要用到第三个参数对非空的旧值与新值进行合并处理，以达到map的合并处理。</p>
 <h2 id="toConcurrentMap"><a href="#toConcurrentMap" class="headerlink" title="toConcurrentMap"></a>toConcurrentMap</h2><p><img src="/2019/08/19/collector/src_toconcurrentmap.png" alt="toConcurrentMap源码"></p>
 <p>Collectors中toConcurrentMap方法有三个，其最终都是基于第三个方法来实现的，感觉跟toMap的实现类似，只是注入的supplier是ConcurrentHashMap的构造函数，同时约束规则集合是支持并行的规则。</p>
+<h1 id="转成值"><a href="#转成值" class="headerlink" title="转成值"></a>转成值</h1><p>Stream#collect方法支持针对元素进行聚合运算来转成值。Collectors提供了一下的方法来进行转成值处理。</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>averagingDouble</td>
+<td>针对double取平均值</td>
+</tr>
+<tr>
+<td>averagingInt</td>
+<td>针对int取平均值</td>
+</tr>
+<tr>
+<td>averagingLong</td>
+<td>针对long取平均值</td>
+</tr>
+<tr>
+<td>counting</td>
+<td>统计元素个数</td>
+</tr>
+<tr>
+<td>maxBy</td>
+<td>通过比较器来取最大值</td>
+</tr>
+<tr>
+<td>minBy</td>
+<td>通过比较器来取最小值</td>
+</tr>
+<tr>
+<td>summingDouble</td>
+<td>针对double累计求和</td>
+</tr>
+<tr>
+<td>summingInt</td>
+<td>针对int累计求和</td>
+</tr>
+<tr>
+<td>summingLong</td>
+<td>针对long累计求和</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/2019/08/19/collector/demo_sum.png" alt="转成值（聚合运算）的样例代码"></p>
+<p><strong>从上图中的样例中可以看到sumingInt返回的是一个结果集，其中包含对数据元素个数的统计，所有元素的求和、最小值最大值，平均值等。</strong>  </p>
+<h1 id="分割数据块"><a href="#分割数据块" class="headerlink" title="分割数据块"></a>分割数据块</h1><p>Collectors#partitioningBy方法可以将一个数据集，按照指定的规则(Predicate)将元素分成两组。</p>
+<p><img src="/2019/08/19/collector/demo_partion.png" alt="分割数据块样例代码"></p>
+<p>从上述的样例中。可以看到partitioningBy方法注入的的是函数接口Predicate的实例，最终会将元素中的数据根据Predicate的判断逻辑进行分块。</p>
+<h1 id="数据分组"><a href="#数据分组" class="headerlink" title="数据分组"></a>数据分组</h1><p>Collectors#groupingby方法可以将一个数据集，按照指定的规则(Function)将元素进行分组，同时同一组的元素进行聚合处理(Collector)</p>
+<p><img src="/2019/08/19/collector/demo_group.png" alt="数据分组groupbingby样例代码"></p>
+<h1 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h1><p>Collector$join方法可以方便的对字符串进行拼接</p>
+<p><img src="/2019/08/19/collector/demo_join.png" alt="join样例代码"></p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
 <p><a href="https://blog.csdn.net/IO_Field/article/details/54971608" target="_blank" rel="noopener">CSDN：Collector</a><br><a href="https://www.yiibai.com/java/util/collections_unmodifiableset.html" target="_blank" rel="noopener">java.util.Collections.unmodifiableSet的作用</a>   </p>
 </blockquote>
+<p>##### </p>
 
       
     </div>
@@ -717,7 +778,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#辅助接口"><span class="nav-number">1.</span> <span class="nav-text">辅助接口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Supplier"><span class="nav-number">1.1.</span> <span class="nav-text">Supplier</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BiConsumer"><span class="nav-number">1.2.</span> <span class="nav-text">BiConsumer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例"><span class="nav-number">1.2.1.</span> <span class="nav-text">样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Function"><span class="nav-number">1.3.</span> <span class="nav-text">Function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BiFunction"><span class="nav-number">1.4.</span> <span class="nav-text">BiFunction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例-2"><span class="nav-number">1.4.1.</span> <span class="nav-text">样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BinaryOperator"><span class="nav-number">1.5.</span> <span class="nav-text">BinaryOperator</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例-3"><span class="nav-number">1.5.1.</span> <span class="nav-text">样例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Collector"><span class="nav-number">2.</span> <span class="nav-text">Collector</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Characteristics"><span class="nav-number">2.1.</span> <span class="nav-text">Characteristics</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Collectors"><span class="nav-number">3.</span> <span class="nav-text">Collectors</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#约束规则集合"><span class="nav-number">3.1.</span> <span class="nav-text">约束规则集合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Collectorimpl"><span class="nav-number">3.2.</span> <span class="nav-text">Collectorimpl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#toList"><span class="nav-number">3.3.</span> <span class="nav-text">toList</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例-4"><span class="nav-number">3.3.1.</span> <span class="nav-text">样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#toSet"><span class="nav-number">3.4.</span> <span class="nav-text">toSet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#toMap"><span class="nav-number">3.5.</span> <span class="nav-text">toMap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#toConcurrentMap"><span class="nav-number">3.6.</span> <span class="nav-text">toConcurrentMap</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#辅助接口"><span class="nav-number">1.</span> <span class="nav-text">辅助接口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Supplier"><span class="nav-number">1.1.</span> <span class="nav-text">Supplier</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BiConsumer"><span class="nav-number">1.2.</span> <span class="nav-text">BiConsumer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例"><span class="nav-number">1.2.1.</span> <span class="nav-text">样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Function"><span class="nav-number">1.3.</span> <span class="nav-text">Function</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BiFunction"><span class="nav-number">1.4.</span> <span class="nav-text">BiFunction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例-2"><span class="nav-number">1.4.1.</span> <span class="nav-text">样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BinaryOperator"><span class="nav-number">1.5.</span> <span class="nav-text">BinaryOperator</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例-3"><span class="nav-number">1.5.1.</span> <span class="nav-text">样例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Collector"><span class="nav-number">2.</span> <span class="nav-text">Collector</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Characteristics"><span class="nav-number">2.1.</span> <span class="nav-text">Characteristics</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Collectors"><span class="nav-number">3.</span> <span class="nav-text">Collectors</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#约束规则集合"><span class="nav-number">3.1.</span> <span class="nav-text">约束规则集合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Collectorimpl"><span class="nav-number">3.2.</span> <span class="nav-text">Collectorimpl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#toList"><span class="nav-number">3.3.</span> <span class="nav-text">toList</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#样例-4"><span class="nav-number">3.3.1.</span> <span class="nav-text">样例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#toSet"><span class="nav-number">3.4.</span> <span class="nav-text">toSet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#toMap"><span class="nav-number">3.5.</span> <span class="nav-text">toMap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#toConcurrentMap"><span class="nav-number">3.6.</span> <span class="nav-text">toConcurrentMap</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#转成值"><span class="nav-number">4.</span> <span class="nav-text">转成值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分割数据块"><span class="nav-number">5.</span> <span class="nav-text">分割数据块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据分组"><span class="nav-number">6.</span> <span class="nav-text">数据分组</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符串"><span class="nav-number">7.</span> <span class="nav-text">字符串</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">8.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
