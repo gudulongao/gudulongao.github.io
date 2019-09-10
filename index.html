@@ -343,7 +343,79 @@
       
         
           
-            <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+            <p>reduce可以根据stream中的元素生成一个值，这个值是按照指定的规则去生成。<br>Stream中reduce提供了三个重载的方法。如下图所示。</p>
+<p><img src="/2019/09/10/reduce/src_reduce.png" alt="reduce方法"></p>
+<h1 id="Optional-reduce-BinaryOperator-accumulator"><a href="#Optional-reduce-BinaryOperator-accumulator" class="headerlink" title="Optional reduce(BinaryOperator accumulator)"></a>Optional<t> reduce(BinaryOperator<t> accumulator)</t></t></h1><p>该方法提供一个BinaryOperator函数接口。BinaryOperator函数源码如下图所示。</p>
+<p><img src="/2019/09/10/reduce/src_binaryoperator.png" alt="BinaryOperator函数接口源码"></p>
+<p>BinaryOperator函数接口继承自函数接口BiFunction，BiFunction函数接口源码如下图所示。</p>
+<p><img src="/2019/09/10/reduce/src_bifunction.png" alt="BiFunction函数接口源码"></p>
+<h2 id="参数列表"><a href="#参数列表" class="headerlink" title="参数列表"></a>参数列表</h2><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>accumulator</td>
+<td>计算逻辑</td>
+</tr>
+</tbody>
+</table>
+<p>从BiFunction函数接口种可以看到，其apply方法会根据注入的两个参数进行处理生成一个结果。入参和返回值的数据类型可以不一致。而BinaryOperator函数接口限制了数据类型，即<strong>BinaryOperator的apply入参和返回值都是一种数据类型</strong>。<br>所以方法Optional<t> reduce(BinaryOperator<t> accumulator) 的逻辑处理是 注入函数接口BinaryOperator实例，BinaryOperator的两个入参分别是上一次处理的结果和stream中下一个元素。这样我们只需要指定BinaryOperator的处理逻辑便可以根据stream中的所有元素来生成一个结果。</t></t></p>
+<h2 id="样例代码"><a href="#样例代码" class="headerlink" title="样例代码"></a>样例代码</h2><p><img src="/2019/09/10/reduce/demo_reducebinaryoperator.png" alt="reduce方法样例代码"></p>
+<h1 id="T-reduce-T-identity-BinaryOperator-accumulator"><a href="#T-reduce-T-identity-BinaryOperator-accumulator" class="headerlink" title="T reduce(T identity, BinaryOperator accumulator)"></a>T reduce(T identity, BinaryOperator<t> accumulator)</t></h1><p>与第一个reduce方法不同的是，<strong>多了一个identity参数以及返回值不是Optional</strong>。</p>
+<h2 id="参数列表-1"><a href="#参数列表-1" class="headerlink" title="参数列表"></a>参数列表</h2><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>identity</td>
+<td>遍历stream元素的初始值，当stream为空时，直接返回identity</td>
+</tr>
+<tr>
+<td>accumulator</td>
+<td>计算逻辑</td>
+</tr>
+</tbody>
+</table>
+<h2 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h2><p><img src="/2019/09/10/reduce/demo_reduceidentity.png" alt="reduce方法样例代码"> </p>
+<p>从样例代码中可以看到</p>
+<ul>
+<li>当stream元素为空，同时identity为空时，返回null  </li>
+<li>当stream元素为空，同时identity不为空时，返回idenetity </li>
+<li>当stream元素非空。遍历处理第一个初始数据是identity  </li>
+</ul>
+<h1 id="U-reduce-U-identity-BiFunction-lt-U-super-T-U-gt-accumulator-BinaryOperator-combiner"><a href="#U-reduce-U-identity-BiFunction-lt-U-super-T-U-gt-accumulator-BinaryOperator-combiner" class="headerlink" title=" U reduce(U identity,BiFunction&lt;U, ? super T, U&gt; accumulator,BinaryOperator combiner)"></a><u> U reduce(U identity,BiFunction&lt;U, ? super T, U&gt; accumulator,BinaryOperator<u> combiner)</u></u></h1><h2 id="参数列表-2"><a href="#参数列表-2" class="headerlink" title="参数列表"></a>参数列表</h2><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>identity</td>
+<td>遍历stream元素的初始值，当stream为空时，直接返回identity</td>
+</tr>
+<tr>
+<td>accumulator</td>
+<td>计算逻辑，入参是U和T 返回值是U</td>
+</tr>
+<tr>
+<td>combiner</td>
+<td>多线程并发操作reduce时将各个线程的结果进行合并，入参是U返回值是U</td>
+</tr>
+</tbody>
+</table>
+<h2 id="样例-1"><a href="#样例-1" class="headerlink" title="样例"></a>样例</h2><p><img src="/2019/09/10/reduce/demo_reducecombiner.png" alt="reduce方法样例代码"></p>
+<p>样例中只有一个线程处理reduce，所以combiner逻辑并没有执行，一直在处理BiFunctiond的逻辑。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
 <p><a href="https://blog.csdn.net/IO_Field/article/details/54971679" target="_blank" rel="noopener">CSDN万能reduce</a>  </p>
 </blockquote>
 
