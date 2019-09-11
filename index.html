@@ -343,8 +343,75 @@
       
         
           
-            <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p><a href="https://www.runoob.com/java/java8-optional-class.html" target="_blank" rel="noopener">菜鸟驿站：Optional</a>  </p>
+            <p><strong>Optional是一个容器，可以很好的解决空指针问题</strong>。</p>
+<blockquote>
+<p>JDK受Google Guava项目启发，引入了Optional类，Guava通过使用检查空值的方式来防止代码污染，它鼓励程序员写更干净的代码。Optional类已经成为Java 8类库的一部分。Optional实际上是个容器：它可以保存类型T的值，或者仅仅保存null。Optional提供很多有用的方法，这样我们就不用显式进行空值检测。</p>
+</blockquote>
+<h1 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h1><p><img src="/2019/09/11/Optional/optional/src_createoptional.png" alt="创建Optional源码"></p>
+<p>从Optional源码中可以看到 构造函数是私有的，只能通过静态方法来创建Optional对象。其可以创建Optional实例的静态方法如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Optional<t> empty()</t></td>
+<td>获取空的Optional实例</td>
+</tr>
+<tr>
+<td>Optional<t> of(T value)</t></td>
+<td>获取Optional实例，存储非空的value</td>
+</tr>
+<tr>
+<td>Optional<t> ofNullable(T value)</t></td>
+<td>获取Optional实例。存储可以为空的value</td>
+</tr>
+</tbody>
+</table>
+<h1 id="API"><a href="#API" class="headerlink" title="API"></a>API</h1><h2 id="empty"><a href="#empty" class="headerlink" title="empty"></a>empty</h2><p>从Optional源码中可以看到 Optional中包含一个静态的EMPTY空内容的Optional实例。ofNullable方法一旦注入的参数是null则返回EMPTY。所以只要允许null的Optional都是EMPTY对象。故下面的测试所有的判断都是true。</p>
+<p><img src="/2019/09/11/Optional/optional/demo_empty.png" alt="测试空Optional实例"></p>
+<h2 id="isPresent"><a href="#isPresent" class="headerlink" title="isPresent"></a>isPresent</h2><p>方法isPresetnt用来判断容器Optional是否有内容。</p>
+<p><img src="/2019/09/11/Optional/optional/src_ispresent.png" alt="isPresent方法源码"></p>
+<h2 id="ifPresent"><a href="#ifPresent" class="headerlink" title="ifPresent"></a>ifPresent</h2><p>方法isPresent 当Optional容器有内容时，执行consumer逻辑来消费Optional中的值。</p>
+<p><img src="/2019/09/11/Optional/optional/src_ifpresent.png" alt="ifPresent方法源码"></p>
+<p>其中Consumer是函数接口。源码如下图所示。</p>
+<p><img src="/2019/09/11/Optional/optional/src_consumer.png" alt="Consumer函数接口源码"></p>
+<p><strong>ifPresent方法当Optional有值非空时直接执行Consumer逻辑。</strong></p>
+<h3 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h3><p><img src="/2019/09/11/Optional/optional/demo_optional.png" alt="ifPresent方法样例代码">  </p>
+<h2 id="orElse-orElseGet-orElseThrow"><a href="#orElse-orElseGet-orElseThrow" class="headerlink" title="orElse,orElseGet,orElseThrow"></a>orElse,orElseGet,orElseThrow</h2><p>方法源码如下图所示。</p>
+<p><img src="/2019/09/11/Optional/optional/src_orelse.png" alt="orElse等方法的源码"></p>
+<p>方法说明如下表所示。</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T orElse(T other)</td>
+<td>返回Optional本身的值，如果本事为空则返回other</td>
+</tr>
+<tr>
+<td>T orElseGet(Supplier other)</td>
+<td>返回Optional本身的值，如果本身为空则通过函数接口生成默认值</td>
+</tr>
+<tr>
+<td>T orElseThrow(Supplier exceptionSupplier</td>
+<td>返回Optional本身的值，如果本事为空则通过函数接口抛出异常</td>
+</tr>
+</tbody>
+</table>
+<p>Supplier函数接口源码如下图所示。</p>
+<p><img src="/2019/09/11/Optional/optional/src_supplier.png" alt="Supplier函数接口源码"></p>
+<p>Supplier函数结构提供get方法用于生成指定数据类型的逻辑。</p>
+<h3 id="样例-1"><a href="#样例-1" class="headerlink" title="样例"></a>样例</h3><p><img src="/2019/09/11/Optional/optional/demo_orelse.png" alt="OrElse等方法样例代码"></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p><a href="https://www.runoob.com/java/java8-optional-class.html" target="_blank" rel="noopener">菜鸟驿站：Optional</a><br><a href="https://blog.csdn.net/csdn9988680/article/details/80816457" target="_blank" rel="noopener">CSDN:Optional</a>  </p>
 </blockquote>
 
           
