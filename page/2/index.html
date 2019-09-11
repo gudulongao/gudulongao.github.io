@@ -239,278 +239,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/30/springboot-7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/06/30/springboot-7/" itemprop="url">springboot 数据访问</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-30T16:32:19+08:00">
-                2019-06-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/springboot/" itemprop="url" rel="index">
-                    <span itemprop="name">springboot</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/06/30/springboot-7/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/06/30/springboot-7/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Spring-Data"><a href="#Spring-Data" class="headerlink" title="Spring Data"></a>Spring Data</h1><p>Spring Data是Spring用于解决数据访问问题的一系列解决方案。包含大量关系型数据库及非关系型数据库的数据访问解决方案。<br>Spring Data 提供统一的API来进行数据访问操作而屏蔽了不同数据存储技术的差异。Spring提供Spring Data Commons项目无论使用关系型数据库还是非关系型数据库，都能够有Spring的统一标准，该标准提供CRUD(创建，获取，更新和删除)、查询、排序和分页的相关操作。<br>Spring Data Commons提供了Spring Data Repository抽象，使用Spring Data Repository可以减少数据访问层的代码。Spring Data Repository提供了基础的接口**Repository、CruRepository和PagingAndSortingRepository。</p>
-<p><img src="/2019/06/30/springboot-7/repository代码结构.png" alt="Repository接口层次">  </p>
-<h2 id="Repository接口"><a href="#Repository接口" class="headerlink" title="Repository接口"></a>Repository接口</h2><p>Repository接口可以接受实体T 和主键id。</p>
-<p><img src="/2019/06/30/springboot-7/repository源码.png" alt="Repository源码">  </p>
-<h2 id="CrudRepository接口"><a href="#CrudRepository接口" class="headerlink" title="CrudRepository接口"></a>CrudRepository接口</h2><p>CrudRepository接口提供CRUD操作。</p>
-<p><img src="/2019/06/30/springboot-7/crudrepository源码.png" alt="CrudRepository源码">  </p>
-<h2 id="PagingAndSortingRepository接口"><a href="#PagingAndSortingRepository接口" class="headerlink" title="PagingAndSortingRepository接口"></a>PagingAndSortingRepository接口</h2><p>PagingAndSortingRepository接口提供分页和排序操作。</p>
-<p><img src="/2019/06/30/springboot-7/pagingandsortingrepository源码.png" alt="PagingAndSotringRepository源码">  </p>
-<h1 id="Spring-Data-JPA"><a href="#Spring-Data-JPA" class="headerlink" title="Spring Data JPA"></a>Spring Data JPA</h1><p>JPA(Java Persistens API)基于O/R映射的标准规范。即只定义标准规范（注解、接口），不提供实现，软件服务商根据标准规范来提供具体的实现，使用者只需要面向标准规范来使用不用与具体的软件服务商打交道。<strong>个人感觉通过JPA可以屏蔽不同的数据库的差异。</strong></p>
-<p>Spring Data JPA提供了JpaRepository接口。</p>
-<p><img src="/2019/06/30/springboot-7/jparepository源码.png" alt="JpaRepository源码"><br><img src="/2019/06/30/springboot-7/jparepository代码层次.png" alt="JpaRepository代码层次结构">  </p>
-<h2 id="定义查询方法"><a href="#定义查询方法" class="headerlink" title="定义查询方法"></a>定义查询方法</h2><p>实体信息</p>
-<p><img src="/2019/06/30/springboot-7/persontable.png" alt="Person表结构">  </p>
-<p><img src="/2019/06/30/springboot-7/person源码.png" alt="Person源码">    </p>
-<h3 id="根据属性名查询"><a href="#根据属性名查询" class="headerlink" title="根据属性名查询"></a>根据属性名查询</h3><p>Spring Data JPA允许在Repository接口中定义查询方法，根据方法名中与实体属性名一致来自动查询。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Persion&gt; findByName(String name);</span><br><span class="line"></span><br><span class="line">List&lt;Person&gt; findByNameLike(String name);</span><br><span class="line"></span><br><span class="line">List&lt;Person&gt; findByNameAndAddress(String name,String address);</span><br></pre></td></tr></table></figure>
-<p>上述代码中的方法findByName会自动按照name属性来查询（实体中有name属性）。这里感觉有点高大上。</p>
-<p>同时在样例代码中可以看到能够自动根据属性来匹配查询逻辑的关键词有<strong>findBy、like、And。</strong>，其中类似And,Like的还有<strong>Or、Is、Between、LessThan、GreaterThan、LessThanEqual、GreaterThanEqual、After、Before、IsNull、IsNotNull、Like、NotLike，StartingWith、EndingWith、Containing、OrderBy、In、NotIn</strong>。</p>
-<h3 id="限制结果数量"><a href="#限制结果数量" class="headerlink" title="限制结果数量"></a>限制结果数量</h3><p>根据<strong>First</strong>或者<strong>Top</strong>关键词来限制结果数量。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 获取符合条件的前10条数据</span><br><span class="line">List&lt;Person&gt; findFirst10ByName(String name);</span><br><span class="line"># 获取符合条件的前30条数据</span><br><span class="line">List&lt;Person&gt; findTop30ByName(String name);</span><br></pre></td></tr></table></figure>
-<h3 id="Query查询"><a href="#Query查询" class="headerlink" title="@Query查询"></a>@Query查询</h3><p>Spring Data JPA支持通过@Query注解在Repository接口上来实现查询。</p>
-<h4 id="使用参数索引"><a href="#使用参数索引" class="headerlink" title="使用参数索引"></a>使用参数索引</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Query(&quot;select p from person p where p.name=?1&quot;)</span><br><span class="line">List&lt;Person&gt; findByName(String name);</span><br></pre></td></tr></table></figure>
-<h4 id="使用参数名"><a href="#使用参数名" class="headerlink" title="使用参数名"></a>使用参数名</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Query(&quot;select p from person p where p.name=:address&quot;)</span><br><span class="line">List&lt;Person&gt; findByAddress(@Param(&quot;address&quot;)String address);</span><br></pre></td></tr></table></figure>
-<h4 id="更新查询"><a href="#更新查询" class="headerlink" title="更新查询"></a>更新查询</h4><p>Spring Data JPA支持@Modifying和@Query组合来做更新查询</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@Modifying</span><br><span class="line">@Query(&quot;update p from person p set p.name=?1&quot;)</span><br><span class="line">int setName(String name);</span><br></pre></td></tr></table></figure>
-<h3 id="Specification查询"><a href="#Specification查询" class="headerlink" title="Specification查询"></a>Specification查询</h3><p>Spring Data JPA支持基于准则查询。即Criteria查询。</p>
-<ul>
-<li>Repository 需要继承接口JpaSpecificationExecutor</li>
-<li>自定义Specification，调用JpaSpecificationExecutor#findAll方法时注入自定义的Specification</li>
-</ul>
-<p><img src="/2019/06/30/springboot-7/specification源码.png" alt="Specification源码"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public interface PersonRepository extends JpaRepository&lt;Person, Long&gt;, JpaSpecificationExecutor&lt;Person&gt; &#123;</span><br><span class="line">    /**</span><br><span class="line">     * 根据name查询（支持排序）</span><br><span class="line">     */</span><br><span class="line">    List&lt;Person&gt; findByName(String name, Sort sort);</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 根据name查询（支持分页）</span><br><span class="line">     */</span><br><span class="line">    Page&lt;Person&gt; findByName(String name, Pageable pageable);</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    List&lt;Person&gt; findAll(Specification&lt;Person&gt; specification);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public class PersonSpecs &#123;</span><br><span class="line">    /**</span><br><span class="line">     * 获取所有成年人</span><br><span class="line">     */</span><br><span class="line">    public static Specification&lt;Person&gt; getAdults() &#123;</span><br><span class="line">        return (Specification&lt;Person&gt;) (root, criteriaQuery, criteriaBuilder) -&gt; criteriaBuilder.greaterThan(root.get</span><br><span class="line">                (&quot;age&quot;), 18);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        //此处只是代码演示，无意义有错误</span><br><span class="line">        PersonRepository repository = null;</span><br><span class="line">        List&lt;Person&gt; all = repository.findAll(getAdults());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="分页排序"><a href="#分页排序" class="headerlink" title="分页排序"></a>分页排序</h3><p>Spring Data JPA提供了Sort类、Page和Pageable接口来支持分页和排序。</p>
-<p><img src="/2019/06/30/springboot-7/personrepository源码.png" alt="PersonRepository源码">    </p>
-<p>在定义Repository的方法时，可以通过Sort来指定排序的属性。</p>
-<p><img src="/2019/06/30/springboot-7/sort源码.png" alt="Sort源码">    </p>
-<p>Sort构造函数指定排序的顺序和需要排序的字段。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Person&gt; list = personRepository.findByName(&quot;test&quot;,new Sort(Direct.ASC,&quot;age&quot;);</span><br></pre></td></tr></table></figure>
-<p>在定义Repository的方法时，可以通过Pageable 来指定分页信息。Pageable是接口，常用的实现是PageRequest。</p>
-<p><img src="/2019/06/30/springboot-7/pagerequset代码层次.png" alt="PageRequest代码层次">    </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Page&lt;Person&gt; page = personRepository.findByName(&quot;test&quot;,new PageRequest(0,12));</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/06/30/springboot-7/page源码.png" alt="Page源码">    </p>
-<h2 id="SpringBoot的支持"><a href="#SpringBoot的支持" class="headerlink" title="SpringBoot的支持"></a>SpringBoot的支持</h2><h3 id="JDBC配置"><a href="#JDBC配置" class="headerlink" title="JDBC配置"></a>JDBC配置</h3><p>Spring Boot对JDBC做了自动配置。</p>
-<ul>
-<li>spring.datasource 为前缀的属性自动配置datasource。</li>
-<li>@EnableTransactionManagement注解开启事务支持。</li>
-<li>支持指定sql脚本来初始化表结构和数据。</li>
-</ul>
-<h3 id="JPA配置"><a href="#JPA配置" class="headerlink" title="JPA配置"></a>JPA配置</h3><ul>
-<li>SpringBoot默认的JPA实现是Hibernate。</li>
-<li>会自动扫描@Entity 的实体类。</li>
-<li>自动配置了OpenEntityManagerInViewInterceptor，并注册到SpringMVC的拦截器中。</li>
-</ul>
-<h3 id="SpringDataJPA的自动配置"><a href="#SpringDataJPA的自动配置" class="headerlink" title="SpringDataJPA的自动配置"></a>SpringDataJPA的自动配置</h3><ul>
-<li>SpringBoot默认自动开启了Spring Data JPA的支持，无需在配置类中通过@EnableJpaRepositories来开启支持。   </li>
-</ul>
-<h3 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h3><h4 id="初始化表结构"><a href="#初始化表结构" class="headerlink" title="初始化表结构"></a>初始化表结构</h4><p>在src/main/reousrces下增加table.sql用来初始化表结构。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `person` ( `id` int(20) NOT NULL, `name` varchar(20) DEFAULT NULL,`age` int(3) DEFAULT NULL, `address` varchar(20)DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8</span><br></pre></td></tr></table></figure>
-<p><strong>在实际运行的时候发现，这里存储的sql语句不能有换行符，不然自动初始化表结构的时候会报错</strong></p>
-<h4 id="初始化数据"><a href="#初始化数据" class="headerlink" title="初始化数据"></a>初始化数据</h4><p>在src/main/resources下增加data.sql用来初始化数据。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">insert into person(name,age,address) values(&apos;汪云飞&apos;,32,&apos;合肥&apos;);</span><br><span class="line">insert into person(name,age,address) values(&apos;ta&apos;,32,&apos;合肥&apos;);</span><br><span class="line">insert into person(name,age,address) values(&apos;s&apos;,32,&apos;合肥&apos;);</span><br><span class="line">insert into person(name,age,address) values(&apos;asd&apos;,32,&apos;合肥&apos;);</span><br><span class="line">insert into person(name,age,address) values(&apos;ass&apos;,32,&apos;合肥&apos;);</span><br></pre></td></tr></table></figure>
-<p><strong>这里需要注意的是，mysql对于主键的生成机制是不支持sequence的，书上主键是通过hibernate_sequence.nextval来获取下一个主键这样插入数据的，我这里运行的时候就会报错不识别hibernate_sequence.nextval。所以我在实体类对于主键的生成策略改成了identity，这里的sql脚本就不再关注主键字段，数据库会自动生成。</strong></p>
-<p>需要在应用启动的时候自动初始化数据库，需要在application.properties中配置如下参数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 指定创建表的脚本</span><br><span class="line">spring.datasource.schema=classpath:table.sql</span><br><span class="line"># 指定初始化数据库的脚本</span><br><span class="line">spring.datasource.data=classpath:data.sql</span><br><span class="line"># 指定初始化的模式(always 总是/)</span><br><span class="line">spring.datasource.initialization-mode=always</span><br></pre></td></tr></table></figure>
-<h4 id="JPA配置-1"><a href="#JPA配置-1" class="headerlink" title="JPA配置"></a>JPA配置</h4><p>在application.properites中增加jpa的配置.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 启动后根据实体类来修改表结构</span><br><span class="line">spring.jpa.hibernate.ddl-auto=update</span><br><span class="line"># 控制台显示执行的sql</span><br><span class="line">spring.jpa.show-sql=true</span><br><span class="line"># 控制器(controller)返回的数据用json格式输出，更美观</span><br><span class="line">spring.jackson.serialization.indent-output=true</span><br></pre></td></tr></table></figure>
-<ul>
-<li>这里hibernate中的ddl-auto配置的意义是根据实体类来自动维护数据库表结构。</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>ddl-auto配置项</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>create</td>
-<td>启动时，删除上一次生成的表，根据实体类来生成表结构。同时会清空表中的数据</td>
-</tr>
-<tr>
-<td>create-drop</td>
-<td>启动时根据实体类生成表，sessionFactory 关闭时表会自动删除</td>
-</tr>
-<tr>
-<td>update</td>
-<td>启动时根据实体类生成表，当实体属性变动时，会自动调整表结构，<strong>开发阶段常采用此选项</strong></td>
-</tr>
-<tr>
-<td>validate</td>
-<td>启动时验证实体类与表结构是否一致，<strong>表结构稳定时采用此选项</strong></td>
-</tr>
-<tr>
-<td>none</td>
-<td>不采取任何措施</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>这里的show-sql参数时设置hibernate操作时在控制台显示实际执行的sql语句</li>
-<li>serialization 控制器输出json字符串格式更加美观</li>
-</ul>
-<h4 id="实体类"><a href="#实体类" class="headerlink" title="实体类"></a>实体类</h4><p><img src="/2019/06/30/springboot-7/entity.png" alt="实体Person源码">  </p>
-<p>如上图所示，增加实体类Person。</p>
-<ul>
-<li>用@Entity注解修饰类 表明该类是实体类</li>
-<li>主键字段用@Id注解，同时使用@GeneratedValue表明主键生成策略为自增，hibernate会自动在数据库中创建一个hibernate_sequence的序列。 <strong>我这里专门修改了主键的生成机制</strong></li>
-</ul>
-<p><img src="/2019/06/30/springboot-7/hibernate_sequence.png" alt="hibernate_sequence序列"></p>
-<h4 id="数据访问接口"><a href="#数据访问接口" class="headerlink" title="数据访问接口"></a>数据访问接口</h4><p><img src="/2019/06/30/springboot-7/repository.png" alt="数据访问接口PersonRepository源码">  </p>
-<p>继承接口JpaRepository 和JpaSpecificationExecutor接口。</p>
-<h4 id="控制器"><a href="#控制器" class="headerlink" title="控制器"></a>控制器</h4><p><img src="/2019/06/30/springboot-7/controller.png" alt="控制器Controller源码">  </p>
-<p>通过数据访问接口，来完成一些功能。</p>
-<p>由于application.properties中配置了<strong>spring.jackson.serialization.indent-output=true</strong>，这里restcontroller的返回数据都会采用json的格式。</p>
-<h4 id="验证结果"><a href="#验证结果" class="headerlink" title="验证结果"></a>验证结果</h4><p><img src="/2019/06/30/springboot-7/test.png" alt="验证结果">  </p>
-<h1 id="Spring-Data-REST"><a href="#Spring-Data-REST" class="headerlink" title="Spring Data REST"></a>Spring Data REST</h1><h1 id="声明事务"><a href="#声明事务" class="headerlink" title="声明事务"></a>声明事务</h1><h2 id="Spring-事物机制"><a href="#Spring-事物机制" class="headerlink" title="Spring 事物机制"></a>Spring 事物机制</h2><h2 id="声明事务-1"><a href="#声明事务-1" class="headerlink" title="声明事务"></a>声明事务</h2><h2 id="注解事务"><a href="#注解事务" class="headerlink" title="注解事务"></a>注解事务</h2><h1 id="缓存Cache"><a href="#缓存Cache" class="headerlink" title="缓存Cache"></a>缓存Cache</h1><h1 id="非关系型数据库NoSql"><a href="#非关系型数据库NoSql" class="headerlink" title="非关系型数据库NoSql"></a>非关系型数据库NoSql</h1><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>《SpringBoot实战》 汪云飞著<br><a href="https://www.jianshu.com/p/3b31270a44b1" target="_blank" rel="noopener">简书：SpringBoot2.0整合JPA</a><br><a href="https://www.oschina.net/question/2491333_2302037" target="_blank" rel="noopener">@NoRepositoryBean的含义</a><br><a href="https://blog.csdn.net/AAAAABBBBBYYYYY/article/details/76422695" target="_blank" rel="noopener">JPA与JDBC的差异</a><br><a href="https://blog.csdn.net/u012326462/article/details/82080812" target="_blank" rel="noopener">自动初始化数据库</a>  </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/19/springboot-6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2527,6 +2255,332 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/03/springboot-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/03/springboot-1/" itemprop="url">spring 基础</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-03T20:38:35+08:00">
+                2019-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/springboot/" itemprop="url" rel="index">
+                    <span itemprop="name">springboot</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/03/springboot-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/06/03/springboot-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Spring基础"><a href="#Spring基础" class="headerlink" title="Spring基础"></a>Spring基础</h1><p>spring框架的四个特性：</p>
+<ul>
+<li>使用POJO进行轻量级和最小侵入式的开发。</li>
+<li>通过依赖注入和基于接口编程实现松耦合。</li>
+<li>使用AOP和默认习惯进行声明式编程。</li>
+<li>使用AOP和模版(Template)减少模式化代码。</li>
+</ul>
+<h2 id="依赖注入-DI"><a href="#依赖注入-DI" class="headerlink" title="依赖注入(DI)"></a>依赖注入(DI)</h2><p>所谓依赖注入是指通过容器来负责创建对象和维护对象之间的依赖关系。而不是通过对象本身负责自己的创建和解决自己的依赖。<br><strong>依赖注入主要是为了解耦。体现了组合的理念。</strong>继承会使得子类与父类耦合，组合会降低耦合。  </p>
+<h2 id="基础注解"><a href="#基础注解" class="headerlink" title="基础注解"></a>基础注解</h2><h3 id="bean的生命周期（Scope）"><a href="#bean的生命周期（Scope）" class="headerlink" title="bean的生命周期（Scope）"></a>bean的生命周期（Scope）</h3><p>Spring中bean的生命周期可以通过注解@Scope来声明配置，其中注解Scope支持的生命周期如下表所示。  </p>
+<table>
+<thead>
+<tr>
+<th>Scope</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Singleton</td>
+<td>单例，默认配置</td>
+</tr>
+<tr>
+<td>Peororype</td>
+<td>每次调用都会构建</td>
+</tr>
+<tr>
+<td>Request</td>
+<td>Web项目中每一次http request新建</td>
+</tr>
+<tr>
+<td>Session</td>
+<td>Web项目中每一个http session新建</td>
+</tr>
+</tbody>
+</table>
+<h3 id="bean的创建和销毁"><a href="#bean的创建和销毁" class="headerlink" title="bean的创建和销毁"></a>bean的创建和销毁</h3><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@Bean注解的initMethod属性</td>
+<td>通过在配置类中声明bean的时候显示的指定该bean的初始化逻辑</td>
+</tr>
+<tr>
+<td>@Bean注解的destoryMethod属性</td>
+<td>通过在配置类中声明bean的时候显示的指定该bean的销毁逻辑</td>
+</tr>
+<tr>
+<td>@PostConstruct</td>
+<td>JSR-250提供，用于声明于方法体，表明该方法将在构造函数之后调用</td>
+</tr>
+<tr>
+<td>@PreDestory</td>
+<td>JSR-250提供，用于声明于方法体，表明该方法将在对象回收之前调用</td>
+</tr>
+</tbody>
+</table>
+<h3 id="加载配置文件"><a href="#加载配置文件" class="headerlink" title="加载配置文件"></a>加载配置文件</h3><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@PropertySource</td>
+<td>指定待加载配置文件的路径，通常用于配置类</td>
+</tr>
+<tr>
+<td>@Value</td>
+<td>通过注入的属性来匹配配置文件中的配置，常用于字段,即将配置文件中对应配置的值注入到当前字段</td>
+</tr>
+</tbody>
+</table>
+<p>对于@Value注解，如果当前配置类中有使用注解@ProppertySource,则表明该注解匹配的配置文件是注解中指定的配置文件，否则就是加载的PeopertySourcesPlaceholderConfigurer中配置的配置文件。  </p>
+<p><strong>正如注解的的名称，PropertySource只能加载properties配置文件，对于yml的配置，可以通过注解@ConfigurationProperties来加载。</strong></p>
+<h4 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">package demo.base;</span><br><span class="line"></span><br><span class="line">import org.apache.commons.io.IOUtils;</span><br><span class="line">import org.springframework.beans.factory.annotation.Value;</span><br><span class="line">import org.springframework.context.annotation.*;</span><br><span class="line">import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;</span><br><span class="line">import org.springframework.core.io.Resource;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 注解@Value样例</span><br><span class="line"> * @author gudulongao</span><br><span class="line"> */</span><br><span class="line">@Configuration</span><br><span class="line">@ComponentScan(&quot;demo.base&quot;)</span><br><span class="line">@PropertySource(&quot;valuedemo.properties&quot;)</span><br><span class="line">public class ValueAnnDemo &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 加载配置文件中配置</span><br><span class="line">     */</span><br><span class="line">    @Value(&quot;$&#123;demo.name&#125;&quot;)</span><br><span class="line">    private String name;</span><br><span class="line"></span><br><span class="line">    @Value(&quot;$&#123;demo.age&#125;&quot;)</span><br><span class="line">    private int age;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 自定义注入</span><br><span class="line">     */</span><br><span class="line">    @Value(&quot;abc&quot;)</span><br><span class="line">    private String str;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 读取系统参数</span><br><span class="line">     */</span><br><span class="line">    @Value(&quot;#&#123;systemProperties[&apos;os.name&apos;]&#125;&quot;)</span><br><span class="line">    private String osName;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 注入网络资源</span><br><span class="line">     */</span><br><span class="line">    @Value(&quot;http://www.baidu.com&quot;)</span><br><span class="line">    private Resource resource;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 注入文件</span><br><span class="line">     */</span><br><span class="line">    @Value(&quot;classpath:valuedemo.properties&quot;)</span><br><span class="line">    private Resource file;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 如果使用value注解加载配置文件内容，必须要有该bean</span><br><span class="line">     */</span><br><span class="line">    @Bean</span><br><span class="line">    public static PropertySourcesPlaceholderConfigurer propertyConfigure()&#123;</span><br><span class="line">        return new PropertySourcesPlaceholderConfigurer();</span><br><span class="line">    &#125;                                                 </span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws IOException &#123;</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ValueAnnDemo.class);</span><br><span class="line">        ValueAnnDemo demo = context.getBean(ValueAnnDemo.class);</span><br><span class="line">        System.out.println(demo.name);</span><br><span class="line">        System.out.println(demo.str);</span><br><span class="line">        System.out.println(demo.age);</span><br><span class="line">        System.out.println(demo.osName);</span><br><span class="line">        System.out.println(demo.resource);</span><br><span class="line">        System.out.println(IOUtils.toString(demo.file.getInputStream()));</span><br><span class="line">        //关闭</span><br><span class="line">        context.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>对于@Value注解只能用于实体属性，用于给当前实体属性注入值，值取决于注解的用法，可以匹配配置文件中的配置属性值，也可以是系统环境变量，字符串等。</li>
+<li>在使用@Value注解来匹配配置文件中的属性值的时候，必须在当前的配置类中构建或者声明一个PropertySourcesPlaceholderConfigurer的bean。</li>
+</ul>
+<h3 id="Profile"><a href="#Profile" class="headerlink" title="Profile"></a>Profile</h3><p>Profile能够在不同的环境下使用不同的配置（如不同的环境加载不同的数据源等）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">package demo.base.bean;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 抽象基类</span><br><span class="line"> */</span><br><span class="line">public abstract class BaseBean &#123;</span><br><span class="line">    public abstract void hello();</span><br><span class="line">&#125;</span><br><span class="line">package demo.base.bean;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 开发bean</span><br><span class="line"> */</span><br><span class="line">public class DevBean extends BaseBean&#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void hello() &#123;</span><br><span class="line">        System.out.println(&quot;dev hello&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">package demo.base.bean;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 正式bean</span><br><span class="line"> */</span><br><span class="line">public class ProBean extends BaseBean &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void hello() &#123;</span><br><span class="line">        System.out.println(&quot;pro hello&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">package demo.base;</span><br><span class="line"></span><br><span class="line">import demo.base.bean.BaseBean;</span><br><span class="line">import demo.base.bean.DevBean;</span><br><span class="line">import demo.base.bean.ProBean;</span><br><span class="line">import org.springframework.context.annotation.*;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 配置类</span><br><span class="line"> */</span><br><span class="line">@Configuration</span><br><span class="line">@ComponentScan(&quot;demo.base&quot;)</span><br><span class="line">public class ProfileDemo &#123;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    @Profile(&quot;dev&quot;)</span><br><span class="line">    public BaseBean getDevBean()&#123;</span><br><span class="line">        return new DevBean();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    @Profile(&quot;pro&quot;)</span><br><span class="line">    public BaseBean getProBean()&#123;</span><br><span class="line">        return new ProBean();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        //构建注解上下文的时候没有注入配置类</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();</span><br><span class="line">        //注入环境的profile 注入profile之后再注入配置类，否则会报类未定义</span><br><span class="line">        context.getEnvironment().setActiveProfiles(&quot;pro&quot;);</span><br><span class="line">        //注册配置类</span><br><span class="line">        context.register(ProfileDemo.class);</span><br><span class="line">        //刷新</span><br><span class="line">        context.refresh();</span><br><span class="line">        //获取bean</span><br><span class="line">        BaseBean bean = context.getBean(BaseBean.class);</span><br><span class="line">        bean.hello();</span><br><span class="line">        //关闭上下文</span><br><span class="line">        context.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="事件机制"><a href="#事件机制" class="headerlink" title="事件机制"></a>事件机制</h2><table>
+<thead>
+<tr>
+<th>组件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Event</td>
+<td>继承ApplicationEvent，通信消息的内容本身</td>
+</tr>
+<tr>
+<td>Listener</td>
+<td>实现ApplicationListener&lt;? extends ApplicationEvent&gt;，监听某一消费者，事件的消费者。</td>
+</tr>
+<tr>
+<td>Publisher</td>
+<td>事件发生器。依托Spring容器来发布事件。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="样例-1"><a href="#样例-1" class="headerlink" title="样例"></a>样例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">package demo.base.event;</span><br><span class="line"></span><br><span class="line">import org.springframework.context.ApplicationEvent;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 自定义事件</span><br><span class="line"> *</span><br><span class="line"> * @author gudulongao</span><br><span class="line"> */</span><br><span class="line">public class DemoEvent extends ApplicationEvent &#123;</span><br><span class="line">    private String msg;</span><br><span class="line"></span><br><span class="line">    public DemoEvent(Object source, String msg) &#123;</span><br><span class="line">        super(source);</span><br><span class="line">        this.msg = msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getMsg() &#123;</span><br><span class="line">        return msg;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">package demo.base.event;</span><br><span class="line"></span><br><span class="line">import org.springframework.context.ApplicationListener;</span><br><span class="line">import org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 自定义监听器</span><br><span class="line"> */</span><br><span class="line">@Component</span><br><span class="line">public class DemoListener implements ApplicationListener&lt;DemoEvent&gt; &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void onApplicationEvent(DemoEvent demoEvent) &#123;</span><br><span class="line">        System.out.println(&quot;i accept a msg from &quot; + demoEvent.getClass().getSimpleName() + &quot;,msg: &quot; + demoEvent.getMsg() + &quot;!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">package demo.base.event;</span><br><span class="line"></span><br><span class="line">import org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line">import org.springframework.context.ApplicationContext;</span><br><span class="line">import org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 自定义事件发布器</span><br><span class="line"> */</span><br><span class="line">@Component</span><br><span class="line">public class DemoPublish &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    private ApplicationContext context;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 发布事件</span><br><span class="line">     * @param msg</span><br><span class="line">     */</span><br><span class="line">    public void publish(String msg) &#123;</span><br><span class="line">        context.publishEvent(new DemoEvent(this, msg));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">package demo.base;</span><br><span class="line"></span><br><span class="line">import demo.base.event.DemoPublish;</span><br><span class="line">import org.springframework.context.annotation.AnnotationConfigApplicationContext;</span><br><span class="line">import org.springframework.context.annotation.ComponentScan;</span><br><span class="line">import org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">@ComponentScan(&quot;demo.base&quot;)</span><br><span class="line">public class EventDemo &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(EventDemo.class);</span><br><span class="line">        DemoPublish publish = context.getBean(DemoPublish.class);</span><br><span class="line">        publish.publish(&quot;hello&quot;);</span><br><span class="line">        context.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h2><ul>
+<li>@Apsect 声明切面</li>
+<li>@After,@Before,@Around 定义建言(advice)</li>
+<li>@After,@Before,@Around 注解的参数是拦截规则（切点），也可以通过@PointCut来定义拦截规则方便在@After,@Before和@Around中调用服实现复用。</li>
+<li>符合切点的位置称之为连接点(JoinPoint)。</li>
+</ul>
+<p><img src="/2019/06/03/springboot-1/aop-anno.png" alt="spring-aop涉及的注解">  </p>
+<h4 id="annotation"><a href="#annotation" class="headerlink" title="annotation"></a>annotation</h4><p>通过注解来匹配。</p>
+<h4 id="execution表达式"><a href="#execution表达式" class="headerlink" title="execution表达式"></a>execution表达式</h4><p>切点可以通过execution表达式来声明拦截规则。<br>例如：execution (<em> com.sample.service.impl..\</em>.*(..))</p>
+<ul>
+<li>第一个* 匹配返回值，表示返回类型为任意返回值。  </li>
+<li>com.sample.service.impl.. 匹配包路径，表明包路径com.sample.service.impl下两级目录（子孙）。  </li>
+<li>第二个* 匹配类名，表示任何类名。  </li>
+<li>*(..) 匹配方法及方法参数，表示所有的方法参数。    </li>
+</ul>
+<h4 id="args"><a href="#args" class="headerlink" title="args"></a>args</h4><p>切点可以通过@args来匹配方法入参是制定类型的方法。@args必须指定类名。即匹配方法入参是该类及其派生出字类的所有方法。</p>
+<h3 id="顺序"><a href="#顺序" class="headerlink" title="顺序"></a>顺序</h3><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>说明</th>
+<th>入参</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@before,@After</td>
+<td>前后建言,<strong>后建言不论核心代码是否报错都会执行</strong></td>
+<td>JoinPoint</td>
+</tr>
+<tr>
+<td>@Around</td>
+<td>环绕建言。</td>
+<td>ProceedingJionPoint（是JoinPoint的子类，其特殊拥有proceed方法）</td>
+</tr>
+<tr>
+<td>@AfterReturning</td>
+<td>核心代码执行成功后执行</td>
+<td>匹配的方法返回值作为入参</td>
+</tr>
+<tr>
+<td>@AfterThrowing</td>
+<td>核心代码执行异常后执行</td>
+<td>无入参</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/2019/06/03/springboot-1/order.png" alt="spring-aop涉及的注解">  </p>
+<p>顺序说明：</p>
+<ul>
+<li>都会事先走AOP的代码。</li>
+<li>执行Around中proceed()之前的逻辑。</li>
+<li>执行Before中的逻辑。</li>
+<li>执行核心逻辑。</li>
+<li>执行Around中proceed()之后的逻辑。</li>
+<li>执行After的逻辑。</li>
+<li>如果核心逻辑成功，执行AfterReturning，否则执行AfterThrowing。</li>
+</ul>
+<h3 id="样例-2"><a href="#样例-2" class="headerlink" title="样例"></a>样例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">@Aspect</span><br><span class="line">@Component</span><br><span class="line">public class DemoAOP &#123;</span><br><span class="line">    @Before(&quot;execution(* demo.base.aop.*.*(..))&quot;)</span><br><span class="line">    public void before(JoinPoint joinPoint) &#123;</span><br><span class="line">        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();</span><br><span class="line">        Method method = methodSignature.getMethod();</span><br><span class="line">        System.out.println(&quot;will call &quot; + method.getName());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @After(&quot;execution(* demo.base.aop.DemoService.*(..))&quot;)</span><br><span class="line">    public void after(JoinPoint joinPoint) &#123;</span><br><span class="line">        System.out.println(&quot;after call...&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Service</span><br><span class="line">public class DemoService &#123;</span><br><span class="line">    public void say() &#123;</span><br><span class="line">        System.out.println(&quot;hello world!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">@ComponentScan(&quot;demo.base.aop&quot;)</span><br><span class="line">@EnableAspectJAutoProxy//开启Aspect支持</span><br><span class="line">public class AopConfig &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        AnnotationConfigApplicationContext accontext = new AnnotationConfigApplicationContext(AopConfig.class);</span><br><span class="line">        DemoService service = accontext.getBean(DemoService.class);</span><br><span class="line">        service.say();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>拦截规则（切点）的定义规则</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>《SpringBoot实战》 汪云飞著<br><a href="https://blog.csdn.net/zhanglf02/article/details/78132304" target="_blank" rel="noopener">SpringAOP中切点的执行顺序</a><br><a href="https://blog.csdn.net/lmx125254/article/details/84398412" target="_blank" rel="noopener">切点执行顺序的demo</a><br><a href="https://www.cnblogs.com/powerwu/articles/5177662.html" target="_blank" rel="noopener">exeution表达式说明</a>  </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -2581,7 +2635,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">72</span>
+                  <span class="site-state-item-count">71</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
