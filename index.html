@@ -410,6 +410,34 @@
 <p><img src="/2019/09/11/Optional/optional/src_supplier.png" alt="Supplier函数接口源码"></p>
 <p>Supplier函数结构提供get方法用于生成指定数据类型的逻辑。</p>
 <h3 id="样例-1"><a href="#样例-1" class="headerlink" title="样例"></a>样例</h3><p><img src="/2019/09/11/Optional/optional/demo_orelse.png" alt="OrElse等方法样例代码"></p>
+<h2 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h2><p>filter 提供逻辑对Optional的值进行过滤 </p>
+<p><img src="/2019/09/11/Optional/optional/src_filter.png" alt="filter方法源码">  </p>
+<p>从filter源码中可以看到，入参是函数接口Predicate的实例来提供过滤的检查逻辑。</p>
+<p>Predicate函数接口源码如下图所示。</p>
+<p><img src="/2019/09/11/Optional/optional/src_predicate.png" alt="Predicate函数接口源码">  </p>
+<p>Predicate函数接口提供方法test来进行逻辑判断。</p>
+<h2 id="map-flatMap"><a href="#map-flatMap" class="headerlink" title="map,flatMap"></a>map,flatMap</h2><p>map和flatMap方法的源码如下图所示。</p>
+<p><img src="/2019/09/11/Optional/optional/src_map.png" alt="Map等方法源码"></p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Optional<u> map(Function&lt;T,U&gt; mapper)</u></td>
+<td>对Optional的值根据map的逻辑进行处理，处理结果是U 并将U存储到新的Optional容器中</td>
+</tr>
+<tr>
+<td>Optional<u> flatMap(Function&lt;T,Optional<u>&gt; mapper)</u></u></td>
+<td>对Optional的值根据map的逻辑进行处理，处理结果必须是Optional的数据类型</td>
+</tr>
+</tbody>
+</table>
+<h4 id="样例-2"><a href="#样例-2" class="headerlink" title="样例"></a>样例</h4><p><img src="/2019/09/11/Optional/optional/demo_map.png" alt="map等方法样例代码">  </p>
+<p>从样例中可以看到，map方法的参数lambda表达式中返回的可以是任意类型的数据，因为map方法源码中最终返回的Optional结构是在map方法中自己包装的。而对于flatMap方法的参数lambda表达式中可以看到，必须返回一个Optional实例。flatMap源码中只是对mapper的执行结果进行了判空。</p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
 <p><a href="https://www.runoob.com/java/java8-optional-class.html" target="_blank" rel="noopener">菜鸟驿站：Optional</a><br><a href="https://blog.csdn.net/csdn9988680/article/details/80816457" target="_blank" rel="noopener">CSDN:Optional</a>  </p>
 </blockquote>
