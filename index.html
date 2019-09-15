@@ -549,6 +549,262 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/11/optional/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/09/11/optional/" itemprop="url">Optional</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-11T22:20:24+08:00">
+                2019-09-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java8/" itemprop="url" rel="index">
+                    <span itemprop="name">java8</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/09/11/optional/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/09/11/optional/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>Optional是一个容器，可以很好的解决空指针问题</strong>。</p>
+<blockquote>
+<p>JDK受Google Guava项目启发，引入了Optional类，Guava通过使用检查空值的方式来防止代码污染，它鼓励程序员写更干净的代码。Optional类已经成为Java 8类库的一部分。Optional实际上是个容器：它可以保存类型T的值，或者仅仅保存null。Optional提供很多有用的方法，这样我们就不用显式进行空值检测。</p>
+</blockquote>
+<h1 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h1><p><img src="/2019/09/11/optional/src_createoptional.png" alt="创建Optional源码"></p>
+<p>从Optional源码中可以看到 构造函数是私有的，只能通过静态方法来创建Optional对象。其可以创建Optional实例的静态方法如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Optional<t> empty()</t></td>
+<td>获取空的Optional实例</td>
+</tr>
+<tr>
+<td>Optional<t> of(T value)</t></td>
+<td>获取Optional实例，存储非空的value</td>
+</tr>
+<tr>
+<td>Optional<t> ofNullable(T value)</t></td>
+<td>获取Optional实例。存储可以为空的value</td>
+</tr>
+</tbody>
+</table>
+<h1 id="API"><a href="#API" class="headerlink" title="API"></a>API</h1><h2 id="empty"><a href="#empty" class="headerlink" title="empty"></a>empty</h2><p>从Optional源码中可以看到 Optional中包含一个静态的EMPTY空内容的Optional实例。ofNullable方法一旦注入的参数是null则返回EMPTY。所以只要允许null的Optional都是EMPTY对象。故下面的测试所有的判断都是true。</p>
+<p><img src="/2019/09/11/optional/demo_empty.png" alt="测试空Optional实例"></p>
+<h2 id="isPresent"><a href="#isPresent" class="headerlink" title="isPresent"></a>isPresent</h2><p>方法isPresetnt用来判断容器Optional是否有内容。</p>
+<p><img src="/2019/09/11/optional/src_ispresent.png" alt="isPresent方法源码"></p>
+<h2 id="ifPresent"><a href="#ifPresent" class="headerlink" title="ifPresent"></a>ifPresent</h2><p>方法isPresent 当Optional容器有内容时，执行consumer逻辑来消费Optional中的值。</p>
+<p><img src="/2019/09/11/optional/src_ifpresent.png" alt="ifPresent方法源码"></p>
+<p>其中Consumer是函数接口。源码如下图所示。</p>
+<p><img src="/2019/09/11/optional/src_consumer.png" alt="Consumer函数接口源码"></p>
+<p><strong>ifPresent方法当Optional有值非空时直接执行Consumer逻辑。</strong></p>
+<h3 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h3><p><img src="/2019/09/11/optional/demo_optional.png" alt="ifPresent方法样例代码">  </p>
+<h2 id="orElse-orElseGet-orElseThrow"><a href="#orElse-orElseGet-orElseThrow" class="headerlink" title="orElse,orElseGet,orElseThrow"></a>orElse,orElseGet,orElseThrow</h2><p>方法源码如下图所示。</p>
+<p><img src="/2019/09/11/optional/src_orelse.png" alt="orElse等方法的源码"></p>
+<p>方法说明如下表所示。</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T orElse(T other)</td>
+<td>返回Optional本身的值，如果本事为空则返回other</td>
+</tr>
+<tr>
+<td>T orElseGet(Supplier other)</td>
+<td>返回Optional本身的值，如果本身为空则通过函数接口生成默认值</td>
+</tr>
+<tr>
+<td>T orElseThrow(Supplier exceptionSupplier</td>
+<td>返回Optional本身的值，如果本事为空则通过函数接口抛出异常</td>
+</tr>
+</tbody>
+</table>
+<p>Supplier函数接口源码如下图所示。</p>
+<p><img src="/2019/09/11/optional/src_supplier.png" alt="Supplier函数接口源码"></p>
+<p>Supplier函数结构提供get方法用于生成指定数据类型的逻辑。</p>
+<h3 id="样例-1"><a href="#样例-1" class="headerlink" title="样例"></a>样例</h3><p><img src="/2019/09/11/optional/demo_orelse.png" alt="OrElse等方法样例代码"></p>
+<h2 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h2><p>filter 提供逻辑对Optional的值进行过滤 </p>
+<p><img src="/2019/09/11/optional/src_filter.png" alt="filter方法源码">  </p>
+<p>从filter源码中可以看到，入参是函数接口Predicate的实例来提供过滤的检查逻辑。</p>
+<p>Predicate函数接口源码如下图所示。</p>
+<p><img src="/2019/09/11/optional/src_predicate.png" alt="Predicate函数接口源码">  </p>
+<p>Predicate函数接口提供方法test来进行逻辑判断。</p>
+<h2 id="map-flatMap"><a href="#map-flatMap" class="headerlink" title="map,flatMap"></a>map,flatMap</h2><p>map和flatMap方法的源码如下图所示。</p>
+<p><img src="/2019/09/11/optional/src_map.png" alt="Map等方法源码"></p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Optional<u> map(Function&lt;T,U&gt; mapper)</u></td>
+<td>对Optional的值根据map的逻辑进行处理，处理结果是U 并将U存储到新的Optional容器中</td>
+</tr>
+<tr>
+<td>Optional<u> flatMap(Function&lt;T,Optional<u>&gt; mapper)</u></u></td>
+<td>对Optional的值根据map的逻辑进行处理，处理结果必须是Optional的数据类型</td>
+</tr>
+</tbody>
+</table>
+<h4 id="样例-2"><a href="#样例-2" class="headerlink" title="样例"></a>样例</h4><p><img src="/2019/09/11/optional/demo_map.png" alt="map等方法样例代码">  </p>
+<p>从样例中可以看到，map方法的参数lambda表达式中返回的可以是任意类型的数据，因为map方法源码中最终返回的Optional结构是在map方法中自己包装的。而对于flatMap方法的参数lambda表达式中可以看到，必须返回一个Optional实例。flatMap源码中只是对mapper的执行结果进行了判空。</p>
+<h1 id="正确使用Optional"><a href="#正确使用Optional" class="headerlink" title="正确使用Optional"></a>正确使用Optional</h1><p><img src="/2019/09/11/optional/demo_before1.png" alt="原始代码"><br><img src="/2019/09/11/optional/demo_after1.png" alt="采用Optional修改后"></p>
+<p>用Optional可以很优美的对参数进行判空，通过map方法来递进参数对象，当值为空通过orElse逻辑来获取默认值。</p>
+<p><img src="/2019/09/11/optional/demo_before2.png" alt="原始代码"><br><img src="/2019/09/11/optional/demo_after2.png" alt="采用Optional修改后"></p>
+<p>用Optional可以链式的解决这种层层递进的判断写法。很简洁。</p>
+<h2 id="样例-3"><a href="#样例-3" class="headerlink" title="样例"></a>样例</h2><p><img src="/2019/09/11/optional/demo_after3.png" alt="层层递进的样例代码"></p>
+<p>从上面的样例中可以看到 我们可以通过Optional的map来层层递进对象而不用考虑对每一层进行判空。只是有些疑惑为啥最后面的orElseThrow会对前面的map处理有效。用demo1对象进行递进的时候，mapper返回的结果就是空了，这个时候map方法会将空进行包装成Optional。这个时候这个Optional就是EMPTY了。后续的两次map逻辑也都是EMPTY。这个时候orElseThrow处理判空发现是空则执行了抛错处理。  </p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p><a href="https://www.runoob.com/java/java8-optional-class.html" target="_blank" rel="noopener">菜鸟驿站：Optional</a><br><a href="https://blog.csdn.net/csdn9988680/article/details/80816457" target="_blank" rel="noopener">CSDN:Optional</a>  </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/10/reduce/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2091,171 +2347,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/01/methodreference/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/01/methodreference/" itemprop="url">方法引用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-01T21:53:55+08:00">
-                2019-07-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java8/" itemprop="url" rel="index">
-                    <span itemprop="name">java8</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/07/01/methodreference/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/07/01/methodreference/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>对于实例方法，我们通过对象来调用。对于静态方法，我们通过类名来调用。java8 提供了新的方式来更加简洁的调用方法。</p>
-<h1 id="双冒号方法引用"><a href="#双冒号方法引用" class="headerlink" title="双冒号方法引用"></a>双冒号方法引用</h1><h2 id="构造函数引用"><a href="#构造函数引用" class="headerlink" title="构造函数引用"></a>构造函数引用</h2><p><img src="/2019/07/01/methodreference/构造函数引用.png" alt="构造函数引用">  </p>
-<ul>
-<li>构造函数引用的格式是 <strong>Class::new</strong></li>
-</ul>
-<p>上图样例中的逻辑中采用了1.8新增的函数接口Supplier。该接口只有一个待实现方法get。接口包含泛型，get方法用于返回泛型类型的对象。</p>
-<p><img src="/2019/07/01/methodreference/Supplier接口源码.png" alt="Supplier">  </p>
-<p>而函数式接口的意义在于其接口方法可以指向一个lambd表达式。就像前端中一个变量可以bindy到一个方法一样。样例中这个supplier=Print::new 就表明每次调用supplier的get方法时，实际在执行Print的构造函数。</p>
-<h2 id="特定对象实例方法引用"><a href="#特定对象实例方法引用" class="headerlink" title="特定对象实例方法引用"></a>特定对象实例方法引用</h2><p><img src="/2019/07/01/methodreference/实例方法引用.png" alt="实例方法方法引用">  </p>
-<h2 id="静态方法引用"><a href="#静态方法引用" class="headerlink" title="静态方法引用"></a>静态方法引用</h2><p><img src="/2019/07/01/methodreference/静态方法引用.png" alt="静态方法方法引用">  </p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p><a href="https://www.runoob.com/java/java8-method-references.html" target="_blank" rel="noopener">菜鸟教程：方法引用</a><br><a href="https://blog.csdn.net/Keith003/article/details/80252172" target="_blank" rel="noopener">函数式接口</a>  </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2310,7 +2401,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">72</span>
+                  <span class="site-state-item-count">73</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2332,7 +2423,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
