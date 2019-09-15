@@ -413,7 +413,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/09/15/newdate/" itemprop="url">新日期</a></h1>
+                <a class="post-title-link" href="/2019/09/15/newdate/" itemprop="url">新日期API</a></h1>
         
 
         <div class="post-meta">
@@ -498,8 +498,98 @@
       
         
           
-            <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p><a href="https://www.runoob.com/java/java8-datetime-api.html" target="_blank" rel="noopener">菜鸟驿站：JDK8新的日期API</a></p>
+            <blockquote>
+<p>Java 8通过发布新的Date-Time API (JSR 310)来进一步加强对日期与时间的处理。  </p>
+</blockquote>
+<h1 id="旧版本问题"><a href="#旧版本问题" class="headerlink" title="旧版本问题"></a>旧版本问题</h1><ul>
+<li><strong>非线程安全：</strong> java.util.Date是非线程安全的。</li>
+<li><strong>设计差：</strong> Java中日期和时间的定义不一致。java.sql和java.util中都有日期类。对于java.util.Data包含日期和时间，而java.sql.Data仅仅包含日期。</li>
+<li><strong>时区处理麻烦：</strong> 日期类并不支持国际化，没有时区支持。需要通过java.util.Calendar和java.util.TimeZone来处理。</li>
+</ul>
+<h1 id="新版本"><a href="#新版本" class="headerlink" title="新版本"></a>新版本</h1><p><img src="/2019/09/15/newdate/timecomp.png" alt="time包中的组件"></p>
+<p>组成说明如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th>包名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>java.time</td>
+<td>基本对象的封装</td>
+</tr>
+<tr>
+<td>java.time.chrono</td>
+<td>提供对不同日历系统的访问</td>
+</tr>
+<tr>
+<td>java.time.format</td>
+<td>格式化和解析时间日期</td>
+</tr>
+<tr>
+<td>java.time.temporal</td>
+<td>底层框架和拓展的支持</td>
+</tr>
+<tr>
+<td>java.time.zone</td>
+<td>时区的处理</td>
+</tr>
+</tbody>
+</table>
+<p>整个time包的特征：</p>
+<ul>
+<li>定义了日期-时间概念的规则。包括instants、durations、dates、times、time-zones and periods。这些都是基于ISO日历系统。遵循Gregorian</li>
+<li><strong>所有类都是不可变、线程安全的。</strong></li>
+</ul>
+<h2 id="java-util-time"><a href="#java-util-time" class="headerlink" title="java.util.time"></a>java.util.time</h2><p>java.util.time中包含的类如下图所示：</p>
+<p><img src="/2019/09/15/newdate/time.png" alt="java.time中的类">  </p>
+<p>与java.util包中的比较关系如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th>java.time</th>
+<th>java.util</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Instant</td>
+<td>Date</td>
+</tr>
+<tr>
+<td>LocalDate,LocalTime,LocalDateTime</td>
+<td>Calendar</td>
+</tr>
+<tr>
+<td>ZonedDateTime</td>
+<td>Calendar</td>
+</tr>
+<tr>
+<td>OffsetDateTime,OffsetTime</td>
+<td>Calendar</td>
+</tr>
+<tr>
+<td>ZoneId,ZoneOffset,ZoneRules</td>
+<td>TimeZone</td>
+</tr>
+<tr>
+<td>Week(1~7)</td>
+<td>Week(1~7)</td>
+</tr>
+<tr>
+<td>Month(1~12)</td>
+<td>Moth(0~11)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>java.time包 月份是从1开始。而java.util的是从0开始。</strong></li>
+<li><strong>java.time包 星期中1表示周一。而java.util中1表示周日。</strong> </li>
+</ul>
+<h1 id="Local"><a href="#Local" class="headerlink" title="Local"></a>Local</h1><h1 id="Zoned"><a href="#Zoned" class="headerlink" title="Zoned"></a>Zoned</h1><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p><a href="https://www.runoob.com/java/java8-datetime-api.html" target="_blank" rel="noopener">菜鸟驿站：JDK8新的日期API</a><br><a href="https://www.jianshu.com/p/19bd58b30660" target="_blank" rel="noopener">简书：JDK8的time包</a><br><a href="https://www.w3cschool.cn/java/java-offset-date-time.html" target="_blank" rel="noopener">w3c：offsetTime使用样例</a><br><a href="https://www.jianshu.com/p/c403b2906da5" target="_blank" rel="noopener">简书：UTC时间</a>  </p>
 </blockquote>
 
           
