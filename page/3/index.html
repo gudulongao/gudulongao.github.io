@@ -239,6 +239,332 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/03/springboot-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/03/springboot-1/" itemprop="url">spring 基础</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-03T20:38:35+08:00">
+                2019-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/springboot/" itemprop="url" rel="index">
+                    <span itemprop="name">springboot</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/03/springboot-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/06/03/springboot-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Spring基础"><a href="#Spring基础" class="headerlink" title="Spring基础"></a>Spring基础</h1><p>spring框架的四个特性：</p>
+<ul>
+<li>使用POJO进行轻量级和最小侵入式的开发。</li>
+<li>通过依赖注入和基于接口编程实现松耦合。</li>
+<li>使用AOP和默认习惯进行声明式编程。</li>
+<li>使用AOP和模版(Template)减少模式化代码。</li>
+</ul>
+<h2 id="依赖注入-DI"><a href="#依赖注入-DI" class="headerlink" title="依赖注入(DI)"></a>依赖注入(DI)</h2><p>所谓依赖注入是指通过容器来负责创建对象和维护对象之间的依赖关系。而不是通过对象本身负责自己的创建和解决自己的依赖。<br><strong>依赖注入主要是为了解耦。体现了组合的理念。</strong>继承会使得子类与父类耦合，组合会降低耦合。  </p>
+<h2 id="基础注解"><a href="#基础注解" class="headerlink" title="基础注解"></a>基础注解</h2><h3 id="bean的生命周期（Scope）"><a href="#bean的生命周期（Scope）" class="headerlink" title="bean的生命周期（Scope）"></a>bean的生命周期（Scope）</h3><p>Spring中bean的生命周期可以通过注解@Scope来声明配置，其中注解Scope支持的生命周期如下表所示。  </p>
+<table>
+<thead>
+<tr>
+<th>Scope</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Singleton</td>
+<td>单例，默认配置</td>
+</tr>
+<tr>
+<td>Peororype</td>
+<td>每次调用都会构建</td>
+</tr>
+<tr>
+<td>Request</td>
+<td>Web项目中每一次http request新建</td>
+</tr>
+<tr>
+<td>Session</td>
+<td>Web项目中每一个http session新建</td>
+</tr>
+</tbody>
+</table>
+<h3 id="bean的创建和销毁"><a href="#bean的创建和销毁" class="headerlink" title="bean的创建和销毁"></a>bean的创建和销毁</h3><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@Bean注解的initMethod属性</td>
+<td>通过在配置类中声明bean的时候显示的指定该bean的初始化逻辑</td>
+</tr>
+<tr>
+<td>@Bean注解的destoryMethod属性</td>
+<td>通过在配置类中声明bean的时候显示的指定该bean的销毁逻辑</td>
+</tr>
+<tr>
+<td>@PostConstruct</td>
+<td>JSR-250提供，用于声明于方法体，表明该方法将在构造函数之后调用</td>
+</tr>
+<tr>
+<td>@PreDestory</td>
+<td>JSR-250提供，用于声明于方法体，表明该方法将在对象回收之前调用</td>
+</tr>
+</tbody>
+</table>
+<h3 id="加载配置文件"><a href="#加载配置文件" class="headerlink" title="加载配置文件"></a>加载配置文件</h3><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@PropertySource</td>
+<td>指定待加载配置文件的路径，通常用于配置类</td>
+</tr>
+<tr>
+<td>@Value</td>
+<td>通过注入的属性来匹配配置文件中的配置，常用于字段,即将配置文件中对应配置的值注入到当前字段</td>
+</tr>
+</tbody>
+</table>
+<p>对于@Value注解，如果当前配置类中有使用注解@ProppertySource,则表明该注解匹配的配置文件是注解中指定的配置文件，否则就是加载的PeopertySourcesPlaceholderConfigurer中配置的配置文件。  </p>
+<p><strong>正如注解的的名称，PropertySource只能加载properties配置文件，对于yml的配置，可以通过注解@ConfigurationProperties来加载。</strong></p>
+<h4 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">package demo.base;</span><br><span class="line"></span><br><span class="line">import org.apache.commons.io.IOUtils;</span><br><span class="line">import org.springframework.beans.factory.annotation.Value;</span><br><span class="line">import org.springframework.context.annotation.*;</span><br><span class="line">import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;</span><br><span class="line">import org.springframework.core.io.Resource;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 注解@Value样例</span><br><span class="line"> * @author gudulongao</span><br><span class="line"> */</span><br><span class="line">@Configuration</span><br><span class="line">@ComponentScan(&quot;demo.base&quot;)</span><br><span class="line">@PropertySource(&quot;valuedemo.properties&quot;)</span><br><span class="line">public class ValueAnnDemo &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 加载配置文件中配置</span><br><span class="line">     */</span><br><span class="line">    @Value(&quot;$&#123;demo.name&#125;&quot;)</span><br><span class="line">    private String name;</span><br><span class="line"></span><br><span class="line">    @Value(&quot;$&#123;demo.age&#125;&quot;)</span><br><span class="line">    private int age;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 自定义注入</span><br><span class="line">     */</span><br><span class="line">    @Value(&quot;abc&quot;)</span><br><span class="line">    private String str;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 读取系统参数</span><br><span class="line">     */</span><br><span class="line">    @Value(&quot;#&#123;systemProperties[&apos;os.name&apos;]&#125;&quot;)</span><br><span class="line">    private String osName;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 注入网络资源</span><br><span class="line">     */</span><br><span class="line">    @Value(&quot;http://www.baidu.com&quot;)</span><br><span class="line">    private Resource resource;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 注入文件</span><br><span class="line">     */</span><br><span class="line">    @Value(&quot;classpath:valuedemo.properties&quot;)</span><br><span class="line">    private Resource file;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 如果使用value注解加载配置文件内容，必须要有该bean</span><br><span class="line">     */</span><br><span class="line">    @Bean</span><br><span class="line">    public static PropertySourcesPlaceholderConfigurer propertyConfigure()&#123;</span><br><span class="line">        return new PropertySourcesPlaceholderConfigurer();</span><br><span class="line">    &#125;                                                 </span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws IOException &#123;</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ValueAnnDemo.class);</span><br><span class="line">        ValueAnnDemo demo = context.getBean(ValueAnnDemo.class);</span><br><span class="line">        System.out.println(demo.name);</span><br><span class="line">        System.out.println(demo.str);</span><br><span class="line">        System.out.println(demo.age);</span><br><span class="line">        System.out.println(demo.osName);</span><br><span class="line">        System.out.println(demo.resource);</span><br><span class="line">        System.out.println(IOUtils.toString(demo.file.getInputStream()));</span><br><span class="line">        //关闭</span><br><span class="line">        context.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>对于@Value注解只能用于实体属性，用于给当前实体属性注入值，值取决于注解的用法，可以匹配配置文件中的配置属性值，也可以是系统环境变量，字符串等。</li>
+<li>在使用@Value注解来匹配配置文件中的属性值的时候，必须在当前的配置类中构建或者声明一个PropertySourcesPlaceholderConfigurer的bean。</li>
+</ul>
+<h3 id="Profile"><a href="#Profile" class="headerlink" title="Profile"></a>Profile</h3><p>Profile能够在不同的环境下使用不同的配置（如不同的环境加载不同的数据源等）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">package demo.base.bean;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 抽象基类</span><br><span class="line"> */</span><br><span class="line">public abstract class BaseBean &#123;</span><br><span class="line">    public abstract void hello();</span><br><span class="line">&#125;</span><br><span class="line">package demo.base.bean;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 开发bean</span><br><span class="line"> */</span><br><span class="line">public class DevBean extends BaseBean&#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void hello() &#123;</span><br><span class="line">        System.out.println(&quot;dev hello&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">package demo.base.bean;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 正式bean</span><br><span class="line"> */</span><br><span class="line">public class ProBean extends BaseBean &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void hello() &#123;</span><br><span class="line">        System.out.println(&quot;pro hello&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">package demo.base;</span><br><span class="line"></span><br><span class="line">import demo.base.bean.BaseBean;</span><br><span class="line">import demo.base.bean.DevBean;</span><br><span class="line">import demo.base.bean.ProBean;</span><br><span class="line">import org.springframework.context.annotation.*;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 配置类</span><br><span class="line"> */</span><br><span class="line">@Configuration</span><br><span class="line">@ComponentScan(&quot;demo.base&quot;)</span><br><span class="line">public class ProfileDemo &#123;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    @Profile(&quot;dev&quot;)</span><br><span class="line">    public BaseBean getDevBean()&#123;</span><br><span class="line">        return new DevBean();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    @Profile(&quot;pro&quot;)</span><br><span class="line">    public BaseBean getProBean()&#123;</span><br><span class="line">        return new ProBean();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        //构建注解上下文的时候没有注入配置类</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();</span><br><span class="line">        //注入环境的profile 注入profile之后再注入配置类，否则会报类未定义</span><br><span class="line">        context.getEnvironment().setActiveProfiles(&quot;pro&quot;);</span><br><span class="line">        //注册配置类</span><br><span class="line">        context.register(ProfileDemo.class);</span><br><span class="line">        //刷新</span><br><span class="line">        context.refresh();</span><br><span class="line">        //获取bean</span><br><span class="line">        BaseBean bean = context.getBean(BaseBean.class);</span><br><span class="line">        bean.hello();</span><br><span class="line">        //关闭上下文</span><br><span class="line">        context.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="事件机制"><a href="#事件机制" class="headerlink" title="事件机制"></a>事件机制</h2><table>
+<thead>
+<tr>
+<th>组件</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Event</td>
+<td>继承ApplicationEvent，通信消息的内容本身</td>
+</tr>
+<tr>
+<td>Listener</td>
+<td>实现ApplicationListener&lt;? extends ApplicationEvent&gt;，监听某一消费者，事件的消费者。</td>
+</tr>
+<tr>
+<td>Publisher</td>
+<td>事件发生器。依托Spring容器来发布事件。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="样例-1"><a href="#样例-1" class="headerlink" title="样例"></a>样例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">package demo.base.event;</span><br><span class="line"></span><br><span class="line">import org.springframework.context.ApplicationEvent;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 自定义事件</span><br><span class="line"> *</span><br><span class="line"> * @author gudulongao</span><br><span class="line"> */</span><br><span class="line">public class DemoEvent extends ApplicationEvent &#123;</span><br><span class="line">    private String msg;</span><br><span class="line"></span><br><span class="line">    public DemoEvent(Object source, String msg) &#123;</span><br><span class="line">        super(source);</span><br><span class="line">        this.msg = msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getMsg() &#123;</span><br><span class="line">        return msg;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">package demo.base.event;</span><br><span class="line"></span><br><span class="line">import org.springframework.context.ApplicationListener;</span><br><span class="line">import org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 自定义监听器</span><br><span class="line"> */</span><br><span class="line">@Component</span><br><span class="line">public class DemoListener implements ApplicationListener&lt;DemoEvent&gt; &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void onApplicationEvent(DemoEvent demoEvent) &#123;</span><br><span class="line">        System.out.println(&quot;i accept a msg from &quot; + demoEvent.getClass().getSimpleName() + &quot;,msg: &quot; + demoEvent.getMsg() + &quot;!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">package demo.base.event;</span><br><span class="line"></span><br><span class="line">import org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line">import org.springframework.context.ApplicationContext;</span><br><span class="line">import org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * 自定义事件发布器</span><br><span class="line"> */</span><br><span class="line">@Component</span><br><span class="line">public class DemoPublish &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    private ApplicationContext context;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 发布事件</span><br><span class="line">     * @param msg</span><br><span class="line">     */</span><br><span class="line">    public void publish(String msg) &#123;</span><br><span class="line">        context.publishEvent(new DemoEvent(this, msg));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">package demo.base;</span><br><span class="line"></span><br><span class="line">import demo.base.event.DemoPublish;</span><br><span class="line">import org.springframework.context.annotation.AnnotationConfigApplicationContext;</span><br><span class="line">import org.springframework.context.annotation.ComponentScan;</span><br><span class="line">import org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">@ComponentScan(&quot;demo.base&quot;)</span><br><span class="line">public class EventDemo &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(EventDemo.class);</span><br><span class="line">        DemoPublish publish = context.getBean(DemoPublish.class);</span><br><span class="line">        publish.publish(&quot;hello&quot;);</span><br><span class="line">        context.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h2><ul>
+<li>@Apsect 声明切面</li>
+<li>@After,@Before,@Around 定义建言(advice)</li>
+<li>@After,@Before,@Around 注解的参数是拦截规则（切点），也可以通过@PointCut来定义拦截规则方便在@After,@Before和@Around中调用服实现复用。</li>
+<li>符合切点的位置称之为连接点(JoinPoint)。</li>
+</ul>
+<p><img src="/2019/06/03/springboot-1/aop-anno.png" alt="spring-aop涉及的注解">  </p>
+<h4 id="annotation"><a href="#annotation" class="headerlink" title="annotation"></a>annotation</h4><p>通过注解来匹配。</p>
+<h4 id="execution表达式"><a href="#execution表达式" class="headerlink" title="execution表达式"></a>execution表达式</h4><p>切点可以通过execution表达式来声明拦截规则。<br>例如：execution (<em> com.sample.service.impl..\</em>.*(..))</p>
+<ul>
+<li>第一个* 匹配返回值，表示返回类型为任意返回值。  </li>
+<li>com.sample.service.impl.. 匹配包路径，表明包路径com.sample.service.impl下两级目录（子孙）。  </li>
+<li>第二个* 匹配类名，表示任何类名。  </li>
+<li>*(..) 匹配方法及方法参数，表示所有的方法参数。    </li>
+</ul>
+<h4 id="args"><a href="#args" class="headerlink" title="args"></a>args</h4><p>切点可以通过@args来匹配方法入参是制定类型的方法。@args必须指定类名。即匹配方法入参是该类及其派生出字类的所有方法。</p>
+<h3 id="顺序"><a href="#顺序" class="headerlink" title="顺序"></a>顺序</h3><table>
+<thead>
+<tr>
+<th>注解</th>
+<th>说明</th>
+<th>入参</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>@before,@After</td>
+<td>前后建言,<strong>后建言不论核心代码是否报错都会执行</strong></td>
+<td>JoinPoint</td>
+</tr>
+<tr>
+<td>@Around</td>
+<td>环绕建言。</td>
+<td>ProceedingJionPoint（是JoinPoint的子类，其特殊拥有proceed方法）</td>
+</tr>
+<tr>
+<td>@AfterReturning</td>
+<td>核心代码执行成功后执行</td>
+<td>匹配的方法返回值作为入参</td>
+</tr>
+<tr>
+<td>@AfterThrowing</td>
+<td>核心代码执行异常后执行</td>
+<td>无入参</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/2019/06/03/springboot-1/order.png" alt="spring-aop涉及的注解">  </p>
+<p>顺序说明：</p>
+<ul>
+<li>都会事先走AOP的代码。</li>
+<li>执行Around中proceed()之前的逻辑。</li>
+<li>执行Before中的逻辑。</li>
+<li>执行核心逻辑。</li>
+<li>执行Around中proceed()之后的逻辑。</li>
+<li>执行After的逻辑。</li>
+<li>如果核心逻辑成功，执行AfterReturning，否则执行AfterThrowing。</li>
+</ul>
+<h3 id="样例-2"><a href="#样例-2" class="headerlink" title="样例"></a>样例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">@Aspect</span><br><span class="line">@Component</span><br><span class="line">public class DemoAOP &#123;</span><br><span class="line">    @Before(&quot;execution(* demo.base.aop.*.*(..))&quot;)</span><br><span class="line">    public void before(JoinPoint joinPoint) &#123;</span><br><span class="line">        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();</span><br><span class="line">        Method method = methodSignature.getMethod();</span><br><span class="line">        System.out.println(&quot;will call &quot; + method.getName());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @After(&quot;execution(* demo.base.aop.DemoService.*(..))&quot;)</span><br><span class="line">    public void after(JoinPoint joinPoint) &#123;</span><br><span class="line">        System.out.println(&quot;after call...&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Service</span><br><span class="line">public class DemoService &#123;</span><br><span class="line">    public void say() &#123;</span><br><span class="line">        System.out.println(&quot;hello world!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">@ComponentScan(&quot;demo.base.aop&quot;)</span><br><span class="line">@EnableAspectJAutoProxy//开启Aspect支持</span><br><span class="line">public class AopConfig &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        AnnotationConfigApplicationContext accontext = new AnnotationConfigApplicationContext(AopConfig.class);</span><br><span class="line">        DemoService service = accontext.getBean(DemoService.class);</span><br><span class="line">        service.say();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>拦截规则（切点）的定义规则</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>《SpringBoot实战》 汪云飞著<br><a href="https://blog.csdn.net/zhanglf02/article/details/78132304" target="_blank" rel="noopener">SpringAOP中切点的执行顺序</a><br><a href="https://blog.csdn.net/lmx125254/article/details/84398412" target="_blank" rel="noopener">切点执行顺序的demo</a><br><a href="https://www.cnblogs.com/powerwu/articles/5177662.html" target="_blank" rel="noopener">exeution表达式说明</a>  </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/21/lambda/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1881,159 +2207,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/01/zookeeper-9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/01/zookeeper-9/" itemprop="url">zookeeper curator异常</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-01T21:53:07+08:00">
-                2019-04-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ZooKeeper/" itemprop="url" rel="index">
-                    <span itemprop="name">ZooKeeper</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/04/01/zookeeper-9/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/04/01/zookeeper-9/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="KeeperErrorCode-Unimplemented"><a href="#KeeperErrorCode-Unimplemented" class="headerlink" title="KeeperErrorCode = Unimplemented"></a>KeeperErrorCode = Unimplemented</h1><p>curator的版本与zookeeper的版本不一致。<br>curator 4.0需要zookeeper 3.5 版本<br>curator 3.X需要zookeeper 3.4.X版本<br>还有最重要的是zookeeper版本要与实际的zookeeper服务版本一致 </p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2088,7 +2261,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">71</span>
+                  <span class="site-state-item-count">72</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2110,7 +2283,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
