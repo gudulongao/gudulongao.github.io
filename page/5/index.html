@@ -239,6 +239,166 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/17/zookeeper-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/17/zookeeper-4/" itemprop="url">zookeeper api操作</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-17T10:44:38+08:00">
+                2019-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ZooKeeper/" itemprop="url" rel="index">
+                    <span itemprop="name">ZooKeeper</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/17/zookeeper-4/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/03/17/zookeeper-4/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.apache.zookeeper&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;zookeeper&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;3.4.6&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="样例代码"><a href="#样例代码" class="headerlink" title="样例代码"></a>样例代码</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br></pre></td><td class="code"><pre><span class="line">package demo;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import org.apache.zookeeper.*;</span><br><span class="line">import org.apache.zookeeper.data.Stat;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.util.Date;</span><br><span class="line">import java.util.List;</span><br><span class="line"></span><br><span class="line">public class ZookeeperDemo &#123;</span><br><span class="line">    public static final String ADDRESS = &quot;127.0.0.1:2182&quot;;</span><br><span class="line"></span><br><span class="line">    public static final int SESSION_TIMEOUT = 500;</span><br><span class="line"></span><br><span class="line">    private static void log(String mess) &#123;</span><br><span class="line">        System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; &quot; + mess);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 获取状态信息</span><br><span class="line">     *</span><br><span class="line">     * @param state</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    private static String getState(Stat state) &#123;</span><br><span class="line">        StringBuilder builder = new StringBuilder();</span><br><span class="line">        builder.append(&quot;Czxid: &quot; + state.getCzxid()).append(&quot;\n&quot;);</span><br><span class="line">        builder.append(&quot;Ctime: &quot; + new Date(state.getCtime())).append(&quot;\n&quot;);</span><br><span class="line">        builder.append(&quot;Mzxid: &quot; + state.getMzxid()).append(&quot;\n&quot;);</span><br><span class="line">        builder.append(&quot;Mtime: &quot; + new Date(state.getMtime())).append(&quot;\n&quot;);</span><br><span class="line">        builder.append(&quot;Pzxid: &quot; + state.getPzxid()).append(&quot;\n&quot;);</span><br><span class="line">        builder.append(&quot;version: &quot; + state.getVersion()).append(&quot;\n&quot;);</span><br><span class="line">        builder.append(&quot;cversion: &quot; + state.getCversion()).append(&quot;\n&quot;);</span><br><span class="line">        builder.append(&quot;aversion: &quot; + state.getAversion()).append(&quot;\n&quot;);</span><br><span class="line">        builder.append(&quot;ephemeralOwner: &quot; + state.getEphemeralOwner()).append(&quot;\n&quot;);</span><br><span class="line">        builder.append(&quot;dataLength: &quot; + state.getDataLength()).append(&quot;\n&quot;);</span><br><span class="line">        builder.append(&quot;numhildren: &quot; + state.getNumChildren()).append(&quot;\n&quot;);</span><br><span class="line">        return builder.toString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 基本操作</span><br><span class="line">     */</span><br><span class="line">    public static void testBaseAPI() &#123;</span><br><span class="line">        ZooKeeper client = null;</span><br><span class="line">        try &#123;</span><br><span class="line">            //创建连接</span><br><span class="line">            client = new ZooKeeper(ADDRESS, SESSION_TIMEOUT, null);</span><br><span class="line">            //查询根目录下的节点</span><br><span class="line">            List&lt;String&gt; children = client.getChildren(&quot;/&quot;, null);</span><br><span class="line">            log(&quot;children: &quot; + children);</span><br><span class="line"></span><br><span class="line">            client.create(&quot;/test&quot;, &quot;test&quot;.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);</span><br><span class="line">            //获取节点/test的数据</span><br><span class="line">            byte[] data = client.getData(&quot;/test&quot;, null, null);</span><br><span class="line">            log(&quot;data: &quot; + new String(data));</span><br><span class="line">            //获取节点/test的状态数据</span><br><span class="line">            Stat state = client.exists(&quot;/test&quot;, null);</span><br><span class="line">            log(&quot;stat: &quot; + getState(state));</span><br><span class="line"></span><br><span class="line">            //更新节点/test的数据，需要基于版本号来更新（乐观锁），如果版本号=-1 则强制更新</span><br><span class="line">            state = client.setData(&quot;/test&quot;, &quot;tl1&quot;.getBytes(), state.getVersion());</span><br><span class="line">            log(&quot;stat: &quot; + getState(state));</span><br><span class="line">            data = client.getData(&quot;/test&quot;, null, null);</span><br><span class="line">            log(&quot;stat: &quot; + getState(state));</span><br><span class="line"></span><br><span class="line">            state = client.setData(&quot;/test&quot;, &quot;tl3&quot;.getBytes(), -1);</span><br><span class="line">            log(&quot;stat: &quot; + getState(state));</span><br><span class="line">            data = client.getData(&quot;/test&quot;, null, null);</span><br><span class="line">            log(&quot;stat: &quot; + getState(state));</span><br><span class="line"></span><br><span class="line">            //创建节点</span><br><span class="line">            String result = client.create(&quot;/test/child&quot;, &quot;child&quot;.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode</span><br><span class="line">                    .PERSISTENT);</span><br><span class="line"></span><br><span class="line">            client.delete(&quot;/test/child&quot;, -1);</span><br><span class="line">            client.delete(&quot;/test&quot;, -1);</span><br><span class="line">            log(&quot;result: &quot; + result);</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (KeeperException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            if (client != null) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    client.close();</span><br><span class="line">                &#125; catch (InterruptedException ignored) &#123;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void testWathcer() &#123;</span><br><span class="line">        ZooKeeper client = null;</span><br><span class="line">        try &#123;</span><br><span class="line">            //创建连接（带监听）</span><br><span class="line">            client = new ZooKeeper(ADDRESS, SESSION_TIMEOUT, null);</span><br><span class="line">            client.create(&quot;/test&quot;, &quot;test&quot;.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);</span><br><span class="line">            //通过getData操作添加监听</span><br><span class="line">            //getData的监听只能通过delete和setData触发</span><br><span class="line">            //同时这个监听只能触发一次。如果有两次delete/setData 第二次的操作就不会触发。</span><br><span class="line">            byte[] data = client.getData(&quot;/test&quot;, new Watcher() &#123;</span><br><span class="line">                @Override</span><br><span class="line">                public void process(WatchedEvent watchedEvent) &#123;</span><br><span class="line">                    log(&quot; path:&quot; + watchedEvent.getPath() + &quot; type: &quot; + watchedEvent.getType());</span><br><span class="line"></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;, null);</span><br><span class="line">            log(&quot;data: &quot; + new String(data));</span><br><span class="line"></span><br><span class="line">            log(&quot;delete...&quot;);</span><br><span class="line">            client.delete(&quot;/test&quot;, -1);</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (KeeperException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            if (client != null) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    client.close();</span><br><span class="line">                &#125; catch (InterruptedException ignored) &#123;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void testDeleteClose() &#123;</span><br><span class="line">        ZooKeeper client = null;</span><br><span class="line">        try &#123;</span><br><span class="line">            //创建连接</span><br><span class="line">            client = new ZooKeeper(ADDRESS, SESSION_TIMEOUT, null);</span><br><span class="line">            //创建节点</span><br><span class="line">            client.create(&quot;/test&quot;, &quot;test&quot;.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);</span><br><span class="line">            //获取节点状态信息</span><br><span class="line">            Stat stat = client.exists(&quot;/test&quot;, null);</span><br><span class="line">            //对节点添加监听</span><br><span class="line">            client.getData(&quot;/test&quot;, new Watcher() &#123;</span><br><span class="line">                @Override</span><br><span class="line">                public void process(WatchedEvent watchedEvent) &#123;</span><br><span class="line">                    log(&quot; path: &quot; + watchedEvent.getPath() + &quot; event: &quot; + watchedEvent.getType());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;, stat);</span><br><span class="line"></span><br><span class="line">            //删除节点</span><br><span class="line">            log(&quot;delete...&quot;);</span><br><span class="line">            client.delete(&quot;/test&quot;, -1);</span><br><span class="line"></span><br><span class="line">            Thread.sleep(1000);</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (KeeperException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; finally &#123;</span><br><span class="line">            if (client != null) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    client.close();</span><br><span class="line">                &#125; catch (InterruptedException ignored) &#123;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">//        testBaseAPI();</span><br><span class="line">//        testDeleteClose();</span><br><span class="line">        testWathcer();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="监听"><a href="#监听" class="headerlink" title="监听"></a>监听</h1><p><img src="/2019/03/17/zookeeper-4/firetrigger.png" alt="Znode属性">  </p>
+<p>zookeeper中的监听只能触发一次。即当我们通过exists、getData和getChildren方法添加的监听只能被触发一次。<br>如果设计成永久的监听，当服务端能够触发监听的操作频繁执行时，客户端也会随之频繁的收到更新的通知。而实际上客户端只是关注于最新的数据，节点状态而并不关心服务端频繁的每次更新。同时当注册的监听客户端很多的场景下会对zookeeper的性能造成额外的负担。</p>
+<h2 id="永久监听"><a href="#永久监听" class="headerlink" title="永久监听"></a>永久监听</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">package demo;</span><br><span class="line"></span><br><span class="line">import org.apache.zookeeper.*;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">public class MyWatcher implements Watcher &#123;</span><br><span class="line">    private ZooKeeper zk;</span><br><span class="line"></span><br><span class="line">    public MyWatcher(ZooKeeper zk) &#123;</span><br><span class="line">        this.zk = zk;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void process(WatchedEvent watchedEvent) &#123;</span><br><span class="line">        String path = watchedEvent.getPath();</span><br><span class="line">        Event.EventType type = watchedEvent.getType();</span><br><span class="line">        log(&quot; path:&quot; + path + &quot; type:&quot; + type);</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            if (Event.EventType.NodeDeleted != type) &#123;</span><br><span class="line">                //再次添加监听（exists操作会对所有的操作都触发）</span><br><span class="line">                zk.exists(path, this);</span><br><span class="line">                zk.getChildren(path, this);</span><br><span class="line">                zk.getData(path, this, null);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; catch (KeeperException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private static void log(String mess) &#123;</span><br><span class="line">        System.out.println(System.currentTimeMillis() + &quot; &quot; + Thread.currentThread().getName() + &quot; &quot; + mess);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws IOException, KeeperException, InterruptedException &#123;</span><br><span class="line">        ZooKeeper zk = new ZooKeeper(&quot;127.0.0.1:2182&quot;, 2000, null);</span><br><span class="line">        log(&quot;create node...&quot;);</span><br><span class="line">        zk.create(&quot;/test&quot;, &quot;test&quot;.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);</span><br><span class="line">        log(&quot; add listener...&quot;);</span><br><span class="line">        zk.exists(&quot;/test&quot;, new MyWatcher(zk));</span><br><span class="line">        log(&quot;update data...&quot;);</span><br><span class="line">        zk.setData(&quot;/test&quot;, &quot;abc&quot;.getBytes(), -1);</span><br><span class="line">        log(&quot;update data...&quot;);</span><br><span class="line">        zk.setData(&quot;/test&quot;, &quot;def&quot;.getBytes(), -1);</span><br><span class="line">        log(&quot;add child...&quot;);</span><br><span class="line">        zk.create(&quot;/test/child&quot;, &quot;tl&quot;.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);</span><br><span class="line">        log(&quot;delete child...&quot;);</span><br><span class="line">        zk.delete(&quot;/test/child&quot;, -1);</span><br><span class="line">        Thread.sleep(1000);</span><br><span class="line">        log(&quot;delete node...&quot;);</span><br><span class="line">        zk.delete(&quot;/test&quot;, -1);</span><br><span class="line"></span><br><span class="line">        Thread.sleep(1000);</span><br><span class="line">//        zk.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>zookeeper学习博客：<a href="https://www.cnblogs.com/qingyunzong/p/8623844.html" target="_blank" rel="noopener">https://www.cnblogs.com/qingyunzong/p/8623844.html</a><br>zookeeper java操作：<a href="https://www.cnblogs.com/LiZhiW/p/4923693.html" target="_blank" rel="noopener">https://www.cnblogs.com/LiZhiW/p/4923693.html</a><br>zookeeper与Eureka的区别：<a href="https://blog.csdn.net/eson_15/article/details/85561179" target="_blank" rel="noopener">https://blog.csdn.net/eson_15/article/details/85561179</a><br>zookeeper为什么设计成永久监听：<a href="https://blog.csdn.net/hongshun0651140/article/details/49705547" target="_blank" rel="noopener">https://blog.csdn.net/hongshun0651140/article/details/49705547</a><br>zookeeper如何永久监听：<a href="https://blog.csdn.net/lemonlhy/article/details/79660408" target="_blank" rel="noopener">https://blog.csdn.net/lemonlhy/article/details/79660408</a>    </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/12/zookeeper-3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2157,247 +2317,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/25/transection-isolation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/25/transection-isolation/" itemprop="url">Mysql事务</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-25T14:24:46+08:00">
-                2018-09-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySql数据库/" itemprop="url" rel="index">
-                    <span itemprop="name">MySql数据库</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/25/transection-isolation/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/09/25/transection-isolation/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>事务是数据库并发控制的基本单元。<strong>在Mysql数据库中，只有InnoDB存储引擎支持事务</strong>。</p>
-<h1 id="事务的属性"><a href="#事务的属性" class="headerlink" title="事务的属性"></a>事务的属性</h1><ul>
-<li><strong>原子性(Atomicity)</strong>：事务中的操作要么全部执行成功要么全部执行失败。</li>
-<li><strong>一致性(consistency)</strong>：事务执行前后，数据库中的数据都满足数据的完整性，符合业务需求(比如转账操作，一个账户的钱减少另一个账户的钱相应的减少。这种业务操作需要在一个事务中，这样在转账操作才会符合我们的业务需求)。  </li>
-<li><strong>隔离型(isolation)</strong>：事务之间是隔离的，互相不影响的。</li>
-<li><strong>持久性(durability)</strong>：事务提交后，对于数据库的修改是永久性的。</li>
-</ul>
-<h1 id="事务并发问题"><a href="#事务并发问题" class="headerlink" title="事务并发问题"></a>事务并发问题</h1><ul>
-<li>更新丢失：两个事务A，B同时修改数据2，事务A将2修改为3，事务B将2修改为1，事务A提交了，事务B回滚了，则会将数据回滚到初始值2，即丢失了事务A的修改。</li>
-<li>脏读：事务A读取了事务B未提交修改的数据，后续事务B回滚，则A读取的数据为脏数据。</li>
-<li>不可重复读：事务多次读取同一数据但是结果不一致。事务A多次读取一数据，但是在这个过程中，事务B不断的修改这一数据，所以导致事务A每次读取的数据都不一致。<strong>修改操作</strong>会导致不可重复读。</li>
-<li>幻读：事务A在统计某张表的总数时，事务B不断的插入数据，导致事务A读取的总数不对。<strong>新增或者删除操作</strong>会导致幻读。</li>
-</ul>
-<h1 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h1><table>
-<thead>
-<tr>
-<th>类型</th>
-<th style="text-align:center">更新丢失</th>
-<th style="text-align:center">脏读</th>
-<th style="text-align:center">不可重复读</th>
-<th style="text-align:center">幻读</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>读未提交(read-uncommited)</td>
-<td style="text-align:center">❌</td>
-<td style="text-align:center">✅</td>
-<td style="text-align:center">✅</td>
-<td style="text-align:center">✅</td>
-</tr>
-<tr>
-<td>读提交(read-commited)</td>
-<td style="text-align:center">❌</td>
-<td style="text-align:center">❌</td>
-<td style="text-align:center">✅</td>
-<td style="text-align:center">✅</td>
-</tr>
-<tr>
-<td>可重复读(repeatble-read)</td>
-<td style="text-align:center">❌</td>
-<td style="text-align:center">❌</td>
-<td style="text-align:center">❌</td>
-<td style="text-align:center">✅</td>
-</tr>
-<tr>
-<td>串行化(serializable)</td>
-<td style="text-align:center">❌</td>
-<td style="text-align:center">❌</td>
-<td style="text-align:center">❌</td>
-<td style="text-align:center">❌</td>
-</tr>
-</tbody>
-</table>
-<p>其中读未提交和读已提交都好理解。对于可重复读，根据实践操作可以验证，事务A读取的数据，不会受到事务B的修改操作而影响。哪怕事务B已将数据清空或者插入新的数据，在事务A中都不会读取到这些修改。故对于可重复读的事务隔离，是会有幻读的问题。</p>
-<h1 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h1><h2 id="读未提交-read-uncommitted"><a href="#读未提交-read-uncommitted" class="headerlink" title="读未提交(read uncommitted)"></a>读未提交(read uncommitted)</h2><table>
-<thead>
-<tr>
-<th>步骤</th>
-<th>连接A</th>
-<th>连接B</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td><img src="/2018/09/25/transection-isolation/read-uncommitted-a-1.png" alt="包装生成线程安全的hashmap"></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td>设置隔离级别。更新数据。未提交</td>
-<td></td>
-</tr>
-<tr>
-<td>2</td>
-<td></td>
-<td><img src="/2018/09/25/transection-isolation/read-uncommitted-b-2.png" alt="包装生成线程安全的hashmap"></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td>设置隔离级别，查询数据，发现可以查询到连接A未提交的数据</td>
-</tr>
-</tbody>
-</table>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>事务隔离：<a href="https://blog.csdn.net/jiyiqinlovexx/article/details/50967965" target="_blank" rel="noopener">https://blog.csdn.net/jiyiqinlovexx/article/details/50967965</a><br>事务：<a href="https://www.cnblogs.com/huanongying/p/7021555.html" target="_blank" rel="noopener">https://www.cnblogs.com/huanongying/p/7021555.html</a><br>事务命令操作：<a href="https://blog.csdn.net/zhu4674548/article/details/75195253" target="_blank" rel="noopener">https://blog.csdn.net/zhu4674548/article/details/75195253</a>  </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2452,7 +2371,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">73</span>
+                  <span class="site-state-item-count">74</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
