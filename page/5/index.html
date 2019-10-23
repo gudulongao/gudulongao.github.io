@@ -239,6 +239,228 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/19/zookeeper-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/19/zookeeper-5/" itemprop="url">zookeeper 设计特点及适用场景</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-19T22:29:33+08:00">
+                2019-03-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ZooKeeper/" itemprop="url" rel="index">
+                    <span itemprop="name">ZooKeeper</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/19/zookeeper-5/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/03/19/zookeeper-5/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="/2019/03/19/zookeeper-5/zk1.png" alt="zk集群">  </p>
+<p>ZK是一个高吞吐量的分布式协调系统。其自身是一个分布式系统。一个ZK集群由多个Server节点通过数据复制和同步来提供数据的一致性服务。</p>
+<p><img src="/2019/03/19/zookeeper-5/read.png" alt="读操作性能图">  </p>
+<p>ZK是一个以高吞吐为目标的系统。如上图所示，纵轴是请求数据，横轴是读操作的占比。可以看到对于读多写少的场景具有很好的性能表现。</p>
+<h1 id="高吞吐的特点"><a href="#高吞吐的特点" class="headerlink" title="高吞吐的特点"></a>高吞吐的特点</h1><ul>
+<li>集群中任何节点都可以响应客户端读请求（<em>只是读请求</em>），并且客户端在任何一个节点看到的视图都是一致的（数据一致性）。zk还支持增加节点来横向拓展（易拓展）。</li>
+<li>ZK将所有的数据都存储在内存中，读写操作高效。没有磁盘IO操作。</li>
+<li>ZK并不是强一致性，为了高吞吐，不要求数据的实时一致性。允许分布式数据通过时间进行复制同步后达到最终的一致性。</li>
+</ul>
+<blockquote>
+<p><em>对于写请求或者说事务请求，分布式数据需要进行数据的复制同步，节点数越多同步复制的耗时越久，影响系统吞吐量，所以在横向拓展时对于事务请求并不是节点越多越好。</em></p>
+</blockquote>
+<h1 id="角色"><a href="#角色" class="headerlink" title="角色"></a>角色</h1><ul>
+<li>leader：基于leader选举产生的唯一节点，负责整个ZK服务的事务请求和服务调度。</li>
+<li>follower：参与leader选举。处理读请求转发事务请求到leader。参与事务请求Proposal的投票</li>
+<li>observer：弱化的follower，只是处理读请求以及转发事务请求到leader，不参leader选举和Proposal投票。设计这个角色只是在不影响集群事务处理能力的前提下提升集群的非事务处理的吞吐量。</li>
+</ul>
+<h1 id="事务请求过程"><a href="#事务请求过程" class="headerlink" title="事务请求过程"></a>事务请求过程</h1><ul>
+<li>事务请求都先转发到leader。leader会将事务请求转换成Proposal协议。并为协议生成id(Zxid)即全局唯一的事务id。leader按照事务id来对事务请求进行排序和处理的。</li>
+<li>leader将Proposal协议放到每个follower对应的任务队列中（leader会为每个follower创建一个队列）。</li>
+<li>follower按照FIFO的方式获取任务队列中的Proposal协议。然后以事务日志的方式写入本地磁盘。成功后返回给leader一个ACK响应即Proposal投票。</li>
+<li>leader只要收到过半数（follower数）的ACK响应，就会广播一个commit消息给follower通知Proposal协议可以提交。同时leader自身也会提交。</li>
+</ul>
+<p><img src="/2019/03/19/zookeeper-5/commit.png" alt="事务性操作事绪图">  </p>
+<h1 id="leader选举"><a href="#leader选举" class="headerlink" title="leader选举"></a>leader选举</h1><p>ZK进行leader选举只会在一下两个场景：</p>
+<ul>
+<li>服务刚启动，还没有leader。</li>
+<li>leader节点挂了。退出了zk服务。</li>
+</ul>
+<p>当需要进行leader选举时，每个follower会广播选票，选票包含follower服务id（serverid）以及事务id(Zxid，个人感觉这里说的事务id应该是在服务启动时，每个节点在zk中注册的节点编号)。整个过程如下：</p>
+<ul>
+<li>每个follower进行第一次投票，广播自己的serverid和Zxid。</li>
+<li>follower会收到其他follower的投票，follower会将收到的投票于自己的投票进行比较，找Zxid最大的，如果Zxid一样就找serverid最大的。从而生成新的投票，继续投票。</li>
+<li>经过若干轮的投票，某一个follower获得超过半数的投票就会成为新的leader。</li>
+</ul>
+<blockquote>
+<p><em>ZK在leader选举中有偏向，偏向事务id更大的，或者服务id更大的，即数据更新的机器</em></p>
+</blockquote>
+<p><img src="/2019/03/19/zookeeper-5/serverid.png" alt="serverid">  </p>
+<h1 id="故障容错"><a href="#故障容错" class="headerlink" title="故障容错"></a>故障容错</h1><ul>
+<li>事务日志：服务器在更新内存数据之前先将事务性操作以日志的形式写入磁盘。follower和leader都会记录事务日志。</li>
+<li>数据快照：周期性的将内存中的数据存储成内存快照。</li>
+</ul>
+<blockquote>
+<p><em>很有可能在数据快照后进行了事务性操作，导致数据发生了变化，所以最好的故障恢复是在通过数据快照将数据加载到内存中以后，再通过事务日志来执行操作恢复到最新的数据</em></p>
+</blockquote>
+<h1 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h1><h2 id="命名服务"><a href="#命名服务" class="headerlink" title="命名服务"></a>命名服务</h2><p>ZK的命名服务主要提供两个功能：</p>
+<ul>
+<li>服务的注册：服务提供方在启动后将提供的服务的地址等信息存储在zk指定的目录节点中，服务消费者则可以从指定的目录节点中获取想要的服务信息。<em>dubbo</em> 个人感觉也可以做服务的注册和服务的发现检查。</li>
+<li>全局顺序的id生成器：通过创建顺序的持久节点，将节点编号作为生成的id.<a href="https://blog.csdn.net/xundh/article/details/80167727" target="_blank" rel="noopener">https://blog.csdn.net/xundh/article/details/80167727</a></li>
+</ul>
+<p><img src="/2019/03/19/zookeeper-5/id.png" alt="id生成器">  </p>
+<h2 id="配置管理"><a href="#配置管理" class="headerlink" title="配置管理"></a>配置管理</h2><p>分布式的产品涉及到的配置都比较的分散，当有变动会牵扯到多台机器的修改。越多的机器部署配置的修改就会变得越困难。将所有的配置全部存储到数据库中可以集中的维护配置，但只能做到启动时读取配置做不到实时的配置更新。<br>可以利用ZK的watch机制。将产品的配置都存储在ZK中的某一个目录节点，并对这个节点做监听，一旦配置发生了变化，应用服务就能够收到通知，优点热部署的感觉。</p>
+<p><img src="/2019/03/19/zookeeper-5/configuration.png" alt="配置管理">  </p>
+<h2 id="集群管理"><a href="#集群管理" class="headerlink" title="集群管理"></a>集群管理</h2><p>集群管理就是对集群监控和集群控制。在日常开发和运维过程中，集群管理都想要知道一下几点：</p>
+<ul>
+<li>实际运行的机器数量。</li>
+<li>集群中机器的实时状态。</li>
+<li>集群中机器的上线/下线进行控制。</li>
+</ul>
+<p>主要利用zk临时节点的特性，当有新的机器添加到集群中，就在特定的zk目录节点下新增临时节点，客户端对特定的目录做监听，发现有子节点变化时，感知到有新的节点，这个时候做上线控制。机器会将自己的实时运行状态写入到对应的临时节点中，客户端监听临时节点的数据变化，获取机器的实时状态数据，当机器挂掉退出会话时，其创建的临时节点会被zk删除，客户端感知到特定目录的子节点变化，知道有节点删除，就可以做下线控制。具体可以看<a href="https://blog.csdn.net/en_joker/article/details/78802106" target="_blank" rel="noopener">https://blog.csdn.net/en_joker/article/details/78802106</a> 的例子，讲解的很清晰，感觉zk做集群管理很炸天。</p>
+<h2 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h2><p>实现分布式锁主要是通过zk的临时顺序节点。<br>在zk目录节点中指定一个目录/lock。当客户端想要加锁时，会在/lock目录下创建临时顺序节点，创建成功后，客户端会获取/lock下的所有子节点，同时判断自己创建的临时节点顺序编号是不是最小的，如果是，则成功获取锁。如果不是，则对比自己创建的临时节点编号小的节点做删除监听，一直阻塞等到监听触发。这样没有获取到锁的客户端都等待比自己先创建的临时节点上，这样形成了关于这个锁的等待队列。只有当最先请求的临时节点被删除（获取锁的客户端完成任务手动删除临时节点，要么获取锁的客户端奔溃退出会话zk自动删除临时节点）才会激活下一个请求锁的客户端。保证了锁的顺序性（无饥饿）。</p>
+<p><img src="/2019/03/19/zookeeper-5/lock.png" alt="分布式锁">  </p>
+<h2 id="队列管理"><a href="#队列管理" class="headerlink" title="队列管理"></a>队列管理</h2><ul>
+<li>同步队列：当队列中元素都齐整了队列才可以被使用。生产者在zk指定目录节点下创建节点，消费者对指定目录的子节点做监听，当子节点个数符合要求时再进行业务处理。</li>
+<li>FIFO队列：生产者在zk指定目录节点下创建永久有序的节点，消费者对指定目录子节点做监听，有新的子节点时就可以工作，工作时先消费编号最小的节点并删除。如果队列为空则等待监听触发。</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>zookeeper学习博客：<a href="https://www.cnblogs.com/qingyunzong/p/8629775.html" target="_blank" rel="noopener">https://www.cnblogs.com/qingyunzong/p/8629775.html</a><br>zookeeper特征总结：<a href="https://www.cnblogs.com/takumicx/p/9508706.html" target="_blank" rel="noopener">https://www.cnblogs.com/takumicx/p/9508706.html</a><br>配置管理：<a href="https://my.oschina.net/OHC1U9jZt/blog/1524613" target="_blank" rel="noopener">https://my.oschina.net/OHC1U9jZt/blog/1524613</a><br>命名服务：<a href="https://www.cnblogs.com/haoxiaozi/p/6318842.html" target="_blank" rel="noopener">https://www.cnblogs.com/haoxiaozi/p/6318842.html</a><br>集群管理：<a href="https://blog.csdn.net/en_joker/article/details/78802106" target="_blank" rel="noopener">https://blog.csdn.net/en_joker/article/details/78802106</a><br>分布式锁：<a href="https://blog.csdn.net/kongmin_123/article/details/82081953" target="_blank" rel="noopener">https://blog.csdn.net/kongmin_123/article/details/82081953</a><br>分布式锁实现：<a href="https://www.cnblogs.com/liuyang0/p/6800538.html" target="_blank" rel="noopener">https://www.cnblogs.com/liuyang0/p/6800538.html</a><br>按照observer模式部署节点：<a href="https://blog.csdn.net/qianshangding0708/article/details/50160891" target="_blank" rel="noopener">https://blog.csdn.net/qianshangding0708/article/details/50160891</a><br>特点总结：<a href="https://www.cnblogs.com/raphael5200/p/5285583.html" target="_blank" rel="noopener">https://www.cnblogs.com/raphael5200/p/5285583.html</a>  </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/17/zookeeper-4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2159,164 +2381,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/25/mac-help/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/25/mac-help/" itemprop="url">Mac 操作笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-25T23:45:32+08:00">
-                2018-09-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Mac系统/" itemprop="url" rel="index">
-                    <span itemprop="name">Mac系统</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/25/mac-help/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/09/25/mac-help/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h1><h2 id="查看IP"><a href="#查看IP" class="headerlink" title="查看IP"></a>查看IP</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig |grep &quot;inet &quot;|grep -v 127.0.0.1</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/09/25/mac-help/ifconfig.png" alt="查看ip"></p>
-<h2 id="远程连接"><a href="#远程连接" class="headerlink" title="远程连接"></a>远程连接</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh username@host</span><br></pre></td></tr></table></figure>
-<h2 id="下载-上传文件"><a href="#下载-上传文件" class="headerlink" title="下载/上传文件"></a>下载/上传文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 下载</span><br><span class="line">scp username@host:remotepath localpatch</span><br><span class="line"></span><br><span class="line"># 上传</span><br><span class="line">scp localpath username@host:remotepath</span><br></pre></td></tr></table></figure>
-<h1 id="升级后问题"><a href="#升级后问题" class="headerlink" title="升级后问题"></a>升级后问题</h1><h2 id="missing-xcrun"><a href="#missing-xcrun" class="headerlink" title="missing xcrun"></a>missing xcrun</h2><h3 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h3><p><img src="/2018/09/25/mac-help/error-1.png" alt="包装生成线程安全的hashmap"></p>
-<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcode-select --install</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2371,7 +2435,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-count">75</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2393,7 +2457,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">56</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>

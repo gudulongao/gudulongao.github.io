@@ -239,6 +239,236 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/23/paralle-basic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/10/23/paralle-basic/" itemprop="url">Java并行程序基础</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-23T20:44:18+08:00">
+                2019-10-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/高并发/" itemprop="url" rel="index">
+                    <span itemprop="name">高并发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/10/23/paralle-basic/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/10/23/paralle-basic/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h1><h2 id="线程状态"><a href="#线程状态" class="headerlink" title="线程状态"></a>线程状态</h2><p>Thread源码中定义的线程状态如下图所示：</p>
+<p><img src="/2019/10/23/paralle-basic/src_threadstate.png" alt="线程状态"></p>
+<p>线程状态转换图：</p>
+<p><img src="/2019/10/23/paralle-basic/threadstateimg.png" alt="线程状态转换图">   </p>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NEW</td>
+<td>初始状态，刚刚创建线程</td>
+</tr>
+<tr>
+<td>RUNNABLE</td>
+<td>运行状态，调用start方法后，线程开始执行，这个时候线程处于RUNNABLE状态，表示线程所需要的资源都已准备妥当</td>
+</tr>
+<tr>
+<td>BLOCKED</td>
+<td>阻塞状态，当线程执行过程中遇到synchronized同步块，就会进入BLOCKED状态</td>
+</tr>
+<tr>
+<td>WAITING</td>
+<td>不限时等待</td>
+</tr>
+<tr>
+<td>TIMED_WAITING</td>
+<td>有时常的等待</td>
+</tr>
+<tr>
+<td>TERMINATED</td>
+<td>结束</td>
+</tr>
+</tbody>
+</table>
+<h2 id="线程的基本操作"><a href="#线程的基本操作" class="headerlink" title="线程的基本操作"></a>线程的基本操作</h2><h3 id="新建线程"><a href="#新建线程" class="headerlink" title="新建线程"></a>新建线程</h3><p>Thread类的构造函数如下图所示：  </p>
+<p><img src="/2019/10/23/paralle-basic/src_threadconstruct.png" alt="Thread构造函数源码"></p>
+<p>Thread类的run方法源码如下图所示：</p>
+<p><img src="/2019/10/23/paralle-basic/src_run.png" alt="Thread的run方法源码">  </p>
+<p>从run方法的源码中可以看到，当Thread中有target时，会执行target的逻辑。所以线程的执行逻辑可以重写run方法也可以在构造Thread的时候注入Runnable实例。</p>
+<h3 id="停止线程"><a href="#停止线程" class="headerlink" title="停止线程"></a>停止线程</h3><p>线程正常运行完成之后会自动结束。但Thread类提供了废弃的stop方法来在外部干预来停止线程。</p>
+<p><img src="/2019/10/23/paralle-basic/src_stop.png" alt="Thread类stop方法源码">  </p>
+<p><strong>stop方法的停止过于粗暴，会使线程立即结束，为了防止线程在对数据的变更操作未完成就遭到停止，导致数据只被修改了一半，影响数据完整性，不建议使用该方法停止线程。</strong>  </p>
+<h3 id="线程中断"><a href="#线程中断" class="headerlink" title="线程中断"></a>线程中断</h3><p>线程中断也是通过外部方式让线程停止，但不同于stop，线程中断并不会使线程立即结束，<strong>只是给线程发一个通知，告知线程需要退出，线程收到通知之后可以自行处理是否退出。</strong>  </p>
+<p><img src="/2019/10/23/paralle-basic/src_interrupt.png" alt="interrupt方法源码"></p>
+<p>Thread类提供了三个涉及中断操作的API：</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>public void interrupt()</td>
+<td>实例方法，中断目标线程</td>
+</tr>
+<tr>
+<td>public static boolean interrupted()</td>
+<td>静态方法，判断当前线程是否中断，并清空中断标志</td>
+</tr>
+<tr>
+<td>public boolean isInterrupted()</td>
+<td>实例方法，判断目标线程是否中断，不会清空中断标志</td>
+</tr>
+</tbody>
+</table>
+<h4 id="样例代码"><a href="#样例代码" class="headerlink" title="样例代码"></a>样例代码</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">package demo.paralle.basic;</span><br><span class="line"></span><br><span class="line">public class ThreadTest &#123;</span><br><span class="line">    static class MyThread extends Thread &#123;</span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            while (true) &#123;</span><br><span class="line">                if (isInterrupted()) &#123;</span><br><span class="line">                    System.out.println(&quot;inturreptd!&quot;);</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">                try &#123;</span><br><span class="line">                    Thread.sleep(1000);</span><br><span class="line">                    System.out.println(System.currentTimeMillis() + &quot; doing...&quot;);</span><br><span class="line">                &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                    System.out.println(&quot;catch interrupt excetion!&quot;);</span><br><span class="line">                    interrupt();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws InterruptedException &#123;</span><br><span class="line">        Thread myThread = new MyThread();</span><br><span class="line">        myThread.start();</span><br><span class="line"></span><br><span class="line">        Thread.sleep(3000);</span><br><span class="line"></span><br><span class="line">        myThread.interrupt();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<p><img src="/2019/10/23/paralle-basic/demo_interrupt.png" alt="执行结果"></p>
+<p><strong>当线程sleep时，收到中断消息时会抛出中断异常InterruptedException。我们为了保证进入到我们的中断处理逻辑中，在catch里再次中断了当前线程，这样循环再次到中断判断，进入中断处理。</strong></p>
+<h3 id="等待-wait-和通知-notify"><a href="#等待-wait-和通知-notify" class="headerlink" title="等待(wait)和通知(notify)"></a>等待(wait)和通知(notify)</h3><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>《Java 高并发程序设计》葛一鸣 郭超<br><a href="https://blog.csdn.net/shi2huang/article/details/80289155" target="_blank" rel="noopener">CSDN:Java线程状态分析/线程状态转换图</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/21/fork-join/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2399,170 +2629,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/03/mysql-install/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/03/mysql-install/" itemprop="url">mysql 安装</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-03T20:45:39+08:00">
-                2019-07-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySql数据库/" itemprop="url" rel="index">
-                    <span itemprop="name">MySql数据库</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/07/03/mysql-install/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/07/03/mysql-install/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>本次采用HomeBrew来安装Mysql，记录一下。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 安装mysql5.7</span><br><span class="line">brew install mysql@5.7</span><br></pre></td></tr></table></figure>
-<h1 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 在Cellar目录(/usr/local/Cellar)目录下，存放有mysql@5.7</span><br><span class="line">cd $BREW_HOME/mysql@5.7/5.7.26/bin</span><br><span class="line"># 执行初始化脚本mysql_secure_installation</span><br><span class="line">./mysql_secure_installation</span><br></pre></td></tr></table></figure>
-<p>有交互式的选项</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Securing the MySQL server deployment.</span><br><span class="line"></span><br><span class="line">Connecting to MySQL using a blank password.</span><br><span class="line"></span><br><span class="line">VALIDATE PASSWORD PLUGIN can be used to test passwords</span><br><span class="line">and improve security. It checks the strength of password</span><br><span class="line">and allows the users to set only those passwords which are</span><br><span class="line">secure enough. Would you like to setup VALIDATE PASSWORD plugin?</span><br><span class="line"># 是否设置验证密码插件</span><br><span class="line">Press y|Y for Yes, any other key for No: y</span><br><span class="line"># 验证密码策略 低，中，强三个级别选择</span><br><span class="line">There are three levels of password validation policy:</span><br><span class="line"></span><br><span class="line">LOW    Length &gt;= 8</span><br><span class="line">MEDIUM Length &gt;= 8, numeric, mixed case, and special characters</span><br><span class="line">STRONG Length &gt;= 8, numeric, mixed case, special characters and dictionary                  file</span><br><span class="line"></span><br><span class="line">Please enter 0 = LOW, 1 = MEDIUM and 2 = STRONG: 0</span><br><span class="line">Please set the password for root here.</span><br><span class="line"></span><br><span class="line"># 设置新的密码</span><br><span class="line">New password: </span><br><span class="line"># 确认密码</span><br><span class="line">Re-enter new password: </span><br><span class="line"></span><br><span class="line"># 对输入的密码评测 50分</span><br><span class="line">Estimated strength of the password: 50 </span><br><span class="line"># 是否要使用提供的密码</span><br><span class="line">Do you wish to continue with the password provided?(Press y|Y for Yes, any other key for No) : y</span><br><span class="line"># 为了测试，没有被创建的用户也可以登陆，应该删除这些用户</span><br><span class="line">By default, a MySQL installation has an anonymous user,</span><br><span class="line">allowing anyone to log into MySQL without having to have</span><br><span class="line">a user account created for them. This is intended only for</span><br><span class="line">testing, and to make the installation go a bit smoother.</span><br><span class="line">You should remove them before moving into a production</span><br><span class="line">environment.</span><br><span class="line"># 是否删除匿名用户</span><br><span class="line">Remove anonymous users? (Press y|Y for Yes, any other key for No) : y</span><br><span class="line">Success.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Normally, root should only be allowed to connect from</span><br><span class="line">&apos;localhost&apos;. This ensures that someone cannot guess at</span><br><span class="line">the root password from the network.</span><br><span class="line"></span><br><span class="line"># 是否精禁止远程登录</span><br><span class="line">Disallow root login remotely? (Press y|Y for Yes, any other key for No) : y</span><br><span class="line">Success.</span><br><span class="line"></span><br><span class="line">By default, MySQL comes with a database named &apos;test&apos; that</span><br><span class="line">anyone can access. This is also intended only for testing,</span><br><span class="line">and should be removed before moving into a production</span><br><span class="line">environment.</span><br><span class="line"></span><br><span class="line"># 是否删除test库</span><br><span class="line">Remove test database and access to it? (Press y|Y for Yes, any other key for No) : n</span><br><span class="line"></span><br><span class="line"> ... skipping.</span><br><span class="line">Reloading the privilege tables will ensure that all changes</span><br><span class="line">made so far will take effect immediately.</span><br><span class="line"># 是否重新加载权限表 保证修改立即生效</span><br><span class="line">Reload privilege tables now? (Press y|Y for Yes, any other key for No) : y</span><br><span class="line">Success.</span><br><span class="line"></span><br><span class="line">All done!</span><br></pre></td></tr></table></figure>
-<h1 id="启动登录"><a href="#启动登录" class="headerlink" title="启动登录"></a>启动登录</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 启动</span><br><span class="line">brew services start mysql@5.7</span><br><span class="line"># 登录</span><br><span class="line">./mysql -u root -p</span><br></pre></td></tr></table></figure>
-<h1 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h1><p>修改用户目录中的.bash_profile文件，将mysql的命令加入到path中，可以在任何路径都能够访问mysql命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 定义HomeBrew软件安装地址</span><br><span class="line">BREW_HOME=/usr/local/Cellar</span><br><span class="line"># 定义mysql的安装地址</span><br><span class="line">MYSQL_HOME=$BREW_HOME/mysql@5.7/5.7.26</span><br><span class="line"># 将mysql的bin目录加到path中</span><br><span class="line">PATH=~/bin:$JAVA_HOME/bin:$MYSQL_HOME/bin:$BREW_HOME/bin:$PATH:.</span><br><span class="line"># 重新加载.bash_profile，让修改立即生效</span><br><span class="line">source .bash_profile</span><br></pre></td></tr></table></figure>
-<h1 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h1><h2 id="找不到mysql-sock"><a href="#找不到mysql-sock" class="headerlink" title="找不到mysql.sock"></a>找不到mysql.sock</h2><p>初始化的时候，发现报错，在/tmp下找不到mysql.sock。看了<a href="https://segmentfault.com/q/1010000004078668?_ea=496690" target="_blank" rel="noopener">解决mysql启动找不到mysql.sock</a>中提到的方式，通过mysql.server起服务会重新生成mysql.sock文件。可是我用mysql.server start报错了，没有起起来但是生成了报错日志。我查看报错日志发现，是我原先有一个mysql服务。我把服务杀死，mysql.server就能起来了，也重新生成了mysql.sock。最后成功初始化。  </p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p><a href="https://www.jianshu.com/p/e5c9e8ef8ccb" target="_blank" rel="noopener">简书：Mac安装mysql</a><br><a href="https://segmentfault.com/q/1010000004078668?_ea=496690" target="_blank" rel="noopener">解决mysql启动找不到mysql.sock</a><br><a href="https://blog.csdn.net/kuangdacaikuang/article/details/76515985" target="_blank" rel="noopener">Mac安装Nvicat for mysql</a>  </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2617,7 +2683,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">74</span>
+                  <span class="site-state-item-count">75</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2639,7 +2705,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">56</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
