@@ -239,6 +239,278 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/12/logback/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/12/logback/" itemprop="url">日志系统</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-12T20:54:30+08:00">
+                2019-06-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/日志系统/" itemprop="url" rel="index">
+                    <span itemprop="name">日志系统</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/06/12/logback/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/06/12/logback/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Log4J"><a href="#Log4J" class="headerlink" title="Log4J"></a>Log4J</h1><ul>
+<li>Log4J(Log for Java)  </li>
+<li>支持properties和xml两种方式配置</li>
+</ul>
+<h2 id="日志级别"><a href="#日志级别" class="headerlink" title="日志级别"></a>日志级别</h2><p><strong>TRACE&lt;DEBUG&lt;INFO&lt;WARN&lt;ERROR&lt;FATAL&lt;OFF</strong> </p>
+<h2 id="配置样例"><a href="#配置样例" class="headerlink" title="配置样例"></a>配置样例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE log4j:configuration PUBLIC &quot;-//LOGGER&quot; &quot;http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd&quot;&gt;</span><br><span class="line">&lt;log4j:configuration&gt;    </span><br><span class="line">　　&lt;!--an appender is an output destination, such as the console or a file; names of appenders are arbitrarily chosen--&gt;    </span><br><span class="line">　　&lt;appender name=&quot;stdout&quot; class=&quot;org.apache.log4j.ConsoleAppender&quot;&gt;</span><br><span class="line">　　　　&lt;layout class=&quot;org.apache.log4j.PatternLayout&quot;&gt;</span><br><span class="line">　　　　　　&lt;param name=&quot;ConversionPattern&quot; value=&quot;%d&#123;ABSOLUTE&#125; %5p %c&#123;1&#125;:%L - %m%n&quot; /&gt;</span><br><span class="line">　　　　&lt;/layout&gt;</span><br><span class="line">　　&lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">　　&lt;!--loggers of category &apos;org.springframework&apos; will only log messages of level &quot;info&quot; or higher; if you retrieve Loggers by using the class name (e.g. Logger.getLogger(AClass.class)) and if AClass is part of the org.springframework package, it will belong to this category--&gt;    </span><br><span class="line">　　&lt;logger name=&quot;org.springframework&quot;&gt;        </span><br><span class="line">　　　　&lt;level value=&quot;info&quot;/&gt;    </span><br><span class="line">　　&lt;/logger&gt;    </span><br><span class="line"></span><br><span class="line">　　&lt;!--everything of spring was set to &quot;info&quot; but for class PropertyEditorRegistrySupport we want &quot;debug&quot; logging--&gt;    </span><br><span class="line">　　&lt;logger name=&quot;org.springframework.beans.PropertyEditorRegistrySupport&quot;&gt;        </span><br><span class="line">　　　　&lt;level value=&quot;debug&quot;/&gt;    </span><br><span class="line">　　&lt;/logger&gt;     </span><br><span class="line">　　</span><br><span class="line">　　&lt;root&gt;    </span><br><span class="line">　　&lt;!--all log messages of level &quot;debug&quot; or higher will be logged, unless defined otherwise all log messages will be logged to the appender &quot;stdout&quot;, unless defined otherwise--&gt;        </span><br><span class="line">　　　　&lt;level value=&quot;debug&quot; /&gt;        </span><br><span class="line">　　　　&lt;appender-ref ref=&quot;stdout&quot; /&gt;    </span><br><span class="line">　　&lt;/root&gt;</span><br><span class="line"></span><br><span class="line">&lt;/log4j:configuration&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="SLF4J"><a href="#SLF4J" class="headerlink" title="SLF4J"></a>SLF4J</h1><p>SLF4J(Simple Logging Fcade Java)简单的日志门面。<br>SLF4J是提供了一系列的日志接口，但不提供实现，不同的日志框架来提供具体的实现，这样允许用户在最终部署系统时可以随意切换自己的日志框架。<br>实际SLF4J提供核心的日志API以及LoggerFactory。在使用日志的时候，不需要代码或者配置文件显示的指定日志框架，之需要通过SLF4J的api来进行日志记录，最终日志的格式，级别，输出方式等都是由具体的日志框架的配置来决定。因此可以灵活的切换日志框架而代码无感。</p>
+<h1 id="Logback"><a href="#Logback" class="headerlink" title="Logback"></a>Logback</h1><p>一个可靠、通用、快速而灵活的日志系统。<strong>性能优于log4j（大约快10倍，并更少的内存消耗）</strong><br>由logback-core、logback-classic:log4j、和logback-access三个模块组成。</p>
+<ul>
+<li>logback-core:核心代码模块</li>
+<li>logback-classis:log4j:log4j改良版，同时实现了self4j的接口。支持通过sefl4j的api来使用日志系统。</li>
+<li>logback-access:访问模块并与Servlet容器集成提供通过http来访问日志的功能。</li>
+</ul>
+<h2 id="配置文件的加载顺序"><a href="#配置文件的加载顺序" class="headerlink" title="配置文件的加载顺序"></a>配置文件的加载顺序</h2><ol>
+<li>java启动参数logback.configurationFile 指定的配置文件(如java -Dlogback.configurationFile=/path/to/mylogback.xml Test) </li>
+<li>在classpath下查找logback.groovy文件</li>
+<li>在calsspath下查找logback-test.xml文件</li>
+<li>在classpath下查找logback.xml文件</li>
+<li>如果是JDK6+，会调用ServiceLoader查找com.qos.logback.classic.spi.Configurator接口的第一个实现类</li>
+<li>默认使用ch.qos.logback.classic.BasicConfigurator在控制台输出日志</li>
+</ol>
+<p>logback会按照上面的顺序依次查找配置文件，找到了就不会再往下走（ContextInitializer#autoConfig()）。</p>
+<h2 id="日志级别-1"><a href="#日志级别-1" class="headerlink" title="日志级别"></a>日志级别</h2><p><strong>trace&lt;debug&lt;info&lt;warn&lt;error</strong></p>
+<h2 id="配置样例-1"><a href="#配置样例-1" class="headerlink" title="配置样例"></a>配置样例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;configuration debug=&quot;true&quot; scan=&quot;true&quot; scanPeriod=&quot;1 seconds&quot;&gt;</span><br><span class="line">	&lt;!-- 定义日志上下文的名称，可以通过%contextName%来使用 --&gt;</span><br><span class="line">    &lt;contextName&gt;logback&lt;/contextName&gt;</span><br><span class="line">    &lt;!--定义参数,后面可以通过$&#123;app.name&#125;使用--&gt;</span><br><span class="line">    &lt;property name=&quot;app.name&quot; value=&quot;logback_test&quot;/&gt;</span><br><span class="line">    &lt;!--ConsoleAppender 用于在屏幕上输出日志--&gt;</span><br><span class="line">    &lt;appender name=&quot;stdout&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;</span><br><span class="line">        &lt;!--定义了一个过滤器,在LEVEL之下的日志输出不会被打印出来--&gt;</span><br><span class="line">        &lt;!--这里定义了DEBUG，也就是控制台不会输出比DEBUG级别小的日志--&gt;</span><br><span class="line">        &lt;filter class=&quot;ch.qos.logback.classic.filter.ThresholdFilter&quot;&gt;</span><br><span class="line">            &lt;level&gt;DEBUG&lt;/level&gt;</span><br><span class="line">        &lt;/filter&gt;</span><br><span class="line">        &lt;!-- encoder 默认配置为PatternLayoutEncoder --&gt;</span><br><span class="line">        &lt;!--定义控制台输出格式--&gt;</span><br><span class="line">        &lt;encoder&gt;</span><br><span class="line">            &lt;pattern&gt;%d [%thread] %-5level %logger&#123;36&#125; [%file : %line] - %msg%n&lt;/pattern&gt;</span><br><span class="line">        &lt;/encoder&gt;</span><br><span class="line">    &lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">    &lt;appender name=&quot;file&quot; class=&quot;ch.qos.logback.core.rolling.RollingFileAppender&quot;&gt;</span><br><span class="line">        &lt;!--定义日志输出的路径--&gt;</span><br><span class="line">        &lt;!--这里的scheduler.manager.server.home 没有在上面的配置中设定，所以会使用java启动时配置的值--&gt;</span><br><span class="line">        &lt;!--比如通过 java -Dscheduler.manager.server.home=/path/to XXXX 配置该属性--&gt;</span><br><span class="line">        &lt;file&gt;$&#123;scheduler.manager.server.home&#125;/logs/$&#123;app.name&#125;.log&lt;/file&gt;</span><br><span class="line">        &lt;!--定义日志滚动的策略--&gt;</span><br><span class="line">        &lt;rollingPolicy class=&quot;ch.qos.logback.core.rolling.TimeBasedRollingPolicy&quot;&gt;</span><br><span class="line">            &lt;!--定义文件滚动时的文件名的格式--&gt;</span><br><span class="line">            &lt;fileNamePattern&gt;$&#123;scheduler.manager.server.home&#125;/logs/$&#123;app.name&#125;.%d&#123;yyyy-MM-dd.HH&#125;.log.gz</span><br><span class="line">            &lt;/fileNamePattern&gt;</span><br><span class="line">            &lt;!--60天的时间周期，日志量最大20GB--&gt;</span><br><span class="line">            &lt;maxHistory&gt;60&lt;/maxHistory&gt;</span><br><span class="line">            &lt;!-- 该属性在 1.1.6版本后 才开始支持--&gt;</span><br><span class="line">            &lt;totalSizeCap&gt;20GB&lt;/totalSizeCap&gt;</span><br><span class="line">        &lt;/rollingPolicy&gt;</span><br><span class="line">        &lt;triggeringPolicy class=&quot;ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy&quot;&gt;</span><br><span class="line">            &lt;!--每个日志文件最大100MB--&gt;</span><br><span class="line">            &lt;maxFileSize&gt;100MB&lt;/maxFileSize&gt;</span><br><span class="line">        &lt;/triggeringPolicy&gt;</span><br><span class="line">        &lt;!--定义输出格式--&gt;</span><br><span class="line">        &lt;encoder&gt;</span><br><span class="line">            &lt;pattern&gt;%d [%thread] %-5level %logger&#123;36&#125; [%file : %line] - %msg%n&lt;/pattern&gt;</span><br><span class="line">        &lt;/encoder&gt;</span><br><span class="line">    &lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--root是默认的logger 这里设定输出级别是debug--&gt;</span><br><span class="line">    &lt;root level=&quot;trace&quot;&gt;</span><br><span class="line">        &lt;!--定义了两个appender，日志会通过往这两个appender里面写--&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;stdout&quot;/&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;file&quot;/&gt;</span><br><span class="line">    &lt;/root&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--对于类路径以 com.example.logback 开头的Logger,输出级别设置为warn,并且只输出到控制台--&gt;</span><br><span class="line">    &lt;!--这个logger没有指定appender，它会继承root节点中定义的那些appender--&gt;</span><br><span class="line">    &lt;logger name=&quot;com.example.logback&quot; level=&quot;warn&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--通过 LoggerFactory.getLogger(&quot;mytest&quot;) 可以获取到这个logger--&gt;</span><br><span class="line">    &lt;!--由于这个logger自动继承了root的appender，root中已经有stdout的appender了，自己这边又引入了stdout的appender--&gt;</span><br><span class="line">    &lt;!--如果没有设置 additivity=&quot;false&quot; ,就会导致一条日志在控制台输出两次的情况--&gt;</span><br><span class="line">    &lt;!--additivity表示要不要使用rootLogger配置的appender进行输出--&gt;</span><br><span class="line">    &lt;logger name=&quot;mytest&quot; level=&quot;info&quot; additivity=&quot;false&quot;&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;stdout&quot;/&gt;</span><br><span class="line">    &lt;/logger&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;!--由于设置了 additivity=&quot;false&quot; ，所以输出时不会使用rootLogger的appender--&gt;</span><br><span class="line">    &lt;!--但是这个logger本身又没有配置appender，所以使用这个logger输出日志的话就不会输出到任何地方--&gt;</span><br><span class="line">    &lt;logger name=&quot;mytest2&quot; level=&quot;info&quot; additivity=&quot;false&quot;/&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="configuration"><a href="#configuration" class="headerlink" title="configuration"></a>configuration</h3><table>
+<thead>
+<tr>
+<th>属性</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>debug</td>
+<td>false</td>
+<td>是否打印logback本身内部的日志</td>
+</tr>
+<tr>
+<td>scan</td>
+<td>true</td>
+<td>配置变化，是否重新加载</td>
+</tr>
+<tr>
+<td>scanPeriod</td>
+<td>1 seconds</td>
+<td>检查配置变化的时间间隔,默认单位是毫秒</td>
+</tr>
+</tbody>
+</table>
+<h3 id="contextName"><a href="#contextName" class="headerlink" title="contextName"></a>contextName</h3><p>定义日志上下文的名称，通过%contextName%来作为变量使用</p>
+<h3 id="property"><a href="#property" class="headerlink" title="property"></a>property</h3><p>定义上下文中可用的属性，通过key,value来定义，通过${key}来使用</p>
+<h3 id="appender"><a href="#appender" class="headerlink" title="appender"></a>appender</h3><p>定义日志输出组件。常用的属性是name和class</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>无</td>
+<td>日志输出组件的名称</td>
+</tr>
+<tr>
+<td>class</td>
+<td>无</td>
+<td>日志输出组件的具体实现类，常用的有ConsoleAppender、FileAppender、RollingFileAppender</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>ConsoleAppender:控制台输出组件实现类</li>
+<li>FileAppender:文件输出组件实现类</li>
+<li>RollingFileAppender:结合滚动策略滚动生成日志文件的实现类</li>
+</ul>
+<p>appender可以配置filter，样例配置中配置了一个ch.qos.logback.classic.filter.ThresholdFilter来过滤日志。<br>RollingFileAppender可以配置滚动策略（rollingPolicy），</p>
+<h3 id="root"><a href="#root" class="headerlink" title="root"></a>root</h3><p>定义默认的日志记录器，即针对LoggerFactory.getLogger(XXX)获取的所有Logger如果没有特殊的logger匹配，则默认就是root定义的logger。常用的属性有level</p>
+<ul>
+<li>level 定义默认的日志记录器的日志级别</li>
+</ul>
+<p>root下面可以通过appender-ref指定默认日志记录器对应的日志输出组件。样例中默认日志记录器采用控制台和滚动文件两种日志输出组件。</p>
+<h3 id="logger"><a href="#logger" class="headerlink" title="logger"></a>logger</h3><p>定义日志记录器,常用的属性有name，level和additivity。</p>
+<ul>
+<li>name 日志记录器的名称，即LoggerFactory.getLogger(name)来获取logger。通过name来匹配。同时LoggerFactory.getLogger(XXX.class)会自动转换成字符串packagepath+’.’+className+’.’+class。当然这里的name可以配置部分包路径，这样包下的所有都会匹配该logger。</li>
+<li>level 日志记录器的日志级别</li>
+<li>additivity 是否采用root下使用的日志输出组件(appender-ref)，日志最大容量(totalSizeCap)和日志文件最大含量(maxFileSize)，<strong>maxFileSize和totalSizeCap属性在1.1.6版本后才支持。</strong></li>
+</ul>
+<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>可以看<a href="https://www.jianshu.com/p/04065d8cb2a9" target="_blank" rel="noopener">简书</a></p>
+<h2 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h2><ul>
+<li>性能较log4j 快10倍，并且更少的内存消耗。</li>
+<li>logback实现了self4j接口，可以为以后日志系统的切换提供便捷</li>
+<li>logback除了支持xml配置还支持groovy格式的配置（更加直观简洁）</li>
+<li>logback能够检测到配置文件的修改并实时加载更新配置（热部署）</li>
+<li>logback能自动从I/O异常中恢复，无需重启服务</li>
+<li>logback可以配置上限值，自动删除旧的日志</li>
+<li>logback能够自动压缩日志</li>
+<li>logback配置中支持if，then,else的条件语句，这样在dev，product等不同的环境下避免日志配置的重复</li>
+<li>logback的stack trace包含更多的信息</li>
+<li>logback提供更多的filter</li>
+<li>logback能够结合Servlet容器提供http-access日志</li>
+</ul>
+<h1 id="Log4j2"><a href="#Log4j2" class="headerlink" title="Log4j2"></a>Log4j2</h1><ul>
+<li>log4j 改良版</li>
+<li>插件式结构，支持自行拓展自己的appender,logger,filter。</li>
+<li>支持json配置文件</li>
+<li>配置文件中可以直接引用属性，还可以直接替代或传值到组件</li>
+</ul>
+<h2 id="配置样例-2"><a href="#配置样例-2" class="headerlink" title="配置样例"></a>配置样例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE xml&gt;</span><br><span class="line">&lt;!-- Log4j 2.x 配置文件。每30秒自动检查和应用配置文件的更新； --&gt;</span><br><span class="line">&lt;Configuration status=&quot;warn&quot; monitorInterval=&quot;30&quot; strict=&quot;true&quot; schema=&quot;Log4J-V2.2.xsd&quot;&gt;</span><br><span class="line">    &lt;Appenders&gt;</span><br><span class="line">           &lt;!-- 输出到控制台 --&gt;</span><br><span class="line">           &lt;Console name=&quot;Console&quot; target=&quot;SYSTEM_OUT&quot;&gt;</span><br><span class="line">               &lt;!-- 需要记录的级别 --&gt;</span><br><span class="line">               &lt;!-- &lt;ThresholdFilter level=&quot;debug&quot; onMatch=&quot;ACCEPT&quot; onMismatch=&quot;DENY&quot; /&gt; --&gt;</span><br><span class="line">               &lt;PatternLayout pattern=&quot;%d&#123;yyyy-MM-dd HH:mm:ss,SSS&#125;:%4p %t (%F:%L) - %m%n&quot; /&gt;</span><br><span class="line">          &lt;/Console&gt;</span><br><span class="line"></span><br><span class="line">          &lt;!-- 输出到文件，按天或者超过80MB分割 --&gt;</span><br><span class="line">          &lt;RollingFile name=&quot;RollingFile&quot; fileName=&quot;../logs/xjj.log&quot;    filePattern=&quot;../logs/$$&#123;date:yyyy-MM&#125;/xjj-%d&#123;yyyy-MM-dd&#125;-%i.log.gz&quot;&gt;</span><br><span class="line">               &lt;!-- 需要记录的级别 --&gt;</span><br><span class="line">               &lt;!-- &lt;ThresholdFilter level=&quot;info&quot; onMatch=&quot;ACCEPT&quot; onMismatch=&quot;DENY&quot; /&gt; --&gt;</span><br><span class="line">               &lt;PatternLayout pattern=&quot;%d&#123;yyyy-MM-dd HH:mm:ss,SSS&#125;:%4p %t (%F:%L) - %m%n&quot; /&gt;</span><br><span class="line">               &lt;Policies&gt;</span><br><span class="line">                    &lt;OnStartupTriggeringPolicy /&gt;</span><br><span class="line">                    &lt;TimeBasedTriggeringPolicy /&gt;</span><br><span class="line">                    &lt;SizeBasedTriggeringPolicy size=&quot;80 MB&quot; /&gt;</span><br><span class="line">               &lt;/Policies&gt;</span><br><span class="line">          &lt;/RollingFile&gt;</span><br><span class="line">     &lt;/Appenders&gt;</span><br><span class="line">     &lt;Loggers&gt;</span><br><span class="line">          &lt;Root level=&quot;info&quot;&gt; &lt;!-- 全局配置 --&gt;</span><br><span class="line">               &lt;AppenderRef ref=&quot;Console&quot; /&gt;</span><br><span class="line">               &lt;AppenderRef ref=&quot;RollingFile&quot;/&gt;</span><br><span class="line">          &lt;/Root&gt;</span><br><span class="line">          &lt;!-- 为sql语句配置特殊的Log级别，方便调试 --&gt;</span><br><span class="line">          &lt;Logger name=&quot;com.xjj.dao&quot; level=&quot;$&#123;log.sql.level&#125;&quot; additivity=&quot;false&quot;&gt;</span><br><span class="line">               &lt;AppenderRef ref=&quot;Console&quot; /&gt;</span><br><span class="line">          &lt;/Logger&gt;</span><br><span class="line">     &lt;/Loggers&gt;</span><br><span class="line">&lt;/Configuration&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="JUL"><a href="#JUL" class="headerlink" title="JUL"></a>JUL</h1><ul>
+<li>JUL(java.util.logging)</li>
+<li>Java自身的日志系统，类似log4j。但是对开发者很不友好，还有bug。</li>
+</ul>
+<h1 id="JCL"><a href="#JCL" class="headerlink" title="JCL"></a>JCL</h1><p>与self4j类似，也是提供一套日志API，但其查找logger的算法复杂，出现classloader异常时无法修复。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p><a href="https://www.jianshu.com/p/04065d8cb2a9" target="_blank" rel="noopener">简书：logback详解</a><br><a href="https://www.cnblogs.com/junzi2099/p/7930268.html" target="_blank" rel="noopener">各种日志框架的差异</a><br><a href="https://www.jianshu.com/p/04065d8cb2a9" target="_blank" rel="noopener">logback日志配置文件详解</a>    </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/11/maven-01/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2180,161 +2452,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/19/eureka/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/19/eureka/" itemprop="url">eureka</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-19T19:24:37+08:00">
-                2019-04-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/eureka/" itemprop="url" rel="index">
-                    <span itemprop="name">eureka</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/04/19/eureka/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/04/19/eureka/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>删除不健康服务：<a href="https://blog.csdn.net/xiaobao5214/article/details/81263445" target="_blank" rel="noopener">https://blog.csdn.net/xiaobao5214/article/details/81263445</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2389,7 +2506,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">75</span>
+                  <span class="site-state-item-count">76</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2411,7 +2528,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
