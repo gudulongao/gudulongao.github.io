@@ -429,7 +429,7 @@
 <li>适合老年代（对象存活率高）<h3 id="缺点-2"><a href="#缺点-2" class="headerlink" title="缺点"></a>缺点</h3></li>
 <li>存活对象的移动 实现复杂<h2 id="分代收集算法"><a href="#分代收集算法" class="headerlink" title="分代收集算法"></a>分代收集算法</h2>目前主流的虚拟机都是将堆按照对象的生命周期的不同进行了划分，新生代会有大批的对象需要回收，少量存活，可以采用复制算法，只需要少量的复制操作就可以完成大片的内存空间的收集。对于老年代，只有少量的对象需要回收，对象存活率高，所以可以采用标记清除或者标记整理算法。  </li>
 </ul>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<h1 id="垃圾收集器"><a href="#垃圾收集器" class="headerlink" title="垃圾收集器"></a>垃圾收集器</h1><h2 id="Serial"><a href="#Serial" class="headerlink" title="Serial"></a>Serial</h2><h2 id="ParNew"><a href="#ParNew" class="headerlink" title="ParNew"></a>ParNew</h2><h2 id="Parallel"><a href="#Parallel" class="headerlink" title="Parallel"></a>Parallel</h2><h2 id="Parallel-Old"><a href="#Parallel-Old" class="headerlink" title="Parallel Old"></a>Parallel Old</h2><h2 id="CMS"><a href="#CMS" class="headerlink" title="CMS"></a>CMS</h2><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
 <p>《深入理解Java虚拟机》 周志明 著<br><a href="https://www.jianshu.com/p/8f5fa8288d9b" target="_blank" rel="noopener">简书：java引用</a><br><a href="https://www.jianshu.com/p/1d0b95da156b" target="_blank" rel="noopener">简书：垃圾回收</a><br><a href="https://blog.csdn.net/wangxiaotongfan/article/details/82389881" target="_blank" rel="noopener">CSDN：垃圾回收算法</a>   </p>
 </blockquote>
 
