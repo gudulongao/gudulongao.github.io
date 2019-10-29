@@ -239,6 +239,297 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/08/stream/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/08/stream/" itemprop="url">stream</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-08T23:14:09+08:00">
+                2019-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java8/" itemprop="url" rel="index">
+                    <span itemprop="name">java8</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/07/08/stream/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/07/08/stream/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>JDK1.8 提供了流Stream的API。将数据元素集合看作流，流在管道中传输，并且可以在管道的节点对数据进行筛选、排序，聚合等处理。   </p>
+<h1 id="什么是流"><a href="#什么是流" class="headerlink" title="什么是流"></a>什么是流</h1><p>流(Stream)是来自数据源可以进行聚合操作的元素队列。  </p>
+<ul>
+<li>数据源：流的来源，可以是集合，数组，I/O channel等。</li>
+<li>聚合操作：如filter、map、reduce、find、match、sort等。</li>
+</ul>
+<h2 id="流操作的特点"><a href="#流操作的特点" class="headerlink" title="流操作的特点"></a>流操作的特点</h2><ul>
+<li>针对流的操作都会立即返回流对象本身，这样多个流的操作会串联成一个管道，流式编码风格(fluent style)，便于对操作进行<strong>延迟执行和短路。</strong></li>
+<li>集合之前的遍历都是通过迭代器iterator或者forEach的方式，显示的从集合外部进行迭代，而<strong>流采用访问者模式进行内部迭代。</strong></li>
+</ul>
+<h3 id="内部迭代与外部迭代的差异"><a href="#内部迭代与外部迭代的差异" class="headerlink" title="内部迭代与外部迭代的差异"></a>内部迭代与外部迭代的差异</h3><table>
+<thead>
+<tr>
+<th>方式</th>
+<th>可控</th>
+<th>顺序</th>
+<th>可并行</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>外部迭代</td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>内部迭代</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<p><strong>内部迭代的顺序不一定顺序，❌仅仅表示不一定。</strong><br><strong>内部迭代的可并行通过parallelStream()方法，可以并行操作，大幅度提升性能。</strong></p>
+<h1 id="如何操作流"><a href="#如何操作流" class="headerlink" title="如何操作流"></a>如何操作流</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">生成流 | 中间操作 | 最终操作</span><br></pre></td></tr></table></figure>
+<p>对于流的操作，其实主要就是由生成流、中间操作和最终操作三部分组成。<br><strong>对于一次的流操作，可以有多个中间操作，有且只有一次最终操作。其中中间操作也称为转换操作，即多次中间操作是在对流数据进行转换，这种转换的效率并不受数据的量级影响，转换操作反而是一种惰性求值的过程。而有切只有一次的最终操作其实是将前面所有的转换处理一次执行，这一步会受到数据量级的影响，属于及早求值。</strong>  </p>
+<h1 id="生成流"><a href="#生成流" class="headerlink" title="生成流"></a>生成流</h1><ul>
+<li>Stream接口的静态工厂方法。</li>
+<li>Collection接口和数组的默认方法，可以转换成Stream对象。</li>
+<li>其他</li>
+</ul>
+<h2 id="Stream静态工厂方法"><a href="#Stream静态工厂方法" class="headerlink" title="Stream静态工厂方法"></a>Stream静态工厂方法</h2><table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>of(T… values)</td>
+<td>返回有多个T元素的Stream</td>
+</tr>
+<tr>
+<td>of(T value</td>
+<td>返回有一个T元素的Stream</td>
+</tr>
+<tr>
+<td>generator(Supplier<t> s)</t></td>
+<td>返回一个有无限深度的Stream,Supplier接口是JDK1.8新加的函数式接口，只有一个get方法用于返回T类型的实例。</td>
+</tr>
+<tr>
+<td>iterate(final T seed, final UnaryOperator<t> f)</t></td>
+<td>返回一个无限深度的Stream，以T为种子，不断基于f的逻辑进行无限循环的方式构建Stream</td>
+</tr>
+<tr>
+<td>empty()</td>
+<td>返回一个没有元素的Stream</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/2019/07/08/stream/streamof.png" alt="Stream接口的静态方法"></p>
+<p><img src="/2019/07/08/stream/staticmethod.png" alt="Stream接口的静态方法"></p>
+<h2 id="Collection接口和数组的默认方法"><a href="#Collection接口和数组的默认方法" class="headerlink" title="Collection接口和数组的默认方法"></a>Collection接口和数组的默认方法</h2><p>JDK1.8 提供了<strong>default</strong> 关键词，用于在已有的接口中拓展接口方法不用修改实现类。</p>
+<h3 id="Colllection"><a href="#Colllection" class="headerlink" title="Colllection"></a>Colllection</h3><p><img src="/2019/07/08/stream/collection_default.png" alt="Collection中的默认方法"></p>
+<p>在Collection接口中提供了默认方法 stream和parallelStream方法可以生成流Stream。</p>
+<h3 id="Arrays"><a href="#Arrays" class="headerlink" title="Arrays"></a>Arrays</h3><p><img src="/2019/07/08/stream/arrays_stream.png" alt="Arrays中生成stream的方法"></p>
+<p>在Arrays中提供了静态的方法可以生成各种类型的Stream。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="Random"><a href="#Random" class="headerlink" title="Random"></a>Random</h3><p><img src="/2019/07/08/stream/random_stream.png" alt="Random中生成stream的方法"></p>
+<p>Random中提供了生成各种基本类型Stream的方法。</p>
+<h3 id="BitSet"><a href="#BitSet" class="headerlink" title="BitSet"></a>BitSet</h3><p><img src="/2019/07/08/stream/bitset_stream.png" alt="BitSet中Stream方法"></p>
+<p>BitSet中提供了stream方法来返回流。</p>
+<h3 id="Pattern"><a href="#Pattern" class="headerlink" title="Pattern"></a>Pattern</h3><p><img src="/2019/07/08/stream/pattern_stream.png" alt="Pattern中Stream方法"></p>
+<p>Pattern中提供了splitAsStream方法来返回流。</p>
+<h3 id="JarFile"><a href="#JarFile" class="headerlink" title="JarFile"></a>JarFile</h3><p><img src="/2019/07/08/stream/jarfile_stream.png" alt="JarFile中Stream方法"></p>
+<p>JarFile中提供了stream方法来返回流。</p>
+<h1 id="中间操作"><a href="#中间操作" class="headerlink" title="中间操作"></a>中间操作</h1><p>中间操作主要是针对Stream进行一些转换和限制操作。属于延迟计算。</p>
+<h2 id="concat"><a href="#concat" class="headerlink" title="concat"></a>concat</h2><p>将两个流连接成为一个流。</p>
+<ul>
+<li>如果两个流有都是有序的，则新的流也是有序的。</li>
+<li>如果两个流中有一个是并行的，则新的流也是并行的。</li>
+<li>关闭新的流时，两个流也会关闭。</li>
+</ul>
+<p><img src="/2019/07/08/stream/demo_concat.png" alt="concat方法样例"></p>
+<h2 id="distinct"><a href="#distinct" class="headerlink" title="distinct"></a>distinct</h2><p>将Stream中重复的元素进行过滤.</p>
+<p><img src="/2019/07/08/stream/demo_distinct.png" alt="distince方法样例"></p>
+<h2 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h2><p>对Stream根据指定的条件进行过滤。</p>
+<p><img src="/2019/07/08/stream/demo_filter.png" alt="filter方法样例"></p>
+<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><p>将Stream中指定的元素进行转换，返回的Stream中只保留转换后的元素。</p>
+<p><img src="/2019/07/08/stream/stream_map.png" alt="Stream中的map方法"></p>
+<p>Stream中已默认包含<strong>mapToDouble、mapToInt和mapToLong</strong>三个方法，即<strong>Stream默认支持将元素转换成Double、int和Long三种类型</strong>。  </p>
+<p><img src="/2019/07/08/stream/demo_map.png" alt="map方法样例"></p>
+<h2 id="flatMap"><a href="#flatMap" class="headerlink" title="flatMap"></a>flatMap</h2><p>flatMap与map类似，都是遍历Stream元素，并对元素做转换，不同之处是，并不是直接在Stream中用转换后的元素替换对应的元素。而是直接构造一个新的Stream。如果构造的新stream为空</p>
+<p><img src="/2019/07/08/stream/demo_flatmap.png" alt="flagmap方法样例"></p>
+<h2 id="peek"><a href="#peek" class="headerlink" title="peek"></a>peek</h2><p>peek方法的参数是一个Consumer函数接口实例。其逻辑是在对Stream中的每一个元素在被消费的时候，都会事先执行Consumer逻辑。同时Consumer逻辑并不影响Stream中的元素。</p>
+<p><img src="/2019/07/08/stream/demo_peek.png" alt="peek方法样例"></p>
+<blockquote>
+<p>样例中通过最终操作forEach来遍历Stream中的元素，而peek的执行逻辑会优先于forEach的操作。同时从输出结果可以看到，peek的Consumer逻辑处理结果并不影响原有的Stream元素。</p>
+</blockquote>
+<h2 id="skip"><a href="#skip" class="headerlink" title="skip"></a>skip</h2><p>sikp方法的意义在于过滤Stream指定个数的元素。如果Stream的元素个数大于指定要过滤的个数。则返回一个length-n 个元素的新stream，否则返回一个空的stream。</p>
+<p><img src="/2019/07/08/stream/demo_skip.png" alt="skip方法样例"></p>
+<h2 id="sorted"><a href="#sorted" class="headerlink" title="sorted"></a>sorted</h2><p>对stream中的元素进行排序。</p>
+<p><img src="/2019/07/08/stream/sort_stream.png" alt="sorted方法定义"></p>
+<p>sorted方法有两个，<strong>一种是根据Object.equals(Object obj)方法来进行排序，另一个带有Comparaotr实例的是基于Compartor逻辑来进行排序</strong>。</p>
+<p><img src="/2019/07/08/stream/demo_sorted.png" alt="sorted方法样例"></p>
+<h1 id="最终操作"><a href="#最终操作" class="headerlink" title="最终操作"></a>最终操作</h1><h2 id="collect"><a href="#collect" class="headerlink" title="collect"></a>collect</h2><h2 id="count"><a href="#count" class="headerlink" title="count"></a>count</h2><p>统计stream元素格式</p>
+<p><img src="/2019/07/08/stream/demo_count.png" alt="count方法样例">  </p>
+<h2 id="forEach"><a href="#forEach" class="headerlink" title="forEach"></a>forEach</h2><p>遍历stream中的元素。</p>
+<h2 id="forEachOrderd"><a href="#forEachOrderd" class="headerlink" title="forEachOrderd"></a>forEachOrderd</h2><p>如果stream是有序的，则有序的进行遍历如果是无序的则按照插入的顺序进行遍历。</p>
+<h2 id="max"><a href="#max" class="headerlink" title="max"></a>max</h2><p>找出stream元素排序后的最后一个元素。</p>
+<p><img src="/2019/07/08/stream/demo_max.png" alt="max方法样例"></p>
+<h2 id="min"><a href="#min" class="headerlink" title="min"></a>min</h2><p>找出stream元素排序后的第一个元素</p>
+<p><img src="/2019/07/08/stream/demo_min.png" alt="min方法样例"></p>
+<h2 id="reduce"><a href="#reduce" class="headerlink" title="reduce"></a>reduce</h2><h2 id="allMatch"><a href="#allMatch" class="headerlink" title="allMatch"></a>allMatch</h2><p>用于判断stream元素是否全部满足条件，如果全部满足返回true否则false。</p>
+<p><img src="/2019/07/08/stream/demo_allmatch.png" alt="allmatch方法样例"></p>
+<h2 id="anyMatch"><a href="#anyMatch" class="headerlink" title="anyMatch"></a>anyMatch</h2><p>用于判断stream元素中是否有一个元素满足条件，任意一个元素满足返回true否则false。</p>
+<p><img src="/2019/07/08/stream/demo_anymatch.png" alt="anymatch方法样例"></p>
+<h2 id="noeMatch"><a href="#noeMatch" class="headerlink" title="noeMatch"></a>noeMatch</h2><p>用于判断stream元素是否所有都不满足条件，如果都不满足返回true否则false。</p>
+<p><img src="/2019/07/08/stream/demo_nonematch.png" alt="nonematch方法样例"></p>
+<h2 id="findAny"><a href="#findAny" class="headerlink" title="findAny"></a>findAny</h2><p>用于获取含有stream元素的optional。<strong>如果stream为空，则optional为空，此操作不是确定的。并行操作时，可能会获取不同的结果，串行操作感觉是获取的第一个元素</strong></p>
+<p><img src="/2019/07/08/stream/demo_findany.png" alt="findany方法样例"></p>
+<h2 id="findFirst"><a href="#findFirst" class="headerlink" title="findFirst"></a>findFirst</h2><p>用于获取含有stream第一个元素的optional。<strong>如果stream为空则optional为空</strong></p>
+<p><img src="/2019/07/08/stream/demo_findfirst.png" alt="findfirst方法样例"></p>
+<h2 id="limit"><a href="#limit" class="headerlink" title="limit"></a>limit</h2><p>截取stream，如果limit保留的个数大于stream的元素个数，则返回stream全部元素，否则只保留指定个数的元素。</p>
+<p><img src="/2019/07/08/stream/demo_limit.png" alt="limit方法样例"></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p><a href="https://www.runoob.com/java/java8-streams.html" target="_blank" rel="noopener">菜鸟教程：Stream</a><br><a href="https://blog.csdn.net/IO_Field/article/details/54971761" target="_blank" rel="noopener">CSDN：stream详解</a><br><a href="https://blog.csdn.net/tayanxunhua/article/details/19700579" target="_blank" rel="noopener">Java8中的Random</a><br><a href="https://www.runoob.com/java/java-bitset-class.html" target="_blank" rel="noopener">Java中的BitSet</a><br><a href="https://www.jianshu.com/p/4fbad3a6d253" target="_blank" rel="noopener">Java中BitSet原理</a><br><a href="https://dextersmake.iteye.com/blog/2353406" target="_blank" rel="noopener">BitSet样例</a><br><a href="https://www.runoob.com/java/java-regular-expressions.html" target="_blank" rel="noopener">菜鸟驿站:正则表达式</a><br><a href="https://blog.csdn.net/darrensty/article/details/79283146" target="_blank" rel="noopener">stream和parallelStream</a><br><a href="https://www.cnblogs.com/yucy/p/10260014.html" target="_blank" rel="noopener">flatmap和map的区别</a><br><a href="https://blog.csdn.net/huo065000/article/details/78964382" target="_blank" rel="noopener">Function接口说明</a><br><a href="https://blog.csdn.net/weixin_33971205/article/details/92694495" target="_blank" rel="noopener">Comparable与Comparator区别</a><br><a href="https://blog.csdn.net/IO_Field/article/details/54971608" target="_blank" rel="noopener">collect说明</a><br><a href="https://blog.csdn.net/IO_Field/article/details/54971679" target="_blank" rel="noopener">reduce说明</a>  </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/08/defaultmethod/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2043,227 +2334,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/15/redis-5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/06/15/redis-5/" itemprop="url">redis 部署方式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-15T14:59:41+08:00">
-                2019-06-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/redis/" itemprop="url" rel="index">
-                    <span itemprop="name">redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/06/15/redis-5/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/06/15/redis-5/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="单机-standaloan"><a href="#单机-standaloan" class="headerlink" title="单机(standaloan)"></a>单机(standaloan)</h1><p>只有一个redis节点，生产环境不推荐，一旦redis节点宕机导致整个服务不可用。</p>
-<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><ul>
-<li>容量有限</li>
-<li>处理能力有限</li>
-<li>无法高可用</li>
-</ul>
-<h1 id="主从-master-slave"><a href="#主从-master-slave" class="headerlink" title="主从(master/slave)"></a>主从(master/slave)</h1><p><img src="/2019/06/15/redis-5/主从模式.png" alt="哨兵模式">  </p>
-<p>基于redis本身的复制(replication)功能。选择一个redis节点作为master，其余的节点作为slave节点来复制master的数据。master负责读/写操作，slave节点负责读操作。如果网络通畅，master节点会将数据变化同步给slave节点，保证数据的一致性。</p>
-<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
-<li>master/slave节点数据一致</li>
-<li>降低了master节点的读压力。</li>
-</ul>
-<h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><ul>
-<li>无法高可用（一旦master宕机，服务不可用，需要人工干预重新指定master节点）</li>
-<li>没有降低master的写压力</li>
-</ul>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>本机是通过brew来安装的redis。所以配置默认是在 /usr/local/etc/redis.conf。为了便于后续的管理，我在/usr/local/etc/下专门创建了redis配置的目录。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 创建目录</span><br><span class="line">mkdir /usr/local/etc/redis</span><br><span class="line"># 复制配置文件</span><br><span class="line">cp /usr/local/etc/redis.conf /usr/local/etc/redis/6380.conf</span><br></pre></td></tr></table></figure>
-<p>主节点的配置是6380.conf<br>配置文件中细节很多，但主要关注的是如下配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># 不绑定ip 任何ip都可以访问</span><br><span class="line">bind 0.0.0.0 </span><br><span class="line"># 关闭保护，允许非本地连接</span><br><span class="line">protected-mode no</span><br><span class="line"># 端口</span><br><span class="line">port 6380</span><br><span class="line"># 后台运行</span><br><span class="line">daemonize yes</span><br><span class="line"># pid的存储路径</span><br><span class="line">pidfile /var/run/redis/6380.pid</span><br><span class="line"># 数据存储的目录</span><br><span class="line">dir /usr/local/redis/6388/</span><br><span class="line">#采用AOF的方式来持久化数据</span><br><span class="line">appendonly yes</span><br></pre></td></tr></table></figure>
-<p>再基于6380.conf复制出6381.conf和6382.conf两个配置文件，这两个作为slave节点的配置，只需要将相应的端口信息改成自己的端口同时还要追加一个主节点的配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># master 节点信息</span><br><span class="line">slaveof 127.0.0.1 6380</span><br></pre></td></tr></table></figure>
-<h3 id="启停脚本"><a href="#启停脚本" class="headerlink" title="启停脚本"></a>启停脚本</h3><p>在用户目录的bin目录下创建了startredis-ms.sh脚本。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">BASE_PATH=$BREW_HOME</span><br><span class="line">APP_NAME=redis</span><br><span class="line">VERSION=5.0.5</span><br><span class="line">BIN_PATH=$BASE_PATH/$APP_NAME/$VERSION/bin</span><br><span class="line">CONF_PATH=$BREW_HOME/../etc/redis</span><br><span class="line"></span><br><span class="line">echo start master</span><br><span class="line">$BIN_PATH/redis-server $CONF_PATH/6380.conf</span><br><span class="line"></span><br><span class="line">echo start slave</span><br><span class="line">$BIN_PATH/redis-server $CONF_PATH/6381.conf</span><br><span class="line">$BIN_PATH/redis-server $CONF_PATH/6382.conf</span><br></pre></td></tr></table></figure>
-<p>创建根据指定端口号来启动redis的脚本startredis.sh</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">BASE_PATH=$BREW_HOME</span><br><span class="line">APP_NAME=redis</span><br><span class="line">VERSION=5.0.5</span><br><span class="line">BIN_PATH=$BASE_PATH/$APP_NAME/$VERSION/bin</span><br><span class="line">CONF_PATH=$BREW_HOME/../etc/redis</span><br><span class="line"></span><br><span class="line">if [ $# -eq 0 ];then</span><br><span class="line">  echo &quot;You&apos;d better input redis server port!&quot;</span><br><span class="line">  exit -1</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">for port in &quot;$@&quot; ;do</span><br><span class="line">  echo &quot;start redis server port :$&#123;port&#125; ...&quot;</span><br><span class="line">  $BIN_PATH/redis-server $CONF_PATH/$&#123;port&#125;.conf</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-<p>创建根据指定端口号来停止redis的脚本stopredis.sh</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">BASE_PATH=$BREW_HOME</span><br><span class="line">APP_NAME=redis</span><br><span class="line">VERSION=5.0.5</span><br><span class="line">BIN_PATH=$BASE_PATH/$APP_NAME/$VERSION/bin</span><br><span class="line">CONF_PATH=$BREW_HOME/../etc/redis</span><br><span class="line"></span><br><span class="line">if [ $# -eq 0 ];then</span><br><span class="line">  echo &quot;You&apos;d better input redis server port!&quot;</span><br><span class="line">  exit -1</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">for port in &quot;$@&quot; ;do</span><br><span class="line">  echo &quot;stop redis server port :$&#123;port&#125; !&quot;</span><br><span class="line">  $BIN_PATH/redis-cli -p $&#123;port&#125; shutdown</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-<h3 id="查看验证"><a href="#查看验证" class="headerlink" title="查看验证"></a>查看验证</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 查看redis的进程 </span><br><span class="line">ps -ef|grep redis</span><br><span class="line"># 连接到master节点</span><br><span class="line">redis-cli -p 6380</span><br><span class="line"># info</span><br><span class="line">查看节点信息</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/06/15/redis-5/info.png" alt="查看节点信息">  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 连接slave节点</span><br><span class="line">redis-cli -p 6381</span><br><span class="line"># 创建key:a valye:1 </span><br><span class="line">set a 1</span><br><span class="line">(error) READONLY You can&apos;t write against a read only replica.</span><br></pre></td></tr></table></figure>
-<p><strong>从上面的操作记录可以看到，slave节点不能完成写操作，只能进行读操作。</strong></p>
-<h1 id="哨兵-sentinel"><a href="#哨兵-sentinel" class="headerlink" title="哨兵(sentinel)"></a>哨兵(sentinel)</h1><p><img src="/2019/06/15/redis-5/哨兵模式.png" alt="哨兵模式">  </p>
-<p>哨兵模式是基于主从复制的基础上，增加了哨兵监控进程，用于当master节点宕机后自动进行主从切换来保证redis服务的高可用。</p>
-<h2 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h2><ul>
-<li>监控：sentinel会不断的检查master节点与slave节点的状态是否正常。</li>
-<li>提醒：当监控到某个节点异常后，sentinel会通过API的方式通知管理人员，或向应用程序发送通知。</li>
-<li>自动故障迁移：当master节点故障后，sentinel会自动将slave选举成新的master并通知其余的slave。</li>
-</ul>
-<h2 id="哨兵定时任务"><a href="#哨兵定时任务" class="headerlink" title="哨兵定时任务"></a>哨兵定时任务</h2><ul>
-<li>info命令，哨兵会每隔10秒向master和slave节点发送info命令，用于获取最新的拓扑图。sentinel的配置只有master节点的信息，slave的信息从master中获取。</li>
-<li>广播消息：哨兵会向所有的redis节点发送当前哨兵节点信息和对于master节点的认知信息，同时所有的哨兵也会订阅该消息，来了解其他的哨兵节点以及其他哨兵节点认知的master节点信息。</li>
-<li>心跳检测：哨兵会ping master/slave节点进行心跳检测。</li>
-</ul>
-<h2 id="主观下线和客观下线"><a href="#主观下线和客观下线" class="headerlink" title="主观下线和客观下线"></a>主观下线和客观下线</h2><p>当哨兵认为master节点下线，这是主观下线，哨兵会发送is-master-down-by-addr的命令，寻求其他对master节点的状态判断，如果有过半数的哨兵认同master节点下线，就是客观下线。</p>
-<h2 id="哨兵leader选举，故障迁移"><a href="#哨兵leader选举，故障迁移" class="headerlink" title="哨兵leader选举，故障迁移"></a>哨兵leader选举，故障迁移</h2><p>当哨兵发现master下线后，发送is-master-down-by-addr命令，寻求其他哨兵对master节点状态的判断，并征求自己是否可以成为leader，其他哨兵可以同意或拒绝，当有过半数的哨兵同意某一个哨兵的竞选消息后，该哨兵成为leader。leader能够决定后续的故障迁移工作选举新的master节点。</p>
-<p><img src="/2019/06/15/redis-5/故障迁移.png" alt="故障迁移">  </p>
-<h2 id="故障迁移的步骤"><a href="#故障迁移的步骤" class="headerlink" title="故障迁移的步骤"></a>故障迁移的步骤</h2><ol>
-<li>多个哨兵认同master节点下线（客观下线）</li>
-<li>选举一个哨兵作为leader</li>
-<li>leader哨兵决定新的master节点</li>
-<li>通知其余的slave新的master节点</li>
-<li>通知应用新的master节点</li>
-<li>老的master重新上线后成为新的slave。</li>
-</ol>
-<h2 id="配置-1"><a href="#配置-1" class="headerlink" title="配置"></a>配置</h2><p>在/usr/local/etc/redis目录下增加了哨兵的目录sentinel。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 创建目录</span><br><span class="line">mkdir /usr/local/etc/redis/sentinel</span><br><span class="line"># 将默认的哨兵配置复制到配置目录中</span><br><span class="line">cp /usr/local/etc/redis-sentinel.conf /usr/local/etc/redis/sentinel/26380.conf</span><br></pre></td></tr></table></figure>
-<p>哨兵也需要集群配置，默认提供一个节点的配置，其余参考的修改</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># 不绑定ip 任何ip都可以访问</span><br><span class="line">bind 0.0.0.0 </span><br><span class="line"># 关闭保护，允许非本地连接</span><br><span class="line">protected-mode no</span><br><span class="line"># 端口</span><br><span class="line">port 26380</span><br><span class="line"># 后台运行</span><br><span class="line">daemonize yes</span><br><span class="line"># pid的存储路径</span><br><span class="line">pidfile /var/run/redis/26380.pid</span><br><span class="line"># 不存储数据</span><br><span class="line">dir /private/tmp</span><br><span class="line">#设置 主名称 ip地址 端口号 选举厕次数</span><br><span class="line">sentinel monitor mymaster 127.0.0.1 6380 1</span><br><span class="line">#sentinel心跳检测主3秒内无响应，视为挂掉，开始切换其他从为主</span><br><span class="line">sentinel down-after-milliseconds mymaster 3000</span><br><span class="line">#每次最多可以有1个从同步主。一个从同步结束，另一个从开始同步。</span><br><span class="line">sentinel parallel-syncs mymaster 1</span><br><span class="line">#主从切换超时时间</span><br><span class="line">sentinel failover-timeout mymaster 18000</span><br></pre></td></tr></table></figure>
-<h2 id="启停脚本-1"><a href="#启停脚本-1" class="headerlink" title="启停脚本"></a>启停脚本</h2><p>哨兵的启动有两种方式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">redis-server *.conf --sentinel</span><br><span class="line">redis-sentinel * .conf (推荐)</span><br></pre></td></tr></table></figure>
-<p>启动脚本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">BASE_PATH=$BREW_HOME</span><br><span class="line">APP_NAME=redis</span><br><span class="line">VERSION=5.0.5</span><br><span class="line">BIN_PATH=$BASE_PATH/$APP_NAME/$VERSION/bin</span><br><span class="line">CONF_PATH=$BREW_HOME/../etc/redis/sentinel</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">echo start sentinel...</span><br><span class="line">$BIN_PATH/redis-sentinel $CONF_PATH/26380.conf</span><br><span class="line">$BIN_PATH/redis-sentinel $CONF_PATH/26381.conf</span><br><span class="line">$BIN_PATH/redis-sentinel $CONF_PATH/26382.conf</span><br></pre></td></tr></table></figure>
-<p>停止还是stopredis.sh，通过redis-cli 连接后执行shutdown命令</p>
-<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 查看进程</span><br><span class="line">ps -ef|grep redis</span><br><span class="line"># 连接哨兵</span><br><span class="line">redis-cli -p 26380 </span><br><span class="line"># 查看节点详情</span><br><span class="line">info</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/06/15/redis-5/哨兵info.png" alt="哨兵info">  </p>
-<h1 id="集群-redis-cluster"><a href="#集群-redis-cluster" class="headerlink" title="集群(redis-cluster)"></a>集群(redis-cluster)</h1><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p><a href="https://blog.csdn.net/ahfywangqiang/article/details/86537421" target="_blank" rel="noopener">部署方式</a><br><a href="https://www.jianshu.com/p/1a9738ddeed6" target="_blank" rel="noopener">部署方式选型</a><br><a href="https://www.cnblogs.com/zwcry/p/9046207.html" target="_blank" rel="noopener">主从模式搭建教程</a><br><a href="https://www.cnblogs.com/zwcry/p/9134721.html" target="_blank" rel="noopener">哨兵模式搭建教程</a><br><a href="https://www.cnblogs.com/leeSmall/p/8398401.html" target="_blank" rel="noopener">哨兵机制讲解</a>  </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2318,7 +2388,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-count">77</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2329,7 +2399,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2340,7 +2410,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
