@@ -87,10 +87,17 @@
 <meta property="og:site_name" content="小磊砸的布劳格">
 <meta property="og:description" content="提升锁性能 减少持有锁的时间（真正需要数据同步的时候进行加锁） 减小锁的粒度（ConcurrentHashMap对数据进行分片加锁） 读写分离锁替代独占锁（ReadWriteLock，读读不阻塞，读写阻塞，写写阻塞） 锁分离（LinkedBlockingQueue，take方法使用takeLock，put使用putLock，这样take操作和put操作加的锁不是同一个，操作可以分开） 锁粗化（同一">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-11-18T14:05:43.108Z">
+<meta property="og:image" content="http://yoursite.com/2019/11/18/lock-optimize/demo_threadlocal.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/18/lock-optimize/src_threadlocal_set.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/18/lock-optimize/src_threadlocal_getmap.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/18/lock-optimize/src_threadlocal_get.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/18/lock-optimize/src_thread_exits.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/18/lock-optimize/src_threadlocal_remove.png">
+<meta property="og:updated_time" content="2019-11-18T15:05:43.923Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="锁的优化和注意事项">
 <meta name="twitter:description" content="提升锁性能 减少持有锁的时间（真正需要数据同步的时候进行加锁） 减小锁的粒度（ConcurrentHashMap对数据进行分片加锁） 读写分离锁替代独占锁（ReadWriteLock，读读不阻塞，读写阻塞，写写阻塞） 锁分离（LinkedBlockingQueue，take方法使用takeLock，put使用putLock，这样take操作和put操作加的锁不是同一个，操作可以分开） 锁粗化（同一">
+<meta name="twitter:image" content="http://yoursite.com/2019/11/18/lock-optimize/demo_threadlocal.png">
 
 
 
@@ -354,8 +361,10 @@
 <p>核心思想：一个线程获取锁之后，锁会进入偏向模式，当这个线程再次请求锁时，无需再做任何同步操作，这样就节省了大量有关锁申请的操作。提供程序的性能。</p>
 </blockquote>
 <p>对于几乎没有锁竞争的场景，偏向锁有比较好的优化效果。即当同一个线程多次连续请求同一个锁时，偏向锁比较适用。<strong>对于锁竞争激烈的场景，偏向模式就会失效。</strong></p>
-<p><strong>-XX:+UseBiasedLocking 开启偏向模式。</strong></p>
-<h2 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h2><blockquote>
+<ul>
+<li><strong>-XX:+UseBiasedLocking 开启偏向模式。</strong><h2 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h2></li>
+</ul>
+<blockquote>
 <p>偏向模式失败，虚拟机并不会立即挂起线程，而是采用轻量级锁来进行优化。当锁资源只有一个线程来竞争时，开启偏向模式，当有第二个线程要竞争锁资源时，锁会膨胀成成轻量级锁。</p>
 </blockquote>
 <h2 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h2><blockquote>
@@ -365,10 +374,30 @@
 <p>JVM在编译期间，通过对运行时的上下文扫描，去除不可能存在共享资源竞争的锁，通过锁消除，节省无意义的请求锁时间。</p>
 </blockquote>
 <ul>
-<li><strong><em> 通过逃逸分析，即观察摸一个变量是否会逃出某个作用域。如果变量没有逃出作用域，就不会被线程共享，就可以大胆的去除。</em></strong></li>
+<li><strong>通过逃逸分析，即观察摸一个变量是否会逃出某个作用域。如果变量没有逃出作用域，就不会被线程共享，就可以大胆的去除。</strong></li>
 <li>-server 模式下，使用<strong>-XX:+DoEscapeAnalysis 打开逃逸分析，-XX:+EliminateLocks 关闭锁消除</strong>  </li>
 </ul>
-<h1 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h1><h1 id="无锁-CAS"><a href="#无锁-CAS" class="headerlink" title="无锁(CAS)"></a>无锁(CAS)</h1><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<h1 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h1><p>ThreadLocal 线程的局部变量。即只有当前线程可以访问。</p>
+<h2 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">package demo.paralle.optmize;</span><br><span class="line"></span><br><span class="line">import java.text.ParseException;</span><br><span class="line">import java.text.SimpleDateFormat;</span><br><span class="line">import java.util.Date;</span><br><span class="line">import java.util.concurrent.ArrayBlockingQueue;</span><br><span class="line">import java.util.concurrent.ExecutorService;</span><br><span class="line">import java.util.concurrent.ThreadPoolExecutor;</span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">public class ThreadLocalDemo &#123;</span><br><span class="line">    private static ThreadLocal&lt;SimpleDateFormat&gt; tl = new ThreadLocal&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    static class TestTarget implements Runnable &#123;</span><br><span class="line">        private int i;</span><br><span class="line"></span><br><span class="line">        public TestTarget(int i) &#123;</span><br><span class="line">            this.i = i;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void run() &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                if (tl.get() == null) &#123;</span><br><span class="line">                    tl.set(new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;));</span><br><span class="line">                &#125;</span><br><span class="line">                Date parse = tl.get().parse(&quot;2019-11-19 21:55:&quot; + i % 60);</span><br><span class="line">                System.out.println(i + &quot; : &quot; + parse);</span><br><span class="line">            &#125; catch (ParseException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        ExecutorService service = new ThreadPoolExecutor(5, 20, 2, TimeUnit.SECONDS, new ArrayBlockingQueue&lt;&gt;(20));</span><br><span class="line">        for (int i = 0; i &lt; 20; i++) &#123;</span><br><span class="line">            service.submit(new TestTarget(i));</span><br><span class="line">        &#125;</span><br><span class="line">        service.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果</p>
+<p><img src="/2019/11/18/lock-optimize/demo_threadlocal.png" alt="ThreadLocal样例代码">  </p>
+<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><h3 id="存放"><a href="#存放" class="headerlink" title="存放"></a>存放</h3><p>set方法的源码如下图所示：</p>
+<p><img src="/2019/11/18/lock-optimize/src_threadlocal_set.png" alt="ThreadLocal的set方法源码"><br><img src="/2019/11/18/lock-optimize/src_threadlocal_getmap.png" alt="ThreadLocal的getMap方法源码">  </p>
+<p>从ThreadLocal的set方法源码可以看到。首先获取当前线程的ThreadLocalMap。再以ThreadLocal对象做为key，将value存储到当前线程的ThreadLocalMap中。</p>
+<h3 id="获取"><a href="#获取" class="headerlink" title="获取"></a>获取</h3><p><img src="/2019/11/18/lock-optimize/src_threadlocal_get.png" alt="ThreadLocal的get方法源码">  </p>
+<p>从ThreadLocal的get方法源码可以看到。首先获取当前线程的ThreadLocalMap。以ThreadLocal为key，获取ThreadLocalMap中的对应数据。</p>
+<h3 id="清除"><a href="#清除" class="headerlink" title="清除"></a>清除</h3><p><strong>其实可以看到，ThreadLocal提供的set/get方法，数据的存放和获取其实都是操作的当前线程的ThreadLocalMap。二ThreadLocal只是ThreadLocalMap的key</strong>  </p>
+<ul>
+<li>线程结束时，线程会释放自己的ThreadLocalMap。</li>
+</ul>
+<p><img src="/2019/11/18/lock-optimize/src_thread_exits.png" alt="Thread的exits方法源码">   </p>
+<p>从上图可知，线程结束时，系统会调用exit方法，这个时候，会自动的释放ThreadLocalMap。</p>
+<ul>
+<li>手工通过ThreadLocal#remove方法删除存放的对象。  </li>
+</ul>
+<p><img src="/2019/11/18/lock-optimize/src_threadlocal_remove.png" alt="ThreadLocal的remove方法源码">     </p>
+<p><strong>对于线程池中的线程，任务执行完毕后并不会结束线程，所以不会自动的释放线程中的ThreadlocalMap。如果通过ThreadLocal存放的数据不再使用，建议采用remove来手工释放一下。</strong></p>
+<h1 id="无锁-CAS"><a href="#无锁-CAS" class="headerlink" title="无锁(CAS)"></a>无锁(CAS)</h1><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
 <p>《Java 高并发程序设计》葛一鸣 郭超<br><a href="https://blog.csdn.net/qq_32575047/article/details/81214178" target="_blank" rel="noopener">CSDN：逃逸分析</a>  </p>
 </blockquote>
 
@@ -561,7 +590,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#提升锁性能"><span class="nav-number">1.</span> <span class="nav-text">提升锁性能</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM对锁的优化"><span class="nav-number">2.</span> <span class="nav-text">JVM对锁的优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#锁偏向"><span class="nav-number">2.1.</span> <span class="nav-text">锁偏向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#轻量级锁"><span class="nav-number">2.2.</span> <span class="nav-text">轻量级锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自旋锁"><span class="nav-number">2.3.</span> <span class="nav-text">自旋锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#锁消除"><span class="nav-number">2.4.</span> <span class="nav-text">锁消除</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ThreadLocal"><span class="nav-number">3.</span> <span class="nav-text">ThreadLocal</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#无锁-CAS"><span class="nav-number">4.</span> <span class="nav-text">无锁(CAS)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#提升锁性能"><span class="nav-number">1.</span> <span class="nav-text">提升锁性能</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM对锁的优化"><span class="nav-number">2.</span> <span class="nav-text">JVM对锁的优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#锁偏向"><span class="nav-number">2.1.</span> <span class="nav-text">锁偏向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#轻量级锁"><span class="nav-number">2.2.</span> <span class="nav-text">轻量级锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自旋锁"><span class="nav-number">2.3.</span> <span class="nav-text">自旋锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#锁消除"><span class="nav-number">2.4.</span> <span class="nav-text">锁消除</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ThreadLocal"><span class="nav-number">3.</span> <span class="nav-text">ThreadLocal</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#样例"><span class="nav-number">3.1.</span> <span class="nav-text">样例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现原理"><span class="nav-number">3.2.</span> <span class="nav-text">实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#存放"><span class="nav-number">3.2.1.</span> <span class="nav-text">存放</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取"><span class="nav-number">3.2.2.</span> <span class="nav-text">获取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#清除"><span class="nav-number">3.2.3.</span> <span class="nav-text">清除</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#无锁-CAS"><span class="nav-number">4.</span> <span class="nav-text">无锁(CAS)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
