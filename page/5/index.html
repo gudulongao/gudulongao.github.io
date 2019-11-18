@@ -2007,7 +2007,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/02/16/block/" itemprop="url">同步锁</a></h1>
+                <a class="post-title-link" href="/2019/02/16/block/" itemprop="url">JVM锁的优化</a></h1>
         
 
         <div class="post-meta">
@@ -2248,7 +2248,7 @@
 <p><strong>contentionlist、entrylist、waitset队列中的线程都是阻塞状态</strong>。</p>
 <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p><img src="/2019/02/16/block/monitor.png" alt="block"></p>
 <p>1、所有想要竞争锁的线程都会先进入到contentionlist队列中。<br>2、从contentionlist中将部分线程作为候选线程转移到entrylist队列中。<br>3、从entrylist队列中随机选择一个线程作为候选线程，OnDeck指向候选线程。如果锁没有被占用，count=0，则候选线程成功获取锁。这个时候owner指向拥有锁的线程，count+1。如果锁已被占用候选线程会等到锁被释放后才会拥有锁。<br>4、当拥有锁的线程再次请求加锁时（<strong>可重入</strong>），monitor对象会判断owner是否时指向当前线程，如果是，则属于重入的场景，只需要count+1即可。<br>5、如果拥有锁的线程释放锁，则count-1。（<strong>重入的线程重入几次就需要释放几次，count也会依次-1</strong>）</p>
-<h1 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h1><h2 id="阻塞的代价"><a href="#阻塞的代价" class="headerlink" title="阻塞的代价"></a>阻塞的代价</h2><p>java的线程是映射到操作系统原生线程之上的，如果要阻塞或唤醒一个线程就需要操作系统介入，需要在用户态与核心态之间切换，这种切换会消耗大量的系统资源，因为用户态与内核态都有各自专用的内存空间，专用的寄存器等，用户态切换至内核态需要传递给许多变量、参数给内核，内核也需要保护好用户态在切换时的一些寄存器值、变量等，以便内核态调用结束后切换回用户态继续工作。  </p>
+<h1 id="JVM对锁的优化"><a href="#JVM对锁的优化" class="headerlink" title="JVM对锁的优化"></a>JVM对锁的优化</h1><h2 id="阻塞的代价"><a href="#阻塞的代价" class="headerlink" title="阻塞的代价"></a>阻塞的代价</h2><p>java的线程是映射到操作系统原生线程之上的，如果要阻塞或唤醒一个线程就需要操作系统介入，需要在用户态与核心态之间切换，这种切换会消耗大量的系统资源，因为用户态与内核态都有各自专用的内存空间，专用的寄存器等，用户态切换至内核态需要传递给许多变量、参数给内核，内核也需要保护好用户态在切换时的一些寄存器值、变量等，以便内核态调用结束后切换回用户态继续工作。  </p>
 <blockquote>
 <p>1、如果线程状态切换是一个高频操作时，这将会消耗很多CPU处理时间。<br>2、如果对于那些需要同步的简单的代码块，获取锁挂起操作消耗的时间比用户代码执行的时间还要长，这种同步策略显然非常糟糕的。  </p>
 </blockquote>
