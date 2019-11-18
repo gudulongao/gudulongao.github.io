@@ -356,10 +356,20 @@
 <p>对于几乎没有锁竞争的场景，偏向锁有比较好的优化效果。即当同一个线程多次连续请求同一个锁时，偏向锁比较适用。<strong>对于锁竞争激烈的场景，偏向模式就会失效。</strong></p>
 <p><strong>-XX:+UseBiasedLocking 开启偏向模式。</strong></p>
 <h2 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h2><blockquote>
-<p>偏向模式失败，虚拟机并不会立即挂起线程，</p>
+<p>偏向模式失败，虚拟机并不会立即挂起线程，而是采用轻量级锁来进行优化。当锁资源只有一个线程来竞争时，开启偏向模式，当有第二个线程要竞争锁资源时，锁会膨胀成成轻量级锁。</p>
 </blockquote>
-<h2 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h2><h2 id="锁消除"><a href="#锁消除" class="headerlink" title="锁消除"></a>锁消除</h2><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>《Java 高并发程序设计》葛一鸣 郭超  </p>
+<h2 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h2><blockquote>
+<p>当线程无法获取到锁时，JVM会让线程做几个空循环（CPU时间片）经过若干个时间片后，如果能获取到锁，则成功进入临界区。如果不能则进行操作系统层面的线程挂起。  </p>
+</blockquote>
+<h2 id="锁消除"><a href="#锁消除" class="headerlink" title="锁消除"></a>锁消除</h2><blockquote>
+<p>JVM在编译期间，通过对运行时的上下文扫描，去除不可能存在共享资源竞争的锁，通过锁消除，节省无意义的请求锁时间。</p>
+</blockquote>
+<ul>
+<li><strong><em> 通过逃逸分析，即观察摸一个变量是否会逃出某个作用域。如果变量没有逃出作用域，就不会被线程共享，就可以大胆的去除。</em></strong></li>
+<li>-server 模式下，使用<strong>-XX:+DoEscapeAnalysis 打开逃逸分析，-XX:+EliminateLocks 关闭锁消除</strong>  </li>
+</ul>
+<h1 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h1><h1 id="无锁-CAS"><a href="#无锁-CAS" class="headerlink" title="无锁(CAS)"></a>无锁(CAS)</h1><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>《Java 高并发程序设计》葛一鸣 郭超<br><a href="https://blog.csdn.net/qq_32575047/article/details/81214178" target="_blank" rel="noopener">CSDN：逃逸分析</a>  </p>
 </blockquote>
 
           
