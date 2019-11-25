@@ -390,7 +390,63 @@
 </ul>
 <p><img src="/2019/11/18/lock-optimize/src_threadlocal_remove.png" alt="ThreadLocal的remove方法源码">     </p>
 <p><strong>对于线程池中的线程，任务执行完毕后并不会结束线程，所以不会自动的释放线程中的ThreadlocalMap。如果通过ThreadLocal存放的数据不再使用，建议采用remove来手工释放一下。</strong></p>
-<h1 id="无锁-CAS"><a href="#无锁-CAS" class="headerlink" title="无锁(CAS)"></a>无锁(CAS)</h1><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<h1 id="无锁-CAS"><a href="#无锁-CAS" class="headerlink" title="无锁(CAS)"></a>无锁(CAS)</h1><h2 id="CAS算法"><a href="#CAS算法" class="headerlink" title="CAS算法"></a>CAS算法</h2><p>CAS（Compare And Set）比较交换有三个参数CAS(V,E,N)  </p>
+<ul>
+<li>V 表示要更新的变量。  </li>
+<li>E 表示期望值。  </li>
+<li>N 表示新值。</li>
+</ul>
+<p>当 V = E 时，才会将V更新成N。<br>当 V != E 时，则表明变量V的值已发生过变化，当前线程什么都不做。  </p>
+<h2 id="Unsafe"><a href="#Unsafe" class="headerlink" title="Unsafe"></a>Unsafe</h2><p>sun.misc.Unsafe。封装了一些非安全的方法来作为CAS的底层实现。</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>public native int getInt(Object o,long offset)</td>
+<td>获取指定对象偏移量offset的值</td>
+</tr>
+<tr>
+<td>public native void putInt(Object o,long offset,int x)</td>
+<td>给指定对象偏移量offset设置值x</td>
+</tr>
+<tr>
+<td>public native long objectFiledOffset(Filed f)</td>
+<td>获取字段在对象中的偏移量</td>
+</tr>
+<tr>
+<td>public native void putIntVolatile(Object o,long offset,int x)</td>
+<td>给指定对象偏移量offset设置x并具有volatile语义</td>
+</tr>
+<tr>
+<td>public native int getIntVolatile(Object o,long offset)</td>
+<td>获取指定对象偏移量的值，使用volatile语义</td>
+</tr>
+<tr>
+<td>public native void putOrderedInt(Object o,long offset,int x)</td>
+<td>等同putIntVolatile，但是要求操作的字段是volatile修饰的</td>
+</tr>
+<tr>
+<td>public native boolean compareAndSwapInt(Object var1, long var2, int expect, int newvalue)</td>
+<td>比较交换</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/2019/11/18/lock-optimize/src_unsafe.png" alt="Unsafe源码"><br><img src="/2019/11/18/lock-optimize/src_vm.png" alt="isSystemDomainLoader方法源码">  </p>
+<p>从上面的源码可以看到：</p>
+<ul>
+<li>构造函数Unsafe()是私有的，即不允许自行创建Unsafe对象。  </li>
+<li>getUnSafe()方法中反射查看了调用类的类加载器。如果不是JVM的系统类加载器则报错。</li>
+</ul>
+<p>所以Unsafe是不可以被应用代码使用的。</p>
+<blockquote>
+<p>应用程序的类由AppLoader加载。系统核心是由Bootstrap加载的。Bootstrap加载器并不会夹在Java的对象，所以判断调用getUnsafe的类的类加载器是否为空来判断是否是Bootstrap。Unsafe只能you</p>
+</blockquote>
+<h2 id="AtomicInteger"><a href="#AtomicInteger" class="headerlink" title="AtomicInteger"></a>AtomicInteger</h2><h2 id="AtomicReference"><a href="#AtomicReference" class="headerlink" title="AtomicReference"></a>AtomicReference</h2><h2 id="AtomicStampedReference"><a href="#AtomicStampedReference" class="headerlink" title="AtomicStampedReference"></a>AtomicStampedReference</h2><h2 id="AtomicIntegerFieldUpdater"><a href="#AtomicIntegerFieldUpdater" class="headerlink" title="AtomicIntegerFieldUpdater"></a>AtomicIntegerFieldUpdater</h2><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
 <p>《Java 高并发程序设计》葛一鸣 郭超<br><a href="https://blog.csdn.net/qq_32575047/article/details/81214178" target="_blank" rel="noopener">CSDN：逃逸分析</a>  </p>
 </blockquote>
 
