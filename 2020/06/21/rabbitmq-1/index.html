@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="RabbtiMQ,学习资料," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="模型结构  Producer：生产者，消息的生产方   Consumer：消费者，消息的消费方   Broker：RabbitMQ服务节点   Queue：队列，消息存储在队列中。消息的生产者最终将消息投递到队列中，消费者从队列中读取消息并消费。 Exchange：交换器，消息的中转站，生产者实际是将消息首先投递到交换器，基于生产者指定的RoutingKey，将消息转发的与之匹配的队列或者交换器上">
+<meta name="keywords" content="RabbtiMQ,学习资料">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RabbbitMQ 入门">
+<meta property="og:url" content="http://yoursite.com/2020/06/21/rabbitmq-1/index.html">
+<meta property="og:site_name" content="小磊砸的布劳格">
+<meta property="og:description" content="模型结构  Producer：生产者，消息的生产方   Consumer：消费者，消息的消费方   Broker：RabbitMQ服务节点   Queue：队列，消息存储在队列中。消息的生产者最终将消息投递到队列中，消费者从队列中读取消息并消费。 Exchange：交换器，消息的中转站，生产者实际是将消息首先投递到交换器，基于生产者指定的RoutingKey，将消息转发的与之匹配的队列或者交换器上">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/2020/06/21/rabbitmq-1/struct.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/21/rabbitmq-1/1-1.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/21/rabbitmq-1/1-2.png">
+<meta property="og:updated_time" content="2020-06-21T15:33:45.241Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RabbbitMQ 入门">
+<meta name="twitter:description" content="模型结构  Producer：生产者，消息的生产方   Consumer：消费者，消息的消费方   Broker：RabbitMQ服务节点   Queue：队列，消息存储在队列中。消息的生产者最终将消息投递到队列中，消费者从队列中读取消息并消费。 Exchange：交换器，消息的中转站，生产者实际是将消息首先投递到交换器，基于生产者指定的RoutingKey，将消息转发的与之匹配的队列或者交换器上">
+<meta name="twitter:image" content="http://yoursite.com/2020/06/21/rabbitmq-1/struct.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/06/21/rabbitmq-1/"/>
+
+
+
+
+
+  <title>RabbbitMQ 入门 | 小磊砸的布劳格</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">小磊砸的布劳格</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/21/rabbitmq-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RabbbitMQ 入门</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-21T22:32:37+08:00">
+                2020-06-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/rabbitmq/" itemprop="url" rel="index">
+                    <span itemprop="name">rabbitmq</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/06/21/rabbitmq-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/06/21/rabbitmq-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h1><p><img src="/2020/06/21/rabbitmq-1/struct.png" alt="RabbitMQ模型结构图"></p>
+<ul>
+<li>Producer：生产者，消息的生产方  </li>
+<li>Consumer：消费者，消息的消费方  </li>
+<li>Broker：RabbitMQ服务节点  </li>
+<li>Queue：队列，消息存储在队列中。消息的生产者最终将消息投递到队列中，消费者从队列中读取消息并消费。</li>
+<li>Exchange：交换器，消息的中转站，生产者实际是将消息首先投递到交换器，基于生产者指定的RoutingKey，将消息转发的与之匹配的队列或者交换器上。当然队列和交换器要事先与生产者投递的交换器做绑定  </li>
+</ul>
+<h1 id="消息流转流程"><a href="#消息流转流程" class="headerlink" title="消息流转流程"></a>消息流转流程</h1><p><img src="/2020/06/21/rabbitmq-1/1-1.png" alt="RabbitMQ模型结构图"></p>
+<h1 id="交换器"><a href="#交换器" class="headerlink" title="交换器"></a>交换器</h1><h2 id="RoutingKey和BindingKey"><a href="#RoutingKey和BindingKey" class="headerlink" title="RoutingKey和BindingKey"></a>RoutingKey和BindingKey</h2><ul>
+<li>BindingKey：队列是需要绑定到交换器的，绑定的时候需要指定一个BindingKey，即可以经由交换器转发到该队列的一个key，结合交换器的类型，这个key可以是一个值也可以个是模糊匹配的规则。</li>
+<li>RoutingKey：消息生产者将消息发布给交换器时，需要指定一个RoutingKey，即交换器路由转发消息的一个路由索引。交换器会根据RoutingKey来和BindingKey做匹配。匹配规则与交换器的类型有关，一旦RoutingKey与BindingKey匹配成功，交换器就会将消息转发到BindingKey对应的队列上。  </li>
+</ul>
+<h2 id="交换器类型"><a href="#交换器类型" class="headerlink" title="交换器类型"></a>交换器类型</h2><ul>
+<li>fanout：会将消息转发到绑定到该交换器的所有队列上，无视RoutingKey和BindingKey。通常用来实现发布/订阅的模式。  </li>
+<li>direct：会将消息转发到RoutingKey与BindingKey完全匹配的队列中。</li>
+<li>topic：BindingKey是一个匹配规则，*代表一个单词，#代表零个或多个单词。</li>
+<li>headers：根绝消息头的属性来做路由转发，这种效率低，需要MQ解析消息头，一般不会使用。</li>
+</ul>
+<h1 id="信道"><a href="#信道" class="headerlink" title="信道"></a>信道</h1><p>生产者和消费者与RabbitMQ Broker的连接(Connection)一旦建立，客户端会紧接着创建一条信道。每条信道都会分配一个唯一的ID。信道是建立在Connection连接之上的虚拟连接。客户端所有与RabbitMQ Broker的处理都是在信道中完成的。  </p>
+<h2 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h2><p>实际生产者，消费者的客户端都是大量的，如果都是直接采用TCP连接的方式，那么会对操作系统造成非常昂贵的系统开销。所以引入信道，多个信道复用一个TCP连接，减少TCP连接降低系统开销。</p>
+<p><img src="/2020/06/21/rabbitmq-1/1-2.png" alt="RabbitMQ模型结构图"></p>
+<p>#参考资料</p>
+<blockquote>
+<p>《RabbitMQ 实战指南》 朱忠华著</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/RabbtiMQ-学习资料/" rel="tag"># RabbtiMQ,学习资料</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/07/mq/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpeg"
+                alt="小磊砸" />
+            
+              <p class="site-author-name" itemprop="name">小磊砸</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">83</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">59</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#模型结构"><span class="nav-number">1.</span> <span class="nav-text">模型结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#消息流转流程"><span class="nav-number">2.</span> <span class="nav-text">消息流转流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#交换器"><span class="nav-number">3.</span> <span class="nav-text">交换器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RoutingKey和BindingKey"><span class="nav-number">3.1.</span> <span class="nav-text">RoutingKey和BindingKey</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#交换器类型"><span class="nav-number">3.2.</span> <span class="nav-text">交换器类型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#信道"><span class="nav-number">4.</span> <span class="nav-text">信道</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#优势"><span class="nav-number">4.1.</span> <span class="nav-text">优势</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小磊砸</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://xiaoleiza.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2020/06/21/rabbitmq-1/';
+          this.page.identifier = '2020/06/21/rabbitmq-1/';
+          this.page.title = 'RabbbitMQ 入门';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://xiaoleiza.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

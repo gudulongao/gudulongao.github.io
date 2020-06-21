@@ -239,6 +239,861 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/12/zookeeper-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/12/zookeeper-3/" itemprop="url">zookeeper shell操作</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-12T22:31:08+08:00">
+                2019-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ZooKeeper/" itemprop="url" rel="index">
+                    <span itemprop="name">ZooKeeper</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/12/zookeeper-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/03/12/zookeeper-3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="客户端连接"><a href="#客户端连接" class="headerlink" title="客户端连接"></a>客户端连接</h1><p>以zookeeper/bin目录为基准目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 本机服务</span><br><span class="line">./zkCli.sh</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/03/12/zookeeper-3/connect.png" alt="客户端连接">  </p>
+<h1 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"># 查看根节点</span><br><span class="line">[zk: localhost:2181(CONNECTED) 2] ls /</span><br><span class="line">[zookeeper, testroot]</span><br><span class="line"></span><br><span class="line"># 创建节点（默认是不带编号，永久节点）</span><br><span class="line">[zk: localhost:2181(CONNECTED) 2] create /test testcreate</span><br><span class="line">Created /test</span><br><span class="line"></span><br><span class="line"># 查看test节点</span><br><span class="line">[zk: localhost:2181(CONNECTED) 2] get /test</span><br><span class="line">testcreate</span><br><span class="line">cZxid = 0x500000002</span><br><span class="line">ctime = Tue Mar 12 22:45:27 CST 2019</span><br><span class="line">mZxid = 0x500000002</span><br><span class="line">mtime = Tue Mar 12 22:45:27 CST 2019</span><br><span class="line">pZxid = 0x500000002</span><br><span class="line">cversion = 0</span><br><span class="line">dataVersion = 0</span><br><span class="line">aclVersion = 0</span><br><span class="line">ephemeralOwner = 0x0</span><br><span class="line">dataLength = 10</span><br><span class="line">numChildren = 0</span><br><span class="line"></span><br><span class="line"># 创建带编号的永久节点(-s)</span><br><span class="line">[zk: localhost:2181(CONNECTED) 2] create -s /b createwithno</span><br><span class="line">Created /b0000000002</span><br><span class="line"></span><br><span class="line"># 查看节点</span><br><span class="line">[zk: localhost:2181(CONNECTED) 12] get /b</span><br><span class="line">Node does not exist: /b</span><br><span class="line"></span><br><span class="line"># 查看根节点下的节点（发现带节点的不叫b了，而是b和编号）</span><br><span class="line">[zk: localhost:2181(CONNECTED) 13] ls /</span><br><span class="line">[b0000000002, zookeeper, test, testroot]</span><br><span class="line"></span><br><span class="line"># 采用正确的名字查看刚刚创建的节点</span><br><span class="line">[zk: localhost:2181(CONNECTED) 14] get /b0000000002</span><br><span class="line">createwithno</span><br><span class="line">cZxid = 0x500000003</span><br><span class="line">ctime = Tue Mar 12 22:48:46 CST 2019</span><br><span class="line">mZxid = 0x500000003</span><br><span class="line">mtime = Tue Mar 12 22:48:46 CST 2019</span><br><span class="line">pZxid = 0x500000003</span><br><span class="line">cversion = 0</span><br><span class="line">dataVersion = 0</span><br><span class="line">aclVersion = 0</span><br><span class="line">ephemeralOwner = 0x0</span><br><span class="line">dataLength = 12</span><br><span class="line">numChildren = 0</span><br><span class="line"> </span><br><span class="line"># 创建临时节点(-e)</span><br><span class="line">[zk: localhost:2181(CONNECTED) 15] create -e /c createenode </span><br><span class="line">Created /c</span><br><span class="line"></span><br><span class="line"># 查看根节点</span><br><span class="line">[zk: localhost:2181(CONNECTED) 16] ls /</span><br><span class="line">[b0000000002, c, zookeeper, test, testroot]</span><br><span class="line"></span><br><span class="line"># 查看刚刚创建的临时节点信息</span><br><span class="line">[zk: localhost:2181(CONNECTED) 17] get /c</span><br><span class="line">createenode</span><br><span class="line">cZxid = 0x500000004</span><br><span class="line">ctime = Tue Mar 12 22:53:10 CST 2019</span><br><span class="line">mZxid = 0x500000004</span><br><span class="line">mtime = Tue Mar 12 22:53:10 CST 2019</span><br><span class="line">pZxid = 0x500000004</span><br><span class="line">cversion = 0</span><br><span class="line">dataVersion = 0</span><br><span class="line">aclVersion = 0</span><br><span class="line">ephemeralOwner = 0x169611f66540000</span><br><span class="line">dataLength = 11</span><br><span class="line">numChildren = 0</span><br><span class="line"></span><br><span class="line"># 关闭连接后再次连接，查看根节点,发现上一次会话创建的临时节点已删除</span><br><span class="line">[zk: localhost:2181(CONNECTED) 0] ls /</span><br><span class="line">[b0000000002, zookeeper, test, testroot]</span><br><span class="line"></span><br><span class="line"># 删除节点 /testroot </span><br><span class="line">[zk: localhost:2181(CONNECTED) 5] delete /testroot</span><br><span class="line"># 查看根下的节点，发现已删除</span><br><span class="line">[zk: localhost:2181(CONNECTED) 6] ls /</span><br><span class="line">[b0000000002, zookeeper, test]</span><br><span class="line"></span><br><span class="line"># 查看节点的状态</span><br><span class="line">[zk: localhost:2181(CONNECTED) 7] stat /test</span><br><span class="line">cZxid = 0x500000002</span><br><span class="line">ctime = Tue Mar 12 22:45:27 CST 2019</span><br><span class="line">mZxid = 0x500000002</span><br><span class="line">mtime = Tue Mar 12 22:45:27 CST 2019</span><br><span class="line">pZxid = 0x500000002</span><br><span class="line">cversion = 0</span><br><span class="line">dataVersion = 0</span><br><span class="line">aclVersion = 0</span><br><span class="line">ephemeralOwner = 0x0</span><br><span class="line">dataLength = 10</span><br><span class="line">numChildren = 0</span><br><span class="line"></span><br><span class="line"># 关闭连接</span><br><span class="line">[zk: localhost:2181(CONNECTED) 8] close</span><br><span class="line">2019-03-17 10:25:11,894 [myid:] - INFO  [main:ZooKeeper@684] - Session: 0x1698704f21f0000 closed</span><br><span class="line">[zk: localhost:2181(CLOSED) 9] 2019-03-17 10:25:11,896 [myid:] - INFO  [main-EventThread:ClientCnxn$EventThread@519] - EventThread shut down for session: 0x1698704f21f0000</span><br><span class="line"># 关闭连接之后，会话也就关闭了，这个时候操作提示没有连接</span><br><span class="line">[zk: localhost:2181(CLOSED) 9] ls /</span><br><span class="line">Not connected</span><br><span class="line"></span><br><span class="line"># 退出</span><br><span class="line">[zk: localhost:2181(CLOSED) 10] quit</span><br><span class="line">Quitting..</span><br></pre></td></tr></table></figure>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>zookeeper学习博客：<a href="https://www.cnblogs.com/qingyunzong/p/8619276.html" target="_blank" rel="noopener">https://www.cnblogs.com/qingyunzong/p/8619276.html</a>  </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/27/zookeeper-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/27/zookeeper-2/" itemprop="url">ZooKeeper基础介绍</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-27T19:08:53+08:00">
+                2019-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ZooKeeper/" itemprop="url" rel="index">
+                    <span itemprop="name">ZooKeeper</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/02/27/zookeeper-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/02/27/zookeeper-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><h2 id="分布式系统"><a href="#分布式系统" class="headerlink" title="分布式系统"></a>分布式系统</h2><p><img src="/2019/02/27/zookeeper-2/system.png" alt="分布式系统架构图">  </p>
+<p>如上图所示，分布式系统是由多台机器各自运行的子服务（进程）并通过网络互联来提供一个整体服务的系统。这个整体的服务对于用户而言是无感的。  </p>
+<h2 id="分布式系统协调技术"><a href="#分布式系统协调技术" class="headerlink" title="分布式系统协调技术"></a>分布式系统协调技术</h2><blockquote>
+<p>在这个分布式系统中如何对进程进行调度，我假设在第一台机器上挂载了一个资源，然后这三个物理分布的进程都要竞争这个资源，但我们又不希望他们同时进行访问，这时候我们就需要一个协调器，来让他们有序的来访问这个资源。这个协调器就是我们经常提到的那个锁，比如说”进程-1”在使用该资源的时候，会先去获得锁，”进程1”获得锁以后会对该资源保持独占，这样其他进程就无法访问该资源，”进程1”用完该资源以后就将锁释放掉，让其他进程来获得锁，那么通过这个锁机制，我们就能保证了分布式系统中多个进程能够有序的访问该临界资源。那么我们把这个分布式环境下的这个锁叫作<strong>分布式锁</strong>。  </p>
+</blockquote>
+<p><img src="/2019/02/27/zookeeper-2/product.png" alt="分布式锁产品">  </p>
+<p>目前主流的分布式锁产品由Google的Chubby(非开源)和Apache的Zookeeper（开源）</p>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Zookeeper 为了能够对分布式系统进行协调管理，设计了一种数据结构–Znode。Zookeeper节点本身可以看成是一个Znode树。其拥有和文件系统类似的命名空间。</p>
+<p><img src="/2019/02/27/zookeeper-2/namespace.png" alt="命名空间">  </p>
+<h2 id="Znode"><a href="#Znode" class="headerlink" title="Znode"></a>Znode</h2><p>每个Znode都有自己的路径，这个路径又Uncode字符组成，具有唯一性。并且必须是<strong>绝对路径（以/开始）</strong>。<br>Znode由state,data,children三部分组成。具体如下表所示。</p>
+<h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3><table>
+<thead>
+<tr>
+<th>部分</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>state</td>
+<td>版本，权限(ACL)，时间戳等信息</td>
+</tr>
+<tr>
+<td>data</td>
+<td>存储的数据（<strong>最多1M</strong>）</td>
+</tr>
+<tr>
+<td>children</td>
+<td>子节点</td>
+</tr>
+</tbody>
+</table>
+<h3 id="权限"><a href="#权限" class="headerlink" title="权限"></a>权限</h3><p><strong>Znode中的数据操作都是具有原子性的，读写都是涉及的节点中的所有数据。Znode都有自己的ACL(访问控制列表)</strong></p>
+<h3 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h3><p>Znode有临时节点和永久节点两种类型。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>临时节点</td>
+<td>依赖于会话，每个临时节点都会绑定其依赖的sessionid。会话失效就会被自动删除，也可以手工删除，<strong>不能有子节点</strong></td>
+</tr>
+<tr>
+<td>永久节点</td>
+<td>不依赖于会话，只有手工删除才会被删除</td>
+</tr>
+</tbody>
+</table>
+<h3 id="时间"><a href="#时间" class="headerlink" title="时间"></a>时间</h3><p>Zxid是Zookeeper所使用的一种时间戳。每一次对Znode的操作都会产生一个全局唯一的Zxid，<strong>可以根据Zxid的大小来判断事件发生的时间顺序。</strong><br>整个Znode的属性如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>cZxid</strong></td>
+<td><strong>创建的事务id</strong></td>
+</tr>
+<tr>
+<td>ctime</td>
+<td>创建时间</td>
+</tr>
+<tr>
+<td><strong>mZxid</strong></td>
+<td><strong>修改事务id</strong></td>
+</tr>
+<tr>
+<td>mtime</td>
+<td>修改时间</td>
+</tr>
+<tr>
+<td><strong>pZxid</strong></td>
+<td><strong>创建/删除的事务id</strong></td>
+</tr>
+<tr>
+<td>version</td>
+<td>当前节点版本号</td>
+</tr>
+<tr>
+<td>cversion</td>
+<td>子节点版本号</td>
+</tr>
+<tr>
+<td>aversion</td>
+<td>当前节点的acl版本号</td>
+</tr>
+<tr>
+<td>ephemeralOwner</td>
+<td>如果节点是临时节点，则其存储绑定的sessionid，否则为空</td>
+</tr>
+<tr>
+<td>dataLength</td>
+<td>数据长度</td>
+</tr>
+<tr>
+<td>numhildren</td>
+<td>子节点个数</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/2019/02/27/zookeeper-2/znodeprop.png" alt="Znode属性">  </p>
+<p>每个Znode都维护着三个Zxid（cZxid,mZxid,pZxid）。<br>Zxid是一个64位的数字，其高32位的epoch是当前leader节点编号，每当leader有变化时，高32位的epoch会随之发生变化。低32是递增计数器。</p>
+<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><p>客户端可以进行的操作如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>create</td>
+<td>创建节点（父节点必须存在）</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>删除节点（不能包含子节点）</td>
+</tr>
+<tr>
+<td>exists</td>
+<td>测试节点是否存在，并获取节点元数据</td>
+</tr>
+<tr>
+<td>getACL/setACL</td>
+<td>获取/设置 节点的ACL</td>
+</tr>
+<tr>
+<td>getChildren</td>
+<td>获取子节点列表</td>
+</tr>
+<tr>
+<td>getData/setData</td>
+<td>获取/更新 节点数据</td>
+</tr>
+<tr>
+<td>sync</td>
+<td>客户端视图与服务端同步</td>
+</tr>
+</tbody>
+</table>
+<p><strong>对于Znode的更新操作是非阻塞的</strong>  </p>
+<p>在命令行中客户端连接可以进行操作可以通过help指令查看。</p>
+<p><img src="/2019/02/27/zookeeper-2/help.png" alt="Znode属性">  </p>
+<h2 id="watch"><a href="#watch" class="headerlink" title="watch"></a>watch</h2><p>客户端可以在Znode上设置watch，当Znode状态发生变化时（增，删，改）会出发对应的watch。这个时候会像客户端发送有且只有一条通知。<br><strong>观察者（订阅发布）模式</strong></p>
+<p>watch有如下特点：</p>
+<table>
+<thead>
+<tr>
+<th>特征</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>one-time-trigger</td>
+<td>当设置watch的节点状态发生变化时，服务端会发送事件到客户端，如果节点再一次发生状态变化，除非客户端已重新设置了新的watch，否则不会再发送事件</td>
+</tr>
+<tr>
+<td>Send to client</td>
+<td>服务端与客户端之间是基于Socket通信的，客户端只有在接受到事件之后才能够感知到节点的状态变化，而由于网络的不确定性。客户端们会在不同的时刻感知某一监听（duo），但Zookeeper的全局唯一的Zxid能够保证事件的顺序。</td>
+</tr>
+<tr>
+<td>The data for which the watch was set</td>
+<td>Zookeeper维护了两条监听链，一条数据监听链(data watches)和一条孩子监听链(child watches)。节点不同的操作会触发不同的监听</td>
+</tr>
+</tbody>
+</table>
+<h3 id="设置watch"><a href="#设置watch" class="headerlink" title="设置watch"></a>设置watch</h3><p>Zookeeper支持通过所有的读操作（exists,getData和getChildren）来为Znode设置watch。可以理解为在调用api来读取某个Znode的时候可以添加一个监听，这个监听实际是一种回调逻辑。当改节点发生特定的变化时会触发监听从而执行相应的回调逻辑。<br>Znode支持两种watch：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data watches</td>
+<td>exists和getData操作可以设置该watch</td>
+</tr>
+<tr>
+<td>child watches</td>
+<td>getChilden操作可以设置该watch</td>
+</tr>
+</tbody>
+</table>
+<h3 id="触发watch"><a href="#触发watch" class="headerlink" title="触发watch"></a>触发watch</h3><p><img src="/2019/02/27/zookeeper-2/firetrigger.png" alt="Znode属性">  </p>
+<p>通过exits操作设置的watch,监听的Znode创建，删除，修改时会触发。<br>通过getData操作设置的watch，监听的Znode在删除，修改时会触发。<br>通过getChildren操作设置的watch,监听在Znode创建子节点，删除节点，删除子节点是触发。<br>可以看到，删除操作会触发exists,getData和getChildren设置的所有监听。</p>
+<h2 id="监听原理"><a href="#监听原理" class="headerlink" title="监听原理"></a>监听原理</h2><p><img src="/2019/02/27/zookeeper-2/watch.png" alt="Znode属性">  </p>
+<ul>
+<li>ZooKeeper ：部署在远程主机上的 ZooKeeper 集群，当然，也可能是单机的。 </li>
+<li>Client ：分布在各处的 ZooKeeper 的 jar 包程序，被引用在各个独立应用程序中。 </li>
+<li>WatchManager ：一个接口，用于管理各个监听器，只有一个方法 materialize()，返回一个 Watcher 的 set。</li>
+</ul>
+<p>在具体流程上，简单讲，客户端在向 ZooKeeper 服务器注册 Watcher 的同时，会将 Watcher 对象存储在客户端的 WatchManager 中。当ZooKeeper 服务器触发 Watcher 事件后，会向客户端发送通知，客户端线程从 WatchManager 的实现类中取出对应的 Watcher 对象来执行回调逻辑。</p>
+<h2 id="单点故障解决方案"><a href="#单点故障解决方案" class="headerlink" title="单点故障解决方案"></a>单点故障解决方案</h2><p>对于单点故障，Zookeeper可以基于leader选举策略方便的解决。</p>
+<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><p><img src="/2019/02/27/zookeeper-2/1.png" alt="Znode启动">  </p>
+<p>zookeeper启动后，主节点A和主节点B都会在zookeeper注册节点，这个时候，基于leader选举策略，编号小的优先成为master,另一个节点自动阻塞成为一个备用节点。</p>
+<h3 id="Master故障"><a href="#Master故障" class="headerlink" title="Master故障"></a>Master故障</h3><p><img src="/2019/02/27/zookeeper-2/2.png" alt="Znode故障">  </p>
+<p>当主节点A出现故障，zookeeper后自动感知节点的状态，将自动删除故障节点，然后再次选举，这个时候主节点B获胜，成为新的master节点。</p>
+<h3 id="Master恢复"><a href="#Master恢复" class="headerlink" title="Master恢复"></a>Master恢复</h3><p><img src="/2019/02/27/zookeeper-2/3.png" alt="Znode故障">  </p>
+<p>当主节点A恢复后，会再次在zookeeper注册一个新的节点，编号会继续增加。Zookeeper感知到节点变化会再次进行选举，这个时候主节点B的编号还是最小的，主节点B再次获胜，成为master节点。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>zookeeper学习博客：<a href="https://www.cnblogs.com/qingyunzong/p/8618965.html" target="_blank" rel="noopener">https://www.cnblogs.com/qingyunzong/p/8618965.html</a><br>zookeeper学习博客：<a href="http://www.cnblogs.com/sunddenly/p/4033574.html" target="_blank" rel="noopener">http://www.cnblogs.com/sunddenly/p/4033574.html</a><br>Zxid高32位epoch：<a href="https://blog.csdn.net/Dongguabai/article/details/82957620" target="_blank" rel="noopener">https://blog.csdn.net/Dongguabai/article/details/82957620</a><br>watch机制：<a href="https://blog.csdn.net/z69183787/article/details/53023578" target="_blank" rel="noopener">https://blog.csdn.net/z69183787/article/details/53023578</a><br>watch原理：<a href="https://blog.csdn.net/hohoo1990/article/details/78617336" target="_blank" rel="noopener">https://blog.csdn.net/hohoo1990/article/details/78617336</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/16/block/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/16/block/" itemprop="url">JVM锁的优化</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-16T23:21:44+08:00">
+                2019-02-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/高并发/" itemprop="url" rel="index">
+                    <span itemprop="name">高并发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/02/16/block/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/02/16/block/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="同步锁"><a href="#同步锁" class="headerlink" title="同步锁"></a>同步锁</h1><table>
+<thead>
+<tr>
+<th>修饰区域</th>
+<th>说明</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>修饰对象</td>
+<td>对对象加锁</td>
+<td><strong>对象锁</strong></td>
+</tr>
+<tr>
+<td>修饰实例方法</td>
+<td>对当前实例加锁</td>
+<td><strong>this锁</strong></td>
+</tr>
+<tr>
+<td>修饰静态方法</td>
+<td>对当前类加锁</td>
+<td><strong>类锁</strong></td>
+</tr>
+<tr>
+<td>修饰类</td>
+<td>对当前类加锁</td>
+<td><strong>类锁</strong></td>
+</tr>
+</tbody>
+</table>
+<h1 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>为了了解synchronized的实现原理，需要事先对jvm对象的结构，moniter对象的结构有所了解。</p>
+<h3 id="对象结构"><a href="#对象结构" class="headerlink" title="对象结构"></a>对象结构</h3><p><img src="/2019/02/16/block/object.png" alt="block"></p>
+<p>jvm 中的对象主要由<strong>对象头、实例变量和对齐填充</strong>三个部分组成。</p>
+<table>
+<thead>
+<tr>
+<th>部分</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>对象头</td>
+<td>对象主要存储对象运行时的数据(<strong>MarkWord</strong>)和元数据(<strong>KlassPointer</strong>)</td>
+</tr>
+<tr>
+<td>实例变量</td>
+<td>对象数据数据的存储区域</td>
+</tr>
+<tr>
+<td>对齐填充</td>
+<td>为了满足对象的大小是8字节的整数倍，进行填充大小的区域</td>
+</tr>
+</tbody>
+</table>
+<h4 id="对象头"><a href="#对象头" class="headerlink" title="对象头"></a>对象头</h4><p>其中对象头需要着重了解。<br>对象头由标记字段(<strong>MarkWord</strong>)和元数据指针(<strong>KlassPointer</strong>)两个部分组成。</p>
+<table>
+<thead>
+<tr>
+<th>区域</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MarkWord</strong></td>
+<td>当前对象的运行时数据，如哈希值，gc标志，锁标记等</td>
+</tr>
+<tr>
+<td><strong>KlassPoniter</strong></td>
+<td>指向当前对象所属的类元数据的指针</td>
+</tr>
+</tbody>
+</table>
+<p>MarkWord最后2位表明了当前对象的状态。不同的状态存储了不同的内容，如下表所示。</p>
+<table>
+<thead>
+<tr>
+<th>标识位</th>
+<th>状态</th>
+<th>存储内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01</td>
+<td>未锁定，可偏向</td>
+<td>对象哈希值、对象分代年龄，偏向线程id，偏向时间戳</td>
+</tr>
+<tr>
+<td>00</td>
+<td>轻量级锁</td>
+<td>指向LockRecord</td>
+</tr>
+<tr>
+<td>10</td>
+<td>重量锁</td>
+<td>指向重量级锁</td>
+</tr>
+<tr>
+<td>11</td>
+<td>gc标志</td>
+<td>空</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/2019/02/16/block/markword.png" alt="block">  </p>
+<p><strong>MarkWorkd中记录了monitor对象的地址。即每一个对象都拥有一个与之对应的monitor对象。</strong></p>
+<h3 id="monitor对象"><a href="#monitor对象" class="headerlink" title="monitor对象"></a>monitor对象</h3><p>monitor对象的结构如下图所示。</p>
+<p><img src="/2019/02/16/block/monitor-struct.png" alt="block"></p>
+<p>结构说明如下图所示。</p>
+<table>
+<thead>
+<tr>
+<th>部分</th>
+<th>说明</th>
+<th>特征</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>count</strong></td>
+<td>记录获取锁的线程数</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>ContentionList</strong></td>
+<td>所有竞争锁的线程都会进入到这个队列</td>
+<td>多个</td>
+</tr>
+<tr>
+<td><strong>EntryList</strong></td>
+<td>从ContentionList中随机选择部分线程作为候选线程进入EntryList队列</td>
+<td>多个</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>拥有当前锁的线程</td>
+<td>一个</td>
+</tr>
+<tr>
+<td><strong>OnDeck</strong></td>
+<td>等待获取锁的线程，即候选线程</td>
+<td>一个</td>
+</tr>
+<tr>
+<td><strong>WaitSet</strong></td>
+<td>等待当前对象的线程队列，调用当前对象的wait方法后，线程会进入当前对象的waitset队列</td>
+<td>多个</td>
+</tr>
+</tbody>
+</table>
+<p><strong>contentionlist、entrylist、waitset队列中的线程都是阻塞状态</strong>。</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p><img src="/2019/02/16/block/monitor.png" alt="block"></p>
+<p>1、所有想要竞争锁的线程都会先进入到contentionlist队列中。<br>2、从contentionlist中将部分线程作为候选线程转移到entrylist队列中。<br>3、从entrylist队列中随机选择一个线程作为候选线程，OnDeck指向候选线程。如果锁没有被占用，count=0，则候选线程成功获取锁。这个时候owner指向拥有锁的线程，count+1。如果锁已被占用候选线程会等到锁被释放后才会拥有锁。<br>4、当拥有锁的线程再次请求加锁时（<strong>可重入</strong>），monitor对象会判断owner是否时指向当前线程，如果是，则属于重入的场景，只需要count+1即可。<br>5、如果拥有锁的线程释放锁，则count-1。（<strong>重入的线程重入几次就需要释放几次，count也会依次-1</strong>）</p>
+<h1 id="JVM对锁的优化"><a href="#JVM对锁的优化" class="headerlink" title="JVM对锁的优化"></a>JVM对锁的优化</h1><h2 id="阻塞的代价"><a href="#阻塞的代价" class="headerlink" title="阻塞的代价"></a>阻塞的代价</h2><p>java的线程是映射到操作系统原生线程之上的，如果要阻塞或唤醒一个线程就需要操作系统介入，需要在用户态与核心态之间切换，这种切换会消耗大量的系统资源，因为用户态与内核态都有各自专用的内存空间，专用的寄存器等，用户态切换至内核态需要传递给许多变量、参数给内核，内核也需要保护好用户态在切换时的一些寄存器值、变量等，以便内核态调用结束后切换回用户态继续工作。  </p>
+<blockquote>
+<p>1、如果线程状态切换是一个高频操作时，这将会消耗很多CPU处理时间。<br>2、如果对于那些需要同步的简单的代码块，获取锁挂起操作消耗的时间比用户代码执行的时间还要长，这种同步策略显然非常糟糕的。  </p>
+</blockquote>
+<h2 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h2><p>当对象锁发生竞争时，如果owner线程能够在很短的时间释放锁，则竞争线程可以稍微的等一等（自旋，空循环），当owner线程释放锁后，自旋线程会立即获得锁。如果owner线程在超出了自旋阀值后还没有释放锁，则自旋线程停止自旋，进入阻塞状态。<strong>竞争不到锁会先自旋，实在不行才阻塞，尽量降低阻塞的可能性</strong>。  </p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>尽可能的降低锁进入阻塞状态的可能性。减少了内核态和用户态的切换，降低了线程切换造成的系统资源消耗。</p>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p><strong>非公平</strong> 自旋锁在自旋后，如果锁被释放，会立即获取锁资源，相当于抢占了OnDeck(ReadThread)的资源。<br><strong>降低吞吐量</strong> 当占有锁执行的任务时间很长，或者锁的竞争很激烈的场景。锁短时间不会释放，而线程又因为自旋要白白消耗CPU时间片，别的线程又不能立即获得时间片。这无疑会降低系统的吞吐量。<strong>高并发并且线程任务耗时的这种场景建议都关闭自选锁</strong>   </p>
+<p><img src="/2019/02/16/block/history.png" alt="block"></p>
+<h2 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h2><p>偏向锁住要是提升无竞争场景下的加锁/解锁效率。<br>对于加锁/解锁，总会涉及到CAS操作。而<strong>频繁的CAS操作会导致总线风暴从而导致本地延迟。偏向锁的意义在于尽可能的减少CAS操作</strong>。因此偏向锁的想法是一旦线程第一次获得了监视对象，之后让监视对象“偏向”这个线程，之后的多次调用则可以避免CAS操作。<br><strong>偏向锁，偏向第一次拥有锁的线程，后续的运行过程中，如果没有别的竞争线程，则加锁/解锁不会有CAS操作。一旦有别的竞争线程，持有偏向锁的线程会被挂起，jvm会清楚线程的偏向锁，将偏向锁升级为轻量级锁。</strong></p>
+<h3 id="偏向锁的获取"><a href="#偏向锁的获取" class="headerlink" title="偏向锁的获取"></a>偏向锁的获取</h3><blockquote>
+<p>1、对象锁的MarkWord偏向锁标志=1，锁标志=01，表明当前锁对象是可偏向的。<br>2、判断MarkWord的偏向锁id是否是当前线程，如果是，则直接进入同步代码块。不是，则通过CAS操作在MarkWord中存储当前线程id。<br>3、如果CAS操作成功，则直接进入同步代码块，如果失败，则表明有竞争，拥有偏向锁的线程会挂起，偏向锁会升级为轻量锁，阻塞的线程会竞争轻量锁，竞争成功的线程进入同步代码块。</p>
+</blockquote>
+<p><img src="/2019/02/16/block/biasedlock.png" alt="block"></p>
+<h3 id="偏向锁的释放"><a href="#偏向锁的释放" class="headerlink" title="偏向锁的释放"></a>偏向锁的释放</h3><p>如上图所示，偏向锁遇到有竞争时，拥有偏向锁的线程会挂起，同时会撤销偏向锁。偏向锁的撤销，还会导致stop the world操作，导致性能下降。<br><strong>偏向锁适合无锁竞争的场景下使用</strong>。</p>
+<h2 id="轻量锁"><a href="#轻量锁" class="headerlink" title="轻量锁"></a>轻量锁</h2><p>轻量级锁是由偏向锁升级而来的。偏向锁是只有一个线程加锁的情况，当有第二个线程要竞争锁，偏向锁会升级为轻量级锁。</p>
+<h3 id="轻量级锁的获取"><a href="#轻量级锁的获取" class="headerlink" title="轻量级锁的获取"></a>轻量级锁的获取</h3><p><img src="/2019/02/16/block/biasedlock2lightlock.png" alt="block"></p>
+<blockquote>
+<p>1、每一个线程在竞争锁的时候，首先会检查MarkWord中记录的threadid是否是当前线程<strong>(MarkWord锁标志=01)</strong>。如果是，则属于偏向锁，不需要进行锁的申请等操作，直接进入同步代码块。<br>2、如果MarkWord中的threadid不是当前线程。则说明当前存在竞争。这个时候，<strong>通过CAS操作</strong>，根据MarkWord中存储的threadid，通知拥有偏向锁的线程释放偏向锁，清空MarkWord信息，并挂起。同时将偏向锁升级为轻量级锁<strong>(MarkWord锁标志=00)</strong>。<br>3、两个竞争的线程都会在栈帧中创建LockRecord空间。<strong>通过CAS操作</strong>，将共享对象的MarkWord拷贝到LockRecord（官方称之为Displaced Mark Word），同时将对象锁的MarkWord指向LockRecord。CAS操作成功的线程竞争到轻量级锁，可以继续进入同步代码块。CAS操作失败的线程进行自旋。<br>4、自旋线程，自旋后如果成功获取锁（即之前拥有轻量级锁的线程释放了锁）这个时候，自旋线程继续保持轻量级锁进入同步代码块。自旋后如果没有获取锁（即之前拥有轻量级锁的线程还未执行完毕，没有释放锁），之前拥有轻量级锁的线程会挂起，轻量级锁会膨胀为重量级锁<strong>（MarkWord锁=10）</strong>。这个时候所有竞争线程会竞争重量级锁。</p>
+</blockquote>
+<h3 id="轻量级锁的释放"><a href="#轻量级锁的释放" class="headerlink" title="轻量级锁的释放"></a>轻量级锁的释放</h3><h2 id="重量锁"><a href="#重量锁" class="headerlink" title="重量锁"></a>重量锁</h2><p><img src="/2019/02/16/block/lightlock2wightlock.png" alt="block"></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p>锁：<a href="http://www.cnblogs.com/charlesblc/p/5994162.html" target="_blank" rel="noopener">http://www.cnblogs.com/charlesblc/p/5994162.html</a><br>对象头：<a href="https://blog.csdn.net/zhoufanyang_china/article/details/54601311" target="_blank" rel="noopener">https://blog.csdn.net/zhoufanyang_china/article/details/54601311</a><br>同步锁：<a href="https://www.cnblogs.com/mingyao123/p/7424911.html" target="_blank" rel="noopener">https://www.cnblogs.com/mingyao123/p/7424911.html</a><br>偏向锁/轻量级锁/重量锁：<a href="https://blog.csdn.net/zqz_zqz/article/details/70233767" target="_blank" rel="noopener">https://blog.csdn.net/zqz_zqz/article/details/70233767</a><br>加锁/释放锁的过程：<a href="https://blog.csdn.net/luo532046043/article/details/82883598" target="_blank" rel="noopener">https://blog.csdn.net/luo532046043/article/details/82883598</a><br>CAS操作导致总线风暴（CAS及SMP架构）：<a href="https://blog.csdn.net/chen77716/article/details/6618779" target="_blank" rel="noopener">https://blog.csdn.net/chen77716/article/details/6618779</a>   </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/15/thread/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1544,693 +2399,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/20/mysql-command/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/20/mysql-command/" itemprop="url">MySql常用操作命令</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-20T15:19:42+08:00">
-                2018-09-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySql数据库/" itemprop="url" rel="index">
-                    <span itemprop="name">MySql数据库</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/20/mysql-command/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/09/20/mysql-command/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="查看mysql服务"><a href="#查看mysql服务" class="headerlink" title="查看mysql服务"></a>查看mysql服务</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo /usr/locl/mysql/support-files/mysql.server start 启动服务</span><br><span class="line">sudo /usr/locl/mysql/support-files/mysql.server stop 停止服务</span><br><span class="line">mysql -V 输出mysql版本</span><br></pre></td></tr></table></figure>
-<h1 id="登陆-退出"><a href="#登陆-退出" class="headerlink" title="登陆/退出"></a>登陆/退出</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p 以root用户进行密码登陆</span><br><span class="line">mysql [-h ip]  [-P port] -u user -p 指定ip和端口进行用户登陆，ip和端口条件非必须</span><br><span class="line">exit/quit 退出登陆</span><br></pre></td></tr></table></figure>
-<h1 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">create user &apos;username&apos;@&apos;host&apos; identified by &apos;password&apos;; 创建用户</span><br><span class="line">drop user &apos;username&apos;@&apos;host&apos;; 删除用户</span><br><span class="line">set password for &apos;username&apos;@&apos;host&apos;= password(&apos;password&apos;); 设置密码</span><br><span class="line">set password = password(&apos;password&apos;);给当前用户设置密码</span><br></pre></td></tr></table></figure>
-<p>host需要特别说明：该参数指定了该用户可以登陆的域名，<strong>如果想从任意位置进行登陆使用通配符%。</strong></p>
-<p>mysql用户表如图所示：</p>
-<p><img src="/2018/09/20/mysql-command/mysql.user.png" alt="包装生成线程安全的hashmap"></p>
-<h1 id="授权"><a href="#授权" class="headerlink" title="授权"></a>授权</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">grant [select|update|insert|delete|all] on databasename.tablename to &apos;username&apos;@&apos;host&apos;;授权</span><br><span class="line">grant [select|update|insert|delete|all] on databasename.tablename to &apos;username&apos;@&apos;host&apos; with grant option; 给该用户授予的权力，该用户也可以授权给别的用户</span><br><span class="line">show grants for &apos;username&apos;@&apos;host&apos;;查看给用户的授权</span><br><span class="line">revoke [select|update|insert|delete|all] on databasename.tablename from &apos;username&apos;@&apos;host&apos;;撤销授权</span><br></pre></td></tr></table></figure>
-<h1 id="查看数据库"><a href="#查看数据库" class="headerlink" title="查看数据库"></a>查看数据库</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">show databases 查看已有的数据库</span><br><span class="line">use databases dbname 选择采用的数据库</span><br></pre></td></tr></table></figure>
-<h1 id="查看表结构"><a href="#查看表结构" class="headerlink" title="查看表结构"></a>查看表结构</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">desc tablename 查看表结构  </span><br><span class="line">show create table tablename 查看建表语句</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/09/20/mysql-command/showtable.png" alt="包装生成线程安全的hashmap"></p>
-<h1 id="修改表结构"><a href="#修改表结构" class="headerlink" title="修改表结构"></a>修改表结构</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">alter table tablename add columnname 数据类型 [primary key/default/not null]；新增列</span><br><span class="line">alter table tablename drop columnname；删除列</span><br><span class="line">alter table tablename change oldcolumnname newcolumnname 数据类型 [primary key/default/not null];修改列名</span><br><span class="line">alter table tablename modify columnname 数据类型 [primary key/default/not null];修改列</span><br><span class="line">alter table tablename rename to newtablename;修改表名</span><br></pre></td></tr></table></figure>
-<p><strong>经过测试发现，modify 命令如果后续没有约束，则会清空列已有的约束（不包含主键约束）。如果modify中包含列的约束，则会对列增加约束（包含主键约束）。</strong></p>
-<p><img src="/2018/09/20/mysql-command/modifycolumn-1.png" alt="包装生成线程安全的hashmap"><br><img src="/2018/09/20/mysql-command/modifycolumn-2.png" alt="包装生成线程安全的hashmap"></p>
-<h1 id="修改约束"><a href="#修改约束" class="headerlink" title="修改约束"></a>修改约束</h1><p>Mysql支持的约束有：  </p>
-<ul>
-<li>主键约束：primary key。  </li>
-<li>外键约束：foreign key。  </li>
-<li>唯一：unique.  </li>
-<li>非空：not null。</li>
-</ul>
-<p><strong>可以看到,mysql并不支持check表达式的约束条件，但是在mysql中使用check指令不会报错，但是并没有作用。</strong></p>
-<h2 id="主键约束"><a href="#主键约束" class="headerlink" title="主键约束"></a>主键约束</h2><p><img src="/2018/09/20/mysql-command/primary-key.png" alt="包装生成线程安全的hashmap"></p>
-<h2 id="唯一约束"><a href="#唯一约束" class="headerlink" title="唯一约束"></a>唯一约束</h2><p><img src="/2018/09/20/mysql-command/unique.png" alt="包装生成线程安全的hashmap"></p>
-<p>如图所示，先对列name增加了unique约束，如果想要去除该约束，需要查看约束的名字，一般在定义约束的时候，我们最好还是顺便指定约束的名称，但是在创建的时候没有制定，我们也可以通过查看DDL语句来查看约束的名称，这样我慢看到name字段的unique约束的名称为name，在删除约束的时候还需要注意的是，drop 后面一定要加index，否则会被认为是要删除列。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alter table tablename add [check_name] (primary key/foreign key/unique/not null) 添加约束，注意最好制定约束名</span><br><span class="line">alter table tablename drop index check_name 通过约束名来去除字段的约束，如果不记得约束名，可以通过show create table tablename来查看DDL语句。</span><br></pre></td></tr></table></figure>
-<h1 id="修改索引"><a href="#修改索引" class="headerlink" title="修改索引"></a>修改索引</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alter table tablename add index indexname (columname,[columnname2...])；新增索引</span><br><span class="line">alter table tablename drop index indexname；删除索引</span><br></pre></td></tr></table></figure>
-<h1 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h1><h2 id="查看隔离级别"><a href="#查看隔离级别" class="headerlink" title="查看隔离级别"></a>查看隔离级别</h2><p><img src="/2018/09/20/mysql-command/showtranscationisolation.png" alt="包装生成线程安全的hashmap"></p>
-<p>如图所示，通过查看环境变量’isolation’来查看mysql默认的事务隔离级别，可以看到mysql事务的默认隔离级别为<strong>可重复读(REPEATABLE-READ)</strong>。</p>
-<h2 id="修改隔离级别"><a href="#修改隔离级别" class="headerlink" title="修改隔离级别"></a>修改隔离级别</h2><p><img src="/2018/09/20/mysql-command/updatetranscation.png" alt="包装生成线程安全的hashmap"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set global|session transaction isolation level (read committed|read uncommited|repeatable read|serializable) 设置全局|会话的事务隔离级别。</span><br></pre></td></tr></table></figure>
-<h2 id="使用事务"><a href="#使用事务" class="headerlink" title="使用事务"></a>使用事务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">start transaction;开启事务</span><br><span class="line">commit;提交事务</span><br><span class="line">rollback;回滚事务</span><br></pre></td></tr></table></figure>
-<h1 id="SQL效率"><a href="#SQL效率" class="headerlink" title="SQL效率"></a>SQL效率</h1><h2 id="查看执行时间"><a href="#查看执行时间" class="headerlink" title="查看执行时间"></a>查看执行时间</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">show variables； 查看mysql配置参数，主要查找profiling参数是否开启</span><br><span class="line">set profiling = 1； 开启profile配置</span><br><span class="line">show profiles；查看sql指令的耗时</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/09/20/mysql-command/showprofiles.png" alt="包装生成线程安全的hashmap"></p>
-<h2 id="查看SQL执行效率"><a href="#查看SQL执行效率" class="headerlink" title="查看SQL执行效率"></a>查看SQL执行效率</h2><p>在每次执行sql语句的前面添加explain关键词，就能够输出mysql执行该sql语句的执行效率。</p>
-<p><img src="/2018/09/20/mysql-command/explain.png" alt="包装生成线程安全的hashmap"></p>
-<h3 id="id"><a href="#id" class="headerlink" title="id"></a>id</h3><p>sql执行的标志。</p>
-<ul>
-<li>如果id相同，则表明这些sql为同一组操作，会按照顺序自上而下的执行。</li>
-<li>如果是子查询，id会增加。即id越大执行的优先级越高。</li>
-</ul>
-<h3 id="select-typea"><a href="#select-typea" class="headerlink" title="select_typea"></a>select_typea</h3><p>查询的类型</p>
-<table>
-<thead>
-<tr>
-<th>类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>SIMPLE</td>
-<td>简单查询，没有使用UNION或者子查询</td>
-</tr>
-<tr>
-<td>PRIMARY</td>
-<td>使用了嵌套查询，则外层查询语句被标记为PRIMARY</td>
-</tr>
-<tr>
-<td>UNION</td>
-<td>使用UNION关键词，则UNION后面的SQL语句被标记为UNION</td>
-</tr>
-<tr>
-<td>DEPENDENT UNION</td>
-<td>使用UNION关键词，则UNION后面的SQL语句被标记为UNION，取决于外层查询</td>
-</tr>
-<tr>
-<td>UNION RESULT</td>
-<td>UNION查询的结果</td>
-</tr>
-<tr>
-<td>SUBQUERY</td>
-<td>子查询的第一个select</td>
-</tr>
-<tr>
-<td>DEPENDENT SUBQUERY</td>
-<td>子查询的第一个select,取决于外层查询</td>
-</tr>
-<tr>
-<td>DERIVED</td>
-<td>派生的表（匿名的表）查询的子查询</td>
-</tr>
-<tr>
-<td>UNCACHEABLE SUBQUERY</td>
-<td>一个子查询的结果没有被缓存，必须重新评估外链接的第一行</td>
-</tr>
-</tbody>
-</table>
-<h3 id="table"><a href="#table" class="headerlink" title="table"></a>table</h3><p>当前语句涉及到的表名，有时不是真实的表名。</p>
-<p><img src="/2018/09/20/mysql-command/explain-table.png" alt="包装生成线程安全的hashmap"></p>
-<h3 id="partitions"><a href="#partitions" class="headerlink" title="partitions"></a>partitions</h3><p>代表表所使用的分区。目前我不太懂这个有什么用，我的机器输出的结果是null。</p>
-<h3 id="type"><a href="#type" class="headerlink" title="type"></a>type</h3><p>访问类型，常用的有<strong>ALL, index,  range, ref, eq_ref, const, system, NULL（从左到右，性能从差到好）</strong>。</p>
-<table>
-<thead>
-<tr>
-<th>类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ALL</td>
-<td>全表检索，即mysql遍历所有的行数据才能检索到匹配的数据</td>
-</tr>
-<tr>
-<td>index</td>
-<td>全索引检索，即mysql遍历了整个索引树才检索到匹配的数据</td>
-</tr>
-<tr>
-<td>range</td>
-<td>在一定范围的行数据中，通过索引来找到匹配的数据</td>
-</tr>
-<tr>
-<td>ref</td>
-<td>使用了表连接或者匹配条件中，有使用常量</td>
-</tr>
-<tr>
-<td>eq_ref</td>
-<td>在使用表连接的时候，连接的列具有唯一性，即主键或外键</td>
-</tr>
-<tr>
-<td>const</td>
-<td>mysql对查询的优化，如果where语句中有主键，则会将整个查询转换成常量</td>
-</tr>
-<tr>
-<td>system</td>
-<td>mysql对查询的优化，与const一样，特殊在如果表只有一行数据的时候，采用system</td>
-</tr>
-<tr>
-<td>NULL</td>
-<td>mysql在执行sql分解语句时，无需查找表和索引</td>
-</tr>
-</tbody>
-</table>
-<h3 id="possible-keys"><a href="#possible-keys" class="headerlink" title="possible_keys"></a>possible_keys</h3><p>查询数据时，能够匹配到数据的索引。</p>
-<p><img src="/2018/09/20/mysql-command/explain-type.png" alt="包装生成线程安全的hashmap"></p>
-<p>如图所示，接连执行的两条sql语句，可以看到，第二条sql语句中where包含主键的条件，查询的数据可以通过主键索引，也可以通过地址索引，两个索引来检索到第三行数据，故possible_keys中指出了能够检索到这条数据的索引有两个。同时也论证了type列的const的含义，即一旦条件中有主键，mysql就会将该条查询常量化。</p>
-<h3 id="key"><a href="#key" class="headerlink" title="key"></a>key</h3><p>查询时，实际使用到的索引。</p>
-<h3 id="key-len"><a href="#key-len" class="headerlink" title="key_len"></a>key_len</h3><p>索引字段的最大长度。便于优化索引的长度（索引越短越好）。</p>
-<h3 id="rows"><a href="#rows" class="headerlink" title="rows"></a>rows</h3><p>sql语句查询时遍历的行数。</p>
-<h3 id="Extra"><a href="#Extra" class="headerlink" title="Extra"></a>Extra</h3><p>额外信息。</p>
-<table>
-<thead>
-<tr>
-<th>类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Using where</td>
-<td>根据where条件来通过索引来检索数据。</td>
-</tr>
-<tr>
-<td>Using temporary</td>
-<td>mysql需要使用到临时表空间来进行检索，在分组和排序的时候常见</td>
-</tr>
-<tr>
-<td>Using filesort</td>
-<td>mysql无法通过索引来进行的排序，<strong>这种情况需要考虑添加索引了</strong></td>
-</tr>
-<tr>
-<td>Using join buffer</td>
-<td>表连接的时候，连接条件没有使用到索引字段，所以需要采用额外的缓冲区来保持结果，<strong>需要在表连接的时候使用索引列，或者添加索引</strong></td>
-</tr>
-<tr>
-<td>Impossible where</td>
-<td>where语句可能会有没有符合条件的数据</td>
-</tr>
-<tr>
-<td>Select tables optimized away</td>
-<td>仅仅使用索引，优化器可能仅从聚合函数结果中返回一行（<strong>不懂</strong>）</td>
-</tr>
-</tbody>
-</table>
-<h3 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h3><ul>
-<li>explain 只能对select 语句进行效率分析。  </li>
-<li>explain 不会考虑到缓存。  </li>
-<li>explain 的分析结果不会考虑触发器，存储过程以及自定义函数的结果。   </li>
-</ul>
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><h2 id="清屏"><a href="#清屏" class="headerlink" title="清屏"></a>清屏</h2><p>Ctrl+L 快捷键清屏</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>查看表结构：<a href="https://www.cnblogs.com/zhangyuhang3/p/6873895.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhangyuhang3/p/6873895.html</a><br>修改表结构：<a href="https://blog.csdn.net/airjordon/article/details/72676607" target="_blank" rel="noopener">https://blog.csdn.net/airjordon/article/details/72676607</a><br>explain详解：<a href="https://www.cnblogs.com/xuanzhi201111/p/4175635.html" target="_blank" rel="noopener">https://www.cnblogs.com/xuanzhi201111/p/4175635.html</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/19/mysql-engine/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/19/mysql-engine/" itemprop="url">MySql存储引擎</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-19T10:37:03+08:00">
-                2018-09-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySql数据库/" itemprop="url" rel="index">
-                    <span itemprop="name">MySql数据库</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/19/mysql-engine/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/09/19/mysql-engine/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="相关指令"><a href="#相关指令" class="headerlink" title="相关指令"></a>相关指令</h1><h2 id="查看存储引擎"><a href="#查看存储引擎" class="headerlink" title="查看存储引擎"></a>查看存储引擎</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show engines 查看当前数据库支持的存储引擎</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/09/19/mysql-engine/showengines.png" alt="包装生成线程安全的hashmap"></p>
-<p>从结果中可以看到，mysql数据库默认采用的存储引擎是<strong>InnoDB</strong>。</p>
-<h2 id="设置存储引擎"><a href="#设置存储引擎" class="headerlink" title="设置存储引擎"></a>设置存储引擎</h2><ul>
-<li>可以在创建表的时候通过ENGINE来指定存储引擎。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE country(</span><br><span class="line">    country_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,</span><br><span class="line">    country VARCHAR(50) NOT NULL,</span><br><span class="line">    last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,</span><br><span class="line">    PRIMARY KEY (country_id)</span><br><span class="line">) ENGINE = InnoDB DEFAULT CHARSET=gbk;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>可以通过修改表结构来设置存储引擎</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALERT TABLE 表名 ENGINE = INNODB;</span><br></pre></td></tr></table></figure>
-<h1 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h1><ul>
-<li><strong>MySql5.5.8版本以后的默认的存储引擎</strong>。</li>
-<li><strong>支持事务，支持行锁。支持外键</strong>。</li>
-<li>支持自增（AUTO_INCREMENT）。<strong>支持自增的列必须是数值型的主键。</strong></li>
-<li>表结构存储在.frm文件中，数据和索引存储在innodb_data_home和innodb_data_path表空间中。</li>
-<li>数据存储采用聚集的方式按照主键的顺序存储。如果在创建表的时候没有指定主键，存储引擎会为每一行数据默认的生成一个6字节长度rowID，并以此作为主键。</li>
-<li>InnoDB采用多版本并发控制(MVCC)来控制并发。支持数据库的4种隔离机制。</li>
-</ul>
-<p><img src="/2018/09/19/mysql-engine/increment.png" alt="包装生成线程安全的hashmap"></p>
-<p><img src="/2018/09/19/mysql-engine/desctable.png" alt="包装生成线程安全的hashmap"></p>
-<h1 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h1><ul>
-<li><strong>Mysql5.5.8版本之前的默认存储引擎</strong>。</li>
-<li>MyISAM不支持事务，外键。</li>
-<li>MyISAM支持全文检索。</li>
-<li>MyISAM存储引擎由frm(存储表结构),MYD(存储数据),MYI（存储索引）三个文件组成。</li>
-<li>5.0版本以前默认支持4GB大小存储。通过指定MAX_ROWS和AVG_ROW_LENGTH参数可以支持大于4GB容量。</li>
-<li>缓冲池只存储索引文件，数据的缓存交由操作系统负责。</li>
-</ul>
-<h1 id="MEMORY"><a href="#MEMORY" class="headerlink" title="MEMORY"></a>MEMORY</h1><p>将数据加载在内存中，表结构存储在位于磁盘并与表名同名的frm文件中。<br>存储引擎默认使用哈希索引，在4.1版本前只支持哈希索引，故需要整个键来索引，效率不及MyISAM。4.1版本后支持哈希索引和B树索引。<br>MEMORY表的大小由max_rows和max_heap_table_size决定。max_rows可以在建表时制定。max_heap_table_size默认16M。可以拓展。<strong>如果表的数据量超过设置，mysql会将超出的部分自动按照MyISAM存储引擎来进行存储。</strong>  </p>
-<ul>
-<li>临时数据。当数据是临时使用同时在其生命周期内存在即可，可以考虑使用MEMORY存储引擎来进行数据存储。</li>
-<li>相对无关的数据。数据库宕机数据丢失不会影响业务系统的正常运作。</li>
-</ul>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
-<li>mysql貌似各种存储引擎的表结构都是用frm文件进行存储的。</li>
-</ul>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>存储引擎：<a href="https://www.cnblogs.com/shijiaqi1066/p/3857808.html" target="_blank" rel="noopener">https://www.cnblogs.com/shijiaqi1066/p/3857808.html</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/19/mysql-index/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/19/mysql-index/" itemprop="url">mysql索引</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-19T00:13:17+08:00">
-                2018-09-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySql数据库/" itemprop="url" rel="index">
-                    <span itemprop="name">MySql数据库</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/19/mysql-index/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/09/19/mysql-index/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p>索引实现原理 <a href="https://blog.csdn.net/tongdanping/article/details/79878302" target="_blank" rel="noopener">https://blog.csdn.net/tongdanping/article/details/79878302</a><br>mysql索引指令 <a href="https://blog.csdn.net/lzupb/article/details/78413712" target="_blank" rel="noopener">https://blog.csdn.net/lzupb/article/details/78413712</a><br>csdn索引相关 <a href="https://www.csdn.net/gather_2e/MtTaIg5sMTg4OC1ibG9n.html" target="_blank" rel="noopener">https://www.csdn.net/gather_2e/MtTaIg5sMTg4OC1ibG9n.html</a><br>mysql存储引擎 <a href="https://www.cnblogs.com/shijiaqi1066/p/3857808.html" target="_blank" rel="noopener">https://www.cnblogs.com/shijiaqi1066/p/3857808.html</a>  </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2280,7 +2453,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">80</span>
+                  <span class="site-state-item-count">83</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2291,7 +2464,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2302,7 +2475,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-count">59</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
@@ -2339,7 +2512,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
