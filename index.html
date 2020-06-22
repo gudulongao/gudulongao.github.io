@@ -239,6 +239,177 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/22/rabbitmq-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/06/22/rabbitmq-2/" itemprop="url">RabbitMQ 客户端开发</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-22T23:04:50+08:00">
+                2020-06-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/rabbitmq/" itemprop="url" rel="index">
+                    <span itemprop="name">rabbitmq</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/06/22/rabbitmq-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2020/06/22/rabbitmq-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="连接MQ"><a href="#连接MQ" class="headerlink" title="连接MQ"></a>连接MQ</h1><h2 id="创建连接"><a href="#创建连接" class="headerlink" title="创建连接"></a>创建连接</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public static Connection getConnection() throws IOException, TimeoutException, NoSuchAlgorithmException,</span><br><span class="line">            KeyManagementException, URISyntaxException &#123;</span><br><span class="line">        ConnectionFactory factory = new ConnectionFactory();</span><br><span class="line">        //可以通过uri来注入</span><br><span class="line">//        factory.setUri(&quot;amqp://&quot; + USER_NAME + &quot;:&quot; + USER_PSWD + &quot;@&quot; + HOST + &quot;:&quot; + PORT + &quot;/&quot; + VIRTUAL_HOST);</span><br><span class="line">        factory.setHost(HOST);</span><br><span class="line">        factory.setPort(PORT);</span><br><span class="line">        factory.setVirtualHost(VIRTUAL_HOST);</span><br><span class="line">        factory.setUsername(USER_NAME);</span><br><span class="line">        factory.setPassword(USER_PSWD);</span><br><span class="line">        return factory.newConnection();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="创建信道"><a href="#创建信道" class="headerlink" title="创建信道"></a>创建信道</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Channel channel = connection.createChannel();</span><br></pre></td></tr></table></figure>
+<h3 id="注意要点"><a href="#注意要点" class="headerlink" title="注意要点"></a>注意要点</h3><ul>
+<li>信道非线程安全的，即信道Channel不可以在多线程之间共享。</li>
+</ul>
+<blockquote>
+<p>Channel不能在线程之间共享，应用程序应该为每一个线程都开启一个新的Channel。Channel并发执行，会导致在网络出现错误的通信帧交错，同时也会影响发送方确认机制的运行。</p>
+</blockquote>
+<ul>
+<li>生产环境不要使用isOpen()方法。</li>
+</ul>
+<blockquote>
+<p>当通过createChannel()创建信道后，信道就已经开启，无需通过isOpen来判断信道的状态，当我们在对信道做任何操作一旦信道被关闭，操作会直接抛SShutDownSignalException。同时在isOpen的源码中，使用到了同步锁，容易造成锁的竞争。</p>
+</blockquote>
+<p><img src="/2020/06/22/rabbitmq-2/isopen.png" alt="isOpen源码">  </p>
+<h1 id="使用交换器"><a href="#使用交换器" class="headerlink" title="使用交换器"></a>使用交换器</h1><h1 id="绑定队列"><a href="#绑定队列" class="headerlink" title="绑定队列"></a>绑定队列</h1><h1 id="发送消息"><a href="#发送消息" class="headerlink" title="发送消息"></a>发送消息</h1><h1 id="消费消息"><a href="#消费消息" class="headerlink" title="消费消息"></a>消费消息</h1><h1 id="关闭连接"><a href="#关闭连接" class="headerlink" title="关闭连接"></a>关闭连接</h1><p>#参考资料</p>
+<blockquote>
+<p>《RabbitMQ 实战指南》 朱忠华著</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/21/rabbitmq-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2447,203 +2618,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/21/fork-join/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/10/21/fork-join/" itemprop="url">Fork/Join框架</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-21T21:22:59+08:00">
-                2019-10-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/高并发/" itemprop="url" rel="index">
-                    <span itemprop="name">高并发</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/10/21/fork-join/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/10/21/fork-join/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Fork/Join是JDK 7 提供用于并发执行任务的框架。采用分治策略。将大的任务分割成若干个小任务，再将子任务的执行结果合并后形成大任务的结果。  </p>
-<p><img src="/2019/10/21/fork-join/demo_divide.png" alt="逻辑图">  </p>
-<h1 id="工作窃取算法"><a href="#工作窃取算法" class="headerlink" title="工作窃取算法"></a>工作窃取算法</h1><p>工作窃取算法：工作中的线程从其他任务队列中窃取任务来执行。</p>
-<p><img src="/2019/10/21/fork-join/demo_workstealing.png" alt="工作窃取算法样例">  </p>
-<p>从上图可以看到。<strong>任务队列是一个双端的队列</strong>。线程的待执行任务都是按照FIFO策略从头部进入。而当有空闲线程时，会随机从一个任务队列的尾部窃取一个工作任务执行。线程的任务从头部进入，窃取的线程从尾部窃取任务，这样尽最大可能的减少资源冲突。</p>
-<h2 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h2><blockquote>
-<p>相对于一般的线程池实现,fork/join框架的优势体现在对其中包含的任务的处理方式上.在一般的线程池中,如果一个线程正在执行的任务由于某些原因无法继续运行,那么该线程会处于等待状态.而在fork/join框架实现中,如果某个子问题由于等待另外一个子问题的完成而无法继续运行.那么处理该子问题的线程会主动寻找其他尚未运行的子问题来执行.这种方式减少了线程的等待时间,提高了性能。</p>
-</blockquote>
-<h1 id="Fork-Join"><a href="#Fork-Join" class="headerlink" title="Fork/Join"></a>Fork/Join</h1><h2 id="ForkJoinTask"><a href="#ForkJoinTask" class="headerlink" title="ForkJoinTask"></a>ForkJoinTask</h2><p>ForkJoinTask 提供fork()来执行子任务，join()合并子任务结果的两种操作。ForkJoinTask有两个子类：</p>
-<ul>
-<li>RecursiveAction：用于没有返回结果的任务。</li>
-<li>RecursiveTask ：用于有返回结果的任务。</li>
-</ul>
-<p><img src="/2019/10/21/fork-join/diagrams.png" alt="代码结构"></p>
-<h2 id="ForkJoinPool"><a href="#ForkJoinPool" class="headerlink" title="ForkJoinPool"></a>ForkJoinPool</h2><p>ForkJoinTask需要放到ForkJoinPool中执行。任务分割出的子任务会添加到当前工作线程对应的双端队列头部。当工作线程的任务队列没有任务时，会从其他任意任务队列的尾部中窃取任务来执行。  </p>
-<h1 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h1><p><img src="/2019/10/21/fork-join/demo_forkjoin.png" alt="Fork/Join样例代码"></p>
-<p>从上图可以看到，是写了一个用于累计数据的逻辑。累计数字1到6的和。目标是将1到6的合计过程拆分成2个数字的求和。所以每一个子任务都需要有返回值。这里的ForkJoinTask继承自RecursiveTask。</p>
-<ul>
-<li>定义ForkJoinTask CountTask。继承自RecursiveTask。实现方法compute。在compute中来判断数据是否符合计算的要求，不符合则再一次拆分任务，并将子任务的结果进行合并。如果符合则进行计算。</li>
-<li>ForkJoinTask需要在ForkJoinTaskPool中进行提交执行。</li>
-</ul>
-<h1 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h1><p>ForkJoinTask在执行的过程中会抛出异常，在主线程中无法获取异常，ForkJoinTask提供了一下API来获取异常。</p>
-<table>
-<thead>
-<tr>
-<th>方法名</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>isCompletedAbnormally</td>
-<td>任务取消或者抛出异常</td>
-</tr>
-<tr>
-<td>getException</td>
-<td>获取任务异常</td>
-</tr>
-</tbody>
-</table>
-<p><img src="/2019/10/21/fork-join/src_iscomplete.png" alt="isCompletedAbnormally方法源码"><br><img src="/2019/10/21/fork-join/src_getexception.png" alt="getException方法源码"></p>
-<p><img src="/2019/10/21/fork-join/demo_getexcepiton.png" alt="获取异常的样例代码"></p>
-<h1 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h1><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p><a href="https://www.infoq.cn/article/fork-join-introduction/" target="_blank" rel="noopener">Fork/Join框架</a><br><a href="https://www.cnblogs.com/zjfjava/p/8505606.html" target="_blank" rel="noopener">Fork/Join 与ThreadPool</a>  </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2698,7 +2672,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">83</span>
+                  <span class="site-state-item-count">84</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

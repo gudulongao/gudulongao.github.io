@@ -239,6 +239,203 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/21/fork-join/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/10/21/fork-join/" itemprop="url">Fork/Join框架</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-21T21:22:59+08:00">
+                2019-10-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/高并发/" itemprop="url" rel="index">
+                    <span itemprop="name">高并发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/10/21/fork-join/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/10/21/fork-join/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Fork/Join是JDK 7 提供用于并发执行任务的框架。采用分治策略。将大的任务分割成若干个小任务，再将子任务的执行结果合并后形成大任务的结果。  </p>
+<p><img src="/2019/10/21/fork-join/demo_divide.png" alt="逻辑图">  </p>
+<h1 id="工作窃取算法"><a href="#工作窃取算法" class="headerlink" title="工作窃取算法"></a>工作窃取算法</h1><p>工作窃取算法：工作中的线程从其他任务队列中窃取任务来执行。</p>
+<p><img src="/2019/10/21/fork-join/demo_workstealing.png" alt="工作窃取算法样例">  </p>
+<p>从上图可以看到。<strong>任务队列是一个双端的队列</strong>。线程的待执行任务都是按照FIFO策略从头部进入。而当有空闲线程时，会随机从一个任务队列的尾部窃取一个工作任务执行。线程的任务从头部进入，窃取的线程从尾部窃取任务，这样尽最大可能的减少资源冲突。</p>
+<h2 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h2><blockquote>
+<p>相对于一般的线程池实现,fork/join框架的优势体现在对其中包含的任务的处理方式上.在一般的线程池中,如果一个线程正在执行的任务由于某些原因无法继续运行,那么该线程会处于等待状态.而在fork/join框架实现中,如果某个子问题由于等待另外一个子问题的完成而无法继续运行.那么处理该子问题的线程会主动寻找其他尚未运行的子问题来执行.这种方式减少了线程的等待时间,提高了性能。</p>
+</blockquote>
+<h1 id="Fork-Join"><a href="#Fork-Join" class="headerlink" title="Fork/Join"></a>Fork/Join</h1><h2 id="ForkJoinTask"><a href="#ForkJoinTask" class="headerlink" title="ForkJoinTask"></a>ForkJoinTask</h2><p>ForkJoinTask 提供fork()来执行子任务，join()合并子任务结果的两种操作。ForkJoinTask有两个子类：</p>
+<ul>
+<li>RecursiveAction：用于没有返回结果的任务。</li>
+<li>RecursiveTask ：用于有返回结果的任务。</li>
+</ul>
+<p><img src="/2019/10/21/fork-join/diagrams.png" alt="代码结构"></p>
+<h2 id="ForkJoinPool"><a href="#ForkJoinPool" class="headerlink" title="ForkJoinPool"></a>ForkJoinPool</h2><p>ForkJoinTask需要放到ForkJoinPool中执行。任务分割出的子任务会添加到当前工作线程对应的双端队列头部。当工作线程的任务队列没有任务时，会从其他任意任务队列的尾部中窃取任务来执行。  </p>
+<h1 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h1><p><img src="/2019/10/21/fork-join/demo_forkjoin.png" alt="Fork/Join样例代码"></p>
+<p>从上图可以看到，是写了一个用于累计数据的逻辑。累计数字1到6的和。目标是将1到6的合计过程拆分成2个数字的求和。所以每一个子任务都需要有返回值。这里的ForkJoinTask继承自RecursiveTask。</p>
+<ul>
+<li>定义ForkJoinTask CountTask。继承自RecursiveTask。实现方法compute。在compute中来判断数据是否符合计算的要求，不符合则再一次拆分任务，并将子任务的结果进行合并。如果符合则进行计算。</li>
+<li>ForkJoinTask需要在ForkJoinTaskPool中进行提交执行。</li>
+</ul>
+<h1 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h1><p>ForkJoinTask在执行的过程中会抛出异常，在主线程中无法获取异常，ForkJoinTask提供了一下API来获取异常。</p>
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>isCompletedAbnormally</td>
+<td>任务取消或者抛出异常</td>
+</tr>
+<tr>
+<td>getException</td>
+<td>获取任务异常</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/2019/10/21/fork-join/src_iscomplete.png" alt="isCompletedAbnormally方法源码"><br><img src="/2019/10/21/fork-join/src_getexception.png" alt="getException方法源码"></p>
+<p><img src="/2019/10/21/fork-join/demo_getexcepiton.png" alt="获取异常的样例代码"></p>
+<h1 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h1><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
+<p><a href="https://www.infoq.cn/article/fork-join-introduction/" target="_blank" rel="noopener">Fork/Join框架</a><br><a href="https://www.cnblogs.com/zjfjava/p/8505606.html" target="_blank" rel="noopener">Fork/Join 与ThreadPool</a>  </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/15/parallelstream/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2366,170 +2563,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/01/functionalinterface/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="小磊砸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小磊砸的布劳格">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/01/functionalinterface/" itemprop="url">函数式接口</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-01T23:07:32+08:00">
-                2019-07-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java8/" itemprop="url" rel="index">
-                    <span itemprop="name">java8</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/07/01/functionalinterface/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/07/01/functionalinterface/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>函数式接口(Functional interface)：有且仅有一个抽象方法（可以有多个非抽象方法）。</p>
-<ul>
-<li>函数式接口可以由lambda表达式实现(1.8以前都是通过匿名内部类来实现)</li>
-<li>使用注解@FunctionalInterface 来启动函数式接口编译检查，同时会更新JavaDoc来表明当前接口是函数式接口</li>
-</ul>
-<p><img src="/2019/07/01/functionalinterface/函数式接口.png" alt="函数式接口">  </p>
-<p>1.8在java.util.function包下增加了如下函数式接口。  </p>
-<p><img src="/2019/07/01/functionalinterface/jdk1.8函数式接口.png" alt="函数式接口"></p>
-<p>@注解FunctionalInterface只是帮助编译器做检查，不会有实际的含义。即当声明为函数式接口，只能有一个抽象方法。可以有多个实现方法。可以有多个<a href="https://www.runoob.com/java/java8-default-methods.html" target="_blank" rel="noopener">默认方法</a>(default修饰的方法)。</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><blockquote>
-<p><a href="https://www.runoob.com/java/java8-functional-interfaces.html" target="_blank" rel="noopener">菜鸟教程：函数式接口</a><br><a href="https://blog.csdn.net/Keith003/article/details/80252172" target="_blank" rel="noopener">函数式接口</a><br><a href="https://www.runoob.com/java/java8-default-methods.html" target="_blank" rel="noopener">菜鸟教程：默认方法</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2584,7 +2617,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">83</span>
+                  <span class="site-state-item-count">84</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
