@@ -239,6 +239,609 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/04/http-state-code/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/04/http-state-code/" itemprop="url">http状态码</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-04T23:18:03+08:00">
+                2018-09-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/网络/" itemprop="url" rel="index">
+                    <span itemprop="name">网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/04/http-state-code/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/04/http-state-code/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>面试的时候被问到了有关状态码的内容，现整理如下表所示：</p>
+<h1 id="正在执行"><a href="#正在执行" class="headerlink" title="正在执行"></a>正在执行</h1><table>
+<thead>
+<tr>
+<th>code</th>
+<th>des</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>100</td>
+<td>Continue</td>
+<td>正在执行</td>
+</tr>
+</tbody>
+</table>
+<h1 id="成功处理请求"><a href="#成功处理请求" class="headerlink" title="成功处理请求"></a>成功处理请求</h1><table>
+<thead>
+<tr>
+<th>code</th>
+<th>des</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>OK</td>
+<td><strong>成功返回</strong></td>
+</tr>
+<tr>
+<td>201</td>
+<td>Created</td>
+<td>资源已依据请求创建</td>
+</tr>
+<tr>
+<td>202</td>
+<td>Accepted</td>
+<td><strong>已接收请求但并未处理，异步执行，可能执行了可能没执行</strong></td>
+</tr>
+<tr>
+<td>203</td>
+<td>Non-Authoritative Information</td>
+<td>已处理请求，但返回数据的来源非原始服务器，可能来自本地或第三方的拷贝。即<strong>非授权信息</strong></td>
+</tr>
+<tr>
+<td>204</td>
+<td>No Content</td>
+<td>处理请求后无返回数据</td>
+</tr>
+<tr>
+<td>205</td>
+<td>Reset Content</td>
+<td>处理请求后无返回，但需要请求方需要重置文档视图（浏览器需要重置表单）</td>
+</tr>
+</tbody>
+</table>
+<h1 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h1><table>
+<thead>
+<tr>
+<th>code</th>
+<th>des</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>300</td>
+<td>Multiple Choices</td>
+<td>被请求的资源有多个备选的操作供请求者选择，每一个操作都对应一个地址来重定向</td>
+</tr>
+<tr>
+<td>301</td>
+<td>Moved Permanently</td>
+<td>被请求的资源已被永久的变更到新地址，<strong>使用get请求时会自动重定向</strong></td>
+</tr>
+<tr>
+<td>302</td>
+<td>Move temporarily</td>
+<td>被请求的资源临时从别的地址来响应，请求者还是通过原有地址来请求</td>
+</tr>
+<tr>
+<td>303</td>
+<td>See Other</td>
+<td>请求的资源可以在另一个URI中获取，请求者应该通过一个专门的get请求来获取响应</td>
+</tr>
+<tr>
+<td>304</td>
+<td>Not Modified</td>
+<td>本次请求与上一次的请求，请求的网页没有变化，返回此状态码而不会返回网页数据</td>
+</tr>
+<tr>
+<td>305</td>
+<td>Use Proxy</td>
+<td>请求的资源必须通过指定的代理才可以被访问</td>
+</tr>
+<tr>
+<td>306</td>
+<td>Temporary Redirect</td>
+<td>服务器临时从别的地址来响应请求，请求者还是通过原有地址来请求</td>
+</tr>
+</tbody>
+</table>
+<h1 id="请求错误"><a href="#请求错误" class="headerlink" title="请求错误"></a>请求错误</h1><table>
+<thead>
+<tr>
+<th>code</th>
+<th>des</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>Bad Request</td>
+<td><strong>请求参数错误/语义错误</strong></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td>需要认证</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td>拒绝该请求</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found</td>
+<td>未找到指定的资源</td>
+</tr>
+<tr>
+<td>405</td>
+<td>Method Not Allowed</td>
+<td>拒绝请求的方法</td>
+</tr>
+<tr>
+<td>406</td>
+<td>Not Acceptable</td>
+<td>无法使用请求的内容特性响应请求的网页</td>
+</tr>
+<tr>
+<td>407</td>
+<td>Proxy Authentication Required</td>
+<td>与401类似，但是需要在代理服务器进行身份认证</td>
+</tr>
+<tr>
+<td>408</td>
+<td>Request Timeout</td>
+<td>请求超时</td>
+</tr>
+<tr>
+<td>409</td>
+<td>Conflict</td>
+<td>服务器在处理请求时发生冲突，需要返回详细的信息告知请求方冲突的来源</td>
+</tr>
+<tr>
+<td>410</td>
+<td>Gone</td>
+<td>请求的资源已永久的不可用（已删除）</td>
+</tr>
+<tr>
+<td>411</td>
+<td>Length Required</td>
+<td>需要定义content length，即服务器拒绝没有定义有效长度的请求</td>
+</tr>
+<tr>
+<td>412</td>
+<td>Precondition Failed</td>
+<td>未满足先决条件</td>
+</tr>
+<tr>
+<td>413</td>
+<td>Request Entity Too Large</td>
+<td>请求的实体数据太大</td>
+</tr>
+<tr>
+<td>414</td>
+<td>Request-URI Too Long</td>
+<td>请求的URI超长</td>
+</tr>
+<tr>
+<td>415</td>
+<td>Unsupported Media Type</td>
+<td>服务器不支持请求的数据格式</td>
+</tr>
+<tr>
+<td>416</td>
+<td>Requested Range Not Satisfiable</td>
+<td>请求中包含Range,但返回的数据中不符合在范围内</td>
+</tr>
+<tr>
+<td>417</td>
+<td>Expectation Failed</td>
+<td>请求中包含Except，但服务器无法满足预期</td>
+</tr>
+<tr>
+<td>421</td>
+<td>too many connections</td>
+<td>服务器的连接数超限</td>
+</tr>
+<tr>
+<td>422</td>
+<td>Unprocessable Entity</td>
+<td>请求格式正确但含有语义错误</td>
+</tr>
+<tr>
+<td>423</td>
+<td>Locked</td>
+<td>请求资源被锁定</td>
+</tr>
+<tr>
+<td>424</td>
+<td>Failed Dependency</td>
+<td>由于之前的请求导致本次请求失败</td>
+</tr>
+<tr>
+<td>451</td>
+<td>Unavailable For Legal Reasons</td>
+<td>请求因法律原因而不可用</td>
+</tr>
+</tbody>
+</table>
+<h1 id="服务器错误"><a href="#服务器错误" class="headerlink" title="服务器错误"></a>服务器错误</h1><table>
+<thead>
+<tr>
+<th>code</th>
+<th>des</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>500</td>
+<td>Internal Server Error</td>
+<td><strong>服务器端发生异常</strong></td>
+</tr>
+<tr>
+<td>501</td>
+<td>Not Implemented</td>
+<td>服务器不支持该功能，无法识别该请求或者不能支持该请求的资源</td>
+</tr>
+<tr>
+<td>502</td>
+<td>Bad Gateway</td>
+<td><strong>网关或者代理服务器在处理请求时，无法从上游服务器获取响应</strong></td>
+</tr>
+<tr>
+<td>503</td>
+<td>Service Unavailable</td>
+<td><strong>服务器维护或者过载导致无法处理请求</strong></td>
+</tr>
+<tr>
+<td>504</td>
+<td>Gateway Timeout</td>
+<td><strong>网关或代理服务器处理请求时，获取上游服务器响应超时</strong></td>
+</tr>
+<tr>
+<td>505</td>
+<td>HTTP Version Not Supported</td>
+<td>服务器不支持请求指定的http版本</td>
+</tr>
+</tbody>
+</table>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/03/redis-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小磊砸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小磊砸的布劳格">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/03/redis-3/" itemprop="url">redis持久化</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-03T22:16:00+08:00">
+                2018-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/03/redis-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/03/redis-3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Redis持久化方式"><a href="#Redis持久化方式" class="headerlink" title="Redis持久化方式"></a>Redis持久化方式</h2><h3 id="快照"><a href="#快照" class="headerlink" title="快照"></a>快照</h3><p>将某个时刻的数据持久化到硬盘中。用户可以对快照进行备份。支持复制到其他服务器。</p>
+<h4 id="创建快照"><a href="#创建快照" class="headerlink" title="创建快照"></a>创建快照</h4><ul>
+<li><strong>bgsave</strong> 创建一个快照。<strong>Redis会创建一个子进程来负责将快照写入硬盘。父进程继续接受请求。</strong></li>
+<li><strong>save</strong> Redis在快照创建完毕前不会接受任何请求。</li>
+<li><strong>shutdown</strong>命令用于停止redis服务的时候会执行一次<strong>save</strong>命令。停止所有请求。</li>
+<li><strong>sync</strong>命令进行Redis服务器之间的数据同步的时候。如果主服务器并没有正在进行bgsave或者不是刚刚结束bgsave命令时会执行bgsave命令。</li>
+</ul>
+<h4 id="快照配置"><a href="#快照配置" class="headerlink" title="快照配置"></a>快照配置</h4><blockquote>
+<p>save 60 1000    60秒内有1000次写操作则自动触发bgsave<br>stop-writes-on-bgsave-error-no  当创建快照失败时是否停止写操作<br>rdbcompression yes  是否对快照进行压缩<br>dbfilename dump.rdb 快照名称<br>dr ./   快照文件存储的路径</p>
+</blockquote>
+<h4 id="快照缺陷"><a href="#快照缺陷" class="headerlink" title="快照缺陷"></a>快照缺陷</h4><ul>
+<li>快照是某一个时间点的内存数据备份。如果在服务器崩溃则会丢失上一次快照到崩溃时的所有变更数据。   </li>
+<li>快照适合即使丢失一部分少量的数据也不会对整个应用造成问题的场景。   </li>
+</ul>
+<blockquote>
+<p>《Redis实战》中提到的对日志进行聚合计算。没有看懂到底是什么意思。   </p>
+</blockquote>
+<ul>
+<li>当大数据处理时，Redis占用的内存会很大，bgsave创建子进程会耗费一定的时间，这个创建的过程则会导致redis停顿。停顿的时间随着Redis占用内存越大而越久。相比较于创建子进程带来的停顿，save并不会因为要创建子进程而去争抢资源导致停顿。故save会较bgsave的速度更快。</li>
+</ul>
+<h3 id="AOF-append-only-file"><a href="#AOF-append-only-file" class="headerlink" title="AOF(append-only file)"></a>AOF(append-only file)</h3><p>将写操作的命令追加到备份文件中。等到需要恢复时（重启）从头到尾执行一遍备份文件中的写命令即可。</p>
+<h4 id="AOF文件重写"><a href="#AOF文件重写" class="headerlink" title="AOF文件重写"></a>AOF文件重写</h4><p>随着Redis不断的运行。aof文件会变得越来越大。占用硬盘同时在重启时根据aof重新执行写命令时耗时长。<br><strong>bgrewriteaof</strong> 等同bgsave，会启动子进程来重写aof文件。父进程继续接受请求。</p>
+<h4 id="AOF配置"><a href="#AOF配置" class="headerlink" title="AOF配置"></a>AOF配置</h4><blockquote>
+<p>appendonly yes  是否启用AOF模式<br>appendfsync everrysec 追加的频率。always每次写操作都同步。everysec每秒执行一次同步，可以同步多条写操作。no 由操作系统来决定何时进行同步。<br>no-appendfsync-on-rewrite no<br>auto-aof-rewrite-percentage 100 当aof文件比上一次重写时大了一倍则进行aof文件重写<br>auto-aof-rewrite-min-size 64mb  当aof文件的大小大于64mb时进行aof文件重写<br>dr ./   aof文件存储路径     </p>
+</blockquote>
+<h4 id="AOF缺陷"><a href="#AOF缺陷" class="headerlink" title="AOF缺陷"></a>AOF缺陷</h4><ul>
+<li><strong>bgrewriteaof</strong>命令创建子进程也会由于redis占用的内存越大而创建子进程的时间越长从而导致redis停顿。</li>
+<li>对aof文件进行重写时会涉及对旧的aof文件进行删除，如果文件很大很有可能导致操作系统的挂起。</li>
+</ul>
+<h2 id="持久化的意义"><a href="#持久化的意义" class="headerlink" title="持久化的意义"></a>持久化的意义</h2><ul>
+<li>数据重用。redis中很多的数据都是一些经过长时间计算得到的。这样持久化到硬盘中就不必再次计算可以方便下次使用。</li>
+<li>安全。将数据备份到硬盘防止因系统崩溃而丢失数据。Redis运行时数据都是存储在内存中，而一旦系统奔溃内存中的数据时很大程度会丢失。  </li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/03/redis-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -958,7 +1561,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">84</span>
+                  <span class="site-state-item-count">86</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1017,7 +1620,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
